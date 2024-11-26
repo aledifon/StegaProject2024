@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviour
 
         anim.SetBool("Hurt", true);
         //stop the player, reset the speed
-        playerMovement.ResetVelocity();
+        //playerMovement.ResetVelocity();
 
         if (currentHealth <= 0)
         {
