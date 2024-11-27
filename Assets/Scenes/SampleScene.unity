@@ -7072,7 +7072,7 @@ MonoBehaviour:
   forceMovement: 10
   smoothTime: 0.5
   playerSpeedAirCtrl: 0.9
-  frictionValue: 100
+  frictionValue: 10
   rayLength: 1
   groundLayer:
     serializedVersion: 2
