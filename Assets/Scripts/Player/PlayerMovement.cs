@@ -5,24 +5,26 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float speed;
-    public float forceMovement;    // Player's movement force (on Add Force Movement type through rb2D)
-    public float smoothTime;
+    [SerializeField] private float speed;
+    [SerializeField] private float forceMovement;   // Player's movement force (on Add Force Movement type through rb2D)
+    [SerializeField] private float smoothTime;
+    [SerializeField, Range(0.7f,1f)] private float playerSpeedAirCtrl;
+    [SerializeField, Range(0f, 1000f)] private float frictionValue;
 
     [Header("Raycast")]
-    public float rayLength;//ray Length    
-    public LayerMask groundLayer;//Layer where the ground will be contained
-    public Transform groundCheck;//origin raycast point
+    [SerializeField] private float rayLength;       //ray Length    
+    [SerializeField] private LayerMask groundLayer; //Layer where the ground will be contained
+    [SerializeField] private Transform groundCheck; //origin raycast point
 
     [Header("Jump")]
-    public float jumpForce;
+    [SerializeField] private float jumpForce;
 
     // Movement vars.
     private float horizontal;
     private bool canMove;
     private Vector2 moveDirection;  // Player's movement direction (on Mov. Pos or Add Force Movement type through rb2D)    
     private Vector2 targetVelocity; // Desired target player Speed (Velocity Movement type through rb2D)
-    private Vector2 dampVelocity;   // Player's current speed storage (Velocity Movement type through rb2D)
+    public Vector2 dampVelocity;   // Player's current speed storage (Velocity Movement type through rb2D)
 
     // Movement Flags
     private bool isGrounded,    //var which indicates if we are or not touching the ground
@@ -68,25 +70,19 @@ public class PlayerMovement : MonoBehaviour
         Animating();
         IsGrounded();       // Detect the ground and the Normal terrain vector
         //IsOnSlope();
-        canJump();          
+        canJump();
         //Attack();
-        //TargetVelocity();        
+        //TargetVelocity();
     }
     void LateUpdate()
     {        
         //We call the player's movement through RigidBody only once per frame)
-        if (canPlayerJump) 
-        {
-            canPlayerJump = false;
-            Jump();                     // Jumping handling
-        }
-        else
-        {
-            Move();                     // Player's movement handling (through Velocity Movement Mode)
-        }
-        //Debug.Log("RigiBody.Velocity AFTER JUMP = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");
-
-        //ChangeGravity();
+        //if (canPlayerJump) 
+        //{
+        //    canPlayerJump = false;
+        //    Jump();                     // Jumping handling
+        //}        
+         Move();                     // Player's movement handling (through Velocity Movement Mode)                
     }
 
     // Player's movement
@@ -94,37 +90,72 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
     }
+    //void Move()
+    //{
+    //    // Types of RigidBody Movement
+    //    //Velocity: Ideal para plataformas 2D o juegos de movimiento constante.
+    //    //Ejemplo: Side-scrollers, juegos top-down con controles precisos.              
+                
+    //    //rb2D.velocity = new Vector2(horizontal * speed, rb2D.velocity.y);
+    //    rb2D.velocity = Vector2.SmoothDamp(rb2D.velocity, targetVelocity, ref dampVelocity, smoothTime);
+    //    //Debug.Log("rb2D.velocity = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");                    
+    //}
     void Move()
     {
-        // Types of RigidBody Movement
-        //Velocity: Ideal para plataformas 2D o juegos de movimiento constante.
-        //Ejemplo: Side-scrollers, juegos top-down con controles precisos.
+        Vector2 newVelocity = rb2D.velocity;
+        Vector2 playerVelocity = new Vector2(horizontal*speed,0);        
 
-        //rb2D.velaocity = Vector2.SmoothDamp(rb2D.velocity, targetVelocity, ref dampVelocity, smoothTime);
-        //Debug.Log("rb2D.velocity = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");
-
-        //MovePosition: Para movimientos precisos sin necesidad de físicas dinámicas.
-        //Ejemplo: Juegos tipo puzzle o grid-based.
-        //Vector2 newPosition = rb2D.position + moveDirection * speed * Time.fixedDeltaTime;
-        //rb2D.MovePosition(newPosition);
-
-        //AddForce:Ideal para juegos basados en física o con movimientos más naturales y fluidos.
-        //        Ejemplo: Juegos con gravedad personalizada o empujones.
-        //rb2D.AddForce(moveDirection,ForceMode2D.Force);
-
+        // If the player is grounded --> Combines jump and player's horiz. movement
         if (isGrounded)
-        {
-            //rb2D.velocity = targetVelocity;
-            rb2D.velocity = new Vector2(horizontal * speed, rb2D.velocity.y);
+        {            
+            // Si el jugador saltó, aplica la componente normal
+            if (canPlayerJump)
+            {
+                // Reset the jump flag                                                        
+                canPlayerJump = false;
+                // Calculate the new jump component for the velocity
+                Vector2 jumpVelocity = normalVector * jumpForce;
 
-            Debug.Log("IsGrounded");
+                // Combines jump and player velocity to obtain the new velocity vector
+                newVelocity += jumpVelocity;
+
+                // Apply Jumping impulse
+                rb2D.AddForce(jumpVelocity, ForceMode2D.Impulse);
+            }
+
+            // Frenado al dejar de moverse
+            if (Mathf.Abs(horizontal) < Mathf.Epsilon)
+                newVelocity.x = Mathf.Lerp(newVelocity.x, 0, Time.deltaTime * frictionValue); // Ajusta el factor de 5f para mayor o menor fricción            
+            else
+                newVelocity += playerVelocity;
+
+            // Frenado al dejar de moverse (Problem --> Deletes the Normal component during jumping)
+            //if (horizontal == 0)
+            //    rb2D.AddForce(new Vector2(-rb2D.velocity.x * frictionValue, 0f), ForceMode2D.Force); // Ajusta el multiplicador
+
+            newVelocity += playerVelocity;
         }
+        // If the player is in the air --> Keeps the vertical component without modif. and only adds horiz. movement
+        else
+        {
+            // Reduces a 30% the player's speed control while the player is in the air
+            playerVelocity.x *= playerSpeedAirCtrl; 
+            // Horiz. speed movement in the air
+            newVelocity += playerVelocity;
 
+            //Debugging
+            Debug.Log("newVelocity.x = " + newVelocity.x + " || newVelocity.y = " + newVelocity.y);
+        }        
+
+        // Aplica la nueva velocidad calculada
+        //rb2D.velocity = newVelocity;
+        rb2D.velocity = Vector2.SmoothDamp(rb2D.velocity, newVelocity, ref dampVelocity, smoothTime);
     }
     void TargetVelocity()
     {
         // Velocity Movement
-        targetVelocity = new Vector2(horizontal * speed, rb2D.velocity.y);
+        //targetVelocity = new Vector2(horizontal * speed, rb2D.velocity.y);
+        //Debug.Log("targetvelocity = ( " + targetVelocity.x + " ,"+ targetVelocity.y + " )");
 
         // MovePosition Movement or AddForce Movement
         //moveDirection = new Vector2(horizontal * forceMovement, 0f);
@@ -162,42 +193,42 @@ public class PlayerMovement : MonoBehaviour
     //////////////////////////////////////////////////
 
     // Jumping methods
-    void Jump()
-    {        
-        if (canMove && isGrounded && (normalVector != Vector2.zero))
-        {
-            // Reset the Rigidbody speeds before jumping
-            //PrepareForJump();
+    //void Jump()
+    //{        
+    //    if (canMove && (normalVector != Vector2.zero))
+    //    {
+    //        // Reset the Rigidbody speeds before jumping
+    //        //PrepareForJump();
 
-            //// Asegúrate de que la gravedad está activada antes de aplicar el salto
-            //rb2D.gravityScale = 1;
+    //        //// Asegúrate de que la gravedad está activada antes de aplicar el salto
+    //        //rb2D.gravityScale = 1;            
 
-            // 1. Calculates the force in the normal terrain direction
-            Vector2 jumpDirection = normalVector * jumpForce; // Normalize the normal vector                        
-            // 2. Adds a little forward force component 
-            //Vector2 forwardImpulse = new Vector2(horizontal * (jumpForce / 2f), 0) ; // Reduced in order to don't be dominant in the jumping                                  
-            //Calculates the resultant vector
-            //Vector2 forceApplied = jumpDirection + forwardImpulse;
-            Vector2 forceApplied = jumpDirection;
+    //        // 1. Calculates the force in the normal terrain direction
+    //        Vector2 jumpDirection = normalVector * jumpForce; // Normalize the normal vector                        
+    //        // 2. Adds a little forward force component 
+    //        //Vector2 forwardImpulse = new Vector2(horizontal * (jumpForce / 2f), 0) ; // Reduced in order to don't be dominant in the jumping                                  
+    //        //Calculates the resultant vector
+    //        //Vector2 forceApplied = jumpDirection + forwardImpulse;
+    //        Vector2 forceApplied = jumpDirection;
 
-            //Debugging forces
-            Debug.Log("Normal dir. = (" + normalVector.x + " ," + normalVector.y + " )");
-            ////Debug.Log("Fwd dir. = (" + forwardImpulse.x + " ," + forwardImpulse.y + " )");
-            Debug.Log("Force applied = (" + forceApplied.x + " ," + forceApplied.y + " )");
-            ////Debugging RigidBody
-            //Debug.Log("RigiBody.Velocity BEFORE JUMP = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");
+    //        ////Debugging forces
+    //        //Debug.Log("Normal dir. = (" + normalVector.x + " ," + normalVector.y + " )");
+    //        //Debug.Log("Fwd dir. = (" + forwardImpulse.x + " ," + forwardImpulse.y + " )");
+    //        //Debug.Log("Force applied = (" + forceApplied.x + " ," + forceApplied.y + " )");
+    //        //Debugging RigidBody
+    //        //Debug.Log("RigiBody.Velocity BEFORE JUMP = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");
 
-            // Apply Jumping impulse
-            rb2D.AddForce(forceApplied,ForceMode2D.Impulse);
+    //        // Apply Jumping impulse
+    //        rb2D.AddForce(forceApplied,ForceMode2D.Impulse);
 
-            // Después de aplicar el salto, asegúrate de restaurar la gravedad
-            rb2D.gravityScale = 1;  // Restablece la gravedad a su valor predeterminado
+    //        // Después de aplicar el salto, asegúrate de restaurar la gravedad
+    //        //rb2D.gravityScale = 1;  // Restablece la gravedad a su valor predeterminado
 
-            // Enable again the gravity after the jump impulse
-            //rb2D.gravityScale = 1;
-            //StartCoroutine(EnableGravityAfterDelay());
-        }                    
-    }
+    //        // Enable again the gravity after the jump impulse
+    //        //rb2D.gravityScale = 1;
+    //        //StartCoroutine(EnableGravityAfterDelay());
+    //    }                    
+    //}
     void canJump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) 
