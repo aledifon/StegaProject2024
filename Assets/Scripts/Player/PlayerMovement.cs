@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float forceMovement;   // Player's movement force (on Add Force Movement type through rb2D)
     [SerializeField] private float smoothTime;
     [SerializeField, Range(0.7f,1f)] private float playerSpeedAirCtrl;
-    [SerializeField, Range(0f, 1000f)] private float frictionValue;
+    [SerializeField, Range(0f, 100000f)] private float frictionValue;
 
     [Header("Raycast")]
     [SerializeField] private float rayLength;       //ray Length    
@@ -132,8 +132,7 @@ public class PlayerMovement : MonoBehaviour
             // Frenado al dejar de moverse (Problem --> Deletes the Normal component during jumping)
             //if (horizontal == 0)
             //    rb2D.AddForce(new Vector2(-rb2D.velocity.x * frictionValue, 0f), ForceMode2D.Force); // Ajusta el multiplicador
-
-            newVelocity += playerVelocity;
+            //newVelocity += playerVelocity;
         }
         // If the player is in the air --> Keeps the vertical component without modif. and only adds horiz. movement
         else
