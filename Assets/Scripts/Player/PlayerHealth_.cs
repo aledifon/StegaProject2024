@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth_ : MonoBehaviour
 {
     [Header("Health")]
     public float maxHealth;
@@ -42,9 +42,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         //acornUI.fillAmount = currentHealth / maxHealth;
 
-        //anim.SetBool("Hurt", true);
-        playerMovement.HurtToTrue();
-
+        anim.SetBool("Hurt", true);
         //stop the player, reset the speed
         //playerMovement.ResetVelocity();
 
@@ -57,8 +55,7 @@ public class PlayerHealth : MonoBehaviour
     }
     void HurtToFalse()
     {
-        //anim.SetBool("Hurt", false);
-        playerMovement.HurtToFalse();
+        anim.SetBool("Hurt", false);
     }
     void Death()
     {
