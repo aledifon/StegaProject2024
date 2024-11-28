@@ -42,7 +42,9 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         //acornUI.fillAmount = currentHealth / maxHealth;
 
-        anim.SetBool("Hurt", true);
+        //anim.SetBool("Hurt", true);
+        playerMovement.HurtToTrue();
+
         //stop the player, reset the speed
         //playerMovement.ResetVelocity();
 
@@ -55,7 +57,8 @@ public class PlayerHealth : MonoBehaviour
     }
     void HurtToFalse()
     {
-        anim.SetBool("Hurt", false);
+        //anim.SetBool("Hurt", false);
+        playerMovement.HurtToFalse();
     }
     void Death()
     {
