@@ -233,7 +233,7 @@ public class PlayerMovement : MonoBehaviour
                     // Reset the jump flag                                                        
                     canPlayerJump2 = false;
                     // Calculate the new jump component for the velocity
-                    Vector2 jumpVelocity = Vector2.up * jumpForce*0.5f;      // 70% of Last jump force value
+                    Vector2 jumpVelocity = Vector2.up * maxJumpForce*0.5f;      // 50% of the max jump force value
 
                     // Apply Jumping impulse
                     rb2D.AddForce(jumpVelocity, ForceMode2D.Impulse);
