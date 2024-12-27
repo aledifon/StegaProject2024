@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     //    Positive
     //}
     // Define Character States
-    private enum PlayerState
+    public enum PlayerState
     {
         Idle,
         Running,
@@ -21,18 +21,21 @@ public class PlayerMovement : MonoBehaviour
         Falling,
         Hurting
     }
-    private enum JumpingState
+    public enum JumpingState
     {
         WaitingForJumpRequest,
         CalculatingJumpForce,
         TriggeringJumpRequest,
         WaitingForJumpState,
         Jumping,
+        WaitingForAttachment,
+        Swinging,
         DoubleJumping
     }
     [Header("Character State")]
     [SerializeField] private PlayerState currentState = PlayerState.Idle;
     [SerializeField] private JumpingState currentJumpState = JumpingState.WaitingForJumpRequest;
+    public JumpingState CurrentJumpState { get { return currentJumpState;} }
 
     [Header("Movement")]
     //[SerializeField] private MovementState currentMovState = MovementState.Stopped;
@@ -63,12 +66,16 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 dampVelocity;            // Player's current speed storage (Velocity Movement type through rb2D)    
 
     // Jumping vars
-    private float timeJump;                 // Jumping Pressed button Timer    
+    private float timeJump;                 // Jumping Pressed button Timer        
 
     // Movement Flags
     private bool isGrounded,                // Indicates if we are or not touching the ground
                 canPlayerJump,              // Tells me if I can jump or not
                 canPlayerJump2;             // Double-Jump 
+    
+    private bool canEnableHook;             // Grapping Hook Enabling Flag (Private field)
+    public bool CanEnableHook { get { return canEnableHook; } }   // (Read-only property)
+
     // Animation Flags
     private bool isHurting;
 
@@ -83,6 +90,8 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private PlayerHealth playerHealth;
     private AudioSource audioJump;
+
+    private CapsuleCollider2D hookCollider2D;
 
     private void Awake()
     {
@@ -99,6 +108,9 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioJump = GetComponent<AudioSource>();
 
+        // Get the Hook Capsule Collider 2D Component
+        hookCollider2D = GameObject.FindWithTag("Hook").GetComponent<CapsuleCollider2D>();
+
         minJumpForce = 6f;
         maxJumpForce = 13f;
         timeMaxJump = 0.3f;
@@ -111,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
 
         InputPlayer();          // Gets player input movement                
         IsGrounded();           // Detect the ground and the Normal terrain vector
-        canJump();              // Check if the player request a jump
+        UpdateJumpState();              // Check if the player request a jump
          
         Flip();                 // Flip the player sprite
         HandleAnimation();      // Animation Handling
@@ -256,7 +268,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Applies the correspondent new velocity        
         rb2D.velocity = Vector2.SmoothDamp(rb2D.velocity, newRbVelocity, ref dampVelocity, smoothTime);
-        Debug.Log("Rb.Velocity = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");
+        //Debug.Log("Rb.Velocity = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");
     }
     void CheckMovementSense()
     {
@@ -272,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
             isBraking = false;
         }            
     }
-    void canJump()
+    void UpdateJumpState()
     {
         //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         //{
@@ -324,6 +336,13 @@ public class PlayerMovement : MonoBehaviour
                     canPlayerJump2 = true;
                     currentJumpState = JumpingState.DoubleJumping;
                 }
+                // /////////////NEW
+                else if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                {
+                    canEnableHook = true;                                   
+                    currentJumpState = JumpingState.WaitingForAttachment;
+                }
+                // /////////////NEW
                 // Otherwise once the player reaches the ground again then the jumping timer is reset
                 // and comes back to the initial state
                 else if (isGrounded)
@@ -332,6 +351,16 @@ public class PlayerMovement : MonoBehaviour
                     currentJumpState = JumpingState.WaitingForJumpRequest;
                 }                                        
                 break;
+            // During this state the Grapping-Hook has been launched (Line Renderer is visible for x seconds)
+            case JumpingState.WaitingForAttachment:
+                //Wait for x seconds for an attachment with a gripping point
+                // if (elapsed grapping time or flag reached) --> To Jumping State                       
+                // else if (Collision with Gripping Point) --> To Swinging State
+                // else if (isGrounded) --> To WaitingForJumpRequest State;
+            // Gripping was successfull so during this state the player is swinging
+            // (Line Renderer is always visible & updating his angle respect to the player)
+            case JumpingState.Swinging:
+                
             case JumpingState.DoubleJumping:
                 // Once the player reaches the ground again then the jumping timer is reset
                 // and come back to the initial state
@@ -348,6 +377,10 @@ public class PlayerMovement : MonoBehaviour
     void ResetSmoothTime()
     {
         smoothTime = 0.35f; 
+    }
+    public void EnableHookToFalse()
+    {
+        canEnableHook = false;
     }
     //////////////////////////////////////////////////
 
@@ -386,6 +419,8 @@ public class PlayerMovement : MonoBehaviour
     // Player animation    
     void Flip()
     {
+        // PENDING TO DISABLE THE Sprite flipping when the player is on Swinging State
+
         if (horizontal < 0 && rb2D.velocity.x < 0) 
             spriteRenderer.flipX = true;
         else if (horizontal > 0 && rb2D.velocity.x > 0) 
