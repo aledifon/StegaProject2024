@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Acorn
   - Platform
+  - Hook
+  - GrapplingPoint
   layers:
   - Default
   - TransparentFX
