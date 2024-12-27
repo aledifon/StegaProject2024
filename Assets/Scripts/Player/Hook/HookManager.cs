@@ -82,7 +82,7 @@ public class HookManager : MonoBehaviour
         // Hides the Rope (Line Renderer)
         lineRenderer.positionCount = 0;
         // Disables the Hook (Circle Collider 2D)
-        hookCollider2D.enabled = true;
+        hookCollider2D.enabled = false;
     }
 
     // Collisions Detections with the Grappling Points
