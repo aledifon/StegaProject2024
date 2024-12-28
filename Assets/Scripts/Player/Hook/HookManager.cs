@@ -28,6 +28,9 @@ public class HookManager : MonoBehaviour
     public Vector3 RopeMaxPos { get { return ropeMaxPos; } }
     public Vector3 Rope0Pos { get { return rope0Pos; } }
 
+    // Offset between the Player position & the Grappling-Hook position
+    private Vector3 offsetHookPos;
+
     // Hook Enabled Flags
     private bool isHookEnabled;                                     // Is enabled as long as the Hook will be enabled
     public bool IsHookEnabled {  get { return isHookEnabled; } }
@@ -56,7 +59,10 @@ public class HookManager : MonoBehaviour
         // Get the Sprite Renderer component from the player
         spriteRenderer = GameObject.FindWithTag("Player")?.GetComponent<SpriteRenderer>();        
         // Get the Player Movement component (script) from the player
-        playerMovement = GameObject.FindWithTag("Player")?.GetComponent<PlayerMovement>();   
+        playerMovement = GameObject.FindWithTag("Player")?.GetComponent<PlayerMovement>();
+
+        // Get the offset between the player pos. and the Grappling-Hook pos.
+        offsetHookPos = transform.parent.localPosition;
     }    
 
     // Update is called once per frame
@@ -141,16 +147,16 @@ public class HookManager : MonoBehaviour
             // Gets the Grappling Point position --> This will be used on PlayerMovement to position the player             
             grapplingPointPos = collision.gameObject.transform.position;
 
-            // Calculate also the Min, Max & 0 Positions.
+            // Calculate also the Min, Max & 0 Positions. (Important to add the offset with the Player)
             ropeMinPos = new Vector3(grapplingPointPos.x - endRopePoint.x,
                                     grapplingPointPos.y - endRopePoint.y,
-                                    0);
+                                    0) - offsetHookPos;
             ropeMaxPos = new Vector3 (grapplingPointPos.x + endRopePoint.x,
                                     grapplingPointPos.y - endRopePoint.y,
-                                    0);
+                                    0) - offsetHookPos;
             rope0Pos = new Vector3(grapplingPointPos.x ,
                                     grapplingPointPos.y - ropeLength,
-                                    0);            
+                                    0) - offsetHookPos;            
 
             // Debugging
             Debug.Log("Gancho atrapado en el punto de agarre");
