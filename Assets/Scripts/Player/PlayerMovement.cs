@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
         Running,
         Jumping,
         Falling,
+        Swinging,
         Hurting
     }
     public enum JumpingState
@@ -91,7 +93,9 @@ public class PlayerMovement : MonoBehaviour
     private PlayerHealth playerHealth;
     private AudioSource audioJump;
 
-    private CapsuleCollider2D hookCollider2D;
+    //private CapsuleCollider2D hookCollider2D;
+    
+    private HookManager hookManager;
 
     private void Awake()
     {
@@ -108,8 +112,11 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioJump = GetComponent<AudioSource>();
 
-        // Get the Hook Capsule Collider 2D Component
-        hookCollider2D = GameObject.FindWithTag("Hook").GetComponent<CapsuleCollider2D>();
+        //// Get the Hook Capsule Collider 2D Component
+        //hookCollider2D = GameObject.FindWithTag("Hook").GetComponent<CapsuleCollider2D>();
+
+        // Get the Hook Manager Component (Script)
+        hookManager = GameObject.FindWithTag("Hook")?.GetComponent<HookManager>();
 
         minJumpForce = 6f;
         maxJumpForce = 13f;
@@ -165,12 +172,22 @@ public class PlayerMovement : MonoBehaviour
                 //    currentState = PlayerState.Running;
                 if (!isGrounded && rb2D.velocity.y < 0)
                     currentState = PlayerState.Falling;
+                else if (!isGrounded && hookManager.IsHooked)
+                    currentState = PlayerState.Swinging;
                 break;
             case PlayerState.Falling:
                 if (isGrounded && horizontal == 0)
                     currentState = PlayerState.Idle;
                 else if (isGrounded && horizontal != 0)
                     currentState = PlayerState.Running;
+                else if (!isGrounded && hookManager.IsHooked)
+                    currentState = PlayerState.Swinging;
+                break;
+            case PlayerState.Swinging:
+                if (!hookManager.IsHooked && rb2D.velocity.y > 0)
+                    currentState = PlayerState.Jumping;
+                else if (!hookManager.IsHooked && rb2D.velocity.y < 0)
+                    currentState = PlayerState.Falling;
                 break;
             case PlayerState.Hurting:
                 // Hurting logic
@@ -206,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
                 // Si el jugador saltó (and Max Jump Time elapsed), aplica la componente normal
                 if (canPlayerJump)
                 {                    
-                    Debug.Log("JumpForce = " + jumpForce);  // Debugging applied force
+                    //Debug.Log("JumpForce = " + jumpForce);  // Debugging applied force
 
                     // Reset the jump flag                                                        
                     canPlayerJump = false;
@@ -258,6 +275,35 @@ public class PlayerMovement : MonoBehaviour
                 //if (Mathf.Abs(rb2D.velocity.x) < (playerMaxHorizSpeed*playerSpeedAirCtrl))
                     newRbVelocity += inputPlayerVelocity;
                 break;
+            case PlayerState.Swinging:
+                if (canPlayerJump)
+                {
+                    // Reset the jump flag                                                        
+                    canPlayerJump = false;
+                    // Calculate the new jump component for the velocity
+                    Vector2 jumpVelocity = Vector2.up * maxJumpForce * 0.7f;      // 70% of the max jump force value
+
+                    // Apply Jumping impulse
+                    rb2D.AddForce(jumpVelocity, ForceMode2D.Impulse);
+
+                    // Play audio jump effect
+                    audioJump.Play();
+
+                    // Disable the Grappling-Hook Collider & the Line Renderer
+                    hookManager.DisableGrapplingHook();
+                }
+                /////////////////////////////////////////////////////////////////////////////////
+                // PENDULAR PLAYER MOVEMENT RESPECT TO GRAPPLING POINT WILL BE PERFORMED HERE ///
+                /////////////////////////////////////////////////////////////////////////////////
+
+                // REPLACE inputPlayerVelocity by PendulumPositions
+
+                //newRbVelocity += inputPlayerVelocity;                
+                //newRbVelocity = Vector2.zero;
+                //Disable Gravity
+                //rb2D.gravityScale = 0f;
+
+                break;
             case PlayerState.Hurting:
                 newRbVelocity = Vector2.zero;                   // Stops the player                
                 break;
@@ -292,11 +338,11 @@ public class PlayerMovement : MonoBehaviour
         //}        
 
         switch (currentJumpState)
-        {            
+        {
             case JumpingState.WaitingForJumpRequest:
                 // Trigger jumping timer when pressed Jumping buton and player is on the ground
                 if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-                {                                    
+                {
                     timeJump = 0;                   // Resets jumping timer
                     jumpForce = minJumpForce;       // Set jump force to min value.
 
@@ -308,15 +354,15 @@ public class PlayerMovement : MonoBehaviour
             case JumpingState.CalculatingJumpForce:
                 // Update the Jumping force every frame as long as the 'jump' button is pressed
                 if (Input.GetKey(KeyCode.Space) && (timeJump < timeMaxJump))
-                {                                        
+                {
                     timeJump += Time.deltaTime;
                     // In case we go over the max Time value
                     if (timeJump > timeMaxJump)
-                        timeJump = timeMaxJump;                                       
+                        timeJump = timeMaxJump;
                 }
-                else                
-                    currentJumpState = JumpingState.TriggeringJumpRequest;                
-                break;            
+                else
+                    currentJumpState = JumpingState.TriggeringJumpRequest;
+                break;
             case JumpingState.TriggeringJumpRequest:
                 // Calculate the jump force in func. of the time the jump button was pressed
                 jumpForce = minJumpForce + (timeJump / timeMaxJump) * (maxJumpForce - minJumpForce);
@@ -336,31 +382,57 @@ public class PlayerMovement : MonoBehaviour
                     canPlayerJump2 = true;
                     currentJumpState = JumpingState.DoubleJumping;
                 }
-                // /////////////NEW
-                else if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                else if (Input.GetKeyDown(KeyCode.RightControl))
                 {
-                    canEnableHook = true;                                   
+                    canEnableHook = true;
+                    //timeJump = 0;
                     currentJumpState = JumpingState.WaitingForAttachment;
                 }
-                // /////////////NEW
                 // Otherwise once the player reaches the ground again then the jumping timer is reset
                 // and comes back to the initial state
                 else if (isGrounded)
                 {
-                    timeJump = 0;                   
+                    timeJump = 0;
                     currentJumpState = JumpingState.WaitingForJumpRequest;
-                }                                        
+                }
                 break;
             // During this state the Grapping-Hook has been launched (Line Renderer is visible for x seconds)
-            case JumpingState.WaitingForAttachment:
-                //Wait for x seconds for an attachment with a gripping point
-                // if (elapsed grapping time or flag reached) --> To Jumping State                       
-                // else if (Collision with Gripping Point) --> To Swinging State
-                // else if (isGrounded) --> To WaitingForJumpRequest State;
+            case JumpingState.WaitingForAttachment:                                
+                // If the player reaches the ground before a grappling point has been reached
+                if (isGrounded) 
+                {
+                    // Jumping timer will be reset
+                    timeJump = 0;
+                    // Come back to the initial state
+                    currentJumpState = JumpingState.WaitingForJumpRequest;
+                }
+                // If the hook enabling time has elapsed (2s) and no grappling point has been reached
+                else if (!hookManager.IsHookEnabled)
+                    currentJumpState = JumpingState.WaitingForJumpRequest;
+                // If a Grappling point has been reached by the Grappling-Hook
+                else if (hookManager.IsHooked) 
+                {
+                    // Move player to the Starting Swinging Position
+                    transform.position = hookManager.RopeMinPos;
+
+                    // Delete rb velocities
+                    rb2D.velocity = Vector2.zero;
+                    //Disable Gravity
+                    rb2D.gravityScale = 0f;
+
+                    currentJumpState = JumpingState.Swinging;
+                }                    
+                break;
             // Gripping was successfull so during this state the player is swinging
             // (Line Renderer is always visible & updating his angle respect to the player)
             case JumpingState.Swinging:
-                
+                // If press the jump button then a jump will be triggered in order to leave the Grappling Point
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    canPlayerJump = true;
+                    currentJumpState = JumpingState.WaitingForJumpState;
+                }
+                break;
             case JumpingState.DoubleJumping:
                 // Once the player reaches the ground again then the jumping timer is reset
                 // and come back to the initial state
@@ -378,7 +450,7 @@ public class PlayerMovement : MonoBehaviour
     {
         smoothTime = 0.35f; 
     }
-    public void EnableHookToFalse()
+    public void CanEnableHookToFalse()
     {
         canEnableHook = false;
     }
