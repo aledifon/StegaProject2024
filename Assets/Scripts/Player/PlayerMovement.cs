@@ -303,7 +303,7 @@ public class PlayerMovement : MonoBehaviour
                 pendulumTimeElapsed += Time.fixedDeltaTime;         // Update the elapsed time
 
                 // Calculate X-Target position (According to SHM Motion Equation)
-                float targetPosX = -hookManager.PendulumAmp*
+                float targetPosX = hookManager.PendulumAmp*
                                     Mathf.Cos(hookManager.PendulumOmega*pendulumTimeElapsed
                                     + hookManager.PendulumPhase);
                 // Calculate Y-Target position (Assuming a circular arc)
@@ -314,7 +314,7 @@ public class PlayerMovement : MonoBehaviour
                                     Mathf.Sin(hookManager.PendulumOmega * pendulumTimeElapsed
                                     + hookManager.PendulumPhase);
                 // Calculate Y-Target velocity (Applying dy/dt)
-                float targetVelY = (targetPosX * targetVelX) / 
+                float targetVelY = (-targetPosX * targetVelX) / 
                                     Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX * targetPosX);
                 
                 // Update the new Target velocity Vector
