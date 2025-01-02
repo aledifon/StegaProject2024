@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -59,7 +60,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce;       // Jumping applied Force
     [SerializeField] private float minJumpForce;    // Jumping Max Force (Equivalent to Jumping Max. Height)
     [SerializeField] private float maxJumpForce;    // Jumping Min Force (Equivalent to Jumping Min Height)
-    [SerializeField] private float timeMaxJump;     // Jumping pressed button Max Time allowed
+    [SerializeField] private float timeMaxJump;     // Jumping pressed button Max Time allowed    
+
+    // Swinging Movement
+    private float pendulumTimeElapsed;              // Swinging Elapsed time
 
     // Movement vars.
     private float horizontal;
@@ -296,12 +300,25 @@ public class PlayerMovement : MonoBehaviour
                 // PENDULAR PLAYER MOVEMENT RESPECT TO GRAPPLING POINT WILL BE PERFORMED HERE ///
                 /////////////////////////////////////////////////////////////////////////////////
 
-                // REPLACE inputPlayerVelocity by PendulumPositions
+                pendulumTimeElapsed += Time.fixedDeltaTime;         // Update the elapsed time
 
-                //newRbVelocity += inputPlayerVelocity;                
-                //newRbVelocity = Vector2.zero;
-                //Disable Gravity
-                //rb2D.gravityScale = 0f;
+                // Calculate X-Target position (According to SHM Motion Equation)
+                float targetPosX = -hookManager.PendulumAmp*
+                                    Mathf.Cos(hookManager.PendulumOmega*pendulumTimeElapsed
+                                    + hookManager.PendulumPhase);
+                // Calculate Y-Target position (Assuming a circular arc)
+                float targetPosY = -Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX*targetPosX);
+
+                // Calculate X-Target velocity (Applying dx/dt)
+                float targetVelX = (hookManager.PendulumAmp * hookManager.PendulumOmega) *
+                                    Mathf.Sin(hookManager.PendulumOmega * pendulumTimeElapsed
+                                    + hookManager.PendulumPhase);
+                // Calculate Y-Target velocity (Applying dy/dt)
+                float targetVelY = (targetPosX * targetVelX) / 
+                                    Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX * targetPosX);
+                
+                // Update the new Target velocity Vector
+                newRbVelocity = new Vector2(targetVelX, targetVelY);
 
                 break;
             case PlayerState.Hurting:
@@ -414,11 +431,13 @@ public class PlayerMovement : MonoBehaviour
                 {
                     // Move player to the Starting Swinging Position
                     transform.position = hookManager.RopeMinPos;
+                    // Init Time elapsed var
+                    pendulumTimeElapsed = 0;
 
                     // Delete rb velocities
                     rb2D.velocity = Vector2.zero;
                     //Disable Gravity
-                    rb2D.gravityScale = 0f;
+                    rb2D.gravityScale = 0f;                          
 
                     currentJumpState = JumpingState.Swinging;
                 }                    
@@ -431,6 +450,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     canPlayerJump = true;
                     currentJumpState = JumpingState.WaitingForJumpState;
+
+                    pendulumTimeElapsed = 0;    // Reset the Time elapsed var.
+                    
+                    rb2D.gravityScale = 1f;     //Re-enable the Gravity
                 }
                 break;
             case JumpingState.DoubleJumping:

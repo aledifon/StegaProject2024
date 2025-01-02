@@ -28,6 +28,24 @@ public class HookManager : MonoBehaviour
     public Vector3 RopeMaxPos { get { return ropeMaxPos; } }
     public Vector3 Rope0Pos { get { return rope0Pos; } }
 
+    // Swinging Movement (Pendulum) vars.   
+    private float pendulumAmp;              // Min amplitude (x_0)
+    public float PendulumAmp {get { return pendulumAmp; } }
+
+    private float pendulumPhi0;             // Angle between the vertical and the rope (Phi_0)
+    public float PendulumPhi0 { get { return pendulumPhi0; } }
+
+    //private float pendulumLength;         // Rope Length (L) = ropeLength
+
+    private float pendulumGravity = 9.8f;   //9.8f;   // Gravity (g)
+    public float PendulumGravity { get { return pendulumGravity; } }
+
+    private float pendulumPhase = 0.0f;     // Initial Phase (phi)
+    public float PendulumPhase { get { return pendulumPhase; } }
+
+    private float pendulumOmega;            // Angular frequency (omega)
+    public float PendulumOmega { get { return pendulumOmega; } }    
+
     // Offset between the Player position & the Grappling-Hook position
     private Vector3 offsetHookPos;
 
@@ -156,7 +174,14 @@ public class HookManager : MonoBehaviour
                                     0) - offsetHookPos;
             rope0Pos = new Vector3(grapplingPointPos.x ,
                                     grapplingPointPos.y - ropeLength,
-                                    0) - offsetHookPos;            
+                                    0) - offsetHookPos;
+
+            // Set the Pendulum vars.
+            pendulumPhi0 = (180 - 90 - ropeAngle) * Mathf.Deg2Rad;  // On radians
+            pendulumAmp = ropeLength * Mathf.Sin(pendulumPhi0);     // L*sin(Phi_0)
+
+            pendulumOmega = Mathf.Sqrt(pendulumGravity / ropeLength);   // Omega = Sqrt(g/L)            
+
 
             // Debugging
             Debug.Log("Gancho atrapado en el punto de agarre");
