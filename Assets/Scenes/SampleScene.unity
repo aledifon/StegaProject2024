@@ -11636,7 +11636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd324f681cce01d47ab61de8e7bc82e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ropeAngle: 45
+  ropeAngle: 20
   ropeLength: 3
 --- !u!50 &2062751315
 Rigidbody2D:
