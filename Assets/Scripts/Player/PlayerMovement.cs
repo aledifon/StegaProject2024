@@ -310,13 +310,15 @@ public class PlayerMovement : MonoBehaviour
                 float targetPosY = -Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX*targetPosX);
 
                 // Calculate X-Target velocity (Applying dx/dt)
-                float targetVelX = (hookManager.PendulumAmp * hookManager.PendulumOmega) *
+                float targetVelX = (-hookManager.PendulumAmp * hookManager.PendulumOmega) *
                                     Mathf.Sin(hookManager.PendulumOmega * pendulumTimeElapsed
                                     + hookManager.PendulumPhase);
                 // Calculate Y-Target velocity (Applying dy/dt)
-                float targetVelY = (-targetPosX * targetVelX) / 
+                float targetVelY = (targetPosX * targetVelX) / 
                                     Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX * targetPosX);
-                
+
+                Debug.Log("targetposX = " + targetPosX + " ; targetposY = " + targetPosY);
+
                 // Update the new Target velocity Vector
                 newRbVelocity = new Vector2(targetVelX, targetVelY);
 

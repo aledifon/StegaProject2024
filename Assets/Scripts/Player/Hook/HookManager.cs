@@ -101,10 +101,25 @@ public class HookManager : MonoBehaviour
     }
     // Updates the Line Renderer when the player is on the Swinging State
     void UpdateGrapplingHook()
-    {        
+    {
         ///////////////////////////////////////////////////////////////////////////
         // LineRenderer (Rope) Angle RESPECT TO THE PLAYER WILL BE UPDATED HERE ///
         ///////////////////////////////////////////////////////////////////////////
+
+        // Position difference between the player and the Grappling Point
+        Vector2 diffHookPlayer = grapplingPointPos - playerMovement.transform.position;
+
+        // Angle between the Rope and the player
+        float alpha = Mathf.Atan2(diffHookPlayer.y, diffHookPlayer.x + offsetHookPos.x);
+
+        // Calculate the rope end position
+        Vector2 endPoint = new Vector2(Mathf.Cos(alpha) * ropeLength,Mathf.Sin(alpha) * ropeLength);
+        
+        // Global position of the end of the rope.
+        //Vector2 point1 = (Vector2)playerMovement.transform.position + endPoint;
+
+        // Update the LineRenderer 1st Position
+        lineRenderer.SetPosition(1, endPoint);
     }
     // Enables the Grappling Hook elements
     IEnumerator EnableGrapplingHook()
@@ -176,12 +191,11 @@ public class HookManager : MonoBehaviour
                                     grapplingPointPos.y - ropeLength,
                                     0) - offsetHookPos;
 
-            // Set the Pendulum vars.
-            pendulumPhi0 = (180 - 90 - ropeAngle) * Mathf.Deg2Rad;  // On radians
-            pendulumAmp = ropeLength * Mathf.Sin(pendulumPhi0);     // L*sin(Phi_0)
+            // Set the Pendulum vars.            
+            pendulumPhi0 = (180 - 90 - ropeAngle) * (-flipDirection) * Mathf.Deg2Rad;   // On radians
+            pendulumAmp = ropeLength * Mathf.Sin(pendulumPhi0);                         // L*sin(Phi_0)            
 
             pendulumOmega = Mathf.Sqrt(pendulumGravity / ropeLength);   // Omega = Sqrt(g/L)            
-
 
             // Debugging
             Debug.Log("Gancho atrapado en el punto de agarre");
