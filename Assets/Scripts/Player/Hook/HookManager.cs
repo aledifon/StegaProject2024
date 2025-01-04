@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
@@ -120,6 +121,9 @@ public class HookManager : MonoBehaviour
 
         // Update the LineRenderer 1st Position
         lineRenderer.SetPosition(1, endPoint);
+
+        // Update the Hook Collider position
+        hookCollider2D.offset = endPoint;
     }
     // Enables the Grappling Hook elements
     IEnumerator EnableGrapplingHook()
@@ -161,8 +165,11 @@ public class HookManager : MonoBehaviour
 
         // Hides the Rope (Line Renderer)
         lineRenderer.positionCount = 0;
+
+        // Reset the Hook Collider position
+        hookCollider2D.offset = Vector2.zero;
         // Disables the Hook (Circle Collider 2D)
-        hookCollider2D.enabled = false;
+        hookCollider2D.enabled = false;        
     }
 
     // Collisions Detections with the Grappling Points
@@ -178,7 +185,7 @@ public class HookManager : MonoBehaviour
             //audioHook.Play();
 
             // Gets the Grappling Point position --> This will be used on PlayerMovement to position the player             
-            grapplingPointPos = collision.gameObject.transform.position;
+            grapplingPointPos = collision.gameObject.transform.position;            
 
             // Calculate also the Min, Max & 0 Positions. (Important to add the offset with the Player)
             ropeMinPos = new Vector3(grapplingPointPos.x - endRopePoint.x,
