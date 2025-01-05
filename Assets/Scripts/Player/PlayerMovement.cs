@@ -99,7 +99,8 @@ public class PlayerMovement : MonoBehaviour
 
     //private CapsuleCollider2D hookCollider2D;
     
-    private HookManager hookManager;
+    //private HookManager hookManager;
+    private GrapplingHookHinge hookHingeManager;
 
     private void Awake()
     {
@@ -116,11 +117,13 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioJump = GetComponent<AudioSource>();
 
+        hookHingeManager = GetComponent<GrapplingHookHinge>();
+
         //// Get the Hook Capsule Collider 2D Component
         //hookCollider2D = GameObject.FindWithTag("Hook").GetComponent<CapsuleCollider2D>();
 
         // Get the Hook Manager Component (Script)
-        hookManager = GameObject.FindWithTag("Hook")?.GetComponent<HookManager>();
+        //hookManager = GameObject.FindWithTag("Hook")?.GetComponent<HookManager>();
 
         minJumpForce = 6f;
         maxJumpForce = 13f;
@@ -176,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
                 //    currentState = PlayerState.Running;
                 if (!isGrounded && rb2D.velocity.y < 0)
                     currentState = PlayerState.Falling;
-                else if (!isGrounded && hookManager.IsHooked)
+                else if (!isGrounded && hookHingeManager.IsHooked)
                     currentState = PlayerState.Swinging;
                 break;
             case PlayerState.Falling:
@@ -184,13 +187,13 @@ public class PlayerMovement : MonoBehaviour
                     currentState = PlayerState.Idle;
                 else if (isGrounded && horizontal != 0)
                     currentState = PlayerState.Running;
-                else if (!isGrounded && hookManager.IsHooked)
+                else if (!isGrounded && hookHingeManager.IsHooked)
                     currentState = PlayerState.Swinging;
                 break;
             case PlayerState.Swinging:
-                if (!hookManager.IsHooked && rb2D.velocity.y > 0)
+                if (!hookHingeManager.IsHooked && rb2D.velocity.y > 0)
                     currentState = PlayerState.Jumping;
-                else if (!hookManager.IsHooked && rb2D.velocity.y < 0)
+                else if (!hookHingeManager.IsHooked && rb2D.velocity.y < 0)
                     currentState = PlayerState.Falling;
                 break;
             case PlayerState.Hurting:
@@ -294,33 +297,47 @@ public class PlayerMovement : MonoBehaviour
                     audioJump.Play();
 
                     // Disable the Grappling-Hook Collider & the Line Renderer
-                    hookManager.DisableGrapplingHook();
+                    //hookManager.DisableGrapplingHook();
+                    hookHingeManager.DisableGrapplingHook();
                 }
                 /////////////////////////////////////////////////////////////////////////////////
                 // PENDULAR PLAYER MOVEMENT RESPECT TO GRAPPLING POINT WILL BE PERFORMED HERE ///
+                //               ONLY USED FOR NON-HINGE JOINT 2D METHOD!!!!                  ///
                 /////////////////////////////////////////////////////////////////////////////////
 
-                pendulumTimeElapsed += Time.fixedDeltaTime;         // Update the elapsed time
+                //pendulumTimeElapsed += Time.fixedDeltaTime;         // Update the elapsed time
 
-                // Calculate X-Target position (According to SHM Motion Equation)
-                float targetPosX = hookManager.PendulumAmp*
-                                    Mathf.Cos(hookManager.PendulumOmega*pendulumTimeElapsed
-                                    + hookManager.PendulumPhase);
-                // Calculate Y-Target position (Assuming a circular arc)
-                float targetPosY = -Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX*targetPosX);
+                //// Calculate X-Target position (According to SHM Motion Equation)
+                //float targetPosX = hookManager.PendulumAmp*
+                //                    Mathf.Cos(hookManager.PendulumOmega*pendulumTimeElapsed
+                //                    + hookManager.PendulumPhase);
+                //// Calculate Y-Target position (Assuming a circular arc)
+                //float targetPosY = -Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX*targetPosX);
 
-                // Calculate X-Target velocity (Applying dx/dt)
-                float targetVelX = (-hookManager.PendulumAmp * hookManager.PendulumOmega) *
-                                    Mathf.Sin(hookManager.PendulumOmega * pendulumTimeElapsed
-                                    + hookManager.PendulumPhase);
-                // Calculate Y-Target velocity (Applying dy/dt)
-                float targetVelY = (targetPosX * targetVelX) / 
-                                    Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX * targetPosX);
+                //// Calculate X-Target velocity (Applying dx/dt)
+                //float targetVelX = (-hookManager.PendulumAmp * hookManager.PendulumOmega) *
+                //                    Mathf.Sin(hookManager.PendulumOmega * pendulumTimeElapsed
+                //                    + hookManager.PendulumPhase);
+                //// Calculate Y-Target velocity (Applying dy/dt)
+                //float targetVelY = (targetPosX * targetVelX) / 
+                //                    Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX * targetPosX);
 
-                Debug.Log("targetposX = " + targetPosX + " ; targetposY = " + targetPosY);
+                //Debug.Log("targetposX = " + targetPosX + " ; targetposY = " + targetPosY);
 
                 // Update the new Target velocity Vector
-                newRbVelocity = new Vector2(targetVelX, targetVelY);
+                //newRbVelocity = new Vector2(targetVelX, targetVelY);
+
+                /////////////////////////////////////////////////////////////////////////////////
+                // PENDULAR PLAYER MOVEMENT RESPECT TO GRAPPLING POINT WILL BE PERFORMED HERE ///
+                //               ONLY USED FOR NON-HINGE JOINT 2D METHOD!!!!                  ///
+                /////////////////////////////////////////////////////////////////////////////////
+
+                Debug.Log("The Hing joint is " + hookHingeManager.HingeJointIsEnabled + 
+                        " to the point (" + hookHingeManager.HingeJointConnAnchor.x + 
+                        " , " + hookHingeManager.HingeJointConnAnchor.y + " )");
+
+                // Update the new Target velocity Vector
+                newRbVelocity += inputPlayerVelocity;
 
                 break;
             case PlayerState.Hurting:
@@ -331,8 +348,9 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        // Applies the correspondent new velocity        
-        rb2D.velocity = Vector2.SmoothDamp(rb2D.velocity, newRbVelocity, ref dampVelocity, smoothTime);
+        // Applies the correspondent new velocity (EXCEPT FOR SWINGING MODE!!!)
+        //if (currentState != PlayerState.Swinging)
+            rb2D.velocity = Vector2.SmoothDamp(rb2D.velocity, newRbVelocity, ref dampVelocity, smoothTime);
         //Debug.Log("Rb.Velocity = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");
     }
     void CheckMovementSense()
@@ -426,15 +444,17 @@ public class PlayerMovement : MonoBehaviour
                     currentJumpState = JumpingState.WaitingForJumpRequest;
                 }
                 // If the hook enabling time has elapsed (2s) and no grappling point has been reached
-                else if (!hookManager.IsHookEnabled)
+                //else if (!hookManager.IsHookEnabled)
+                else if (!hookHingeManager.IsHookEnabled)
                     currentJumpState = JumpingState.WaitingForJumpRequest;
                 // If a Grappling point has been reached by the Grappling-Hook
-                else if (hookManager.IsHooked) 
+                //else if (hookManager.IsHooked) 
+                else if (hookHingeManager.IsHooked)
                 {
                     // Move player to the Starting Swinging Position
-                    transform.position = hookManager.RopeMinPos;
-                    // Init Time elapsed var
-                    pendulumTimeElapsed = 0;
+                    //transform.position = hookManager.RopeMinPos;              // UNCOMMENT AFTER TESTING?!!
+                    //// Init Time elapsed var
+                    //pendulumTimeElapsed = 0;                                  // UNCOMMENT AFTER TESTING?!!
 
                     // Delete rb velocities
                     rb2D.velocity = Vector2.zero;
