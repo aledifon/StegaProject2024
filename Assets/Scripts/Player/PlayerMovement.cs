@@ -75,9 +75,10 @@ public class PlayerMovement : MonoBehaviour
     private float timeJump;                 // Jumping Pressed button Timer        
 
     // Movement Flags
-    private bool isGrounded,                // Indicates if we are or not touching the ground
-                canPlayerJump,              // Tells me if I can jump or not
-                canPlayerJump2;             // Double-Jump 
+    private bool isGrounded,                // Indicates if the player is touching the ground or not.
+                canPlayerJump,              // Indicates if the player can jump or not.
+                canPlayerJump2,             // Indicates if the player can perform a 2nd jump or not.
+                unlockedJump2;              // true = 2nd jump is allowed || false = 2nd jump is not allowed.
     
     private bool canEnableHook;             // Grapping Hook Enabling Flag (Private field)
     public bool CanEnableHook { get { return canEnableHook; } }   // (Read-only property)
@@ -128,6 +129,9 @@ public class PlayerMovement : MonoBehaviour
         minJumpForce = 6f;
         maxJumpForce = 13f;
         timeMaxJump = 0.3f;
+
+        unlockedJump2 = true;       // 2nd Jump unlocked by def.
+
         //previousMovState = currentMovState;
     }
 
@@ -173,10 +177,10 @@ public class PlayerMovement : MonoBehaviour
                     currentState = PlayerState.Falling;
                 break;
             case PlayerState.Jumping:
-                //if (isGrounded && horizontal == 0)
-                //    currentState = PlayerState.Idle;
-                //else if (isGrounded && horizontal != 0)
-                //    currentState = PlayerState.Running;
+                if (isGrounded && horizontal == 0)
+                    currentState = PlayerState.Idle;
+                else if (isGrounded && horizontal != 0)
+                    currentState = PlayerState.Running;
                 if (!isGrounded && rb2D.velocity.y < 0)
                     currentState = PlayerState.Falling;
                 else if (!isGrounded && hookHingeManager.IsHooked)
@@ -288,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
                     // Reset the jump flag                                                        
                     canPlayerJump = false;
                     // Calculate the new jump component for the velocity
-                    Vector2 jumpVelocity = Vector2.up * maxJumpForce * 0.7f;      // 70% of the max jump force value
+                    Vector2 jumpVelocity = Vector2.up * maxJumpForce * 0.2f;      // 70% of the max jump force value
 
                     // Apply Jumping impulse
                     rb2D.AddForce(jumpVelocity, ForceMode2D.Impulse);
@@ -332,12 +336,12 @@ public class PlayerMovement : MonoBehaviour
                 //               ONLY USED FOR NON-HINGE JOINT 2D METHOD!!!!                  ///
                 /////////////////////////////////////////////////////////////////////////////////
 
-                Debug.Log("The Hing joint is " + hookHingeManager.HingeJointIsEnabled + 
-                        " to the point (" + hookHingeManager.HingeJointConnAnchor.x + 
-                        " , " + hookHingeManager.HingeJointConnAnchor.y + " )");
+                //Debug.Log("The Hing joint is " + hookHingeManager.DistanceJointIsEnabled + 
+                //        " to the point (" + hookHingeManager.DistanceJointConnAnchor.x + 
+                //        " , " + hookHingeManager.DistanceJointConnAnchor.y + " )");
 
                 // Update the new Target velocity Vector
-                newRbVelocity += inputPlayerVelocity;
+                newRbVelocity += (inputPlayerVelocity*0.7f);
 
                 break;
             case PlayerState.Hurting:
@@ -413,40 +417,43 @@ public class PlayerMovement : MonoBehaviour
                     currentJumpState = JumpingState.Jumping;
                 break;
             case JumpingState.Jumping:
+                // Once the player reaches the ground again then the jumping timer is reset
+                // and comes back to the initial state
+                if (isGrounded)
+                {
+                    // Reset the 2nd Jump lock (Unlock it)
+                    unlockedJump2 = true;       
+
+                    timeJump = 0;
+                    currentJumpState = JumpingState.WaitingForJumpRequest;
+                }
                 // If press again the jump button then a 2nd jump will be triggered
-                if (Input.GetKeyDown(KeyCode.Space))
+                else if (Input.GetKeyDown(KeyCode.Space) && unlockedJump2)
                 {
                     canPlayerJump2 = true;
                     currentJumpState = JumpingState.DoubleJumping;
                 }
+                // If we press the Grappling-Hook button then the grappling-Hook will be thrown
                 else if (Input.GetKeyDown(KeyCode.RightControl))
                 {
                     canEnableHook = true;
                     //timeJump = 0;
                     currentJumpState = JumpingState.WaitingForAttachment;
-                }
-                // Otherwise once the player reaches the ground again then the jumping timer is reset
-                // and comes back to the initial state
-                else if (isGrounded)
-                {
-                    timeJump = 0;
-                    currentJumpState = JumpingState.WaitingForJumpRequest;
-                }
+                }                
                 break;
             // During this state the Grapping-Hook has been launched (Line Renderer is visible for x seconds)
             case JumpingState.WaitingForAttachment:                                
                 // If the player reaches the ground before a grappling point has been reached
                 if (isGrounded) 
                 {
+                    // Reset the 2nd Jump lock (Unlock it)
+                    unlockedJump2 = true;       
+
                     // Jumping timer will be reset
                     timeJump = 0;
                     // Come back to the initial state
                     currentJumpState = JumpingState.WaitingForJumpRequest;
-                }
-                // If the hook enabling time has elapsed (2s) and no grappling point has been reached
-                //else if (!hookManager.IsHookEnabled)
-                else if (!hookHingeManager.IsHookEnabled)
-                    currentJumpState = JumpingState.WaitingForJumpRequest;
+                }                
                 // If a Grappling point has been reached by the Grappling-Hook
                 //else if (hookManager.IsHooked) 
                 else if (hookHingeManager.IsHooked)
@@ -456,10 +463,10 @@ public class PlayerMovement : MonoBehaviour
                     //// Init Time elapsed var
                     //pendulumTimeElapsed = 0;                                  // UNCOMMENT AFTER TESTING?!!
 
-                    // Delete rb velocities
-                    rb2D.velocity = Vector2.zero;
-                    //Disable Gravity
-                    rb2D.gravityScale = 0f;                          
+                    //// Delete rb velocities
+                    //rb2D.velocity = Vector2.zero;
+                    ////Disable Gravity
+                    //rb2D.gravityScale = 0f;                          
 
                     currentJumpState = JumpingState.Swinging;
                 }                    
@@ -473,9 +480,11 @@ public class PlayerMovement : MonoBehaviour
                     canPlayerJump = true;
                     currentJumpState = JumpingState.WaitingForJumpState;
 
-                    pendulumTimeElapsed = 0;    // Reset the Time elapsed var.
-                    
-                    rb2D.gravityScale = 1f;     //Re-enable the Gravity
+                    // Lock the 2nd Jump
+                    unlockedJump2 = false;
+
+                    //pendulumTimeElapsed = 0;    // Reset the Time elapsed var.                    
+                    //rb2D.gravityScale = 1f;     //Re-enable the Gravity
                 }
                 break;
             case JumpingState.DoubleJumping:

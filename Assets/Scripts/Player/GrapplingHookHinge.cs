@@ -8,14 +8,30 @@ using UnityEngine.UIElements;
 public class GrapplingHookHinge : MonoBehaviour
 {
     [Header("Grappling-Hook")]
-    [SerializeField] private GameObject grapplingHookPivot;     // GameObject hijo que contiene el HingeJoint2D    
+    private GameObject grapplingHookPivot;                      // GameObject hijo que contiene el HingeJoint2D    
     [SerializeField] private LayerMask grapplableLayer;         // Capas donde se puede enganchar el gancho        
     [SerializeField] private float ropeAngle;                   // Grappling-Hook Rope Angle    
     [SerializeField] private float ropeLength;                  // Grappling-Hook Rope length
-    public float RopeLength { get { return ropeLength; } }    
+    public float RopeLength { get { return ropeLength; } }
+    [SerializeField] private float raycastDuration;
 
     // Determines the player's direction
     float flipDirection = 1;                    // 1 = Player looks right ; -1 = Player looks left
+
+    // Rope Vectors
+    Vector2 ropeDirection;
+    Vector2 endRopePoint;
+    Vector2 jointPoint;
+
+    // Rope Distance (Once the player is hooked)
+    [SerializeField] private float ropeSwingLength;
+
+    // Fading Grappling-Hook
+    float elapsedRopeTime = 0f;
+    float fadingElapsedTime = 0f;
+    float fadingFactor = 0f;
+    private Color startColor;             // Color inicial del LineRenderer
+    private Color endColor;               // Color final (transparente)
 
     // Hook Enabled Flags
     private bool isHookEnabled;                                     // Is enabled as long as the Hook will be enabled
@@ -35,8 +51,8 @@ public class GrapplingHookHinge : MonoBehaviour
     private Camera mainCamera;
 
     // Hinge Joint 2D Propeties
-    public bool HingeJointIsEnabled { get { return hingeJoint.enabled; } }
-    public Vector2 HingeJointConnAnchor { get { return hingeJoint.connectedAnchor; } }
+    public bool DistanceJointIsEnabled { get { return distanceJoint.enabled; } }
+    public Vector2 DistanceJointConnAnchor { get { return distanceJoint.connectedAnchor; } }
 
     // Start is called before the first frame update
     void Start()
@@ -48,17 +64,14 @@ public class GrapplingHookHinge : MonoBehaviour
         // Obtener el Rigidbody2D del jugador (en este caso, el GameObject padre)
         playerRigidbody = GetComponent<Rigidbody2D>();
 
-        // Configure the Hinge Joint 2D
-        ConfigureHingeJoint();
-        // Create and set initial settings to a Distance Joint Component                
-        ConfigureDistanceJoint();
         // Get the Hook Pivot Rigidbody Component and Configure it        
-        ConfigurePivotRigidBody();        
+        //ConfigurePivotRigidBody();
+        // Configure the Hinge Joint 2D
+        //ConfigureHingeJoint();
+        // Create and set initial settings to a Distance Joint Component                
+        ConfigureDistanceJoint();                
         // Configure the Line Renderer Component
         ConfigureLineRenderer();
-
-        // Obtener la cámara principal
-        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -69,8 +82,7 @@ public class GrapplingHookHinge : MonoBehaviour
         if (playerMovement.CanEnableHook)
         {
             playerMovement.CanEnableHookToFalse();          // Reset the Can Enable Hook flag
-            StartCoroutine(nameof(EnableGrapplingHook));   // Shows the LineRenderer of the Rope on its correct direction
-                                                           // + Enables and set the offset of the CapsuleCollider2D of the Hook
+            EnableGrapplingHook();                          // Shows the LineRenderer of the Rope on its correct direction                                                            
         }
 
         //// Disparar el gancho al hacer clic
@@ -103,7 +115,7 @@ public class GrapplingHookHinge : MonoBehaviour
         // Update visually the rope in every frame
         //if (playerMovement.CurrentJumpState == PlayerMovement.JumpingState.Swinging)
         //if (IsHooked)
-        if (isHookEnabled)        
+        if (isHookEnabled)
             UpdateGrapplingHook();
     }    
 
@@ -115,22 +127,23 @@ public class GrapplingHookHinge : MonoBehaviour
     // (It will allow to keep a fixed distance between the player and the Joint Point)
     void ConfigureDistanceJoint()
     {
-        distanceJoint = grapplingHookPivot.AddComponent<DistanceJoint2D>();
+        distanceJoint = GetComponent<DistanceJoint2D>();
         distanceJoint.autoConfigureDistance = false;
-        distanceJoint.enabled = false;
+        distanceJoint.enabled = false;        
     }
     // Enable the DistanceJoint2D
-    void EnableDistanceJoint(Vector2 hitPoint)
-    {        
-        distanceJoint.connectedAnchor = hitPoint;  // Punto de conexión
-        distanceJoint.distance = ropeLength;        // Longitud de la cuerda
-        distanceJoint.enabled = true;               // Activar el DistanceJoint2D
+    void EnableDistanceJoint(Vector2 jointPoint)
+    {
+        distanceJoint.connectedAnchor = jointPoint;     // Punto de conexión
+        distanceJoint.distance = ropeSwingLength;      // Rope lenght while swinging (2 uds.)       
+        distanceJoint.enabled = true;                   // Activar el DistanceJoint2D        
     }
     void ConfigureHingeJoint()
     {
         hingeJoint = grapplingHookPivot.GetComponent<HingeJoint2D>();
         hingeJoint.enabled = false; // Desactivado inicialmente
         hingeJoint.autoConfigureConnectedAnchor = false; // Configuración manual del punto de conexión
+        hingeJoint.connectedBody = pivotRigidbody;
     }
     // Enable the HingeJoint2D y hook point setting
     void EnableHingeJoint(Vector2 hitPoint)
@@ -150,28 +163,38 @@ public class GrapplingHookHinge : MonoBehaviour
     void ConfigureLineRenderer()
     {
         // Get the Line Renderer Component
-        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();        
         // Configura el ancho de la línea
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
+        // Set the initial colors as black and visible
+        lineRenderer.startColor = new Color(0f,0f,0f,1f);
+        lineRenderer.endColor = new Color(0f,0f,0f,1f);
         // Desactivar la cuerda al inicio
         lineRenderer.enabled = false;
     }
     // Enable the Line Renderer position
     void EnableLineRenderer(Vector2 endPoint)
-    {
+    {                
+        // Fading Starting colors (transparency)                 
+        //startColor = new Color(0f, 0f, 0f, 0f);                 // The start color will be completely transparent
+        //endColor = new Color(0f, 0f, 0f, 1f);                   // The end color will be completely transparent
+        //// Set the initial colors as black and transparent
+        //lineRenderer.startColor = startColor;
+        //lineRenderer.endColor = startColor;
+
         // Activar y configurar el LineRenderer para la cuerda visual
         lineRenderer.enabled = true;
         lineRenderer.SetPosition(0, playerRigidbody.position);  // Punto de inicio (jugador)
-        lineRenderer.SetPosition(1, endPoint);                  // Punto final (enganche)
+        //lineRenderer.SetPosition(1, endPoint);                  // Punto final (enganche)
     }
 
     ///////////////////////////////////
     // RAYCAST & CALCULATION METHODS //
     ///////////////////////////////////
-    
+
     // Rope Vectors calculation
-    void CalculateRopeVectors(out Vector2 ropeDir, out Vector2 endPoint)
+    void CalculateRopeVectors()
     {
         // Calculates the Rope distance on the XY coordinates (As the angle = 45º are the same)
         float ropeYDist = ropeLength * Mathf.Sin(ropeAngle * Mathf.Deg2Rad);
@@ -179,16 +202,93 @@ public class GrapplingHookHinge : MonoBehaviour
         //Vector3 endPointRight = new Vector3(2.121f * flipDirection, 2.121f, 0);   
 
         // Gets the Rope Direction normalized according to the Rope Length and Angle (Set on the Inspector)
-        ropeDir = new Vector2(ropeXDist, ropeYDist).normalized;   
+        ropeDirection = new Vector2(ropeXDist, ropeYDist).normalized;
         // Gets the End Point of the rope (Hook point)
-        endPoint = playerRigidbody.position + (ropeDir * ropeLength);
+        endRopePoint = playerRigidbody.position + (ropeDirection * ropeLength * fadingFactor);
     }
-    void DetectGrapplingJoint(out RaycastHit2D hit, Vector2 ropeDirection)
+    //void DetectGrapplingJoint_(out RaycastHit2D hit, Vector2 ropeDirection)
+    //{
+    //    // Detectar si hay un punto de enganche dentro del rango
+    //    hit = Physics2D.Raycast(playerRigidbody.position, ropeDirection, ropeLength, grapplableLayer);
+    //    // Raycast debugging
+    //    Debug.DrawRay(playerRigidbody.position, ropeDirection * ropeLength, Color.red);
+    //}
+
+    // Launch a Raycast during a certain time in order to detect Hook points
+    IEnumerator DetectGrapplingJoint()
+    {        
+        // Launch a Raycast during the amount of seconds defined on raycastDuration
+        elapsedRopeTime = 0f;
+        fadingFactor = 0f;
+        while (elapsedRopeTime < raycastDuration)
+        {
+            // Update the Fading Factor
+            //FadingGrapplingHook(elapsedRopeTime);
+
+            // Detectar si hay un punto de enganche dentro del rango
+            RaycastHit2D hit = Physics2D.Raycast(playerRigidbody.position, ropeDirection, fadingFactor*ropeLength, grapplableLayer);
+            // Raycast debugging
+            Debug.DrawRay(playerRigidbody.position, ropeDirection * (fadingFactor * ropeLength), Color.red);
+
+            //Check collision
+            if (hit.collider != null)
+            {
+                // Get the central point of the Joint Point                
+                jointPoint = (Vector2)hit.collider.gameObject.transform.position;
+
+                // Enable the DistanceJoint2D            
+                //EnableDistanceJoint(hit.point);
+                EnableDistanceJoint(jointPoint);
+                // Update the ending point as the hook point (Only if succesful hooking)           
+                //lineRenderer.SetPosition(1, hit.point);
+                lineRenderer.SetPosition(1, jointPoint);
+                // Enables the flag which indicates the Hooking was successful
+                isHooked = true;                
+                // Stops the coroutine
+                yield break; 
+            }
+            //Increase timer
+            elapsedRopeTime += Time.deltaTime;
+            // Waits till the next frame
+            yield return null;
+        }
+        // If Raycast Duration elapsed and no Hook point has been detected then
+        // the Grappling Hook will be disabled (Line Renderer + Distance Joint 2D + Hook flags vars.)                
+        if (!IsHooked)
+            DisableGrapplingHook();
+    }
+    void FadingGrapplingHook(float elapsedTime)
+    {        
+        // Update the fading Factor
+        //fadingElapsedTime += elapsedTime;
+        fadingFactor = elapsedTime / raycastDuration;
+
+        // fadingFactor Limitation
+        if (fadingFactor >= 1)
+            fadingFactor = 1;
+        
+        //// Apply the fading effect to the LineRenderer color
+        //Color currentColor = Color.Lerp(startColor, endColor, fadingFactor);  
+        //lineRenderer.startColor = currentColor;  
+        //lineRenderer.endColor = currentColor;
+
+        // Ajustar la longitud de la cuerda (LineRenderer) gradualmente
+        //lineRenderer.SetPosition(1, playerRigidbody.position + ropeDirection * (fadingFactor * ropeLength));
+        //lineRenderer.SetPosition(1, fadingFactor * endRopePoint);
+    }
+    void UpdateLineRenderer()
     {
-        // Detectar si hay un punto de enganche dentro del rango
-        hit = Physics2D.Raycast(playerRigidbody.position, ropeDirection, ropeLength, grapplableLayer);
-        // Raycast debugging
-        Debug.DrawRay(playerRigidbody.position, ropeDirection * ropeLength, Color.red);
+        // Apply the fading effect to the LineRenderer color
+        //Color currentColor = Color.Lerp(startColor, endColor, fadingFactor);
+        //lineRenderer.startColor = currentColor;
+        //lineRenderer.endColor = currentColor;
+
+        // Update the Line Renderer depending on the Hooking State
+        lineRenderer.SetPosition(0, playerRigidbody.position);          // Starting Point (Player's rb)
+        if (isHooked)
+            lineRenderer.SetPosition(1, distanceJoint.connectedAnchor);    // Joint Point
+        else
+            lineRenderer.SetPosition(1, endRopePoint);                  // Rope Direction   
     }
 
     ////////////////////////////
@@ -197,51 +297,37 @@ public class GrapplingHookHinge : MonoBehaviour
     // Updates the Line Renderer when the player is on the Swinging State
     void UpdateGrapplingHook()
     {
-        // Rope Vectors calculation
-        Vector2 ropeDirection, endRopePoint;
-        CalculateRopeVectors(out ropeDirection, out endRopePoint);
+        // Update the Fading Factor
+        if (fadingFactor<1)
+            FadingGrapplingHook(elapsedRopeTime);
+
+        // Rope Vectors calculation        
+        CalculateRopeVectors();
 
         // Update the Line Renderer depending on the Hooking State
-        lineRenderer.SetPosition(0, playerRigidbody.position);          // Starting Point (Player's rb)
-        if (isHooked)
-            lineRenderer.SetPosition(1, hingeJoint.connectedAnchor);    // Joint Point
-        else
-            lineRenderer.SetPosition(1, endRopePoint);                  // Rope Direction            
+        UpdateLineRenderer();
+
+        //// Update the Line Renderer depending on the Hooking State
+        //lineRenderer.SetPosition(0, playerRigidbody.position);          // Starting Point (Player's rb)
+        //if (isHooked)
+        //    lineRenderer.SetPosition(1, distanceJoint.connectedAnchor);    // Joint Point
+        //else
+        //    lineRenderer.SetPosition(1, endRopePoint);                  // Rope Direction                                                                                       
     }
     // Enables the Grappling Hook elements
-    IEnumerator EnableGrapplingHook()
+    public void EnableGrapplingHook()
     {
-        // Rope Vectors calculation        
-        CalculateRopeVectors(out Vector2 ropeDirection,out Vector2 endRopePoint);
+        // Enables the flag which indicates the Hook has been thrown
+        isHookEnabled = true;
 
-        // Raycast launching to detect the Joint
-        DetectGrapplingJoint(out RaycastHit2D hit, ropeDirection);       
+        // Rope Vectors calculation        
+        CalculateRopeVectors();
 
         // Activar y configurar el LineRenderer para la cuerda visual        
-        EnableLineRenderer(endRopePoint);                                                            
+        EnableLineRenderer(endRopePoint);
 
-        // Enables the flag which indicates the Hook has been thrown
-        isHookEnabled = true;                                   
-
-        if (hit.collider != null)
-        {
-            // Enable the HingeJoint2D y hook point configuration
-            EnableHingeJoint(hit.point);
-            // Enable the DistanceJoint2D            
-            EnableDistanceJoint(hit.point);
-            // Update the ending point as the hook poin (Only if succesful hooking)           
-            lineRenderer.SetPosition(1, hit.point);               
-            // Enables the flag which indicates the Hooking was successful
-            isHooked = true;
-        }
-
-        // Leaves the Line Renderer visible for at least x seconds
-        yield return new WaitForSeconds(0.7f);                  
-
-        // Hides The Line Renderer if the player is not on the Swinging State after 2s
-        //if (playerMovement.CurrentJumpState != PlayerMovement.JumpingState.Swinging)        
-        if (!IsHooked)
-            DisableGrapplingHook();
+        // Raycast launching to detect the Joint        
+        StartCoroutine(nameof(DetectGrapplingJoint));                                  
     }
     // Disable the Grappling Hook elements
     public void DisableGrapplingHook()
@@ -250,8 +336,8 @@ public class GrapplingHookHinge : MonoBehaviour
         isHookEnabled = false;                                   
         isHooked = false;
         
-        hingeJoint.enabled = false;     // Disable the Hinge Joint
+        //hingeJoint.enabled = false;     // Disable the Hinge Joint
         lineRenderer.enabled = false;   // Disable the visual Rope (Line Renderer)
         distanceJoint.enabled = false;  // Disable the Distance Joint
-    }
+    }    
 }
