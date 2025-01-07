@@ -216,37 +216,61 @@ public class GrapplingHookHinge : MonoBehaviour
 
     // Launch a Raycast during a certain time in order to detect Hook points
     IEnumerator DetectGrapplingJoint()
-    {        
-        // Launch a Raycast during the amount of seconds defined on raycastDuration
+    {
+        // Raycast number and the scanning angle
+        int raycastCount = 10;
+        float raycastAngleRange = 45f; // Total angle on degrees (i.e.: 45 degrees around the main direction)
+
+        // Reset Timer and Fading Factor value
         elapsedRopeTime = 0f;
         fadingFactor = 0f;
+
+        // Launch a bunch of Raycast during the amount of seconds defined on raycastDuration        
         while (elapsedRopeTime < raycastDuration)
         {
-            // Update the Fading Factor
-            //FadingGrapplingHook(elapsedRopeTime);
-
-            // Detectar si hay un punto de enganche dentro del rango
-            RaycastHit2D hit = Physics2D.Raycast(playerRigidbody.position, ropeDirection, fadingFactor*ropeLength, grapplableLayer);
-            // Raycast debugging
-            Debug.DrawRay(playerRigidbody.position, ropeDirection * (fadingFactor * ropeLength), Color.red);
-
-            //Check collision
-            if (hit.collider != null)
+            // Initial angle calculation
+            float baseAngle = Mathf.Atan2(ropeDirection.y, ropeDirection.x) * Mathf.Rad2Deg;
+            float startAngle = baseAngle - raycastAngleRange / 2;
+            float angleStep = raycastAngleRange / (raycastCount - 1);
+            
+            for (int i = 0; i < raycastCount; i++)
             {
-                // Get the central point of the Joint Point                
-                jointPoint = (Vector2)hit.collider.gameObject.transform.position;
+                // Calculate the current raycast direction
+                float currentAngle = startAngle + angleStep * i;
+                Vector2 currentDirection = new Vector2(
+                    Mathf.Cos(currentAngle * Mathf.Deg2Rad),
+                    Mathf.Sin(currentAngle * Mathf.Deg2Rad)
+                );
 
-                // Enable the DistanceJoint2D            
-                //EnableDistanceJoint(hit.point);
-                EnableDistanceJoint(jointPoint);
-                // Update the ending point as the hook point (Only if succesful hooking)           
-                //lineRenderer.SetPosition(1, hit.point);
-                lineRenderer.SetPosition(1, jointPoint);
-                // Enables the flag which indicates the Hooking was successful
-                isHooked = true;                
-                // Stops the coroutine
-                yield break; 
+                //// Detectar si hay un punto de enganche dentro del rango
+                //RaycastHit2D hit = Physics2D.Raycast(playerRigidbody.position, ropeDirection, fadingFactor * ropeLength, grapplableLayer);
+                //// Raycast debugging
+                //Debug.DrawRay(playerRigidbody.position, ropeDirection * (fadingFactor * ropeLength), Color.red);
+
+                // Detectar si hay un punto de enganche dentro del rango
+                RaycastHit2D hit = Physics2D.Raycast(playerRigidbody.position, currentDirection, fadingFactor * ropeLength, grapplableLayer);
+                // Raycast debugging
+                Debug.DrawRay(playerRigidbody.position, currentDirection * (fadingFactor * ropeLength), Color.red);
+
+                //Check collision
+                if (hit.collider != null)
+                {
+                    // Get the central point of the Joint Point                
+                    jointPoint = (Vector2)hit.collider.gameObject.transform.position;
+
+                    // Enable the DistanceJoint2D            
+                    //EnableDistanceJoint(hit.point);
+                    EnableDistanceJoint(jointPoint);
+                    // Update the ending point as the hook point (Only if succesful hooking)           
+                    //lineRenderer.SetPosition(1, hit.point);
+                    lineRenderer.SetPosition(1, jointPoint);
+                    // Enables the flag which indicates the Hooking was successful
+                    isHooked = true;
+                    // Stops the coroutine
+                    yield break;
+                }
             }
+
             //Increase timer
             elapsedRopeTime += Time.deltaTime;
             // Waits till the next frame
