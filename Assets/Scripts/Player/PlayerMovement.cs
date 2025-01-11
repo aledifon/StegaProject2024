@@ -62,6 +62,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxJumpForce;    // Jumping Min Force (Equivalent to Jumping Min Height)
     [SerializeField] private float timeMaxJump;     // Jumping pressed button Max Time allowed    
 
+    [Header("Swinging")]
+    [SerializeField] private float ropeTangentialForce; // Tangential Force applied to keep the swinging movement.
+
     // Swinging Movement
     private float pendulumTimeElapsed;              // Swinging Elapsed time
 
@@ -304,32 +307,8 @@ public class PlayerMovement : MonoBehaviour
                     //hookManager.DisableGrapplingHook();
                     hookHingeManager.DisableGrapplingHook();
                 }
-                /////////////////////////////////////////////////////////////////////////////////
-                // PENDULAR PLAYER MOVEMENT RESPECT TO GRAPPLING POINT WILL BE PERFORMED HERE ///
-                //               ONLY USED FOR NON-HINGE JOINT 2D METHOD!!!!                  ///
-                /////////////////////////////////////////////////////////////////////////////////
 
-                //pendulumTimeElapsed += Time.fixedDeltaTime;         // Update the elapsed time
-
-                //// Calculate X-Target position (According to SHM Motion Equation)
-                //float targetPosX = hookManager.PendulumAmp*
-                //                    Mathf.Cos(hookManager.PendulumOmega*pendulumTimeElapsed
-                //                    + hookManager.PendulumPhase);
-                //// Calculate Y-Target position (Assuming a circular arc)
-                //float targetPosY = -Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX*targetPosX);
-
-                //// Calculate X-Target velocity (Applying dx/dt)
-                //float targetVelX = (-hookManager.PendulumAmp * hookManager.PendulumOmega) *
-                //                    Mathf.Sin(hookManager.PendulumOmega * pendulumTimeElapsed
-                //                    + hookManager.PendulumPhase);
-                //// Calculate Y-Target velocity (Applying dy/dt)
-                //float targetVelY = (targetPosX * targetVelX) / 
-                //                    Mathf.Sqrt(hookManager.RopeLength * hookManager.RopeLength - targetPosX * targetPosX);
-
-                //Debug.Log("targetposX = " + targetPosX + " ; targetposY = " + targetPosY);
-
-                // Update the new Target velocity Vector
-                //newRbVelocity = new Vector2(targetVelX, targetVelY);
+                //PendularMovement();                
 
                 /////////////////////////////////////////////////////////////////////////////////
                 // PENDULAR PLAYER MOVEMENT RESPECT TO GRAPPLING POINT WILL BE PERFORMED HERE ///
@@ -338,10 +317,33 @@ public class PlayerMovement : MonoBehaviour
 
                 //Debug.Log("The Hing joint is " + hookHingeManager.DistanceJointIsEnabled + 
                 //        " to the point (" + hookHingeManager.DistanceJointConnAnchor.x + 
-                //        " , " + hookHingeManager.DistanceJointConnAnchor.y + " )");
+                //        " , " + hookHingeManager.DistanceJointConnAnchor.y + " )");                                
 
+                // Get the Rope Tangential Force (from Hook Hinge Manager) on every frame
+                //Vector2 ropeTangentialVelocity = hookHingeManager.TangentialForce * ropeTangentialForce;
+                // Check if the player is within the Rope Angle limits
+                //bool isWithinAngleLimits = hookHingeManager.IsWithinAngleLimits;
+
+                // Brakes the horizontal Input Player's movement (x) whenever the Rope angle is outside of the limits
+                //if (!isWithinAngleLimits)
+                //    inputPlayerVelocity.x = 0;
+
+                // Calculate the complete Swinging Force applied (As long as the player does not exceed the limit angles)
+                //Vector2 swingingForce = ropeTangentialVelocity + inputPlayerVelocity * 0.7f;
+
+                //Debug.Log("Swinging Force = ( " + swingingForce.x + ", " + swingingForce.y + ")");
                 // Update the new Target velocity Vector
-                newRbVelocity += (inputPlayerVelocity*0.7f);
+                //newRbVelocity += (swingingForce);
+                //newRbVelocity += (inputPlayerVelocity * 0.7f + ropeTangentialVelocity);
+                //newRbVelocity += (inputPlayerVelocity * 0.7f);
+
+                bool isWithinAngleLimits = hookHingeManager.IsWithinAngleLimits;
+                newRbVelocity += inputPlayerVelocity * 0.7f;
+
+                // Aplicar un empuje hacia el límite con una velocidad máxima ajustable
+                Vector2 directionToLimit = hookHingeManager.DirectionToLimit;
+                if (!isWithinAngleLimits)                    
+                    newRbVelocity = Vector2.MoveTowards(newRbVelocity, directionToLimit.normalized * 10f, 10f * Time.fixedDeltaTime);
 
                 break;
             case PlayerState.Hurting:
@@ -356,6 +358,35 @@ public class PlayerMovement : MonoBehaviour
         //if (currentState != PlayerState.Swinging)
             rb2D.velocity = Vector2.SmoothDamp(rb2D.velocity, newRbVelocity, ref dampVelocity, smoothTime);
         //Debug.Log("Rb.Velocity = (" + rb2D.velocity.x + " ," + rb2D.velocity.y + " )");
+    }
+    void PendularMovement() 
+    {
+        /////////////////////////////////////////////////////////////////////////////////
+        // PENDULAR PLAYER MOVEMENT RESPECT TO GRAPPLING POINT WILL BE PERFORMED HERE ///
+        //               ONLY USED FOR NON-HINGE JOINT 2D METHOD!!!!                  ///
+        /////////////////////////////////////////////////////////////////////////////////
+
+        //pendulumTimeElapsed += Time.fixedDeltaTime;         // Update the elapsed time
+
+        //// Calculate X-Target position (According to SHM Motion Equation)
+        //float targetPosX = hookHingeManager.PendulumAmp *
+        //                    Mathf.Cos(hookManager.PendulumOmega * pendulumTimeElapsed
+        //                    + hookHingeManager.PendulumPhase);
+        //// Calculate Y-Target position (Assuming a circular arc)
+        //float targetPosY = -Mathf.Sqrt(hookHingeManager.RopeLength * hookHingeManager.RopeLength - targetPosX * targetPosX);
+
+        //// Calculate X-Target velocity (Applying dx/dt)
+        //float targetVelX = (-hookHingeManager.PendulumAmp * hookHingeManager.PendulumOmega) *
+        //                    Mathf.Sin(hookHingeManager.PendulumOmega * pendulumTimeElapsed
+        //                    + hookHingeManager.PendulumPhase);
+        //// Calculate Y-Target velocity (Applying dy/dt)
+        //float targetVelY = (targetPosX * targetVelX) /
+        //                    Mathf.Sqrt(hookHingeManager.RopeLength * hookHingeManager.RopeLength - targetPosX * targetPosX);
+
+        //Debug.Log("targetposX = " + targetPosX + " ; targetposY = " + targetPosY);
+
+        ////Update the new Target velocity Vector
+        //newRbVelocity = new Vector2(targetVelX, targetVelY);
     }
     void CheckMovementSense()
     {

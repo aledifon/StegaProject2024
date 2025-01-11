@@ -9410,6 +9410,7 @@ MonoBehaviour:
   minJumpForce: 0
   maxJumpForce: 0
   timeMaxJump: 0
+  ropeTangentialForce: 1
   dampVelocity: {x: 0, y: 0}
 --- !u!82 &1697767028
 AudioSource:
