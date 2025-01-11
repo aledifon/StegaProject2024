@@ -21,7 +21,7 @@ public class PlayerMovement_ : MonoBehaviour
 
     // Movement vars.
     private float horizontal;
-    private bool canMove;
+    //private bool canMove;
     private Vector2 moveDirection;  // Player's movement direction (on Mov. Pos or Add Force Movement type through rb2D)    
     private Vector2 targetVelocity; // Desired target player Speed (Velocity Movement type through rb2D)
     public Vector2 dampVelocity;   // Player's current speed storage (Velocity Movement type through rb2D)
@@ -57,7 +57,7 @@ public class PlayerMovement_ : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<PlayerHealth>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        canMove = true;
+        //canMove = true;
     }
     
     void Update()
@@ -165,10 +165,10 @@ public class PlayerMovement_ : MonoBehaviour
         //    targetVelocity = new Vector2(horizontal * speed, rb2D.velocity.y*10);
 
     }
-    void CanMoveToTrue()
-    {
-        canMove = true;
-    }
+    //void CanMoveToTrue()
+    //{
+    //    canMove = true;
+    //}
     //public void ResetVelocity()
     //{
     //    targetVelocity = Vector2.zero;
