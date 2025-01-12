@@ -336,14 +336,9 @@ public class PlayerMovement : MonoBehaviour
                 //newRbVelocity += (swingingForce);
                 //newRbVelocity += (inputPlayerVelocity * 0.7f + ropeTangentialVelocity);
                 //newRbVelocity += (inputPlayerVelocity * 0.7f);
+                
 
-                bool isWithinAngleLimits = hookHingeManager.IsWithinAngleLimits;
-                newRbVelocity += inputPlayerVelocity * 0.7f;
-
-                // Aplicar un empuje hacia el límite con una velocidad máxima ajustable
-                Vector2 directionToLimit = hookHingeManager.DirectionToLimit;
-                if (!isWithinAngleLimits)                    
-                    newRbVelocity = Vector2.MoveTowards(newRbVelocity, directionToLimit.normalized * 10f, 10f * Time.fixedDeltaTime);
+                newRbVelocity += inputPlayerVelocity * 0.7f;                                
 
                 break;
             case PlayerState.Hurting:
