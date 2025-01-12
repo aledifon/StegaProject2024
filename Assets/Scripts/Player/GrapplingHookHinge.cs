@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 public class GrapplingHookHinge : MonoBehaviour
 {
     [Header("Grappling-Hook")]
-    private GameObject grapplingHookPivot;                      // GameObject hijo que contiene el HingeJoint2D    
+    //private GameObject grapplingHookPivot;                      // GameObject hijo que contiene el HingeJoint2D    
     [SerializeField] private LayerMask grapplableLayer;         // Capas donde se puede enganchar el gancho        
     [SerializeField] private float ropeAngle;                   // Grappling-Hook Rope Angle    
     [SerializeField] private float ropeLength;                  // Grappling-Hook Rope length
@@ -37,10 +37,7 @@ public class GrapplingHookHinge : MonoBehaviour
     public float MinRopeAngle { get { return minRopeAngle; } }
 
     private bool isWithinAngleLimits;
-    public bool IsWithinAngleLimits { get { return isWithinAngleLimits; } }
-
-    private Vector2 directionToLimit;
-    public Vector2 DirectionToLimit { get { return directionToLimit; } }
+    public bool IsWithinAngleLimits { get { return isWithinAngleLimits; } }    
 
 
     // Rope Distance (Once the player is hooked)
@@ -151,11 +148,15 @@ public class GrapplingHookHinge : MonoBehaviour
         distanceJoint.enabled = false;        
     }
     // Enable the DistanceJoint2D
-    void EnableDistanceJoint(Vector2 jointPoint)
+    //void EnableDistanceJoint(Vector2 jointPoint)
+    void EnableDistanceJoint(Rigidbody2D pivotRigidbody)
     {
-        distanceJoint.connectedAnchor = jointPoint;     // Punto de conexión
-        distanceJoint.distance = ropeSwingLength;      // Rope lenght while swinging (2 uds.)       
-        distanceJoint.enabled = true;                   // Activar el DistanceJoint2D        
+        //distanceJoint.connectedAnchor = jointPoint;     // Punto de conexión
+        
+        distanceJoint.connectedBody = pivotRigidbody;       // Links the "connectedBody" (the joint point) to the "pivotRigidbody" (a fixed GO)                
+        distanceJoint.connectedAnchor = new Vector2(0, 0);  // Set the point where the player connects with the rope
+        distanceJoint.distance = ropeSwingLength;           // Set the max. rope distance (while swinging (2 uds.))
+        distanceJoint.enabled = true;                       // Enables the DistanceJoint2D        
     }
     //void ConfigureHingeJoint()
     //{
@@ -173,7 +174,7 @@ public class GrapplingHookHinge : MonoBehaviour
     // Get the Hook Pivot Rigidbody Component and Configure it
     void ConfigurePivotRigidBody()
     {        
-        pivotRigidbody = grapplingHookPivot.GetComponent<Rigidbody2D>();
+        //pivotRigidbody = grapplingHookPivot.GetComponent<Rigidbody2D>();
         pivotRigidbody.bodyType = RigidbodyType2D.Kinematic;
         pivotRigidbody.gravityScale = 0;
         pivotRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -274,12 +275,26 @@ public class GrapplingHookHinge : MonoBehaviour
                 //Check collision
                 if (hit.collider != null)
                 {
+                    // Get the Joint GO Rigidbody & Configure it
+                    pivotRigidbody = hit.collider.GetComponent<Rigidbody2D>();
+                    if (pivotRigidbody != null)
+                    {
+                        ConfigurePivotRigidBody();
+                        EnableDistanceJoint(pivotRigidbody);
+                    }                        
+                    else
+                    {
+                        Debug.LogWarning("El objeto enganchado no tiene un Rigidbody2D.");
+                        continue; // Continúa buscando un punto válido
+                    }
+
                     // Get the central point of the Joint Point                
                     jointPoint = (Vector2)hit.collider.gameObject.transform.position;
 
                     // Enable the DistanceJoint2D            
                     //EnableDistanceJoint(hit.point);
-                    EnableDistanceJoint(jointPoint);
+                    //EnableDistanceJoint(jointPoint);                                        
+                    
                     // Update the ending point as the hook point (Only if succesful hooking)           
                     //lineRenderer.SetPosition(1, hit.point);
                     lineRenderer.SetPosition(1, jointPoint);
@@ -332,7 +347,8 @@ public class GrapplingHookHinge : MonoBehaviour
         // Update the Line Renderer depending on the Hooking State
         lineRenderer.SetPosition(0, playerRigidbody.position);          // Starting Point (Player's rb)
         if (isHooked)
-            lineRenderer.SetPosition(1, distanceJoint.connectedAnchor);    // Joint Point
+            //lineRenderer.SetPosition(1, distanceJoint.connectedAnchor);    // Joint Point
+            lineRenderer.SetPosition(1, distanceJoint.connectedBody.position);    // Joint Point
         else
             lineRenderer.SetPosition(1, endRopePoint);                  // Rope Direction   
     }    
@@ -341,9 +357,9 @@ public class GrapplingHookHinge : MonoBehaviour
     {
         //tangentialForce = Vector2.Perpendicular(distanceJoint.connectedAnchor - (Vector2)playerRigidbody.position).normalized;
 
-        // 1. Calcula la dirección de la cuerda entre el punto de anclaje y el personaje
-        Vector2 directionToAnchor = distanceJoint.connectedAnchor - (Vector2)playerRigidbody.position;
-        // 2. Normaliza la dirección de la cuerda (para obtener solo la dirección sin la magnitud)
+        // Calculate the direction between the joint and the player
+        Vector2 directionToAnchor = distanceJoint.connectedBody.position - (Vector2)playerRigidbody.position;
+        // Normalized the rope direction (get only the direction without the magnitude)
         Vector2 normalizedRopeDirection = directionToAnchor.normalized;
 
         // Get the Angle between the rope and the player
@@ -360,34 +376,19 @@ public class GrapplingHookHinge : MonoBehaviour
         // Check if the Rope Angle is within the limits
         isWithinAngleLimits = (currentRopeAngle >= (minRopeAngle+10) && currentRopeAngle <= (maxRopeAngle-10));
 
-        Vector2 limitPosition;
-        if (!isWithinAngleLimits)
-        {
-            // Calculate the Comparison Angle
-            float compAngle = 0;
-            if (currentRopeAngle >= maxRopeAngle - 10)
-                compAngle = maxRopeAngle;
-            else if (currentRopeAngle >= minRopeAngle + 10)
-                compAngle = minRopeAngle;
-
-            // Restringir la velocidad cuando el personaje llega al límite superior
-            limitPosition = playerRigidbody.position + normalizedRopeDirection * Mathf.Cos(compAngle * Mathf.Deg2Rad) * ropeLength;
-            directionToLimit = limitPosition - playerRigidbody.position;
-        }        
-
         // Visualizar la dirección tangencial
-        //Debug.DrawRay(playerRigidbody.position, tangentialForce, Color.magenta);
+        Debug.DrawRay(playerRigidbody.position, tangentialForce, Color.magenta);
         //Debug.Log("Tangential Force = " + tangentialForce);
     }
     float CalculateRopeAngle(Vector2 normalizedRopeDirection)
     {        
-        // 3. Calcula el ángulo entre la cuerda y la horizontal (Vector2.right)
+        // Get the angle between the rope and the horizontal (Escalar product)
         float dotProduct = Vector2.Dot(normalizedRopeDirection, Vector2.right);
-        // 4. Calcula el ángulo en radianes
+        // Get the angle (from the trigon. relation cos(phi)=AxB; phi = acos(AxB))
         float angleInRadians = Mathf.Acos(dotProduct);
-        // 5. Convierte el ángulo a grados
+        // Angle 2 rads conversion
         float angleInDegrees = Mathf.Rad2Deg * angleInRadians;
-        // Visualiza el ángulo para depuración
+        // Debugging
         Debug.Log("Ángulo entre la cuerda y la horizontal: " + angleInDegrees);
         return angleInDegrees;
     }
@@ -415,8 +416,8 @@ public class GrapplingHookHinge : MonoBehaviour
         isHookEnabled = true;
 
         // Calulate min & max angles
-        minRopeAngle = ropeAngle;
-        maxRopeAngle = ropeAngle + 90;
+        minRopeAngle = 90-60;
+        maxRopeAngle = 90+60;
 
         // Rope Vectors calculation        
         CalculateRopeVectors();
