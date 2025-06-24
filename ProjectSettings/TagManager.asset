@@ -3,22 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Ground
-  - Acorn
-  - Platform
-  - Hook
-  - GrapplingPoint
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
-  - Grasshopper
-  - Player
-  - GrapplableLayer
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -43,15 +38,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Sky
-    uniqueID: 1945606307
-    locked: 0
-  - name: Mountains
-    uniqueID: 4099616039
-    locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Player
-    uniqueID: 130489315
     locked: 0
