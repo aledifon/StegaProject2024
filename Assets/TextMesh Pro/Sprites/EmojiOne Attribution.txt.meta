@@ -5,3 +5,10 @@ TextScriptImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 206687
+  packageName: 2D Water & Blood - Liquid VFX
+  packageVersion: 2.2.0
+  assetPath: Assets/TextMesh Pro/Sprites/EmojiOne Attribution.txt
+  uploadId: 642887
