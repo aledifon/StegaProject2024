@@ -124,6 +124,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Enums")]
     [SerializeField] private CornerDetected cornerDetected = CornerDetected.NoCeiling;
     [SerializeField] private PlayerState currentState = PlayerState.Idle;
+    public PlayerState CurrentState => currentState;
     #endregion
 
     // GO Components
@@ -144,6 +145,7 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     BoxCollider2D boxCollider2D;
     AudioSource audioSource;
+    PlayerVFX playerVFX;
 
     // Audio Clips
     [Header("Audio Clips")]
@@ -155,6 +157,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isDead;
     public bool IsDead { get => isDead; set => isDead = value; }
+
+    public bool SpriteRendPlayerFlipX => spriteRenderer.flipX;
 
     #region Unity API
 
@@ -216,6 +220,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         boxCollider2D = GetComponent<BoxCollider2D>();  
         audioSource = GetComponent<AudioSource>();
+        playerVFX = GetComponent<PlayerVFX>();
 
         NumAcorn = 0;
         textAcornUI.text = NumAcorn.ToString();
