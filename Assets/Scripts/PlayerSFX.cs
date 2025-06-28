@@ -17,8 +17,7 @@ public class PlayerSFX : MonoBehaviour
     //[SerializeField] private AudioClip dustLandingJumpSFX;            
 
     [Header("Wall Sliding")]
-    [SerializeField] private AudioClip wallSlidingSFX;     
-    private bool isWallSlidingSFXRunning;
+    [SerializeField] private AudioClip wallSlidingSFX;         
 
     [Header("Wall Jump")]
     [SerializeField] private AudioClip wallJumpSFX;
@@ -33,6 +32,7 @@ public class PlayerSFX : MonoBehaviour
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
     private void OnEnable()
     {
@@ -42,7 +42,7 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnTakeOffJump += PlayTakeOffJumpSFX;
         playerMovement.OnLandingJump += PlayLandingJumpSFX;
 
-        playerMovement.OnStartWallSliding += TriggerWallSlidingSFX;
+        playerMovement.OnStartWallSliding += PlayWallSlidingSFX;
         playerMovement.OnStopWallSliding += StopWallSlidingSFX;
 
         playerMovement.OnWallJump += PlayWallJumpSFX;
@@ -57,7 +57,7 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnTakeOffJump -= PlayTakeOffJumpSFX;
         playerMovement.OnLandingJump -= PlayLandingJumpSFX;
 
-        playerMovement.OnStartWallSliding -= TriggerWallSlidingSFX;
+        playerMovement.OnStartWallSliding -= PlayWallSlidingSFX;
         playerMovement.OnStopWallSliding -= StopWallSlidingSFX;
 
         playerMovement.OnWallJump -= PlayWallJumpSFX;
@@ -67,10 +67,7 @@ public class PlayerSFX : MonoBehaviour
     private void Update()
     {
         if (isWalkSFXRunning && !audioSource.isPlaying)
-            PlayWalkSFX();
-
-        if (isWallSlidingSFXRunning && !audioSource.isPlaying)
-            PlayWallSlidingSFX();
+            PlayWalkSFX();        
     }
     private void PlaySFXOneShot(AudioClip audioClip)
     {
@@ -113,21 +110,16 @@ public class PlayerSFX : MonoBehaviour
         PlaySFXOneShot(waterLandingJumpSFX);
     }
     #endregion
-    #region Wall Sliding
-    private void TriggerWallSlidingSFX()
-    {
-        isWallSlidingSFXRunning = true;
-    }
+    #region Wall Sliding    
     private void StopWallSlidingSFX()
     {
         audioSource.loop = false;
-        StopSFX();
-
-        isWallSlidingSFXRunning = false;
+        StopSFX();        
     }
     private void PlayWallSlidingSFX()
-    {        
+    {
         audioSource.loop = true;
+        audioSource.time = 1.5f;
         PlaySFXSingle(wallSlidingSFX);
     }
     #endregion
