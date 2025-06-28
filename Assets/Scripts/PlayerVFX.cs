@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -31,6 +32,10 @@ public class PlayerVFX : MonoBehaviour
     [Header("Wall Jumping")]
     [SerializeField] private GameObject wallJumpVFX;
     private ParticleSystem wallJumpPS;
+
+    // Used for keeping pos. of TakeOffJumping VFX
+    private Vector3 localPosWaterTakeOffJumpingVFX;
+    private Quaternion localRotWaterTakeOffJumpingVFX;
 
     #region Unity API
     void Awake()
@@ -136,11 +141,30 @@ public class PlayerVFX : MonoBehaviour
     #endregion
     #region Jump
     private void PlayTakeOffJumpVFX()
-    {        
+    {
+        // Save the current Local Position 
+        localPosWaterTakeOffJumpingVFX = waterTakeOffJumpPS.transform.localPosition;
+        localRotWaterTakeOffJumpingVFX = waterTakeOffJumpPS.transform.localRotation;
+
+        // Clear the Player as parent of the PS to show it properly
+        waterTakeOffJumpPS.transform.parent = null;
         PlayVFX(waterTakeOffJumpPS);
         //PlayVFX(dustTakeOffJumpPS);
 
+        StartCoroutine(nameof(ResetParentOfTakeOffJumpPS));
+
         Debug.Log("Take Off Jump VFX Started");
+    }
+    IEnumerator ResetParentOfTakeOffJumpPS() 
+    {
+        // Espera hasta que el sistema esté realmente reproduciendo
+        yield return new WaitForSeconds(0.5f);
+
+        waterTakeOffJumpPS.transform.SetParent(transform);
+
+        // Set again the local pos & rot.
+        waterTakeOffJumpPS.transform.localPosition = localPosWaterTakeOffJumpingVFX;
+        waterTakeOffJumpPS.transform.localRotation = localRotWaterTakeOffJumpingVFX;
     }
     private void PlayLandingJumpVFX()
     {        

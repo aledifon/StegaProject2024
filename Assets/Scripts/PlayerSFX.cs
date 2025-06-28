@@ -94,8 +94,8 @@ public class PlayerSFX : MonoBehaviour
     private void PlayWalkSFX()
     {
         int n = Random.Range(0, waterWalkSFX.Length);
-        float randomPitch = Random.Range(lowPitchRange,highPitchRange);
-        audioSource.pitch = randomPitch;        
+        //float randomPitch = Random.Range(lowPitchRange,highPitchRange);
+        //audioSource.pitch = randomPitch;        
 
         PlaySFXSingle(waterWalkSFX[n]);
     }
@@ -108,6 +108,7 @@ public class PlayerSFX : MonoBehaviour
     private void PlayLandingJumpSFX()
     {
         PlaySFXOneShot(waterLandingJumpSFX);
+        Debug.Log("Played Landing Jumping SFX");
     }
     #endregion
     #region Wall Sliding    
