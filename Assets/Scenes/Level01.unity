@@ -13714,6 +13714,7 @@ GameObject:
   - component: {fileID: 1427650241}
   - component: {fileID: 1427650246}
   - component: {fileID: 1427650247}
+  - component: {fileID: 1427650248}
   m_Layer: 6
   m_Name: Vitamini
   m_TagString: Player
@@ -13929,8 +13930,6 @@ MonoBehaviour:
     m_Bits: 512
   cornerDetected: 0
   currentState: 0
-  jumpAudioFx: {fileID: 8300000, guid: 12fd9992f455b58459060bf817099e87, type: 3}
-  acornAudioFx: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
 --- !u!95 &1427650242
 Animator:
   serializedVersion: 7
@@ -14198,6 +14197,41 @@ MonoBehaviour:
   waterWalkVFX: {fileID: 627648421890155954, guid: f8d0bdd8620425b41bd4380b4327504e, type: 3}
   waterTakeOffJumpVFX: {fileID: 5474303131444515902, guid: 79b4f783eca233349aa2d91807cffdd7, type: 3}
   waterLandingJumpVFX: {fileID: 1851316230972400524, guid: 1f47a8ae819e7cd4fb6be5985f1b3c61, type: 3}
+  wallSlidingVFX: {fileID: 0}
+  wallJumpVFX: {fileID: 0}
+--- !u!114 &1427650248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427650236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd08c5d5d549c2d4485514160d306cfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterWalkSFX:
+  - {fileID: 8300000, guid: 938df53f74d50544b83b2cd1b17069f9, type: 3}
+  - {fileID: 8300000, guid: 6755e20b5c79018438c8aed7439dcfed, type: 3}
+  - {fileID: 8300000, guid: b9a5f4a46006d6f429a02ea0fadc4809, type: 3}
+  - {fileID: 8300000, guid: f29d6db9c3a008d4aae34c3399830406, type: 3}
+  - {fileID: 8300000, guid: a4b445ae2c9e73544ae33ac92e1154d6, type: 3}
+  - {fileID: 8300000, guid: 542405efe600e4046b7ad5de61d2b372, type: 3}
+  - {fileID: 8300000, guid: 64a70c2c478034348824bef598d97794, type: 3}
+  - {fileID: 8300000, guid: a858c101d8c2dce428295e1dba1bbe13, type: 3}
+  - {fileID: 8300000, guid: 3befa71f0fad90a4590f295b64eae0dc, type: 3}
+  - {fileID: 8300000, guid: a3329dcd60d48fc45b0358f862cf84e5, type: 3}
+  - {fileID: 8300000, guid: 4cd39376ddff5aa488d9fd6d8b9f235a, type: 3}
+  - {fileID: 8300000, guid: aa448bbcb9582284f8cc05c9be921758, type: 3}
+  - {fileID: 8300000, guid: 881a85debdac14747bddaf0810b81949, type: 3}
+  waterTakeOffJumpSFX: {fileID: 8300000, guid: a610075ff7aa5f14db7dddab277ab41b, type: 3}
+  waterLandingJumpSFX: {fileID: 8300000, guid: 9f77c04067f322c4fa986d3833787600, type: 3}
+  wallSlidingSFX: {fileID: 8300000, guid: 98b9cf3c1259b8e4cbaf5cd90b6f3d8f, type: 3}
+  wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
+  eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
+  lowPitchRange: 0.95
+  highPitchRange: 1.05
 --- !u!1 &1428549072
 GameObject:
   m_ObjectHideFlags: 0
