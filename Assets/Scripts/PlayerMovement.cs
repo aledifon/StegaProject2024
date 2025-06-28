@@ -380,7 +380,7 @@ public class PlayerMovement : MonoBehaviour
                 if (wallJumpTriggered)
                 {
                     TriggerWallJump();
-                    //OnWallJump?.Invoke();           // Trigger Wall Jump Event
+                    OnWallJump?.Invoke();           // Trigger Wall Jump Event
                     currentState = PlayerState.WallJumping;
                     Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
@@ -423,7 +423,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (isWallDetected)
                 {
-                    //OnStartWallSliding?.Invoke();           // Trigger Start Wall Sliding Event        
+                    OnStartWallSliding?.Invoke();           // Trigger Start Wall Sliding Event        
                     currentState = PlayerState.WallBraking;
                     Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }                
@@ -436,7 +436,7 @@ public class PlayerMovement : MonoBehaviour
                     //else if (/*!jumpPressed &&*/ inputX != 0)
                     //    currentState = PlayerState.Running;
 
-                    //OnStopWallSliding?.Invoke();            // Trigger Stop Wall Sliding Event
+                    OnStopWallSliding?.Invoke();            // Trigger Stop Wall Sliding Event
                     OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
                     currentState = PlayerState.Idle;                    
                 }
@@ -444,14 +444,14 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (!isWallDetected)
                     {
-                        //OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
+                        OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
                         currentState = PlayerState.Falling;                        
                     }
                     else if(wallJumpTriggered)
                     {
-                        //OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
+                        OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
                         TriggerWallJump();
-                        //OnWallJump?.Invoke();               // Trigger Wall Jump Event
+                        OnWallJump?.Invoke();               // Trigger Wall Jump Event
                         currentState = PlayerState.WallJumping;                                                
                     }                        
                 }
@@ -738,10 +738,7 @@ public class PlayerMovement : MonoBehaviour
         //rb2D.velocity = wallJumpSpeedVector;        
 
         // Flip Sprite
-        spriteRenderer.flipX = !spriteRenderer.flipX;
-
-        // Trigger Wall Jump Event
-        //OnWallJump?.Invoke();        
+        spriteRenderer.flipX = !spriteRenderer.flipX;      
     }
     IEnumerator DisableWallJumpTriggerFlag()
     {

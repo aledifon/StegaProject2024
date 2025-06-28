@@ -53,10 +53,10 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnTakeOffJump += PlayTakeOffJumpVFX;
         playerMovement.OnLandingJump += PlayLandingJumpVFX;
 
-        playerMovement.OnStartWallSliding += PlayWallSlidingVFX;
-        playerMovement.OnStopWallSliding += StopWallSlidingVFX;
+        //playerMovement.OnStartWallSliding += PlayWallSlidingVFX;
+        //playerMovement.OnStopWallSliding += StopWallSlidingVFX;
 
-        playerMovement.OnWallJump += PlayWallJumpVFX;
+        //playerMovement.OnWallJump += PlayWallJumpVFX;
     }
     private void OnDisable()
     {
@@ -66,10 +66,10 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnTakeOffJump -= PlayTakeOffJumpVFX;
         playerMovement.OnLandingJump -= PlayLandingJumpVFX;
 
-        playerMovement.OnStartWallSliding -= PlayWallSlidingVFX;
-        playerMovement.OnStopWallSliding -= StopWallSlidingVFX;
+        //playerMovement.OnStartWallSliding -= PlayWallSlidingVFX;
+        //playerMovement.OnStopWallSliding -= StopWallSlidingVFX;
 
-        playerMovement.OnWallJump -= PlayWallJumpVFX;
+        //playerMovement.OnWallJump -= PlayWallJumpVFX;
     }
     private void Update()
     {
