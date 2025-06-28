@@ -1,8 +1,8 @@
 {
-    "name": "VitaminiControls",
+    "name": "PlayerControls",
     "maps": [
         {
-            "name": "Vitamini",
+            "name": "Player",
             "id": "62e0bc67-d643-4048-9c98-bfa1b4ad2faa",
             "actions": [
                 {

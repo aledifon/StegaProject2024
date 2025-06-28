@@ -293,7 +293,10 @@ public class PlayerMovement : MonoBehaviour
         ChangeGravity();
 
         // Jumping Animation
-        AnimatingJumping();
+        //AnimatingJumping();
+
+        // Animations
+        UdpateAnimations();
     }
     // Collisions
     private void OnCollisionEnter2D(Collision2D collision)
@@ -455,7 +458,7 @@ public class PlayerMovement : MonoBehaviour
                         currentState = PlayerState.WallJumping;                                                
                     }                        
                 }
-                //Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 break;
             default:
                 // Default logic
@@ -603,7 +606,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Flip the player sprite & change the animations State
         FlipSprite(inputX, inputDirDeadZone);       
-        AnimatingRunning(inputX);
+        //AnimatingRunning(inputX);
     }
     #region Jumping Buffer    
     private void UdpateJumpBufferTimer()
@@ -1057,12 +1060,58 @@ public class PlayerMovement : MonoBehaviour
     //}
     private void AnimatingRunning(float horizontal)
     {
-        animator.SetBool("IsRunning", horizontal != 0);
+        //animator.SetBool("IsRunning", horizontal != 0);
+        animator.SetBool("IsRunning", currentState == PlayerState.Running);
     }
     private void AnimatingJumping()
     {
-        animator.SetBool("IsJumping", !isGrounded);
+        //animator.SetBool("IsJumping", !isGrounded);
+        animator.SetBool("IsJumping", currentState == PlayerState.Jumping ||
+                                    currentState == PlayerState.WallJumping);
     }
+    private void AnimatingFalling()
+    {
+        animator.SetBool("IsFalling", currentState == PlayerState.Falling);
+    }
+    private void ClearAnimationFlags()
+    {
+        animator.SetBool("IsIdle", false);
+        animator.SetBool("IsRunning", false);
+        animator.SetBool("IsJumping", false);
+        animator.SetBool("IsFalling", false);
+        animator.SetBool("IsWallSliding", false);
+        animator.SetBool("Hurt", false);
+    }
+    private void UdpateAnimations()
+    {
+        ClearAnimationFlags();
+
+        switch (currentState)
+        {
+            case PlayerState.Idle:
+                animator.SetBool("IsIdle", true);
+                break;
+            case PlayerState.Running:
+                animator.SetBool("IsRunning", true);
+                break;
+            case PlayerState.Jumping:
+            case PlayerState.WallJumping:
+                animator.SetBool("IsJumping", true);
+                break;
+            case PlayerState.Falling:
+                animator.SetBool("IsFalling", true);
+                break;
+            case PlayerState.WallBraking:
+                animator.SetBool("IsWallSliding", true);
+                break;
+            case PlayerState.Hurting:
+                animator.SetBool("Hurt", true);
+                break;
+            default:
+                break;
+        }
+    }
+
     #endregion
 
     #region Scene Management
