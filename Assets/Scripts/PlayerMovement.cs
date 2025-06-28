@@ -143,6 +143,9 @@ public class PlayerMovement : MonoBehaviour
     public event Action OnEatAcorn;
     #endregion
 
+    // Delay Time used for triggering OnLandingJump Event
+    private float lastLandingTime;
+
     // GO Components
     Rigidbody2D rb2D;
     // Movement vars.
@@ -168,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isDead;
     public bool IsDead { get => isDead; set => isDead = value; }
 
-    public bool SpriteRendPlayerFlipX => spriteRenderer.flipX;
+    public bool SpriteRendPlayerFlipX => spriteRenderer.flipX;    
 
     #region Unity API
 
@@ -419,7 +422,11 @@ public class PlayerMovement : MonoBehaviour
                     //else if (/*!jumpPressed &&*/ inputX != 0)
                     //    currentState = PlayerState.Running;
 
-                    OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
+                    if(Time.time - lastLandingTime > 0.1f)
+                    {
+                        lastLandingTime = Time.time;
+                        OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
+                    }                    
                     currentState = PlayerState.Idle;
 
                     Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
@@ -484,7 +491,7 @@ public class PlayerMovement : MonoBehaviour
         {
             raycastsHit2D[i] = Physics2D.Raycast(groundChecks[i].position, Vector2.down, rayLength, (int)groundLayer | (int)platformLayer);
             isRayGroundDetected |= raycastsHit2D[i];
-        }        
+        }
 
         // Raycast Debugging
         //foreach(Transform groundCheck in groundChecks)
@@ -494,9 +501,9 @@ public class PlayerMovement : MonoBehaviour
         //    //Debug.DrawRay(groundCheck.position + (Vector3.right * 0.01f), Vector2.down * rayLength, Color.red);
         //    //Debug.DrawRay(groundCheck.position + (Vector3.left * 0.01f), Vector2.down * rayLength, Color.red);
         //}
-        //Debug.DrawRay(groundChecks[0].position, Vector2.down * rayLength, Color.red);
-        //Debug.DrawRay(groundChecks[1].position, Vector2.down * rayLength, Color.blue);
-        //Debug.DrawRay(groundChecks[2].position, Vector2.down * rayLength, Color.green);        
+        Debug.DrawRay(groundChecks[0].position, Vector2.down * rayLength, Color.red);
+        Debug.DrawRay(groundChecks[1].position, Vector2.down * rayLength, Color.blue);
+        Debug.DrawRay(groundChecks[2].position, Vector2.down * rayLength, Color.green);
     }
     void RaycastCeiling()
     {
