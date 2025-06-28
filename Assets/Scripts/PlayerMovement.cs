@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -127,6 +128,21 @@ public class PlayerMovement : MonoBehaviour
     public PlayerState CurrentState => currentState;
     #endregion
 
+    #region Events & Delegates
+    public event Action OnStartWalking;
+    public event Action OnStopWalking;
+
+    public event Action OnTakeOffJump;
+    public event Action OnLandingJump;
+
+    public event Action OnStartWallSliding;
+    public event Action OnStopWallSliding;
+
+    public event Action OnWallJump;
+
+    public event Action OnEatAcorn;
+    #endregion
+
     // GO Components
     Rigidbody2D rb2D;
     // Movement vars.
@@ -143,14 +159,8 @@ public class PlayerMovement : MonoBehaviour
     // GO Components
     SpriteRenderer spriteRenderer;
     Animator animator;
-    BoxCollider2D boxCollider2D;
-    AudioSource audioSource;
-    PlayerVFX playerVFX;
-
-    // Audio Clips
-    [Header("Audio Clips")]
-    [SerializeField] AudioClip jumpAudioFx;
-    [SerializeField] AudioClip acornAudioFx;
+    BoxCollider2D boxCollider2D;    
+    PlayerVFX playerVFX;    
 
     // Flip Flag
     //private bool lastFlipState;
@@ -218,8 +228,7 @@ public class PlayerMovement : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();   
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        boxCollider2D = GetComponent<BoxCollider2D>();  
-        audioSource = GetComponent<AudioSource>();
+        boxCollider2D = GetComponent<BoxCollider2D>();          
         playerVFX = GetComponent<PlayerVFX>();
 
         NumAcorn = 0;
@@ -302,8 +311,8 @@ public class PlayerMovement : MonoBehaviour
             // Update Acorn counter UI Text
             textAcornUI.text = NumAcorn.ToString();
 
-            // Play Acorn Fx
-            audioSource.PlayOneShot(acornAudioFx);
+            // Play Acorn Fx            
+            OnEatAcorn?.Invoke();
 
             // Condition to pass to the next Scene
             if (NumAcorn == 3)
@@ -322,12 +331,17 @@ public class PlayerMovement : MonoBehaviour
                 if (isGrounded)
                 {
                     if (inputX != 0)
+                    {
                         currentState = PlayerState.Running;
+                        OnStartWalking?.Invoke();
+                    }                        
                     //else if (!isGrounded && rb2D.velocity.y > 0)
                     else if (jumpTriggered)
                     {
-                        TriggerJump();
-                        currentState = PlayerState.Jumping;           
+                        TriggerJump();                                                                        
+                        OnTakeOffJump?.Invoke();            // Trigger Take Off Jump Event        
+                        currentState = PlayerState.Jumping;
+
                         Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                 }                
@@ -340,24 +354,33 @@ public class PlayerMovement : MonoBehaviour
                 if (isGrounded)
                 {
                     if (inputX == 0)
-                        currentState = PlayerState.Idle;
+                    {
+                        OnStopWalking?.Invoke();        // Trigger Stop Walking Event
+                        currentState = PlayerState.Idle;                        
+                    }                        
                     //else if (!isGrounded && rb2D.velocity.y > 0)
                     else if (jumpTriggered)
                     {
-                        TriggerJump();
+                        OnStopWalking?.Invoke();        // Trigger Stop Walking Event
+                        TriggerJump();                        
+                        OnTakeOffJump?.Invoke();        // Trigger Take Off Jump Event        
+
                         currentState = PlayerState.Jumping;
                         Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                 }
                 else if (rb2D.linearVelocity.y < Mathf.Epsilon)
-                    currentState = PlayerState.Falling;
-
+                {
+                    OnStopWalking?.Invoke();        // Trigger Stop Walking Event
+                    currentState = PlayerState.Falling;                    
+                }                    
                 //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 break;
             case PlayerState.Jumping:
                 if (wallJumpTriggered)
                 {
                     TriggerWallJump();
+                    //OnWallJump?.Invoke();           // Trigger Wall Jump Event
                     currentState = PlayerState.WallJumping;
                     Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
@@ -382,6 +405,7 @@ public class PlayerMovement : MonoBehaviour
                 if (jumpTriggered)
                 {
                     TriggerJump();
+                    OnTakeOffJump?.Invoke();                // Trigger Take Off Jump Event        
                     currentState = PlayerState.Jumping;
                     Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }                    
@@ -392,11 +416,14 @@ public class PlayerMovement : MonoBehaviour
                     //else if (/*!jumpPressed &&*/ inputX != 0)
                     //    currentState = PlayerState.Running;
 
+                    OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
                     currentState = PlayerState.Idle;
+
                     Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (isWallDetected)
-                {                
+                {
+                    //OnStartWallSliding?.Invoke();           // Trigger Start Wall Sliding Event        
                     currentState = PlayerState.WallBraking;
                     Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }                
@@ -409,17 +436,22 @@ public class PlayerMovement : MonoBehaviour
                     //else if (/*!jumpPressed &&*/ inputX != 0)
                     //    currentState = PlayerState.Running;
 
+                    //OnStopWallSliding?.Invoke();            // Trigger Stop Wall Sliding Event
+                    OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
                     currentState = PlayerState.Idle;                    
                 }
                 else
                 {
                     if (!isWallDetected)
                     {
+                        //OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
                         currentState = PlayerState.Falling;                        
                     }
                     else if(wallJumpTriggered)
                     {
+                        //OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
                         TriggerWallJump();
+                        //OnWallJump?.Invoke();               // Trigger Wall Jump Event
                         currentState = PlayerState.WallJumping;                                                
                     }                        
                 }
@@ -669,10 +701,7 @@ public class PlayerMovement : MonoBehaviour
         else if (cornerDetected == CornerDetected.CornerRight)
             transform.position += new Vector3(0.7f, 0f);
 
-        CalculateJumpTimes(jumpVertSpeed);
-
-        // Trigger Jump Sound
-        audioSource.PlayOneShot(jumpAudioFx);
+        CalculateJumpTimes(jumpVertSpeed);        
     }
     IEnumerator DisableJumpTriggerFlag()
     {
@@ -703,16 +732,16 @@ public class PlayerMovement : MonoBehaviour
         //                    (Vector2.up * Mathf.Sin(Mathf.Deg2Rad * 30) * wallJumpForce);
         
         wallJumpSpeedVector = (-rayWallDir * wallJumpHorizSpeed) +
-                            (Vector2.up * wallJumpVertSpeed);        
+                            (Vector2.up * wallJumpVertSpeed);
 
         //rb2D.AddForce(wallForce, ForceMode2D.Impulse);
         //rb2D.velocity = wallJumpSpeedVector;        
 
-        // Trigger Jump Sound
-        audioSource.PlayOneShot(jumpAudioFx);
-
         // Flip Sprite
         spriteRenderer.flipX = !spriteRenderer.flipX;
+
+        // Trigger Wall Jump Event
+        //OnWallJump?.Invoke();        
     }
     IEnumerator DisableWallJumpTriggerFlag()
     {
