@@ -12616,8 +12616,25 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4cd39376ddff5aa488d9fd6d8b9f235a, type: 3}
   - {fileID: 8300000, guid: aa448bbcb9582284f8cc05c9be921758, type: 3}
   - {fileID: 8300000, guid: 881a85debdac14747bddaf0810b81949, type: 3}
-  waterTakeOffJumpSFX: {fileID: 8300000, guid: a610075ff7aa5f14db7dddab277ab41b, type: 3}
+  dustWalkSFX:
+  - {fileID: 8300000, guid: 2400478d28be70f489119ff52819e9d7, type: 3}
+  - {fileID: 8300000, guid: 5f5897b0161c9684b82a317791bc497c, type: 3}
+  - {fileID: 8300000, guid: 21324bf5dbd656043b613e5d63b37ca4, type: 3}
+  - {fileID: 8300000, guid: 302be160e6dbf374a8426123cc721d89, type: 3}
+  - {fileID: 8300000, guid: b1fee767e387ad74682b71951469ea5b, type: 3}
+  - {fileID: 8300000, guid: 9a4c8786fbd7e6e43b949ff6d8ccdf84, type: 3}
+  - {fileID: 8300000, guid: d6a0eb127fee5ba408b134f35b0293b8, type: 3}
+  - {fileID: 8300000, guid: fb8ed198381042543877cd2fa5a0ee37, type: 3}
+  - {fileID: 8300000, guid: b72941c8e6d7c8042ac3973de9fa5cbe, type: 3}
+  - {fileID: 8300000, guid: a890af67e88307845b7891d70b3fad6b, type: 3}
+  - {fileID: 8300000, guid: 338575b68dee78f41a8653868f6fd9e1, type: 3}
+  - {fileID: 8300000, guid: a63332a9a6fa5c34ca0008ee43ad118d, type: 3}
+  - {fileID: 8300000, guid: e7c4dd15c90b25047972217bb4417211, type: 3}
+  takeOffJumpSFX: {fileID: 8300000, guid: a610075ff7aa5f14db7dddab277ab41b, type: 3}
   waterLandingJumpSFX: {fileID: 8300000, guid: 645c9c7b969ce2d478a921a8dc0cc853, type: 3}
+  dustLandingJumpSFX: {fileID: 8300000, guid: fd667cb88efa05e4787aae31b102549e, type: 3}
+  waterLandingJumpVolume: 0.3
+  dustLandingJumpVolume: 0.4
   wallSlidingSFX: {fileID: 8300000, guid: 98b9cf3c1259b8e4cbaf5cd90b6f3d8f, type: 3}
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
@@ -12637,10 +12654,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originPS: {fileID: 1671145974}
   waterWalkVFX: {fileID: 627648421890155954, guid: f8d0bdd8620425b41bd4380b4327504e, type: 3}
+  dustWalkVFX: {fileID: 7366536655623119930, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
   waterTakeOffJumpVFX: {fileID: 5474303131444515902, guid: 79b4f783eca233349aa2d91807cffdd7, type: 3}
+  dustTakeOffJumpVFX: {fileID: 7673650153438219517, guid: ffcd76b823c40904a8682585eaeb8233, type: 3}
   waterLandingJumpVFX: {fileID: 1851316230972400524, guid: 1f47a8ae819e7cd4fb6be5985f1b3c61, type: 3}
+  dustLandingJumpVFX: {fileID: 2870905035193817320, guid: 3d509306db4d9714e9c9b26458f1d965, type: 3}
   wallSlidingVFX: {fileID: 0}
-  wallJumpVFX: {fileID: 0}
+  wallJumpVFX: {fileID: 4928254478015616943, guid: ed230d2350294a8439c02e1178c1e43c, type: 3}
 --- !u!114 &1072431788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13131,6 +13151,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1072431797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1101256641
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7366536655623119930, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_Name
+      value: DustWalkVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366536655623119930, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 32.361034
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.69655
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672336074295136164, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
 --- !u!1 &1116674853
 GameObject:
   m_ObjectHideFlags: 0
@@ -14275,7 +14356,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 4339af1e71568bb42bda35f44e85ff0d, type: 3}
   m_Resource: {fileID: 8300000, guid: 4339af1e71568bb42bda35f44e85ff0d, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.6
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -14387,6 +14468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverClip: {fileID: 8300000, guid: abd268bb84fb15d4d93d65bb883b39ac, type: 3}
+  isWetSurface: 0
 --- !u!1 &1427650236
 GameObject:
   m_ObjectHideFlags: 0
@@ -14887,8 +14969,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originPS: {fileID: 2030953632}
   waterWalkVFX: {fileID: 627648421890155954, guid: f8d0bdd8620425b41bd4380b4327504e, type: 3}
+  dustWalkVFX: {fileID: 0}
   waterTakeOffJumpVFX: {fileID: 5474303131444515902, guid: 79b4f783eca233349aa2d91807cffdd7, type: 3}
+  dustTakeOffJumpVFX: {fileID: 0}
   waterLandingJumpVFX: {fileID: 1851316230972400524, guid: 1f47a8ae819e7cd4fb6be5985f1b3c61, type: 3}
+  dustLandingJumpVFX: {fileID: 0}
   wallSlidingVFX: {fileID: 0}
   wallJumpVFX: {fileID: 0}
 --- !u!114 &1427650248
@@ -14917,8 +15002,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4cd39376ddff5aa488d9fd6d8b9f235a, type: 3}
   - {fileID: 8300000, guid: aa448bbcb9582284f8cc05c9be921758, type: 3}
   - {fileID: 8300000, guid: 881a85debdac14747bddaf0810b81949, type: 3}
-  waterTakeOffJumpSFX: {fileID: 8300000, guid: a610075ff7aa5f14db7dddab277ab41b, type: 3}
+  dustWalkSFX: []
+  takeOffJumpSFX: {fileID: 0}
   waterLandingJumpSFX: {fileID: 8300000, guid: 9f77c04067f322c4fa986d3833787600, type: 3}
+  dustLandingJumpSFX: {fileID: 0}
+  waterLandingJumpVolume: 0
+  dustLandingJumpVolume: 0
   wallSlidingSFX: {fileID: 8300000, guid: 98b9cf3c1259b8e4cbaf5cd90b6f3d8f, type: 3}
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
@@ -16286,3 +16375,4 @@ SceneRoots:
   - {fileID: 807640584}
   - {fileID: 1895979260}
   - {fileID: 1482489839}
+  - {fileID: 1101256641}
