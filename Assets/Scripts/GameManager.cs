@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioClip gameOverClip;
     AudioSource generalAudioSource;
 
+    [Header("Surface Type")]
+    [SerializeField] private bool isWetSurface;
+    public bool IsWetSurface => isWetSurface;
+
     // Start is called before the first frame update
     void Awake()
     {
