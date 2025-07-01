@@ -45,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
 
     Vector2 wallJumpSpeedVector;
 
+    [SerializeField] private float jumpWallPush;
+
     // Coyote Time vars
     [Header("Coyote Time")]
     [SerializeField] private float maxCoyoteTime;
@@ -101,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isRecentlyWallJumping;     // Aux. var 
 
     [Header("Platform")]
-    [SerializeField] LayerMask platformLayer;
+    [SerializeField] LayerMask platformLayer;    
 
     #region Enums    
     private enum CornerDetected
@@ -811,6 +813,9 @@ public class PlayerMovement : MonoBehaviour
             case PlayerState.Jumping:
             case PlayerState.Falling:
                 rb2DDirVelX = inputX * jumpHorizSpeed;
+                // Add a little push on the opposite dir. of the Wall if Wall Detected
+                //if (isWallDetected)
+                //    rb2DDirVelX += jumpWallPush * (-rayWallDir.x); 
                 break;
             case PlayerState.WallJumping:                
                 // X-velocity starts decreasing after a certain time
