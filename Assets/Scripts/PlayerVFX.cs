@@ -279,9 +279,12 @@ public class PlayerVFX : MonoBehaviour
     #region Wall Sliding
     private void PlayWallSlidingVFX()
     {
+        ResetParentOfWallSlidingPS();
+
+        // Set the corresponding WallSlidingVFX Direction
         SetWallSlidingVFXDirection();
 
-        PlayVFX(wallSlidingPS);
+        PlayVFX(wallSlidingPS);        
 
         //isWallSlidingVFXRunning = true;
 
@@ -290,6 +293,9 @@ public class PlayerVFX : MonoBehaviour
     private void StopWallSlidingVFX()
     {
         StopVFX(wallSlidingPS);
+
+        // Clear the Player as parent of the PS to show it properly
+        wallSlidingPS.transform.parent = null;
 
         //isWallSlidingVFXRunning = false;
 
@@ -306,6 +312,17 @@ public class PlayerVFX : MonoBehaviour
         // Set Local Rotation
         wallSlidingPS.transform.localRotation = playerMovement.SpriteRendPlayerFlipX ?
                                                 Quaternion.Euler(0, 180, 0) : Quaternion.identity;
+    }
+    private void ResetParentOfWallSlidingPS()
+    {
+        if (wallSlidingPS.transform.parent != transform)
+        {
+            wallSlidingPS.transform.SetParent(transform, false);
+
+            // Set again the WallJumpingVFX Local pos & rot.
+            wallSlidingPS.transform.localPosition = originWallSlidePS.localPosition;
+            wallSlidingPS.transform.localRotation = originWallSlidePS.localRotation;
+        }
     }
     #endregion
     #region Wall Jump
