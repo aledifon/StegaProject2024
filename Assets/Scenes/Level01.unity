@@ -12653,13 +12653,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originPS: {fileID: 1671145974}
+  originWallSlidePS: {fileID: 1838826027}
   waterWalkVFX: {fileID: 627648421890155954, guid: f8d0bdd8620425b41bd4380b4327504e, type: 3}
   dustWalkVFX: {fileID: 7366536655623119930, guid: 980f7b0d505a16f48ad57d12e0fe214d, type: 3}
   waterTakeOffJumpVFX: {fileID: 5474303131444515902, guid: 79b4f783eca233349aa2d91807cffdd7, type: 3}
   dustTakeOffJumpVFX: {fileID: 7673650153438219517, guid: ffcd76b823c40904a8682585eaeb8233, type: 3}
   waterLandingJumpVFX: {fileID: 1851316230972400524, guid: 1f47a8ae819e7cd4fb6be5985f1b3c61, type: 3}
   dustLandingJumpVFX: {fileID: 2870905035193817320, guid: 3d509306db4d9714e9c9b26458f1d965, type: 3}
-  wallSlidingVFX: {fileID: 0}
+  wallSlidingVFX: {fileID: 5873754517777239851, guid: 80ee810b6256c034a94cdc1ad2ba14aa, type: 3}
   wallJumpVFX: {fileID: 4928254478015616943, guid: ed230d2350294a8439c02e1178c1e43c, type: 3}
 --- !u!114 &1072431788
 MonoBehaviour:
@@ -13118,6 +13119,7 @@ Transform:
   - {fileID: 1709227492}
   - {fileID: 734485149}
   - {fileID: 263042664}
+  - {fileID: 1838826027}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1093794588
@@ -14907,6 +14909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originPS: {fileID: 2030953632}
+  originWallSlidePS: {fileID: 0}
   waterWalkVFX: {fileID: 627648421890155954, guid: f8d0bdd8620425b41bd4380b4327504e, type: 3}
   dustWalkVFX: {fileID: 0}
   waterTakeOffJumpVFX: {fileID: 5474303131444515902, guid: 79b4f783eca233349aa2d91807cffdd7, type: 3}
@@ -15723,6 +15726,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e409498997f28614ca2977bfa29b6f91, type: 3}
+--- !u!1 &1838826026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1838826027}
+  m_Layer: 6
+  m_Name: WallSlideVFXPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1838826027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838826026}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.305, y: -0.109, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1072431797}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1858725301
 GameObject:
   m_ObjectHideFlags: 0

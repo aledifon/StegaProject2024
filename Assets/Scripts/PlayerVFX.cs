@@ -6,6 +6,7 @@ public class PlayerVFX : MonoBehaviour
 {    
     PlayerMovement playerMovement;
     [SerializeField] Transform originPS;
+    [SerializeField] Transform originWallSlidePS;
 
     [Header("Walk")]
     [SerializeField] private GameObject waterWalkVFX;
@@ -27,7 +28,8 @@ public class PlayerVFX : MonoBehaviour
 
     [Header("Wall Sliding")]
     [SerializeField] private GameObject wallSlidingVFX;
-    private ParticleSystem wallSlidingPS;    
+    private ParticleSystem wallSlidingPS;
+    private bool isWallSlidingVFXRunning;
 
     [Header("Wall Jumping")]
     [SerializeField] private GameObject wallJumpVFX;
@@ -62,21 +64,12 @@ public class PlayerVFX : MonoBehaviour
         waterLandingJumpPS = InstantiateVFXPrefabs(waterLandingJumpVFX, originPS, transform);
         dustLandingJumpPS = InstantiateVFXPrefabs(dustLandingJumpVFX, originPS, transform);
 
-        //wallSlidingPS = InstantiateVFXPrefabs(wallSlidingVFX, originPS, transform);
-        wallJumpPS = InstantiateVFXPrefabs(wallJumpVFX, originPS, transform);
-
-        //// Get the current takeOffJumpPS Local Pos. & Rot.
-        //localPosTakeOffJumpingVFX = waterTakeOffJumpPS.transform.localPosition;
-        //localRotTakeOffJumpingVFX = waterTakeOffJumpPS.transform.localRotation;
+        wallSlidingPS = InstantiateVFXPrefabs(wallSlidingVFX, originWallSlidePS, transform);
+        wallJumpPS = InstantiateVFXPrefabs(wallJumpVFX, originPS, transform);        
 
         // Get the current landingJumpPS Local Pos. & Rot.
         waterLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;
-        dustLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;
-        //localRotLandingJumpingVFX = waterLandingJumpPS.transform.localRotation;
-
-        //// Get the current WalJumpingPS Local Pos. & Rot.
-        //localPosWallJumpingVFX = wallJumpPS.transform.localPosition;
-        //localRotWallJumpingVFX = wallJumpPS.transform.localRotation;
+        dustLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;                
 
         Debug.Log("DustTakeOff LocalPos = " + dustTakeOffJumpPS.transform.localPosition);
         Debug.Log("DustTakeOff LocalRot = " + dustTakeOffJumpPS.transform.localRotation);
@@ -95,8 +88,8 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnTakeOffJump += PlayTakeOffJumpVFX;
         playerMovement.OnLandingJump += PlayLandingJumpVFX;
 
-        //playerMovement.OnStartWallSliding += PlayWallSlidingVFX;
-        //playerMovement.OnStopWallSliding += StopWallSlidingVFX;
+        playerMovement.OnStartWallSliding += PlayWallSlidingVFX;
+        playerMovement.OnStopWallSliding += StopWallSlidingVFX;
 
         playerMovement.OnWallJump += PlayWallJumpVFX;
     }
@@ -108,8 +101,8 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnTakeOffJump -= PlayTakeOffJumpVFX;
         playerMovement.OnLandingJump -= PlayLandingJumpVFX;
 
-        //playerMovement.OnStartWallSliding -= PlayWallSlidingVFX;
-        //playerMovement.OnStopWallSliding -= StopWallSlidingVFX;
+        playerMovement.OnStartWallSliding -= PlayWallSlidingVFX;
+        playerMovement.OnStopWallSliding -= StopWallSlidingVFX;
 
         playerMovement.OnWallJump -= PlayWallJumpVFX;
     }
@@ -286,15 +279,33 @@ public class PlayerVFX : MonoBehaviour
     #region Wall Sliding
     private void PlayWallSlidingVFX()
     {
-        PlayVFX(wallSlidingPS);       
-        
+        SetWallSlidingVFXDirection();
+
+        PlayVFX(wallSlidingPS);
+
+        //isWallSlidingVFXRunning = true;
+
         Debug.Log("Wall Sliding VFX Started");
     }
     private void StopWallSlidingVFX()
     {
-        StopVFX(wallSlidingPS);        
+        StopVFX(wallSlidingPS);
+
+        //isWallSlidingVFXRunning = false;
 
         Debug.Log("Wall Sliding VFX Stopped");
+    }
+    private void SetWallSlidingVFXDirection()
+    {
+        // Set Local Position
+        Vector3 wallSlidePSLocalPos = originWallSlidePS.transform.localPosition;
+        wallSlidingPS.transform.localPosition = playerMovement.SpriteRendPlayerFlipX ?
+                        new Vector3(-wallSlidePSLocalPos.x, wallSlidePSLocalPos.y, wallSlidePSLocalPos.z) :
+                        wallSlidePSLocalPos;
+
+        // Set Local Rotation
+        wallSlidingPS.transform.localRotation = playerMovement.SpriteRendPlayerFlipX ?
+                                                Quaternion.Euler(0, 180, 0) : Quaternion.identity;
     }
     #endregion
     #region Wall Jump
