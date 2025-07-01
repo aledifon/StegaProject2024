@@ -37,9 +37,17 @@ public class PlayerVFX : MonoBehaviour
     private Vector3 localPosTakeOffJumpingVFX;
     private Quaternion localRotTakeOffJumpingVFX;
 
+    // Used for keeping pos. of LandingJumping VFX
+    private Vector3 localPosLandingJumpingVFX;
+    private Quaternion localRotLandingJumpingVFX;
+
     // Used for keeping pos. of WallJumping VFX
     private Vector3 localPosWallJumpingVFX;
     private Quaternion localRotWallJumpingVFX;
+
+    // Coroutines
+    Coroutine resetTakeOffJumpPSCoroutine;
+    Coroutine resetWallJumpPSCoroutine;
 
     #region Unity API
     void Awake()
@@ -56,6 +64,28 @@ public class PlayerVFX : MonoBehaviour
 
         //wallSlidingPS = InstantiateVFXPrefabs(wallSlidingVFX, originPS, transform);
         wallJumpPS = InstantiateVFXPrefabs(wallJumpVFX, originPS, transform);
+
+        //// Get the current takeOffJumpPS Local Pos. & Rot.
+        //localPosTakeOffJumpingVFX = waterTakeOffJumpPS.transform.localPosition;
+        //localRotTakeOffJumpingVFX = waterTakeOffJumpPS.transform.localRotation;
+
+        // Get the current landingJumpPS Local Pos. & Rot.
+        waterLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;
+        dustLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;
+        //localRotLandingJumpingVFX = waterLandingJumpPS.transform.localRotation;
+
+        //// Get the current WalJumpingPS Local Pos. & Rot.
+        //localPosWallJumpingVFX = wallJumpPS.transform.localPosition;
+        //localRotWallJumpingVFX = wallJumpPS.transform.localRotation;
+
+        Debug.Log("DustTakeOff LocalPos = " + dustTakeOffJumpPS.transform.localPosition);
+        Debug.Log("DustTakeOff LocalRot = " + dustTakeOffJumpPS.transform.localRotation);
+        
+        Debug.Log("DustLanding LocalPos = " + dustLandingJumpPS.transform.localPosition);
+        Debug.Log("DustLanding LocalRot = " + dustLandingJumpPS.transform.localRotation);
+        
+        Debug.Log("WallJump LocalPos = " + wallJumpPS.transform.localPosition);
+        Debug.Log("WallJump LocalRot = " + wallJumpPS.transform.localRotation);
     }    
     private void OnEnable()
     {
@@ -161,60 +191,96 @@ public class PlayerVFX : MonoBehaviour
     #region Jump
     private void PlayTakeOffJumpVFX()
     {
+        ResetParentOfTakeOffJumpPS();           
+
         // Save the current Local Position 
         if (GameManager.Instance.IsWetSurface)
         {
-            localPosTakeOffJumpingVFX = waterTakeOffJumpPS.transform.localPosition;
-            localRotTakeOffJumpingVFX = waterTakeOffJumpPS.transform.localRotation;
+            PlayVFX(waterTakeOffJumpPS);
 
             // Clear the Player as parent of the PS to show it properly
-            waterTakeOffJumpPS.transform.parent = null;
-            PlayVFX(waterTakeOffJumpPS);
+            waterTakeOffJumpPS.transform.parent = null;            
         }
         else
         {
-            localPosTakeOffJumpingVFX = dustTakeOffJumpPS.transform.localPosition;
-            localRotTakeOffJumpingVFX = dustTakeOffJumpPS.transform.localRotation;
+            PlayVFX(dustTakeOffJumpPS);
 
             // Clear the Player as parent of the PS to show it properly
-            dustTakeOffJumpPS.transform.parent = null;
-            PlayVFX(dustTakeOffJumpPS);
-        }               
-
-        StartCoroutine(nameof(ResetParentOfTakeOffJumpPS));
-
+            dustTakeOffJumpPS.transform.parent = null;            
+        }        
         Debug.Log("Take Off Jump VFX Started");
     }
-    IEnumerator ResetParentOfTakeOffJumpPS() 
-    {
-        // Espera hasta que el sistema esté realmente reproduciendo
-        yield return new WaitForSeconds(0.5f);
-
-        if (GameManager.Instance.IsWetSurface)
-        {
-            waterTakeOffJumpPS.transform.SetParent(transform);
-
-            // Set again the local pos & rot.
-            waterTakeOffJumpPS.transform.localPosition = localPosTakeOffJumpingVFX;
-            waterTakeOffJumpPS.transform.localRotation = localRotTakeOffJumpingVFX;
-        }
-        else
-        {
-            dustTakeOffJumpPS.transform.SetParent(transform);
-
-            // Set again the local pos & rot.
-            dustTakeOffJumpPS.transform.localPosition = localPosTakeOffJumpingVFX;
-            dustTakeOffJumpPS.transform.localRotation = localRotTakeOffJumpingVFX;
-        }
-    }
-    private void PlayLandingJumpVFX()
+    private void ResetParentOfTakeOffJumpPS()
     {        
         if (GameManager.Instance.IsWetSurface)
-            PlayVFX(waterLandingJumpPS);
+        {
+            if (waterTakeOffJumpPS.transform.parent != transform)
+            {                
+                waterTakeOffJumpPS.transform.SetParent(transform, false);
+
+                // Set again the local pos & rot.
+                waterTakeOffJumpPS.transform.localPosition = originPS.localPosition;
+                waterTakeOffJumpPS.transform.localRotation = originPS.localRotation;
+            }
+        }
         else
+        {
+            if (dustTakeOffJumpPS.transform.parent != transform)
+            {                
+                dustTakeOffJumpPS.transform.SetParent(transform, false);
+
+                // Set again the local pos & rot.
+                dustTakeOffJumpPS.transform.localPosition = originPS.localPosition;
+                dustTakeOffJumpPS.transform.localRotation = originPS.localRotation;
+            }            
+        }
+    }    
+    private void PlayLandingJumpVFX()
+    {
+        ResetParentOfLandingJumpPS();
+
+        if (GameManager.Instance.IsWetSurface)
+        {
+            PlayVFX(waterLandingJumpPS);
+
+            // Clear the Player as parent of the PS to show it properly
+            waterLandingJumpPS.transform.parent = null;            
+        }
+        else
+        {
             PlayVFX(dustLandingJumpPS);
 
+            // Clear the Player as parent of the PS to show it properly
+            dustLandingJumpPS.transform.parent = null;            
+        }            
         Debug.Log("Landing Jump VFX Started");
+    }
+    private void ResetParentOfLandingJumpPS()
+    {
+        if (GameManager.Instance.IsWetSurface)
+        {
+            if (waterLandingJumpPS.transform.parent != transform)
+            {                
+                waterLandingJumpPS.transform.SetParent(transform, false);
+
+                // Set again the local pos & rot.
+                waterLandingJumpPS.transform.localPosition = originPS.localPosition + 
+                                                        (Vector3.down * playerMovement.RayLength);
+                waterLandingJumpPS.transform.localRotation = originPS.localRotation;
+            }
+        }
+        else
+        {
+            if (dustLandingJumpPS.transform.parent != transform)
+            {                
+                dustLandingJumpPS.transform.SetParent(transform, false);
+
+                // Set again the local pos & rot.
+                dustLandingJumpPS.transform.localPosition = originPS.localPosition + 
+                                                        (Vector3.down * playerMovement.RayLength);
+                dustLandingJumpPS.transform.localRotation = originPS.localRotation;
+            }
+        }
     }
     #endregion
     #region Wall Sliding
@@ -234,29 +300,34 @@ public class PlayerVFX : MonoBehaviour
     #region Wall Jump
     private void PlayWallJumpVFX()
     {
-        localPosWallJumpingVFX = wallJumpPS.transform.localPosition;
-        localRotWallJumpingVFX = wallJumpPS.transform.localRotation;
+        ResetParentOfWallJumpPS();
 
-        // Clear the Player as parent of the PS to show it properly
-        wallJumpPS.transform.parent = null;
+        // Set the corresponding WallJumpingVFX Rotation
+        SetWallJumpPSRot();
 
         PlayVFX(wallJumpPS);
 
-        StartCoroutine(nameof(ResetParentOfWallJumpPS));
+        // Clear the Player as parent of the PS to show it properly
+        wallJumpPS.transform.parent = null;                
 
         Debug.Log("Wall Jump VFX Stopped");
     }
-    IEnumerator ResetParentOfWallJumpPS()
+    private void SetWallJumpPSRot()
     {
-        // Espera hasta que el sistema esté realmente reproduciendo
-        yield return new WaitForSeconds(0.5f);
-
-        wallJumpPS.transform.SetParent(transform);
-
-        // Set again the local pos & rot.
-        wallJumpPS.transform.localPosition = localPosWallJumpingVFX;
-        wallJumpPS.transform.localRotation = localRotWallJumpingVFX;        
+        wallJumpPS.transform.localRotation = playerMovement.SpriteRendPlayerFlipX ?
+                                                Quaternion.Euler(0, 180, 0) : Quaternion.identity;
     }
+    private void ResetParentOfWallJumpPS()
+    {
+        if (wallJumpPS.transform.parent != transform)
+        {
+            wallJumpPS.transform.SetParent(transform,false);
+
+            // Set again the WallJumpingVFX Local pos & rot.
+            wallJumpPS.transform.localPosition = originPS.localPosition;
+            wallJumpPS.transform.localRotation = originPS.localRotation;
+        }        
+    }    
     #endregion
     #endregion
 }

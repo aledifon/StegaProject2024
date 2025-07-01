@@ -81,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform[] groundChecks;  //Raycast origin point (Vitamini feet)
     [SerializeField] LayerMask groundLayer;     //Ground Layer
     [SerializeField] float rayLength;           //Raycast Length
+    public float RayLength => rayLength;
     [SerializeField] bool isGrounded;           //Ground touching flag
     [SerializeField] bool isJumping;            //Jumping/Falling/WallJumping Flag
     [SerializeField] private bool isRayGroundDetected;       // Aux. Ray Ground var
