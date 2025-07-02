@@ -42,10 +42,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float wallJumpHorizDist;   // Max allowed Horizontal Wall Jumping distance    
     [SerializeField] private float wallJumpHorizTime;   // Max Jumping time on horizontal Movement
     private float wallJumpingVertTime;                          // Wall Jumping Time (in func. of Wall Jumping distance. & Wall Jump. speed)                                                    
-
     Vector2 wallJumpSpeedVector;
-
-    [SerializeField] private float jumpWallPush;
+    [SerializeField] bool isWallJumpUnlocked;    
 
     // Coyote Time vars
     [Header("Coyote Time")]
@@ -96,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform wallRightCheck;     //Raycast origin point 
     [SerializeField] LayerMask wallLayer;       //Wall Layer
     [SerializeField] float rayWallLength;    //Raycast Wall Fwd Length
-    [SerializeField] bool isWallDetected;       //Wall Fwd detection flag    
+    [SerializeField] bool isWallDetected;       //Wall Fwd detection flag        
     Vector2 rayWallOrigin;
     Vector2 rayWallDir;
     [SerializeField] private bool isRayWallDetected;       // Aux. Ray Wall var
@@ -267,7 +265,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Update the isGrounded, isWallDetected & isJumping Flags
         isGrounded = isRayGroundDetected && !isRecentlyJumping;
-        isWallDetected = isRayWallDetected && !isRecentlyWallJumping;
+        isWallDetected = (isRayWallDetected && !isRecentlyWallJumping) && isWallJumpUnlocked;
         isJumping = (currentState == PlayerState.Jumping || 
                     currentState == PlayerState.Falling ||
                     currentState == PlayerState.WallJumping);
