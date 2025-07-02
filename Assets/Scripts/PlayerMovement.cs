@@ -831,7 +831,16 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case PlayerState.WallBraking:
-                rb2DDirVelX = 0;
+
+                //rayWallDir = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+
+                // If rayWallDir = Vector2.right --> Wall on the right'side of the player
+                // If rayWallDir = Vector2.left-- > Wall on the left'side of the player
+                float filteredInputX = (rayWallDir.x > 0) ? 
+                                Mathf.Clamp(inputX, -1, 0) : Mathf.Clamp(inputX, 0, 1);                
+
+                rb2DDirVelX = filteredInputX * jumpHorizSpeed;
+                //rb2DDirVelX = 0;
                 break;
             default:
                 break;
