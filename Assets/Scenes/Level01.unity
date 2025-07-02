@@ -12713,7 +12713,7 @@ MonoBehaviour:
   wallJumpVertSpeed: 12
   wallJumpHorizDist: 3
   wallJumpHorizTime: 0.6
-  jumpWallPush: 0.5
+  isWallJumpUnlocked: 1
   maxCoyoteTime: 0.25
   coyoteTimer: 0
   coyoteTimerEnabled: 0
@@ -14570,7 +14570,7 @@ MonoBehaviour:
   wallJumpVertSpeed: 12
   wallJumpHorizDist: 3
   wallJumpHorizTime: 0.6
-  jumpWallPush: 0
+  isWallJumpUnlocked: 0
   maxCoyoteTime: 0.25
   coyoteTimer: 0
   coyoteTimerEnabled: 0
