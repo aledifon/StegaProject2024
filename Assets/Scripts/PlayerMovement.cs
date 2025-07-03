@@ -43,13 +43,23 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float wallJumpHorizTime;   // Max Jumping time on horizontal Movement
     private float wallJumpingVertTime;                          // Wall Jumping Time (in func. of Wall Jumping distance. & Wall Jump. speed)                                                    
     Vector2 wallJumpSpeedVector;
-    [SerializeField] bool isWallJumpUnlocked;    
+    [SerializeField] bool isWallJumpUnlocked;
+
+    [Header("Hook")]
+    [SerializeField] private bool hookActionPressed;
+    [SerializeField] private float hookThrownMaxTime;
+    public float HookThrownMaxTime => hookThrownMaxTime;
+    [SerializeField] private float hookThrownTimer;
+    public float HookThrownTimer => hookThrownTimer;
+    [SerializeField] private bool isHookThrownEnabled;
+    public bool IsHookThrownEnabled => isHookThrownEnabled;
+    [SerializeField] bool isHookUnlocked;
 
     // Coyote Time vars
     [Header("Coyote Time")]
     [SerializeField] private float maxCoyoteTime;
     [SerializeField] private float coyoteTimer;
-    [SerializeField] private bool coyoteTimerEnabled;
+    [SerializeField] private bool isCoyoteTimerEnabled;
 
     // Raycast Corner checks
     [Header("Corner Detection")]
@@ -62,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Input Buffer")]
     [SerializeField] private float jumpBufferTime;
     [SerializeField] private float jumpBufferTimer;
-    [SerializeField] private bool jumpBufferTimerEnabled;
+    [SerializeField] private bool isJumpBufferEnabled;
 
     // UI        
     [Header("Acorn")]
@@ -141,6 +151,9 @@ public class PlayerMovement : MonoBehaviour
 
     public event Action OnWallJump;
 
+    public event Action OnHookThrown;
+    public event Action OnHookPickUp;
+
     public event Action OnEatAcorn;
     #endregion
 
@@ -164,7 +177,8 @@ public class PlayerMovement : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Animator animator;
     BoxCollider2D boxCollider2D;    
-    PlayerVFX playerVFX;    
+    PlayerVFX playerVFX;
+    GrapplingHook grapplingHook;
 
     // Flip Flag
     //private bool lastFlipState;
@@ -234,6 +248,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         boxCollider2D = GetComponent<BoxCollider2D>();          
         playerVFX = GetComponent<PlayerVFX>();
+        grapplingHook = GetComponent<GrapplingHook>();
 
         NumAcorn = 0;
         textAcornUI.text = NumAcorn.ToString();
@@ -272,13 +287,17 @@ public class PlayerMovement : MonoBehaviour
 
         // Jump Input Buffer
         CheckJumpTrigger();
-        if (jumpBufferTimerEnabled)
+        if (isJumpBufferEnabled)
             UdpateJumpBufferTimer();
 
         // Coyote Timer
         CheckCoyoteTimer();
-        if (coyoteTimerEnabled)
+        if (isCoyoteTimerEnabled)
             UdpateCoyoteTimer();
+
+        // Hook Thrown
+        if (isHookThrownEnabled)
+            UdpateHookThrownTimer();
 
         // Update the player state
         UpdatePlayerState();
@@ -349,7 +368,7 @@ public class PlayerMovement : MonoBehaviour
                         OnTakeOffJump?.Invoke();            // Trigger Take Off Jump Event        
                         currentState = PlayerState.Jumping;
 
-                        Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                 }                
                 else if (rb2D.linearVelocity.y < Mathf.Epsilon)
@@ -373,7 +392,7 @@ public class PlayerMovement : MonoBehaviour
                         OnTakeOffJump?.Invoke();        // Trigger Take Off Jump Event        
 
                         currentState = PlayerState.Jumping;
-                        Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                 }
                 else if (rb2D.linearVelocity.y < Mathf.Epsilon)
@@ -389,18 +408,28 @@ public class PlayerMovement : MonoBehaviour
                     TriggerWallJump();
                     OnWallJump?.Invoke();           // Trigger Wall Jump Event
                     currentState = PlayerState.WallJumping;
+                    //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                }
+                else if (grapplingHook.IsHookAttached)
+                {
+                    currentState = PlayerState.Swinging;
                     Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (rb2D.linearVelocity.y < 0 && !isRecentlyJumping)
                 {
                     currentState = PlayerState.Falling;
-                    Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }                
                 break;
             case PlayerState.WallJumping:
                 if (rb2D.linearVelocity.y > 0 && inputX != 0)
                 {
                     currentState = PlayerState.Jumping;                    
+                }
+                else if (grapplingHook.IsHookAttached)
+                {
+                    currentState = PlayerState.Swinging;
+                    Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping) 
                 {                                        
@@ -414,7 +443,7 @@ public class PlayerMovement : MonoBehaviour
                     TriggerJump();
                     OnTakeOffJump?.Invoke();                // Trigger Take Off Jump Event        
                     currentState = PlayerState.Jumping;
-                    Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }                    
                 else if (isGrounded)
                 {
@@ -430,13 +459,18 @@ public class PlayerMovement : MonoBehaviour
                     }                    
                     currentState = PlayerState.Idle;
 
+                    //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                }
+                else if (grapplingHook.IsHookAttached)
+                {
+                    currentState = PlayerState.Swinging;
                     Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (isWallDetected)
                 {
                     OnStartWallSliding?.Invoke();           // Trigger Start Wall Sliding Event        
                     currentState = PlayerState.WallBraking;
-                    Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }                
                 break;
             case PlayerState.WallBraking:
@@ -466,7 +500,7 @@ public class PlayerMovement : MonoBehaviour
                         currentState = PlayerState.WallJumping;                                                
                     }                        
                 }
-                Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                //Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 break;
             default:
                 // Default logic
@@ -563,15 +597,15 @@ public class PlayerMovement : MonoBehaviour
     }
     private void ResetCoyoteTimer()
     {
-        coyoteTimerEnabled = false;
+        isCoyoteTimerEnabled = false;
         coyoteTimer = 0f;
     }
     private void CheckCoyoteTimer()
     {        
         // Coyote Timer will be triggered when the player stop touching the ground
-        if ((wasGrounded && !isGrounded) && currentState != PlayerState.Jumping && !coyoteTimerEnabled) 
+        if ((wasGrounded && !isGrounded) && currentState != PlayerState.Jumping && !isCoyoteTimerEnabled) 
         {
-            coyoteTimerEnabled = true;
+            isCoyoteTimerEnabled = true;
             coyoteTimer = 0f;
         }            
     }        
@@ -588,20 +622,25 @@ public class PlayerMovement : MonoBehaviour
             SetJumpBufferTimer();
         }
 
-        //if (context.phase == InputActionPhase.Performed && (isGrounded || coyoteTimerEnabled))
-        //{                        
-        //    // Set the Jumping flags & Reset the Jumping Timer
-        //    jumpTriggered = true;
-        //    jumpPressed = true;
-        //    jumpingTimer = 0;
-
-        //    //Set the Jumping Horizontal Speed in func. of the max Horiz Jump Distance and the Max Jump Horiz time
-        //    jumpHorizSpeed = maxJumpHorizDist / maxJumpHorizTime;            
-        //}
-
         if(context.phase == InputActionPhase.Canceled)
         {
             jumpPressed = false;            
+        }            
+    }
+    public void HookActionInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            hookActionPressed = true;
+
+            // Enable the Hook timer
+            if (isJumping && isHookUnlocked)
+                SetHookThrownTimer();
+        }        
+
+        if(context.phase == InputActionPhase.Canceled)
+        {
+            hookActionPressed = false;            
         }            
     }
     public void MoveActionInput(InputAction.CallbackContext context)
@@ -630,18 +669,18 @@ public class PlayerMovement : MonoBehaviour
     }
     private void SetJumpBufferTimer()
     {        
-        jumpBufferTimerEnabled = true;
+        isJumpBufferEnabled = true;
         jumpBufferTimer = jumpBufferTime;
     }
     private void ResetJumpBufferTimer()
     {
-        jumpBufferTimerEnabled = false;
+        isJumpBufferEnabled = false;
         jumpBufferTimer = 0f;
     }
     private void CheckJumpTrigger()
     {        
         // If a possible Normal Jump is detected (Either through isGrounded or through CoyoteTime)
-        if((isGrounded || coyoteTimerEnabled) && jumpBufferTimerEnabled)
+        if((isGrounded || isCoyoteTimerEnabled) && isJumpBufferEnabled)
         {            
             // Reset the Jumping Buffer Timer
             ResetJumpBufferTimer();
@@ -657,7 +696,7 @@ public class PlayerMovement : MonoBehaviour
             jumpTriggered = true;
         }
         // Otherwise, if a Wall Jump is detected (wallFwdDetected by raycastWallFwd)
-        else if ((!isGrounded && isWallDetected) && jumpBufferTimerEnabled)
+        else if ((!isGrounded && isWallDetected) && isJumpBufferEnabled)
         {
             // Reset the Jumping Buffer Timer             
             ResetJumpBufferTimer();
@@ -680,6 +719,36 @@ public class PlayerMovement : MonoBehaviour
     private void ResetJumpTimer()
     {
         jumpingTimer = 0;
+    }
+    #endregion
+    #region Hook
+    private void UdpateHookThrownTimer()
+    {
+        // Jump Buffer Timer update
+        hookThrownTimer -= Time.fixedDeltaTime;
+
+        // Reset Jump Buffer Timer
+        if (hookThrownTimer <= 0)
+        {
+            ResetHookThrownTimer();
+        }
+    }
+    private void SetHookThrownTimer()
+    {
+        isHookThrownEnabled = true;
+        hookThrownTimer = hookThrownMaxTime;
+
+        // Trigger the Grappling Hook (Show Line Renderer + Enable Distance Joint 2D)        
+        OnHookThrown?.Invoke();
+    }
+    private void ResetHookThrownTimer()
+    {
+        isHookThrownEnabled = false;
+        hookThrownTimer = 0f;
+
+        // Disable the Grappling Hook after elapsed a certain time
+        if(!grapplingHook.IsHookAttached)
+            OnHookPickUp?.Invoke();        
     }
     #endregion
     #endregion
@@ -840,6 +909,20 @@ public class PlayerMovement : MonoBehaviour
                 rb2DDirVelX = filteredInputX * jumpHorizSpeed;
                 //rb2DDirVelX = 0;
                 break;
+            case PlayerState.Swinging:                
+                float swingForce = 30f;
+                float swingFriction = 5f;
+
+                // Add soft Swinging force
+                rb2D.AddForce(Vector2.right * inputX * swingForce);
+
+                //// Limit Max Speed                
+                //rb2DDirVelX = Mathf.Clamp(rb2DDirVelX, -5, 5);
+
+                // Add manual friction in case of no Input                
+                if(inputX == 0)
+                    rb2DDirVelX = Mathf.Lerp(rb2D.linearVelocityX, 0, Time.fixedDeltaTime * swingFriction);                
+                break;
             default:
                 break;
         }
@@ -882,7 +965,10 @@ public class PlayerMovement : MonoBehaviour
                     else if (currentState == PlayerState.WallJumping)
                         rb2DJumpVelY = Vector2.up.y * wallJumpVertSpeed;
                 }
-                break;                        
+                break;
+            case PlayerState.Swinging:
+                //rb2DJumpVelY = rb2D.linearVelocity.y;
+                break;
             default:
                 break;
         }
@@ -921,6 +1007,11 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case PlayerState.WallJumping:                      
                 rb2D.linearVelocity = targetVelocity;
+                break;
+            case PlayerState.Swinging:
+                //rb2D.linearVelocity = targetVelocity;
+                if (inputX == 0)
+                    rb2D.linearVelocity = new Vector2(rb2DDirVelX, rb2D.linearVelocityY);
                 break;
             default:
                 break;

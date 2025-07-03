@@ -123,7 +123,7 @@ public class PlayerSFX : MonoBehaviour
         else
             PlaySFXOneShot(dustLandingJumpSFX, dustLandingJumpVolume);
         audioSource.volume = 1f;
-        Debug.Log("Played Landing Jumping SFX");
+        //Debug.Log("Played Landing Jumping SFX");
     }
     #endregion
     #region Wall Sliding    
