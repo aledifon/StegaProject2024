@@ -71,14 +71,14 @@ public class PlayerVFX : MonoBehaviour
         waterLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;
         dustLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;                
 
-        Debug.Log("DustTakeOff LocalPos = " + dustTakeOffJumpPS.transform.localPosition);
-        Debug.Log("DustTakeOff LocalRot = " + dustTakeOffJumpPS.transform.localRotation);
+        //Debug.Log("DustTakeOff LocalPos = " + dustTakeOffJumpPS.transform.localPosition);
+        //Debug.Log("DustTakeOff LocalRot = " + dustTakeOffJumpPS.transform.localRotation);
         
-        Debug.Log("DustLanding LocalPos = " + dustLandingJumpPS.transform.localPosition);
-        Debug.Log("DustLanding LocalRot = " + dustLandingJumpPS.transform.localRotation);
+        //Debug.Log("DustLanding LocalPos = " + dustLandingJumpPS.transform.localPosition);
+        //Debug.Log("DustLanding LocalRot = " + dustLandingJumpPS.transform.localRotation);
         
-        Debug.Log("WallJump LocalPos = " + wallJumpPS.transform.localPosition);
-        Debug.Log("WallJump LocalRot = " + wallJumpPS.transform.localRotation);
+        //Debug.Log("WallJump LocalPos = " + wallJumpPS.transform.localPosition);
+        //Debug.Log("WallJump LocalRot = " + wallJumpPS.transform.localRotation);
     }    
     private void OnEnable()
     {
@@ -158,7 +158,7 @@ public class PlayerVFX : MonoBehaviour
 
         isWalkVFXRunning = true;
 
-        Debug.Log("Walking VFX Started");
+        //Debug.Log("Walking VFX Started");
     }
     private void StopWalkVFX()
     {
@@ -169,7 +169,7 @@ public class PlayerVFX : MonoBehaviour
 
         isWalkVFXRunning = false;
 
-        Debug.Log("Walking VFX Stopped");
+        //Debug.Log("Walking VFX Stopped");
     }
     private void UpdateWalkVFXDirection()
     {
@@ -201,7 +201,7 @@ public class PlayerVFX : MonoBehaviour
             // Clear the Player as parent of the PS to show it properly
             dustTakeOffJumpPS.transform.parent = null;            
         }        
-        Debug.Log("Take Off Jump VFX Started");
+        //Debug.Log("Take Off Jump VFX Started");
     }
     private void ResetParentOfTakeOffJumpPS()
     {        
@@ -246,7 +246,7 @@ public class PlayerVFX : MonoBehaviour
             // Clear the Player as parent of the PS to show it properly
             dustLandingJumpPS.transform.parent = null;            
         }            
-        Debug.Log("Landing Jump VFX Started");
+        //Debug.Log("Landing Jump VFX Started");
     }
     private void ResetParentOfLandingJumpPS()
     {
@@ -288,7 +288,7 @@ public class PlayerVFX : MonoBehaviour
 
         //isWallSlidingVFXRunning = true;
 
-        Debug.Log("Wall Sliding VFX Started");
+        //Debug.Log("Wall Sliding VFX Started");
     }
     private void StopWallSlidingVFX()
     {
@@ -299,7 +299,7 @@ public class PlayerVFX : MonoBehaviour
 
         //isWallSlidingVFXRunning = false;
 
-        Debug.Log("Wall Sliding VFX Stopped");
+        //Debug.Log("Wall Sliding VFX Stopped");
     }
     private void SetWallSlidingVFXDirection()
     {
@@ -338,7 +338,7 @@ public class PlayerVFX : MonoBehaviour
         // Clear the Player as parent of the PS to show it properly
         wallJumpPS.transform.parent = null;                
 
-        Debug.Log("Wall Jump VFX Stopped");
+        //Debug.Log("Wall Jump VFX Stopped");
     }
     private void SetWallJumpPSRot()
     {

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Acorn
   - Ant
+  - JointPoint
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Background
   - Wall
   - Platform
-  - 
+  - JointLayer
   - 
   - 
   - 
