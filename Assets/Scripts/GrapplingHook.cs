@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Net;
 
 public class GrapplingHook : MonoBehaviour
 {
@@ -8,7 +9,12 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private LayerMask grapplableLayer;         // Capas donde se puede enganchar el gancho        
     [SerializeField] private float ropeAngle;                   // Grappling-Hook Rope Angle    
     [SerializeField] private float ropeLength;                  // Grappling-Hook Rope length
-    public float RopeLength { get { return ropeLength; } }    
+    public float RopeLength { get { return ropeLength; } }
+    [SerializeField] private Material ropeHookMaterialLeftSide;
+    [SerializeField] private Material ropeHookMaterialRightSide;
+
+    [Header("Rope Hook Sprite")]
+    [SerializeField] Sprite ropeHookSprite;
 
     // Determines the player's direction
     float flipDirection = 1;                    // 1 = Player looks right ; -1 = Player looks left
@@ -105,6 +111,8 @@ public class GrapplingHook : MonoBehaviour
             hookThrownMaxTime = playerMovement.HookThrownMaxTime;
 
             UpdateGrapplingHook();
+
+            Debug.Log(lineRenderer.material.mainTextureScale);
         }            
     }
     #endregion    
@@ -155,13 +163,17 @@ public class GrapplingHook : MonoBehaviour
         // Get the Line Renderer Component
         lineRenderer = GetComponent<LineRenderer>();
         // Configura el ancho de la línea
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
+        //lineRenderer.startWidth = 0.3f;
+        //lineRenderer.endWidth = 0.75f;
+        SetLineRendererSettings(IsHookAttached);
         // Set the initial colors as black and visible
-        lineRenderer.startColor = new Color(0f, 0f, 0f, 1f);
-        lineRenderer.endColor = new Color(0f, 0f, 0f, 1f);
+        lineRenderer.startColor = Color.white;
+        lineRenderer.endColor = Color.white;
         // Set only 1 point on the Line Renderer by default
         lineRenderer.positionCount = 1;
+        // Set the Rope Hook Material and the right TextureMode
+        //lineRenderer.material = ropeHookMaterialRightSide;
+        lineRenderer.textureMode = LineTextureMode.Stretch;
         // Desactivar la cuerda al inicio
         lineRenderer.enabled = false;
     }
@@ -179,6 +191,9 @@ public class GrapplingHook : MonoBehaviour
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, playerRigidbody.position);  // Punto de inicio (jugador)
         lineRenderer.SetPosition(1, endPoint);                  // Punto final (enganche)
+        SetMaterialTexture(playerRigidbody.position, endPoint);
+        // Update the Line Renderer Width Settings
+        SetLineRendererSettings(IsHookAttached);
         lineRenderer.enabled = true;        
     }
     #endregion    
@@ -277,10 +292,63 @@ public class GrapplingHook : MonoBehaviour
         // Update the Line Renderer depending on the Hooking State
         lineRenderer.SetPosition(0, playerRigidbody.position);          // Starting Point (Player's rb)
         if (isHookAttached)
+        {
             //lineRenderer.SetPosition(1, distanceJoint.connectedAnchor);    // Joint Point
             lineRenderer.SetPosition(1, distanceJoint.connectedBody.position);    // Joint Point
+
+            SetMaterialTexture(playerRigidbody.position, distanceJoint.connectedBody.position);
+        }
         else
-            lineRenderer.SetPosition(1, endRopePoint);                  // Rope Direction   
+        {
+            lineRenderer.SetPosition(1, endRopePoint);                  // Rope Direction
+
+            SetMaterialTexture(playerRigidbody.position, endRopePoint);
+        }            
+    }
+    private void SetMaterialTexture(Vector3 startPoint, Vector3 endPoint)
+    {
+        // Calculate the distance between the Starting and ending point of the LineRenderer
+        float distance = Vector3.Distance(startPoint, endPoint);
+
+        // Length in Horiz World Units of the Sprite
+        // 1. Get the width of the sprite (859 px)
+        float widthSpriteInPixels = ropeHookSprite.rect.width;
+        // 2. Check the PPU field of the Sprite (215 PPU)
+        float ppuSprite = ropeHookSprite.pixelsPerUnit;
+        // 3. Calculate the width units --> 859px /215 px/uds = 4 uds.
+        float textureLengthUnits = widthSpriteInPixels/ppuSprite; 
+
+        // Flip en Y según dirección visual (flipX)
+        //float yFlip = spriteRenderer.flipX ? 1f : -1f;        
+        lineRenderer.material = (flipDirection == -1) ? ropeHookMaterialLeftSide : ropeHookMaterialRightSide;        
+
+        // Aplica el tiling en el eje X (a lo largo de la línea)
+        //lineRenderer.material.mainTextureScale = new Vector2(
+        //                                    (distance / textureLengthUnits),
+        //                                    1f);
+        
+        //lineRenderer.material.mainTextureOffset = Vector2.zero; // Aseguramos que no haya desplazamiento extraño        
+    }
+    private void SetLineRendererSettings(bool isHooked)
+    {
+        if (isHooked)
+        {
+            // Set the Line Width
+            lineRenderer.startWidth = 0.5f;
+            lineRenderer.endWidth = 0.5f;
+
+            // Set the Texture Scale
+            lineRenderer.material.mainTextureScale = new Vector2(1f, 1.3f);
+        }
+        else
+        {
+            // Set the Line Width
+            lineRenderer.startWidth = 0.3f;
+            lineRenderer.endWidth = 0.75f;
+
+            // Set the Texture Scale
+            lineRenderer.material.mainTextureScale = new Vector2(1f,1f);
+        }
     }
     #endregion
     IEnumerator DetectGrapplingJoint()
@@ -343,9 +411,11 @@ public class GrapplingHook : MonoBehaviour
 
                     // Update the ending point as the hook point (Only if succesful hooking)           
                     //lineRenderer.SetPosition(1, hit.point);
-                    lineRenderer.SetPosition(1, jointPoint);
+                    lineRenderer.SetPosition(1, jointPoint);                    
                     // Enables the flag which indicates the Hooking was successful
                     isHookAttached = true;
+                    // Update the Line Renderer Width Settings
+                    SetLineRendererSettings(IsHookAttached);
                     // Stops the coroutine
                     yield break;
                 }
@@ -366,7 +436,7 @@ public class GrapplingHook : MonoBehaviour
         CalculateRopeVectors();
 
         // Update the Line Renderer depending on the Hooking State
-        UpdateLineRenderer();
+        UpdateLineRenderer();        
 
         // Calculate the Tangential Force
         if (isHookAttached)
