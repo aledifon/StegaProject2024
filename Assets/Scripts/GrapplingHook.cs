@@ -62,6 +62,7 @@ public class GrapplingHook : MonoBehaviour
     public bool DistanceJointIsEnabled { get { return distanceJoint.enabled; } }
     public Vector2 DistanceJointConnAnchor { get { return distanceJoint.connectedAnchor; } }
 
+    #region Unity API
     private void OnEnable()
     {
         playerMovement.OnHookThrown += TriggerGrapplingHook;
@@ -72,7 +73,6 @@ public class GrapplingHook : MonoBehaviour
         playerMovement.OnHookThrown -= TriggerGrapplingHook;
         playerMovement.OnHookPickUp -= DisableGrapplingHook;
     }
-
     void Awake()
     {
         // Get the Player Movement script
@@ -90,7 +90,7 @@ public class GrapplingHook : MonoBehaviour
         ConfigureDistanceJoint();
         // Configure the Line Renderer Component
         ConfigureLineRenderer();
-    }
+    }    
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -98,19 +98,17 @@ public class GrapplingHook : MonoBehaviour
         //if (isHookEnabled)
         if (playerMovement.IsHookThrownEnabled || isHookAttached)
         {
-            flipDirection = spriteRenderer.flipX ? -1 : 1;  // Updates the the player's flip direction var every frame          
-
+            // Updates the the player's flip direction var every frame          
+            flipDirection = spriteRenderer.flipX ? -1 : 1;  
+            // Update the HookThrownTimer
             elapsedHookThrownTime = (playerMovement.HookThrownMaxTime - playerMovement.HookThrownTimer);
             hookThrownMaxTime = playerMovement.HookThrownMaxTime;
 
             UpdateGrapplingHook();
         }            
     }
-
-    /////////////////////////////////
-    // SETTINGS COMPONENTS METHODS //
-    /////////////////////////////////
-
+    #endregion    
+    #region Components Setup
     // Create and set initial settings to a Distance Joint Component
     // (It will allow to keep a fixed distance between the player and the Joint Point)
     void ConfigureDistanceJoint()
@@ -162,6 +160,8 @@ public class GrapplingHook : MonoBehaviour
         // Set the initial colors as black and visible
         lineRenderer.startColor = new Color(0f, 0f, 0f, 1f);
         lineRenderer.endColor = new Color(0f, 0f, 0f, 1f);
+        // Set only 1 point on the Line Renderer by default
+        lineRenderer.positionCount = 1;
         // Desactivar la cuerda al inicio
         lineRenderer.enabled = false;
     }
@@ -176,15 +176,13 @@ public class GrapplingHook : MonoBehaviour
         //lineRenderer.endColor = startColor;
 
         // Activar y configurar el LineRenderer para la cuerda visual
-        lineRenderer.enabled = true;
+        lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, playerRigidbody.position);  // Punto de inicio (jugador)
-        //lineRenderer.SetPosition(1, endPoint);                  // Punto final (enganche)
+        lineRenderer.SetPosition(1, endPoint);                  // Punto final (enganche)
+        lineRenderer.enabled = true;        
     }
-
-    ///////////////////////////////////
-    // RAYCAST & CALCULATION METHODS //
-    ///////////////////////////////////
-
+    #endregion    
+    #region Calculation
     // Rope Vectors calculation
     void CalculateRopeVectors()
     {
@@ -207,14 +205,91 @@ public class GrapplingHook : MonoBehaviour
     //}
 
     // Launch a Raycast during a certain time in order to detect Hook points
+    // Calculate the TangentialForce to be applied to keep the armonic movement.
+    void CalculateTangentialForce()
+    {
+        //tangentialForce = Vector2.Perpendicular(distanceJoint.connectedAnchor - (Vector2)playerRigidbody.position).normalized;
+
+        // Calculate the direction between the joint and the player
+        Vector2 directionToAnchor = distanceJoint.connectedBody.position - (Vector2)playerRigidbody.position;
+        // Normalized the rope direction (get only the direction without the magnitude)
+        Vector2 normalizedRopeDirection = directionToAnchor.normalized;
+
+        // Get the Angle between the rope and the player
+        currentRopeAngle = CalculateRopeAngle(normalizedRopeDirection);
+
+        // Update the tangentialForce in func. of the current Rope Angle
+        if (currentRopeAngle > minRopeAngle && currentRopeAngle < 90)
+            tangentialForce = -Vector2.Perpendicular(normalizedRopeDirection);
+        else if (currentRopeAngle > 90 && currentRopeAngle < maxRopeAngle)
+            tangentialForce = Vector2.Perpendicular(normalizedRopeDirection);
+        else if (currentRopeAngle == 90 || currentRopeAngle > maxRopeAngle || currentRopeAngle < minRopeAngle)
+            tangentialForce = Vector2.zero;
+
+        // Check if the Rope Angle is within the limits
+        isWithinAngleLimits = (currentRopeAngle >= (minRopeAngle + 10) && currentRopeAngle <= (maxRopeAngle - 10));
+
+        // Visualizar la dirección tangencial
+        Debug.DrawRay(playerRigidbody.position, tangentialForce, Color.magenta);
+        //Debug.Log("Tangential Force = " + tangentialForce);
+    }
+    float CalculateRopeAngle(Vector2 normalizedRopeDirection)
+    {
+        // Get the angle between the rope and the horizontal (Escalar product)
+        float dotProduct = Vector2.Dot(normalizedRopeDirection, Vector2.right);
+        // Get the angle (from the trigon. relation cos(phi)=AxB; phi = acos(AxB))
+        float angleInRadians = Mathf.Acos(dotProduct);
+        // Angle 2 rads conversion
+        float angleInDegrees = Mathf.Rad2Deg * angleInRadians;
+        // Debugging
+        Debug.Log("Ángulo entre la cuerda y la horizontal: " + angleInDegrees);
+        return angleInDegrees;
+    }
+    #endregion
+    #region Grappling Hook
+    #region Visual
+    void FadingGrapplingHook(float elapsedTime, float totalDuration)
+    {
+        // Update the fading Factor
+        //fadingElapsedTime += elapsedTime;
+        fadingFactor = elapsedTime / totalDuration;
+
+        // fadingFactor Limitation
+        if (fadingFactor >= 1)
+            fadingFactor = 1;
+
+        //// Apply the fading effect to the LineRenderer color
+        //Color currentColor = Color.Lerp(startColor, endColor, fadingFactor);  
+        //lineRenderer.startColor = currentColor;  
+        //lineRenderer.endColor = currentColor;
+
+        // Ajustar la longitud de la cuerda (LineRenderer) gradualmente
+        //lineRenderer.SetPosition(1, playerRigidbody.position + ropeDirection * (fadingFactor * ropeLength));
+        //lineRenderer.SetPosition(1, fadingFactor * endRopePoint);
+    }
+    void UpdateLineRenderer()
+    {
+        // Apply the fading effect to the LineRenderer color
+        //Color currentColor = Color.Lerp(startColor, endColor, fadingFactor);
+        //lineRenderer.startColor = currentColor;
+        //lineRenderer.endColor = currentColor;
+
+        // Update the Line Renderer depending on the Hooking State
+        lineRenderer.SetPosition(0, playerRigidbody.position);          // Starting Point (Player's rb)
+        if (isHookAttached)
+            //lineRenderer.SetPosition(1, distanceJoint.connectedAnchor);    // Joint Point
+            lineRenderer.SetPosition(1, distanceJoint.connectedBody.position);    // Joint Point
+        else
+            lineRenderer.SetPosition(1, endRopePoint);                  // Rope Direction   
+    }
+    #endregion
     IEnumerator DetectGrapplingJoint()
     {
+        yield return new WaitUntil (() => playerMovement.IsHookThrownEnabled);
+
         // Raycast number and the scanning angle
         int raycastCount = 10;
-        float raycastAngleRange = 45f; // Total angle on degrees (i.e.: 45 degrees around the main direction)
-
-        // Reset the Fading Factor value        
-        fadingFactor = 0f;
+        float raycastAngleRange = 45f; // Total angle on degrees (i.e.: 45 degrees around the main direction)        
 
         // Launch a bunch of Raycast during the amount of seconds defined on raycastDuration        
         while (playerMovement.IsHookThrownEnabled)
@@ -278,91 +353,14 @@ public class GrapplingHook : MonoBehaviour
 
             // Waits till the next frame
             yield return null;
-        }        
-    }
-    ////////////////////////////
-    // GRAPPLING-HOOK METHODS //
-    ////////////////////////////
-    void FadingGrapplingHook(float elapsedTime, float totalDuration)
-    {
-        // Update the fading Factor
-        //fadingElapsedTime += elapsedTime;
-        fadingFactor = elapsedTime / totalDuration;
-
-        // fadingFactor Limitation
-        if (fadingFactor >= 1)
-            fadingFactor = 1;
-
-        //// Apply the fading effect to the LineRenderer color
-        //Color currentColor = Color.Lerp(startColor, endColor, fadingFactor);  
-        //lineRenderer.startColor = currentColor;  
-        //lineRenderer.endColor = currentColor;
-
-        // Ajustar la longitud de la cuerda (LineRenderer) gradualmente
-        //lineRenderer.SetPosition(1, playerRigidbody.position + ropeDirection * (fadingFactor * ropeLength));
-        //lineRenderer.SetPosition(1, fadingFactor * endRopePoint);
-    }
-    void UpdateLineRenderer()
-    {
-        // Apply the fading effect to the LineRenderer color
-        //Color currentColor = Color.Lerp(startColor, endColor, fadingFactor);
-        //lineRenderer.startColor = currentColor;
-        //lineRenderer.endColor = currentColor;
-
-        // Update the Line Renderer depending on the Hooking State
-        lineRenderer.SetPosition(0, playerRigidbody.position);          // Starting Point (Player's rb)
-        if (isHookAttached)
-            //lineRenderer.SetPosition(1, distanceJoint.connectedAnchor);    // Joint Point
-            lineRenderer.SetPosition(1, distanceJoint.connectedBody.position);    // Joint Point
-        else
-            lineRenderer.SetPosition(1, endRopePoint);                  // Rope Direction   
-    }
-    // Calculate the TangentialForce to be applied to keep the armonic movement.
-    void CalculateTangentialForce()
-    {
-        //tangentialForce = Vector2.Perpendicular(distanceJoint.connectedAnchor - (Vector2)playerRigidbody.position).normalized;
-
-        // Calculate the direction between the joint and the player
-        Vector2 directionToAnchor = distanceJoint.connectedBody.position - (Vector2)playerRigidbody.position;
-        // Normalized the rope direction (get only the direction without the magnitude)
-        Vector2 normalizedRopeDirection = directionToAnchor.normalized;
-
-        // Get the Angle between the rope and the player
-        currentRopeAngle = CalculateRopeAngle(normalizedRopeDirection);
-
-        // Update the tangentialForce in func. of the current Rope Angle
-        if (currentRopeAngle > minRopeAngle && currentRopeAngle < 90)
-            tangentialForce = -Vector2.Perpendicular(normalizedRopeDirection);
-        else if (currentRopeAngle > 90 && currentRopeAngle < maxRopeAngle)
-            tangentialForce = Vector2.Perpendicular(normalizedRopeDirection);
-        else if (currentRopeAngle == 90 || currentRopeAngle > maxRopeAngle || currentRopeAngle < minRopeAngle)
-            tangentialForce = Vector2.zero;
-
-        // Check if the Rope Angle is within the limits
-        isWithinAngleLimits = (currentRopeAngle >= (minRopeAngle + 10) && currentRopeAngle <= (maxRopeAngle - 10));
-
-        // Visualizar la dirección tangencial
-        Debug.DrawRay(playerRigidbody.position, tangentialForce, Color.magenta);
-        //Debug.Log("Tangential Force = " + tangentialForce);
-    }
-    float CalculateRopeAngle(Vector2 normalizedRopeDirection)
-    {
-        // Get the angle between the rope and the horizontal (Escalar product)
-        float dotProduct = Vector2.Dot(normalizedRopeDirection, Vector2.right);
-        // Get the angle (from the trigon. relation cos(phi)=AxB; phi = acos(AxB))
-        float angleInRadians = Mathf.Acos(dotProduct);
-        // Angle 2 rads conversion
-        float angleInDegrees = Mathf.Rad2Deg * angleInRadians;
-        // Debugging
-        Debug.Log("Ángulo entre la cuerda y la horizontal: " + angleInDegrees);
-        return angleInDegrees;
+        }
     }
     // Updates the Line Renderer when the player is on the Swinging State
     void UpdateGrapplingHook()
     {
         // Update the Fading Factor
         if (fadingFactor < 1)
-            FadingGrapplingHook(elapsedHookThrownTime,hookThrownMaxTime);
+            FadingGrapplingHook(elapsedHookThrownTime, hookThrownMaxTime);
 
         // Rope Vectors calculation        
         CalculateRopeVectors();
@@ -374,6 +372,7 @@ public class GrapplingHook : MonoBehaviour
         if (isHookAttached)
             CalculateTangentialForce();
     }
+    #region Enable/Disable GrapplingHook
     // Enables the Grappling Hook elements
     public void TriggerGrapplingHook()
     {        
@@ -381,11 +380,17 @@ public class GrapplingHook : MonoBehaviour
         minRopeAngle = 90 - 60;
         maxRopeAngle = 90 + 60;
 
+        // Reset the Fading Factor value        
+        fadingFactor = 0f;
+
+        // Set the current player's flip direction
+        flipDirection = spriteRenderer.flipX ? -1 : 1;
+
         // Rope Vectors calculation        
         CalculateRopeVectors();
 
         // Activar y configurar el LineRenderer para la cuerda visual        
-        EnableLineRenderer(endRopePoint);
+        EnableLineRenderer(endRopePoint);        
 
         // Raycast launching to detect the Joint        
         StartCoroutine(nameof(DetectGrapplingJoint));
@@ -394,10 +399,12 @@ public class GrapplingHook : MonoBehaviour
     public void DisableGrapplingHook()
     {
         // Disable the Hook flag        
-        isHookAttached = false;
+        isHookAttached = false;        
 
         //hingeJoint.enabled = false;     // Disable the Hinge Joint
         lineRenderer.enabled = false;   // Disable the visual Rope (Line Renderer)
         distanceJoint.enabled = false;  // Disable the Distance Joint
     }
+    #endregion
+    #endregion
 }
