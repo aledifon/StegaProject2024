@@ -734,12 +734,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     private void SetHookThrownTimer()
-    {
-        isHookThrownEnabled = true;
-        hookThrownTimer = hookThrownMaxTime;
-
+    {        
         // Trigger the Grappling Hook (Show Line Renderer + Enable Distance Joint 2D)        
         OnHookThrown?.Invoke();
+
+        hookThrownTimer = hookThrownMaxTime;
+        isHookThrownEnabled = true;
     }
     private void ResetHookThrownTimer()
     {
