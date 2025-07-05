@@ -112,7 +112,7 @@ public class GrapplingHook : MonoBehaviour
 
             UpdateGrapplingHook();
 
-            Debug.Log(lineRenderer.material.mainTextureScale);
+            //Debug.Log(lineRenderer.material.mainTextureScale);
         }            
     }
     #endregion    
@@ -247,17 +247,21 @@ public class GrapplingHook : MonoBehaviour
         // Visualizar la dirección tangencial
         Debug.DrawRay(playerRigidbody.position, tangentialForce, Color.magenta);
         //Debug.Log("Tangential Force = " + tangentialForce);
+
+        //Debug.Log("Rope Angle = " + currentRopeAngle);
     }
     float CalculateRopeAngle(Vector2 normalizedRopeDirection)
     {
-        // Get the angle between the rope and the horizontal (Escalar product)
+        // Get the angle between the rope and the horizontal (Escalar product -> = cos(phi))
         float dotProduct = Vector2.Dot(normalizedRopeDirection, Vector2.right);
         // Get the angle (from the trigon. relation cos(phi)=AxB; phi = acos(AxB))
         float angleInRadians = Mathf.Acos(dotProduct);
         // Angle 2 rads conversion
         float angleInDegrees = Mathf.Rad2Deg * angleInRadians;
         // Debugging
-        Debug.Log("Ángulo entre la cuerda y la horizontal: " + angleInDegrees);
+        //Debug.Log("Ángulo entre la cuerda y la horizontal: " + angleInDegrees);
+        //Debug.Log("DotProduct = " + dotProduct);
+
         return angleInDegrees;
     }
     #endregion
