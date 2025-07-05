@@ -163,8 +163,7 @@ public class PlayerMovement : MonoBehaviour
     public event Action OnWallJump;
 
     public event Action OnHookThrown;
-    public event Action OnHookPickUp;
-    public event Action OnHookRelease;
+    public event Action OnHookRelease;    
     public event Action OnStartRopeSwinging;
     public event Action OnStopRopeSwinging;
 
@@ -334,7 +333,7 @@ public class PlayerMovement : MonoBehaviour
         //AnimatingJumping();
 
         // Animations
-        UdpateAnimations();
+        UpdateAnimations();
     }
     // Collisions
     private void OnCollisionEnter2D(Collision2D collision)
@@ -797,7 +796,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Disable the Grappling Hook after elapsed a certain time
         if(!grapplingHook.IsHookAttached)
-            OnHookPickUp?.Invoke();        
+            OnHookRelease?.Invoke();        
     }
     #endregion
     #endregion
@@ -1192,9 +1191,10 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("IsJumping", false);
         animator.SetBool("IsFalling", false);
         animator.SetBool("IsWallSliding", false);
+        animator.SetBool("IsSwinging", false);
         animator.SetBool("Hurt", false);
     }
-    private void UdpateAnimations()
+    private void UpdateAnimations()
     {
         ClearAnimationFlags();
 
@@ -1215,6 +1215,9 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case PlayerState.WallBraking:
                 animator.SetBool("IsWallSliding", true);
+                break;
+            case PlayerState.Swinging:
+                animator.SetBool("IsSwinging", true);
                 break;
             case PlayerState.Hurting:
                 animator.SetBool("Hurt", true);

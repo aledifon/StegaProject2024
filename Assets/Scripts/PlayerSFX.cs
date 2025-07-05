@@ -28,7 +28,8 @@ public class PlayerSFX : MonoBehaviour
     [SerializeField] private AudioClip hookThrownSFX;    
     [SerializeField] private AudioClip hookAttachedSFX;    
     [SerializeField] private AudioClip hookReleaseSFX;    
-    [SerializeField] private AudioClip[] ropeSwingSFX;    
+    [SerializeField] private AudioClip[] ropeSwingSFX;
+    [SerializeField, Range(0f, 1f)] float ropeSwingVolume;  // ??f
     private bool isRopeSwingingSFXRunning;
 
     [Header("Acorn")]
@@ -102,6 +103,12 @@ public class PlayerSFX : MonoBehaviour
         audioSource.clip = audioClip;
         audioSource.Play();
     }
+    private void PlaySFXSingle(AudioClip audioClip, float volume)
+    {
+        audioSource.clip = audioClip;
+        audioSource.volume = volume;
+        audioSource.Play();
+    }    
     private void StopSFX()
     {
         audioSource.Stop();
@@ -189,13 +196,16 @@ public class PlayerSFX : MonoBehaviour
     private void StopRopeSwingingSFX()
     {
         isRopeSwingingSFXRunning = false;
+        StopSFX();
+        
+        audioSource.volume = 1f;                // Reset the Volume to its def value.
     }
     private void PlayRopeSwingingSFX()
     {
         int n;
         
         n = Random.Range(0, ropeSwingSFX.Length);
-        PlaySFXSingle(ropeSwingSFX[n]);
+        PlaySFXSingle(ropeSwingSFX[n],ropeSwingVolume);
         
         //float randomPitch = Random.Range(lowPitchRange,highPitchRange);
         //audioSource.pitch = randomPitch;                

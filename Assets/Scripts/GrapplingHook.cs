@@ -76,13 +76,13 @@ public class GrapplingHook : MonoBehaviour
     #region Unity API
     private void OnEnable()
     {
-        playerMovement.OnHookThrown += TriggerGrapplingHook;
-        playerMovement.OnHookPickUp += DisableGrapplingHook;
+        playerMovement.OnHookThrown += TriggerGrapplingHook;        
+        playerMovement.OnHookRelease += DisableGrapplingHook;
     }
     private void OnDisable()
     {
-        playerMovement.OnHookThrown -= TriggerGrapplingHook;
-        playerMovement.OnHookPickUp -= DisableGrapplingHook;
+        playerMovement.OnHookThrown -= TriggerGrapplingHook;        
+        playerMovement.OnHookRelease -= DisableGrapplingHook;
     }
     void Awake()
     {
