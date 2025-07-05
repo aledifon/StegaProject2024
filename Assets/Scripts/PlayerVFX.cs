@@ -92,6 +92,8 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnStopWallSliding += StopWallSlidingVFX;
 
         playerMovement.OnWallJump += PlayWallJumpVFX;
+
+        playerMovement.OnStopRopeSwinging += PlayTakeOffJumpVFX;
     }
     private void OnDisable()
     {
@@ -105,6 +107,8 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnStopWallSliding -= StopWallSlidingVFX;
 
         playerMovement.OnWallJump -= PlayWallJumpVFX;
+
+        playerMovement.OnStopRopeSwinging -= PlayTakeOffJumpVFX;
     }
     private void Update()
     {
