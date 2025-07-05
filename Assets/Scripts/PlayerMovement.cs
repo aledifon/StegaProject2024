@@ -64,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
     // Define max Swing Speed
     [SerializeField] float maxSwingSpeed;                   // = 100f;
     [SerializeField] float maxInitialSwingSpeed;            // 20f;
+    [SerializeField] bool isRopeSwinging;
 
     // Coyote Time vars
     [Header("Coyote Time")]
@@ -163,6 +164,9 @@ public class PlayerMovement : MonoBehaviour
 
     public event Action OnHookThrown;
     public event Action OnHookPickUp;
+    public event Action OnHookRelease;
+    public event Action OnStartRopeSwinging;
+    public event Action OnStopRopeSwinging;
 
     public event Action OnEatAcorn;
     #endregion
@@ -294,6 +298,7 @@ public class PlayerMovement : MonoBehaviour
         isJumping = (currentState == PlayerState.Jumping || 
                     currentState == PlayerState.Falling ||
                     currentState == PlayerState.WallJumping);
+        isRopeSwinging = currentState == PlayerState.Swinging;
 
         // Jump Input Buffer
         CheckJumpTrigger();
@@ -422,8 +427,10 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (grapplingHook.IsHookAttached)
                 {
-                    currentState = PlayerState.Swinging;
                     ResetPlayerSpeedBeforeSwinging();
+                    OnStartRopeSwinging?.Invoke();
+                    currentState = PlayerState.Swinging;
+
                     Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (rb2D.linearVelocity.y < 0 && !isRecentlyJumping)
@@ -438,9 +445,11 @@ public class PlayerMovement : MonoBehaviour
                     currentState = PlayerState.Jumping;                    
                 }
                 else if (grapplingHook.IsHookAttached)
-                {
-                    currentState = PlayerState.Swinging;
+                {                    
                     ResetPlayerSpeedBeforeSwinging();
+                    OnStartRopeSwinging?.Invoke();
+                    currentState = PlayerState.Swinging;
+
                     Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping) 
@@ -474,9 +483,11 @@ public class PlayerMovement : MonoBehaviour
                     //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (grapplingHook.IsHookAttached)
-                {
-                    currentState = PlayerState.Swinging;
+                {                    
                     ResetPlayerSpeedBeforeSwinging();
+                    OnStartRopeSwinging?.Invoke();
+                    currentState = PlayerState.Swinging;
+
                     Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (isWallDetected)
@@ -514,6 +525,18 @@ public class PlayerMovement : MonoBehaviour
                     }                        
                 }
                 //Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                break;
+            case PlayerState.Swinging:
+                if (jumpTriggered)
+                {
+                    OnStopRopeSwinging?.Invoke();        // Trigger Stop Rope Swinging Event
+                    TriggerJump();
+                    OnHookRelease?.Invoke();            // Trigger Hook Release (Hook Jump) Event        
+
+                    currentState = PlayerState.Jumping;
+
+                    Debug.Log("From Swinging state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                }                
                 break;
             default:
                 // Default logic
@@ -723,6 +746,19 @@ public class PlayerMovement : MonoBehaviour
 
             // Register a Wall Jumping Trigger Request
             wallJumpTriggered = true;
+        }
+        else if (isRopeSwinging && isJumpBufferEnabled)
+        {
+            // Reset the Jumping Buffer Timer
+            ResetJumpBufferTimer();
+            // Reset the Jumping Timer
+            ResetJumpTimer();            
+            //Set the Jumping Horizontal Speed in func. of the max Horiz Jump Distance and the Max Jump Horiz time
+            jumpHorizSpeed = maxJumpHorizDist /
+                            maxJumpHorizTime;
+
+            // Register a Jumping Trigger Request
+            jumpTriggered = true;
         }
     }
     private void UpdateJumpTimer()

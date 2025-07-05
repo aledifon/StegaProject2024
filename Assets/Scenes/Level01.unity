@@ -12696,6 +12696,12 @@ MonoBehaviour:
   dustLandingJumpVolume: 0.4
   wallSlidingSFX: {fileID: 8300000, guid: 98b9cf3c1259b8e4cbaf5cd90b6f3d8f, type: 3}
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
+  hookThrownSFX: {fileID: 8300000, guid: 0110efbc859eab642b836a0e6aba675d, type: 3}
+  hookAttachedSFX: {fileID: 8300000, guid: d77749aca17983445ac33f83de5af9cc, type: 3}
+  hookReleaseSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
+  ropeSwingSFX:
+  - {fileID: 8300000, guid: 79fed129d1942e54aa199d62a4af3791, type: 3}
+  - {fileID: 8300000, guid: e69168f715391914985cb7576f915bd2, type: 3}
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
   lowPitchRange: 0.95
   highPitchRange: 1.05
@@ -12785,6 +12791,7 @@ MonoBehaviour:
   maxSwingAngle: 140
   maxSwingSpeed: 100
   maxInitialSwingSpeed: 20
+  isRopeSwinging: 0
   maxCoyoteTime: 0.25
   coyoteTimer: 0
   isCoyoteTimerEnabled: 0
@@ -14881,6 +14888,7 @@ MonoBehaviour:
   maxSwingAngle: 170
   maxSwingSpeed: 5
   maxInitialSwingSpeed: 0
+  isRopeSwinging: 0
   maxCoyoteTime: 0.25
   coyoteTimer: 0
   isCoyoteTimerEnabled: 0
@@ -15227,6 +15235,10 @@ MonoBehaviour:
   dustLandingJumpVolume: 0
   wallSlidingSFX: {fileID: 8300000, guid: 98b9cf3c1259b8e4cbaf5cd90b6f3d8f, type: 3}
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
+  hookThrownSFX: {fileID: 0}
+  hookAttachedSFX: {fileID: 0}
+  hookReleaseSFX: {fileID: 0}
+  ropeSwingSFX: []
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
   lowPitchRange: 0.95
   highPitchRange: 1.05

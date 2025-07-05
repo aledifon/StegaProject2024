@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Net;
+using System;
 
 public class GrapplingHook : MonoBehaviour
 {
@@ -54,6 +55,10 @@ public class GrapplingHook : MonoBehaviour
     // Hook Enabled Flags    
     private bool isHookAttached;                                          // Is enabled as long as a Grappling Point has been reached
     public bool IsHookAttached { get { return isHookAttached; } }
+
+    #region Events & Delegates
+    public event Action OnHookAttached;
+    #endregion
 
     // GO components    
     private SpriteRenderer spriteRenderer;
@@ -420,6 +425,8 @@ public class GrapplingHook : MonoBehaviour
                     isHookAttached = true;
                     // Update the Line Renderer Width Settings
                     SetLineRendererSettings(IsHookAttached);
+                    // Trigger the OnHookAttached Event
+                    OnHookAttached?.Invoke();
                     // Stops the coroutine
                     yield break;
                 }

@@ -4,6 +4,7 @@ public class PlayerSFX : MonoBehaviour
 {
     private AudioSource audioSource;
     private PlayerMovement playerMovement;
+    private GrapplingHook grapplingHook;
 
     [Header("Walk")]
     [SerializeField] private AudioClip[] waterWalkSFX;
@@ -23,6 +24,13 @@ public class PlayerSFX : MonoBehaviour
     [Header("Wall Jump")]
     [SerializeField] private AudioClip wallJumpSFX;
 
+    [Header("Grappling Hook")]
+    [SerializeField] private AudioClip hookThrownSFX;    
+    [SerializeField] private AudioClip hookAttachedSFX;    
+    [SerializeField] private AudioClip hookReleaseSFX;    
+    [SerializeField] private AudioClip[] ropeSwingSFX;    
+    private bool isRopeSwingingSFXRunning;
+
     [Header("Acorn")]
     [SerializeField] private AudioClip eatAcornSFX;
 
@@ -34,6 +42,7 @@ public class PlayerSFX : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         playerMovement = GetComponent<PlayerMovement>();
+        grapplingHook = GetComponent<GrapplingHook>();
     }
     private void OnEnable()
     {
@@ -46,7 +55,13 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStartWallSliding += PlayWallSlidingSFX;
         playerMovement.OnStopWallSliding += StopWallSlidingSFX;
 
-        playerMovement.OnWallJump += PlayWallJumpSFX;
+        playerMovement.OnWallJump += PlayWallJumpSFX;        
+
+        playerMovement.OnHookThrown += PlayHookThrownSFX;
+        grapplingHook.OnHookAttached += PlayHookAttachedSFX;
+        playerMovement.OnHookRelease += PlayHookReleasedSFX;
+        playerMovement.OnStartRopeSwinging += TriggerRopeSwingingSFX;
+        playerMovement.OnStopRopeSwinging += StopRopeSwingingSFX;
 
         playerMovement.OnEatAcorn += PlayEatAcornSFX;
     }
@@ -63,14 +78,20 @@ public class PlayerSFX : MonoBehaviour
 
         playerMovement.OnWallJump -= PlayWallJumpSFX;
 
+        playerMovement.OnHookThrown -= PlayHookThrownSFX;
+        grapplingHook.OnHookAttached -= PlayHookAttachedSFX;
+        playerMovement.OnHookRelease -= PlayHookReleasedSFX;
+        playerMovement.OnStartRopeSwinging -= TriggerRopeSwingingSFX;
+        playerMovement.OnStopRopeSwinging -= StopRopeSwingingSFX;
+
         playerMovement.OnEatAcorn -= PlayEatAcornSFX;
     }
     private void Update()
     {
         if (isWalkSFXRunning && !audioSource.isPlaying)
             PlayWalkSFX();        
-
-
+        else if (isRopeSwingingSFXRunning && !audioSource.isPlaying)
+            PlayRopeSwingingSFX();
     }
     private void PlaySFXOneShot(AudioClip audioClip, float volume)
     {
@@ -144,6 +165,42 @@ public class PlayerSFX : MonoBehaviour
     {
         PlaySFXOneShot(wallJumpSFX, 1f);
     }
+    #endregion
+    #region Grappling-Hook
+    #region Hook
+    private void PlayHookThrownSFX()
+    {
+        PlaySFXOneShot(hookThrownSFX, 1f);
+    }
+    private void PlayHookAttachedSFX()
+    {
+        PlaySFXOneShot(hookAttachedSFX, 1f);
+    }
+    private void PlayHookReleasedSFX()
+    {
+        PlaySFXOneShot(hookReleaseSFX, 1f);
+    }
+    #endregion
+    #region Rope Swinging
+    private void TriggerRopeSwingingSFX()
+    {
+        isRopeSwingingSFXRunning = true;
+    }
+    private void StopRopeSwingingSFX()
+    {
+        isRopeSwingingSFXRunning = false;
+    }
+    private void PlayRopeSwingingSFX()
+    {
+        int n;
+        
+        n = Random.Range(0, ropeSwingSFX.Length);
+        PlaySFXSingle(ropeSwingSFX[n]);
+        
+        //float randomPitch = Random.Range(lowPitchRange,highPitchRange);
+        //audioSource.pitch = randomPitch;                
+    }
+    #endregion
     #endregion
     #region Acorn
     private void PlayEatAcornSFX()
