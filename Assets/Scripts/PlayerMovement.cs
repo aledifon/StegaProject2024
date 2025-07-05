@@ -55,6 +55,16 @@ public class PlayerMovement : MonoBehaviour
     public bool IsHookThrownEnabled => isHookThrownEnabled;
     [SerializeField] bool isHookUnlocked;
 
+    [Header("Swinging")]
+    [SerializeField] private float swingHorizForce;         // 0.8f    
+    [SerializeField] private float opposeSwingForceFactor;  // 0.5f
+    // Define min and max angles
+    [SerializeField] float minSwingAngle;                   // 60f
+    [SerializeField] float maxSwingAngle;                   // 140f;
+    // Define max Swing Speed
+    [SerializeField] float maxSwingSpeed;                   // = 100f;
+    [SerializeField] float maxInitialSwingSpeed;            // 20f;
+
     // Coyote Time vars
     [Header("Coyote Time")]
     [SerializeField] private float maxCoyoteTime;
@@ -413,6 +423,7 @@ public class PlayerMovement : MonoBehaviour
                 else if (grapplingHook.IsHookAttached)
                 {
                     currentState = PlayerState.Swinging;
+                    ResetPlayerSpeedBeforeSwinging();
                     Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (rb2D.linearVelocity.y < 0 && !isRecentlyJumping)
@@ -429,6 +440,7 @@ public class PlayerMovement : MonoBehaviour
                 else if (grapplingHook.IsHookAttached)
                 {
                     currentState = PlayerState.Swinging;
+                    ResetPlayerSpeedBeforeSwinging();
                     Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping) 
@@ -464,6 +476,7 @@ public class PlayerMovement : MonoBehaviour
                 else if (grapplingHook.IsHookAttached)
                 {
                     currentState = PlayerState.Swinging;
+                    ResetPlayerSpeedBeforeSwinging();
                     Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                 }
                 else if (isWallDetected)
@@ -871,6 +884,8 @@ public class PlayerMovement : MonoBehaviour
     #region Movement
     void UpdateHorizSpeed()
     {
+        float filteredInputX = 0f;
+
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -903,25 +918,46 @@ public class PlayerMovement : MonoBehaviour
 
                 // If rayWallDir = Vector2.right --> Wall on the right'side of the player
                 // If rayWallDir = Vector2.left-- > Wall on the left'side of the player
-                float filteredInputX = (rayWallDir.x > 0) ? 
+                filteredInputX = (rayWallDir.x > 0) ? 
                                 Mathf.Clamp(inputX, -1, 0) : Mathf.Clamp(inputX, 0, 1);                
 
                 rb2DDirVelX = filteredInputX * jumpHorizSpeed;
                 //rb2DDirVelX = 0;
                 break;
-            case PlayerState.Swinging:                
-                float swingForce = 30f;
-                float swingFriction = 5f;
+            case PlayerState.Swinging:
+                //// Define min and max angles
+                //float minSwingAngle = 10f;
+                //float maxSwingAngle = 170f;
+                //// Define max Swing Speed
+                //float maxSwingSpeed = 5;                
 
-                // Add soft Swinging force
-                rb2D.AddForce(Vector2.right * inputX * swingForce);
+                // Calculate Swinging Factor in func. of the rope angle
+                float ropeAngle = Mathf.Clamp(grapplingHook.CurrentRopeAngle, 0, 180);                
+                float factorSwingSpeed = Mathf.Sin(ropeAngle * Mathf.Deg2Rad);
+                factorSwingSpeed = Mathf.Clamp(factorSwingSpeed,0.2f,1f);
 
-                //// Limit Max Speed                
-                //rb2DDirVelX = Mathf.Clamp(rb2DDirVelX, -5, 5);
+                factorSwingSpeed = Mathf.Pow(factorSwingSpeed,3);
+                
+                Vector2 vectorSwingForce = Vector2.right * (inputX * factorSwingSpeed) * swingHorizForce;
 
-                // Add manual friction in case of no Input                
-                if(inputX == 0)
-                    rb2DDirVelX = Mathf.Lerp(rb2D.linearVelocityX, 0, Time.fixedDeltaTime * swingFriction);                
+                // Opcional: chequear si estás cerca de los límites y bloquear la fuerza hacia fuera
+                if ((ropeAngle <= minSwingAngle /*&& inputX < 0*/) || (ropeAngle >= maxSwingAngle /*&& inputX > 0*/))
+                {
+                    vectorSwingForce = Vector2.zero; // Sin fuerza para evitar pasar el límite
+                }
+
+                // Add extra friction in case the player is looking to the opposite movement direction
+                int swingingArea = (-Mathf.Cos(ropeAngle * Mathf.Deg2Rad) > 0) ? 1 : -1;
+                int playerDir = spriteRenderer.flipX ? -1 : 1;
+                if (playerDir != swingingArea)
+                    vectorSwingForce += Vector2.right * playerDir * swingHorizForce * opposeSwingForceFactor;
+
+                rb2D.AddForce(vectorSwingForce);                    
+
+                // Además, limitar la velocidad horizontal (clamp) para que no se pase
+                float clampedVelX = Mathf.Clamp(rb2D.linearVelocityX, -maxSwingSpeed, maxSwingSpeed);
+                rb2D.linearVelocity = new Vector2(clampedVelX, rb2D.linearVelocityY);
+
                 break;
             default:
                 break;
@@ -1010,99 +1046,19 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case PlayerState.Swinging:
                 //rb2D.linearVelocity = targetVelocity;
-                if (inputX == 0)
-                    rb2D.linearVelocity = new Vector2(rb2DDirVelX, rb2D.linearVelocityY);
+
+                //if (inputX == 0)
+                //rb2D.linearVelocity = new Vector2(rb2DDirVelX, rb2D.linearVelocityY);
+
+                //rb2D.linearVelocity = new Vector2(
+                //                Mathf.Lerp(rb2D.linearVelocity.x, targetVelocity.x, Time.fixedDeltaTime * lerpSpeed),
+                //                targetVelocity.y);
+
                 break;
             default:
                 break;
         }
     }
-
-    //void UpdateVerticalSpeedOld()
-    //{        
-    //    // Calculate the Player's Jump Speed component 
-    //    if (currentState == PlayerState.Jumping)
-    //    {
-    //        // Jump button released and elapsed min Time
-    //        if (jumpingTimer >= minJumpingTime)
-    //        {
-    //            // Stop giving jump speed;            
-    //            if (!jumpPressed || jumpingTimer >= maxJumpingTime)
-    //            {
-    //                rb2DJumpVelY *= 0.5f;
-    //            }
-    //            else
-    //                rb2DJumpVelY = Vector2.up.y * jumpVertSpeed;
-    //        }
-    //        else
-    //        {
-    //            // Jumping force through velocity
-    //            rb2DJumpVelY = Vector2.up.y * jumpVertSpeed;
-    //            //rb2D.velocity = new Vector2(rb2D.velocity.x,rb2DJumpVelY);
-    //        }
-    //    }
-    //    else if (currentState == PlayerState.WallJumping)
-    //    {
-    //        // TO IMPLEMENT
-    //    }
-    //    else if (currentState == PlayerState.Falling)
-    //    {
-    //        rb2DJumpVelY = rb2D.velocity.y;
-    //    }
-
-    //    // Jumping force through Add Force
-    //    //rb2D.AddForce(Vector2.up*jumpForce);                
-    //}
-
-    //void UpdatePlayerSpeedOld()
-    //{                        
-    //    switch (currentState)
-    //    {
-    //        case PlayerState.Idle:
-    //        case PlayerState.Running:
-    //            rb2DDirVelX = inputX * speed;
-    //            targetVelocity = new Vector2(rb2DDirVelX, rb2D.velocity.y);
-    //            break;
-    //        case PlayerState.Jumping:
-    //        case PlayerState.Falling:
-    //            rb2DDirVelX = inputX * jumpHorizSpeed;                                                
-    //            targetVelocity = new Vector2(rb2DDirVelX, rb2DJumpVelY);
-    //            break;            
-    //        case PlayerState.WallJumping:
-    //            targetVelocity = wallSpeedVector;
-    //            break;
-    //    }
-
-    //    // Updates the correspondent new velocity
-    //    // Jumping or Falling States
-    //    if (currentState == PlayerState.Jumping || currentState == PlayerState.Falling)
-    //    {
-    //        // Don't smooth the Y-axis while jumping
-    //        //rb2D.velocity = new Vector2(
-    //        //                Mathf.SmoothDamp(rb2D.velocity.x, targetVelocity.x, ref dampVelocity.x, smoothTime),
-    //        //                targetVelocity.y);
-
-    //        rb2D.velocity = new Vector2(
-    //                        Mathf.Lerp(rb2D.velocity.x, targetVelocity.x, Time.fixedDeltaTime * lerpSpeed),
-    //                        targetVelocity.y);
-    //        //rb2D.velocity = targetVelocity;
-    //    }
-    //    else if (currentState == PlayerState.WallBraking)
-    //    {
-    //        rb2D.velocity = new Vector2(0,rb2D.velocity.y);
-    //    }
-    //    //else if (currentState == PlayerState.WallJumping && !isRecentlyWallJumping)
-    //    //{            
-    //    //    rb2D.velocity = targetVelocity;
-    //    //}
-    //    // Idle or Running States
-    //    else
-    //    {
-    //        // Smooth both axis on normal states
-    //        //rb2D.velocity = Vector2.SmoothDamp(rb2D.velocity, targetVelocity, ref dampVelocity, smoothTime);
-    //        rb2D.velocity = Vector2.Lerp(rb2D.velocity, targetVelocity, Time.fixedDeltaTime * lerpSpeed);
-    //    }
-    //}
     private void ChangeGravity()
     {
         //Gravity will be heavier when the player is falling down
@@ -1129,6 +1085,15 @@ public class PlayerMovement : MonoBehaviour
     {
         // Stops the player resetting its velocity
         targetVelocity = Vector2.zero;
+    }
+    private void ResetPlayerSpeedBeforeSwinging()
+    {        
+        Vector2 currentVel = rb2D.linearVelocity;
+        maxInitialSwingSpeed = 3f;
+        currentVel.x = Mathf.Clamp(currentVel.x, -maxInitialSwingSpeed, maxInitialSwingSpeed);
+        currentVel.y = Mathf.Clamp(currentVel.y, -maxInitialSwingSpeed, maxInitialSwingSpeed);
+        rb2D.linearVelocity = currentVel;
+        //rb2D.linearVelocity = Vector2.zero;
     }
     #endregion
 
