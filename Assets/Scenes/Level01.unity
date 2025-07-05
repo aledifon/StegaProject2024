@@ -12728,6 +12728,7 @@ MonoBehaviour:
   dustLandingJumpVFX: {fileID: 2870905035193817320, guid: 3d509306db4d9714e9c9b26458f1d965, type: 3}
   wallSlidingVFX: {fileID: 5873754517777239851, guid: 80ee810b6256c034a94cdc1ad2ba14aa, type: 3}
   wallJumpVFX: {fileID: 4928254478015616943, guid: ed230d2350294a8439c02e1178c1e43c, type: 3}
+  hookThrownVFX: {fileID: 6595582666482377467, guid: 166ed233f49956745b0660127de08890, type: 3}
 --- !u!114 &1072431788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15202,6 +15203,7 @@ MonoBehaviour:
   dustLandingJumpVFX: {fileID: 0}
   wallSlidingVFX: {fileID: 0}
   wallJumpVFX: {fileID: 0}
+  hookThrownVFX: {fileID: 0}
 --- !u!114 &1427650248
 MonoBehaviour:
   m_ObjectHideFlags: 0

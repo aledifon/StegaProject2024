@@ -33,7 +33,11 @@ public class PlayerVFX : MonoBehaviour
 
     [Header("Wall Jumping")]
     [SerializeField] private GameObject wallJumpVFX;
-    private ParticleSystem wallJumpPS;    
+    private ParticleSystem wallJumpPS;
+
+    [Header("Hook Thrown")]
+    [SerializeField] private GameObject hookThrownVFX;
+    private ParticleSystem hookThrownPS;
 
     // Used for keeping pos. of TakeOffJumping VFX
     private Vector3 localPosTakeOffJumpingVFX;
@@ -65,7 +69,9 @@ public class PlayerVFX : MonoBehaviour
         dustLandingJumpPS = InstantiateVFXPrefabs(dustLandingJumpVFX, originPS, transform);
 
         wallSlidingPS = InstantiateVFXPrefabs(wallSlidingVFX, originWallSlidePS, transform);
-        wallJumpPS = InstantiateVFXPrefabs(wallJumpVFX, originPS, transform);        
+        wallJumpPS = InstantiateVFXPrefabs(wallJumpVFX, originPS, transform);
+        
+        hookThrownPS = InstantiateVFXPrefabs(hookThrownVFX, originPS, transform);        
 
         // Get the current landingJumpPS Local Pos. & Rot.
         waterLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;
@@ -94,6 +100,7 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnWallJump += PlayWallJumpVFX;
 
         playerMovement.OnStopRopeSwinging += PlayTakeOffJumpVFX;
+        playerMovement.OnHookThrown += PlayHookThrownVFX;
     }
     private void OnDisable()
     {
@@ -109,6 +116,7 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnWallJump -= PlayWallJumpVFX;
 
         playerMovement.OnStopRopeSwinging -= PlayTakeOffJumpVFX;
+        playerMovement.OnHookThrown -= PlayHookThrownVFX;
     }
     private void Update()
     {
@@ -137,8 +145,14 @@ public class PlayerVFX : MonoBehaviour
     //}    
     private ParticleSystem InstantiateVFXPrefabs(GameObject prefab, Transform originTransform, Transform parentTransform)
     {
-        return Instantiate(prefab, originTransform.position, originTransform.rotation, parentTransform).
-                        GetComponent<ParticleSystem>();        
+        ParticleSystem ps = Instantiate(prefab, parentTransform).GetComponent<ParticleSystem>();
+        ps.transform.localPosition = originTransform.localPosition;
+        ps.transform.rotation = prefab.transform.rotation;
+
+        return ps;
+
+        //return Instantiate(prefab, originTransform.position, originTransform.rotation, parentTransform).
+        //                GetComponent<ParticleSystem>();        
     }    
     private void PlayVFX(ParticleSystem ps)
     {
@@ -346,20 +360,56 @@ public class PlayerVFX : MonoBehaviour
     }
     private void SetWallJumpPSRot()
     {
+        float zLocalRot = wallJumpPS.transform.localEulerAngles.z;
         wallJumpPS.transform.localRotation = playerMovement.SpriteRendPlayerFlipX ?
-                                                Quaternion.Euler(0, 180, 0) : Quaternion.identity;
+                                                Quaternion.Euler(0, 180, zLocalRot) : 
+                                                Quaternion.Euler(0, 0, zLocalRot);
     }
     private void ResetParentOfWallJumpPS()
     {
         if (wallJumpPS.transform.parent != transform)
         {
-            wallJumpPS.transform.SetParent(transform,false);
+            wallJumpPS.transform.SetParent(transform,true);
 
             // Set again the WallJumpingVFX Local pos & rot.
             wallJumpPS.transform.localPosition = originPS.localPosition;
-            wallJumpPS.transform.localRotation = originPS.localRotation;
+            //wallJumpPS.transform.localRotation = originPS.localRotation;
         }        
-    }    
+    }
+    #endregion
+    #region Hook Thrown
+    private void PlayHookThrownVFX()
+    {
+        ResetParentOfHookThrownPS();
+
+        // Set the corresponding hookThrownVFX Rotation
+        SetHookThrownPSRot();
+
+        PlayVFX(hookThrownPS);
+
+        // Clear the Player as parent of the PS to show it properly
+        //hookThrownPS.transform.parent = null;
+
+        //Debug.Log(Hook Thrown VFX Stopped");
+    }
+    private void SetHookThrownPSRot()
+    {        
+        float zLocalRot = hookThrownPS.transform.localEulerAngles.z;
+        hookThrownPS.transform.localRotation = playerMovement.SpriteRendPlayerFlipX ?
+                                                Quaternion.Euler(0, 180, zLocalRot) :
+                                                Quaternion.Euler(0, 0, zLocalRot);
+    }
+    private void ResetParentOfHookThrownPS()
+    {
+        if (hookThrownPS.transform.parent != transform)
+        {
+            hookThrownPS.transform.SetParent(transform, true);
+
+            // Set again the hookThrownVFX Local pos & rot.
+            hookThrownPS.transform.localPosition = originPS.localPosition;
+            //hookThrownPS.transform.localRotation = originPS.localRotation;
+        }
+    }
     #endregion
     #endregion
 }
