@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using System;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -34,7 +31,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private GameObject player;
 
     // Boolean Flags
-    private bool playerDetectionEnabled;
+    private bool playerDetectionEnabled;    
 
     // GOs 
     SpriteRenderer spriteRenderer;
@@ -47,8 +44,8 @@ public class EnemyMovement : MonoBehaviour
         // Set the initial speed
         speed = walkingSpeed;
 
-        // Set the initial flags
-        playerDetectionEnabled = true;
+        // Set the initial flags        
+        EnablePlayerDetection();
 
         // Get component
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -91,12 +88,16 @@ public class EnemyMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Player") && 
-            collision.collider.GetComponent<PlayerMovement>().IsGrounded)
+            collision.collider.GetComponent<PlayerMovement>().IsGrounded &&
+            playerDetectionEnabled)
         {
-            // Take Player's Damage & Disable the player's detection for a certain time
+            // Take Player's Damage & Disable the player's detection for a certain time            
             collision.collider.GetComponent<PlayerHealth>().TakeDamage(damageAmount);
-            playerDetectionEnabled = false;
-            Invoke("EnablePlayerDetection", collision.collider.GetComponent<PlayerHealth>().FadingTotalDuration);
+
+            DisablePlayerDetection();
+            SetNextTargetPosition();
+            Invoke(nameof(EnablePlayerDetection), 
+                collision.collider.GetComponent<PlayerVFX>().FadingTotalDuration+2f);
         }
     }
     #endregion
@@ -143,6 +144,10 @@ public class EnemyMovement : MonoBehaviour
     {
         playerDetectionEnabled = true;
     }
+    void DisablePlayerDetection()
+    {
+        playerDetectionEnabled = false;
+    }
     #endregion
     #region Enemy Movement
     void UpdateTargetPosition()
@@ -152,14 +157,18 @@ public class EnemyMovement : MonoBehaviour
 
         // Update the patrol target points
         if (Vector2.Distance(transform.position, targetPosition) < Mathf.Epsilon)
-        {            
-            if (indexTargetPos == points.Length-1)
-                indexTargetPos = 0;
-            else
-                indexTargetPos++;
-
-            targetPosition = points[indexTargetPos];
+        {
+            SetNextTargetPosition();
         }
+    }
+    void SetNextTargetPosition()
+    {
+        if (indexTargetPos == points.Length - 1)
+            indexTargetPos = 0;
+        else
+            indexTargetPos++;
+
+        targetPosition = points[indexTargetPos];
     }
     void Patrol()
     {        

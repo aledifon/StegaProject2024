@@ -3,7 +3,7 @@ using System.Collections;
 using System.Net;
 using System;
 
-public class GrapplingHook : MonoBehaviour
+public class PlayerHook : MonoBehaviour
 {
     [Header("Grappling-Hook")]
     //private GameObject grapplingHookPivot;                      // GameObject hijo que contiene el HingeJoint2D    
