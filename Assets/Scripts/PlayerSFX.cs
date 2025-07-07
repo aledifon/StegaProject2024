@@ -76,7 +76,7 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStopRopeSwinging += StopRopeSwingingSFX;
 
         // Damage Player
-        playerHealth.OnDamagePlayer += PlayDamageSFX;
+        playerHealth.OnHitFXPlayer += PlayDamageSFX;
         playerHealth.OnDeathPlayer += PlayDeathSFX;
 
         // Acorn
@@ -107,7 +107,7 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStopRopeSwinging -= StopRopeSwingingSFX;
 
         // Damage Player
-        playerHealth.OnDamagePlayer -= PlayDamageSFX;
+        playerHealth.OnHitFXPlayer -= PlayDamageSFX;
         playerHealth.OnDeathPlayer -= PlayDeathSFX;
 
         // Acorn

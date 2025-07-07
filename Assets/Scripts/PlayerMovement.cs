@@ -254,12 +254,12 @@ public class PlayerMovement : MonoBehaviour
     }    
     private void OnEnable()
     {
-        playerHealth.OnDamagePlayer += ReceiveDamage;
+        playerHealth.OnHitPhysicsPlayer += ReceiveDamage;
         playerHealth.OnDeathPlayer += Death;
     }
     private void OnDisable()
     {
-        playerHealth.OnDamagePlayer -= ReceiveDamage;
+        playerHealth.OnHitPhysicsPlayer -= ReceiveDamage;
         playerHealth.OnDeathPlayer -= Death;
     }
     void Awake()
@@ -1190,36 +1190,59 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Damage
-    private void ReceiveDamage()
+    private void ReceiveDamage(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         // Trigger the Hurting State (and also the hurting anim.)
         TriggerHurtingState();
         // reset the player's velocity        
-        ResetVelocity();             
+        ResetVelocity();
+        // Backwards Thrust to the player (on opposite direction to the enemy's path)
+        StartCoroutine(TriggerBackwardsThrustCoroutine(thrustEnemyDir, thrustEnemyForce, ForceMode2D.Impulse));
         // Disable the Player's Collider during the Hurt Animation & reset the Hurt animation after 1s.
-        StartCoroutine(nameof(DisableDamage));      
-        /*Invoke(nameof(HurtToFalse), 1);*/         
+        StartCoroutine(nameof(ExitHurtingStateAfterDelay));              
     }
-    private IEnumerator DisableDamage()
+    private IEnumerator ExitHurtingStateAfterDelay()
     {
-        // Set the Vitamini's Rb as Kinematics
-        SetRbAsKinematics();
-        // Disable the Vitamini's Circle Collider
-        DisableCollider();
+        //DisableDamage();
 
-        yield return new WaitUntil(() => (playerVFX.FadingTimer >= playerVFX.FadingTotalDuration*0.4f));
+        yield return new WaitUntil(() => (playerVFX.FadingTimer >= playerVFX.FadingTotalDuration * 0.4f));
+        //yield return new WaitForSeconds(playerVFX.FadingTotalDuration * 0.4f);
 
         // Finish the Hurting State
         DisableHurtingState();
+
         // Re-enable the Player's Damage
-        EnableDamage();
+        //EnableDamage();
+    }
+    private void DisableDamage()
+    {
+        // Set the Player's Rb as Kinematics
+        SetRbAsKinematics();
+        // Disable the Player's Collider
+        DisableCollider();
     }
     private void EnableDamage()
     {
-        // Reenable the Vitamini's Circle Collider
+        // Reenable the Player's Collider
         EnableCollider();
-        // Set the Vitamini's Rb as Dynamics again
+        // Set the Player's Rb as Dynamics again
         SetRbAsDynamics();
+    }
+    private IEnumerator TriggerBackwardsThrustCoroutine(Vector2 thrustDir, float thrustForce, ForceMode2D forceMode2D)
+    {
+        yield return new WaitUntil(() => Time.timeScale >= 0.6f);
+
+        // Backwards Thrust to the player (on opposite direction to the enemy's path)
+        BackwardsThrustEnemy(thrustDir, thrustForce, forceMode2D);
+    }
+    private void BackwardsThrustEnemy(Vector2 thrustDir, float thrustForce, ForceMode2D forceMode2D)
+    {        
+        if (forceMode2D == ForceMode2D.Force)
+            rb2D.AddForce(new Vector2(thrustDir.x * thrustForce,
+                                    thrustDir.y * thrustForce * 0.5f), ForceMode2D.Force);
+        else
+            rb2D.AddForce(new Vector2(thrustDir.x * thrustForce, 
+                                    thrustDir.y * thrustForce * 0.8f), ForceMode2D.Impulse);
     }
     #endregion
     #region Death

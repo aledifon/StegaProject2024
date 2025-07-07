@@ -120,7 +120,7 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnHookThrown += PlayHookThrownVFX;
 
         // Damage Player
-        playerHealth.OnDamagePlayer += TriggerSpriteFading;
+        playerHealth.OnHitFXPlayer += TriggerSpriteFading;
     }
     private void OnDisable()
     {
@@ -144,7 +144,7 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnHookThrown -= PlayHookThrownVFX;
 
         // Damage
-        playerHealth.OnDamagePlayer -= TriggerSpriteFading;
+        playerHealth.OnHitFXPlayer -= TriggerSpriteFading;
     }
     private void Update()
     {

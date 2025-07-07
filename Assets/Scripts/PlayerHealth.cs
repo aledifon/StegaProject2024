@@ -17,7 +17,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] CameraFollow cameraFollow;
 
     #region Events & Delegates
-    public event Action OnDamagePlayer;
+    public event Action OnHitFXPlayer;    
+    public event Action<Vector2,float> OnHitPhysicsPlayer;    
     public event Action OnDeathPlayer;
     #endregion
 
@@ -45,7 +46,7 @@ public class PlayerHealth : MonoBehaviour
     }    
     #region Damage
     // Player's Damage Handler 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int damageAmount, Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         // Avoid Executing the method if Player has already dead
         if (playerMovement.CurrentState == PlayerMovement.PlayerState.Hurting || 
@@ -53,7 +54,7 @@ public class PlayerHealth : MonoBehaviour
             return;
 
         // Update's Player's Life and Acorn Life's UI
-        //DecreaseHealth(amount);        
+        //DecreaseHealth(damageAmount);
 
         // If Health <=0 --> Executes Death Method
         if (currentHealth <= 0)
@@ -63,7 +64,8 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // Invoke OnDamagePlayer Event
-        OnDamagePlayer?.Invoke();        
+        OnHitPhysicsPlayer?.Invoke(thrustEnemyDir, thrustEnemyForce);
+        OnHitFXPlayer?.Invoke();
     }        
     #endregion
     #region Health

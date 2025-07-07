@@ -39,7 +39,7 @@ public class CameraFollow : MonoBehaviour
     public void SubscribeEventsOfPlayerHealth(PlayerHealth pH)
     {
         playerHealth = pH;
-        playerHealth.OnDamagePlayer += CameraShaking;
+        playerHealth.OnHitFXPlayer += CameraShaking;
     }    
     private void CameraShaking()
     {
