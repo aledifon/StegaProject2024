@@ -62,12 +62,12 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         if (playerHealth != null)
-            playerHealth.OnDamagePlayer -= SlowMotionOnHit;
+            playerHealth.OnHitFXPlayer -= SlowMotionOnHit;
     }
     public void SubscribeEventsOfPlayerHealth(PlayerHealth pH)
     {
         playerHealth = pH;
-        playerHealth.OnDamagePlayer += SlowMotionOnHit;
+        playerHealth.OnHitFXPlayer += SlowMotionOnHit;
     }
     public void PlayGameOverSFx()
     {

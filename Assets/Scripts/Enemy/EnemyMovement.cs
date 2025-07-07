@@ -12,7 +12,7 @@ public class EnemyMovement : MonoBehaviour
     int indexTargetPos;
 
     [Header("Damage")]
-    [SerializeField] private int damageAmount;
+    [SerializeField] private int damageAmount;    
 
     // Movement vars
     [Header("Movement")]
@@ -29,6 +29,8 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private GameObject player;
+    [SerializeField] private float thrustToPlayer;      // ForceMode2D = Impulse --> 3-4f
+                                                        // ForceMode2D = Force --> 250-300f
 
     // Boolean Flags
     private bool playerDetectionEnabled;    
@@ -91,8 +93,13 @@ public class EnemyMovement : MonoBehaviour
             collision.collider.GetComponent<PlayerMovement>().IsGrounded &&
             playerDetectionEnabled)
         {
+            // Get the Enemy's direction
+            Vector2 enemyDirection = spriteRenderer.flipX ? 
+                                    Vector2.right + Vector2.up: 
+                                    Vector2.left + Vector2.up;            
+
             // Take Player's Damage & Disable the player's detection for a certain time            
-            collision.collider.GetComponent<PlayerHealth>().TakeDamage(damageAmount);
+            collision.collider.GetComponent<PlayerHealth>().TakeDamage(damageAmount, enemyDirection, thrustToPlayer);
 
             DisablePlayerDetection();
             SetNextTargetPosition();
