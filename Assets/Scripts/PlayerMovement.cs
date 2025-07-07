@@ -85,6 +85,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpBufferTimer;
     [SerializeField] private bool isJumpBufferEnabled;
 
+    [Header("Death")]
+    [SerializeField] private float forceJumpDeath;
+
     // UI        
     [Header("Acorn")]
     [SerializeField] private TextMeshProUGUI textAcornUI;
@@ -122,7 +125,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isRecentlyWallJumping;     // Aux. var 
 
     [Header("Platform")]
-    [SerializeField] LayerMask platformLayer;    
+    [SerializeField] LayerMask platformLayer;
+
+    [Header("Hurt")]
+    [SerializeField] private bool isHurt;
+    public bool IsHurt => isHurt;
 
     #region Enums    
     private enum CornerDetected
@@ -191,7 +198,8 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     BoxCollider2D boxCollider2D;    
     PlayerVFX playerVFX;
-    GrapplingHook grapplingHook;
+    PlayerHook playerHook;
+    PlayerHealth playerHealth;
 
     // Flip Flag
     //private bool lastFlipState;
@@ -243,11 +251,16 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawRay(rayWallOrigin + (Vector2.up * 0.02f), rayWallDir * rayWallLength);
         Gizmos.DrawRay(rayWallOrigin + (Vector2.down * 0.01f), rayWallDir * rayWallLength);
         Gizmos.DrawRay(rayWallOrigin + (Vector2.down * 0.02f), rayWallDir * rayWallLength);
-    }
-    void EnableSlowMotion()
+    }    
+    private void OnEnable()
     {
-        Time.timeScale = 0.2f; // Velocidad al 20%
-        Time.fixedDeltaTime = 0.02f * Time.timeScale; // Ajustar f�sica
+        playerHealth.OnDamagePlayer += ReceiveDamage;
+        playerHealth.OnDeathPlayer += Death;
+    }
+    private void OnDisable()
+    {
+        playerHealth.OnDamagePlayer -= ReceiveDamage;
+        playerHealth.OnDeathPlayer -= Death;
     }
     void Awake()
     {
@@ -261,13 +274,14 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         boxCollider2D = GetComponent<BoxCollider2D>();          
         playerVFX = GetComponent<PlayerVFX>();
-        grapplingHook = GetComponent<GrapplingHook>();
+        playerHook = GetComponent<PlayerHook>();
+        playerHealth = GetComponent<PlayerHealth>();
 
         NumAcorn = 0;
         textAcornUI.text = NumAcorn.ToString();
 
         // Just for debugging
-        //EnableSlowMotion();
+        //GameManager.Instance.EnableSlowMotion();
     }
     private void Update()
     {                       
@@ -365,185 +379,204 @@ public class PlayerMovement : MonoBehaviour
     // Player State
     private void UpdatePlayerState()
     {
-        switch (currentState)
+        // Trigger to Hurting State from any State
+        if (isHurt)
         {
-            case PlayerState.Idle:
-                if (isGrounded)
-                {
-                    if (inputX != 0)
+            currentState = PlayerState.Hurting;
+            Debug.Log("From " + currentState + " state to Hurting State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+        }
+        else
+        {
+            switch (currentState)
+            {
+                case PlayerState.Hurting:
+                    if (!isHurt)
+                        currentState = PlayerState.Idle;
+                    Debug.Log("From Hurt state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
+                case PlayerState.Idle:
+                    if (isGrounded)
                     {
-                        currentState = PlayerState.Running;
-                        OnStartWalking?.Invoke();
-                    }                        
-                    //else if (!isGrounded && rb2D.velocity.y > 0)
-                    else if (jumpTriggered)
-                    {
-                        TriggerJump();                                                                        
-                        OnTakeOffJump?.Invoke();            // Trigger Take Off Jump Event        
-                        currentState = PlayerState.Jumping;
+                        if (inputX != 0)
+                        {
+                            currentState = PlayerState.Running;
+                            OnStartWalking?.Invoke();
+                        }
+                        //else if (!isGrounded && rb2D.velocity.y > 0)
+                        else if (jumpTriggered)
+                        {
+                            TriggerJump();
+                            OnTakeOffJump?.Invoke();            // Trigger Take Off Jump Event        
+                            currentState = PlayerState.Jumping;
 
+                            //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        }
+                    }
+                    else if (rb2D.linearVelocity.y < Mathf.Epsilon)
+                        currentState = PlayerState.Falling;
+
+                    //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
+                case PlayerState.Running:
+                    if (isGrounded)
+                    {
+                        if (inputX == 0)
+                        {
+                            OnStopWalking?.Invoke();        // Trigger Stop Walking Event
+                            currentState = PlayerState.Idle;
+                        }
+                        //else if (!isGrounded && rb2D.velocity.y > 0)
+                        else if (jumpTriggered)
+                        {
+                            OnStopWalking?.Invoke();        // Trigger Stop Walking Event
+                            TriggerJump();
+                            OnTakeOffJump?.Invoke();        // Trigger Take Off Jump Event        
+
+                            currentState = PlayerState.Jumping;
+                            //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        }
+                    }
+                    else if (rb2D.linearVelocity.y < Mathf.Epsilon)
+                    {
+                        OnStopWalking?.Invoke();        // Trigger Stop Walking Event
+                        currentState = PlayerState.Falling;
+                    }
+                    //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
+                case PlayerState.Jumping:
+                    if (wallJumpTriggered)
+                    {
+                        TriggerWallJump();
+                        OnWallJump?.Invoke();           // Trigger Wall Jump Event
+                        currentState = PlayerState.WallJumping;
                         //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
-                }                
-                else if (rb2D.linearVelocity.y < Mathf.Epsilon)
-                    currentState = PlayerState.Falling;
+                    else if (playerHook.IsHookAttached)
+                    {
+                        ResetPlayerSpeedBeforeSwinging();
+                        OnStartRopeSwinging?.Invoke();
+                        currentState = PlayerState.Swinging;
 
-                //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                break;
-            case PlayerState.Running:  
-                if (isGrounded)
-                {
-                    if (inputX == 0)
+                        Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    }
+                    else if (rb2D.linearVelocity.y < 0 && !isRecentlyJumping)
                     {
-                        OnStopWalking?.Invoke();        // Trigger Stop Walking Event
-                        currentState = PlayerState.Idle;                        
-                    }                        
-                    //else if (!isGrounded && rb2D.velocity.y > 0)
-                    else if (jumpTriggered)
+                        currentState = PlayerState.Falling;
+                        //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    }
+                    break;
+                case PlayerState.WallJumping:
+                    if (rb2D.linearVelocity.y > 0 && inputX != 0)
                     {
-                        OnStopWalking?.Invoke();        // Trigger Stop Walking Event
-                        TriggerJump();                        
-                        OnTakeOffJump?.Invoke();        // Trigger Take Off Jump Event        
+                        currentState = PlayerState.Jumping;
+                    }
+                    else if (playerHook.IsHookAttached)
+                    {
+                        ResetPlayerSpeedBeforeSwinging();
+                        OnStartRopeSwinging?.Invoke();
+                        currentState = PlayerState.Swinging;
+
+                        Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    }
+                    else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping)
+                    {
+                        currentState = PlayerState.Falling;
+                    }
+                    //Debug.Log("From Wall Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
+                case PlayerState.Falling:
+                    if (jumpTriggered)
+                    {
+                        TriggerJump();
+                        OnTakeOffJump?.Invoke();                // Trigger Take Off Jump Event        
+                        currentState = PlayerState.Jumping;
+                        //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    }
+                    else if (isGrounded)
+                    {
+                        //if (/*!jumpPressed &&*/ inputX == 0)
+                        //    currentState = PlayerState.Idle;
+                        //else if (/*!jumpPressed &&*/ inputX != 0)
+                        //    currentState = PlayerState.Running;
+
+                        if (Time.time - lastLandingTime > 0.1f)
+                        {
+                            lastLandingTime = Time.time;
+                            OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
+                        }
+                        currentState = PlayerState.Idle;
+
+                        //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    }
+                    else if (playerHook.IsHookAttached)
+                    {
+                        ResetPlayerSpeedBeforeSwinging();
+                        OnStartRopeSwinging?.Invoke();
+                        currentState = PlayerState.Swinging;
+
+                        Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    }
+                    else if (isWallDetected)
+                    {
+                        OnStartWallSliding?.Invoke();           // Trigger Start Wall Sliding Event        
+                        currentState = PlayerState.WallBraking;
+                        //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    }
+                    break;
+                case PlayerState.WallBraking:
+                    if (isGrounded)
+                    {
+                        //if (/*!jumpPressed &&*/ inputX == 0)
+                        //    currentState = PlayerState.Idle;
+                        //else if (/*!jumpPressed &&*/ inputX != 0)
+                        //    currentState = PlayerState.Running;
+
+                        OnStopWallSliding?.Invoke();            // Trigger Stop Wall Sliding Event
+                        OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
+                        currentState = PlayerState.Idle;
+                    }
+                    else
+                    {
+                        if (!isWallDetected)
+                        {
+                            OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
+                            currentState = PlayerState.Falling;
+                        }
+                        else if (wallJumpTriggered)
+                        {
+                            OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
+                            TriggerWallJump();
+                            OnWallJump?.Invoke();               // Trigger Wall Jump Event
+                            currentState = PlayerState.WallJumping;
+                        }
+                    }
+                    //Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
+                case PlayerState.Swinging:
+                    if (jumpTriggered)
+                    {
+                        OnStopRopeSwinging?.Invoke();        // Trigger Stop Rope Swinging Event
+                        TriggerJump();
+                        OnHookRelease?.Invoke();            // Trigger Hook Release (Hook Jump) Event        
 
                         currentState = PlayerState.Jumping;
-                        //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+
+                        Debug.Log("From Swinging state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
-                }
-                else if (rb2D.linearVelocity.y < Mathf.Epsilon)
-                {
-                    OnStopWalking?.Invoke();        // Trigger Stop Walking Event
-                    currentState = PlayerState.Falling;                    
-                }                    
-                //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                break;
-            case PlayerState.Jumping:
-                if (wallJumpTriggered)
-                {
-                    TriggerWallJump();
-                    OnWallJump?.Invoke();           // Trigger Wall Jump Event
-                    currentState = PlayerState.WallJumping;
-                    //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }
-                else if (grapplingHook.IsHookAttached)
-                {
-                    ResetPlayerSpeedBeforeSwinging();
-                    OnStartRopeSwinging?.Invoke();
-                    currentState = PlayerState.Swinging;
-
-                    Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }
-                else if (rb2D.linearVelocity.y < 0 && !isRecentlyJumping)
-                {
-                    currentState = PlayerState.Falling;
-                    //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }                
-                break;
-            case PlayerState.WallJumping:
-                if (rb2D.linearVelocity.y > 0 && inputX != 0)
-                {
-                    currentState = PlayerState.Jumping;                    
-                }
-                else if (grapplingHook.IsHookAttached)
-                {                    
-                    ResetPlayerSpeedBeforeSwinging();
-                    OnStartRopeSwinging?.Invoke();
-                    currentState = PlayerState.Swinging;
-
-                    Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }
-                else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping) 
-                {                                        
-                    currentState = PlayerState.Falling;                    
-                }
-                //Debug.Log("From Wall Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                break;
-            case PlayerState.Falling:
-                if (jumpTriggered)
-                {
-                    TriggerJump();
-                    OnTakeOffJump?.Invoke();                // Trigger Take Off Jump Event        
-                    currentState = PlayerState.Jumping;
-                    //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }                    
-                else if (isGrounded)
-                {
-                    //if (/*!jumpPressed &&*/ inputX == 0)
-                    //    currentState = PlayerState.Idle;
-                    //else if (/*!jumpPressed &&*/ inputX != 0)
-                    //    currentState = PlayerState.Running;
-
-                    if(Time.time - lastLandingTime > 0.1f)
-                    {
-                        lastLandingTime = Time.time;
-                        OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
-                    }                    
-                    currentState = PlayerState.Idle;
-
-                    //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }
-                else if (grapplingHook.IsHookAttached)
-                {                    
-                    ResetPlayerSpeedBeforeSwinging();
-                    OnStartRopeSwinging?.Invoke();
-                    currentState = PlayerState.Swinging;
-
-                    Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }
-                else if (isWallDetected)
-                {
-                    OnStartWallSliding?.Invoke();           // Trigger Start Wall Sliding Event        
-                    currentState = PlayerState.WallBraking;
-                    //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }                
-                break;
-            case PlayerState.WallBraking:
-                if (isGrounded)
-                {
-                    //if (/*!jumpPressed &&*/ inputX == 0)
-                    //    currentState = PlayerState.Idle;
-                    //else if (/*!jumpPressed &&*/ inputX != 0)
-                    //    currentState = PlayerState.Running;
-
-                    OnStopWallSliding?.Invoke();            // Trigger Stop Wall Sliding Event
-                    OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
-                    currentState = PlayerState.Idle;                    
-                }
-                else
-                {
-                    if (!isWallDetected)
-                    {
-                        OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
-                        currentState = PlayerState.Falling;                        
-                    }
-                    else if(wallJumpTriggered)
-                    {
-                        OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
-                        TriggerWallJump();
-                        OnWallJump?.Invoke();               // Trigger Wall Jump Event
-                        currentState = PlayerState.WallJumping;                                                
-                    }                        
-                }
-                //Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                break;
-            case PlayerState.Swinging:
-                if (jumpTriggered)
-                {
-                    OnStopRopeSwinging?.Invoke();        // Trigger Stop Rope Swinging Event
-                    TriggerJump();
-                    OnHookRelease?.Invoke();            // Trigger Hook Release (Hook Jump) Event        
-
-                    currentState = PlayerState.Jumping;
-
-                    Debug.Log("From Swinging state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
-                }                
-                break;
-            default:
-                // Default logic
-                break;
+                    break;
+                default:
+                    // Default logic
+                    break;
+            }
         }
-
-        // From any State
-        // TO-DO
+    }
+    public void TriggerHurtingState()
+    {
+        isHurt = true;
+    }
+    public void DisableHurtingState()
+    {
+        isHurt = false;
     }
     //////////////////////////////////////////////////
     #endregion
@@ -795,7 +828,7 @@ public class PlayerMovement : MonoBehaviour
         hookThrownTimer = 0f;
 
         // Disable the Grappling Hook after elapsed a certain time
-        if(!grapplingHook.IsHookAttached)
+        if(!playerHook.IsHookAttached)
             OnHookRelease?.Invoke();        
     }
     #endregion
@@ -809,6 +842,17 @@ public class PlayerMovement : MonoBehaviour
     public void SetRbAsDynamics()
     {        
         rb2D.bodyType = RigidbodyType2D.Dynamic;
+    }
+    #endregion
+
+    #region Collider
+    public void EnableCollider()
+    {
+        boxCollider2D.enabled = true;
+    }
+    public void DisableCollider()
+    {
+        boxCollider2D.enabled = false;
     }
     #endregion
 
@@ -967,7 +1011,7 @@ public class PlayerMovement : MonoBehaviour
                 //float maxSwingSpeed = 5;                
 
                 // Calculate Swinging Factor in func. of the rope angle
-                float ropeAngle = Mathf.Clamp(grapplingHook.CurrentRopeAngle, 0, 180);                
+                float ropeAngle = Mathf.Clamp(playerHook.CurrentRopeAngle, 0, 180);                
                 float factorSwingSpeed = Mathf.Sin(ropeAngle * Mathf.Deg2Rad);
                 factorSwingSpeed = Mathf.Clamp(factorSwingSpeed,0.2f,1f);
 
@@ -1119,7 +1163,7 @@ public class PlayerMovement : MonoBehaviour
     public void ResetVelocity()
     {
         // Stops the player resetting its velocity
-        targetVelocity = Vector2.zero;
+        rb2D.linearVelocity = Vector2.zero;
     }
     private void ResetPlayerSpeedBeforeSwinging()
     {        
@@ -1142,6 +1186,52 @@ public class PlayerMovement : MonoBehaviour
         enemy.GetComponent<Animator>().SetTrigger("Death");
         enemy.GetComponent<EnemyMovement>().PlayDeathFx();
         Destroy(enemy,0.5f);
+    }
+    #endregion
+
+    #region Damage
+    private void ReceiveDamage()
+    {
+        // Trigger the Hurting State (and also the hurting anim.)
+        TriggerHurtingState();
+        // reset the player's velocity        
+        ResetVelocity();             
+        // Disable the Player's Collider during the Hurt Animation & reset the Hurt animation after 1s.
+        StartCoroutine(nameof(DisableDamage));      
+        /*Invoke(nameof(HurtToFalse), 1);*/         
+    }
+    private IEnumerator DisableDamage()
+    {
+        // Set the Vitamini's Rb as Kinematics
+        SetRbAsKinematics();
+        // Disable the Vitamini's Circle Collider
+        DisableCollider();
+
+        yield return new WaitUntil(() => (playerVFX.FadingTimer >= playerVFX.FadingTotalDuration*0.4f));
+
+        // Finish the Hurting State
+        DisableHurtingState();
+        // Re-enable the Player's Damage
+        EnableDamage();
+    }
+    private void EnableDamage()
+    {
+        // Reenable the Vitamini's Circle Collider
+        EnableCollider();
+        // Set the Vitamini's Rb as Dynamics again
+        SetRbAsDynamics();
+    }
+    #endregion
+    #region Death
+    private void Death()
+    {
+        // Set the Player isDead Flag
+        isDead = true;
+        // Disable the Vitamini's Circle Collider & Apply an upwards impulse
+        DisableCollider();
+        rb2D.AddForce(Vector2.up * forceJumpDeath);
+        // Set the New Local Scale
+        transform.localScale = Vector3.Scale(transform.localScale, new Vector3(2.5f, 2.5f, 2.5f));
     }
     #endregion
 

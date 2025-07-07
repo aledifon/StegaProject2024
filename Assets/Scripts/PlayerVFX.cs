@@ -5,8 +5,10 @@ using UnityEngine.Audio;
 public class PlayerVFX : MonoBehaviour
 {    
     PlayerMovement playerMovement;
+    PlayerHealth playerHealth;  
     [SerializeField] Transform originPS;
     [SerializeField] Transform originWallSlidePS;
+    SpriteRenderer spriteRenderer;
 
     [Header("Walk")]
     [SerializeField] private GameObject waterWalkVFX;
@@ -39,6 +41,14 @@ public class PlayerVFX : MonoBehaviour
     [SerializeField] private GameObject hookThrownVFX;
     private ParticleSystem hookThrownPS;
 
+    [Header("Damage Fading")]
+    [SerializeField] private float fadingOutTimer;
+    [SerializeField] private float fadeOutDuration;             // 0.1f
+    [SerializeField] private float fadingTimer;
+    public float FadingTimer => fadingTimer;
+    [SerializeField] private float fadingTotalDuration;         // 1.5f
+    public float FadingTotalDuration => fadingTotalDuration;
+
     // Used for keeping pos. of TakeOffJumping VFX
     private Vector3 localPosTakeOffJumpingVFX;
     private Quaternion localRotTakeOffJumpingVFX;
@@ -59,6 +69,8 @@ public class PlayerVFX : MonoBehaviour
     void Awake()
     {        
         playerMovement = GetComponent<PlayerMovement>();
+        playerHealth = GetComponent<PlayerHealth>();    
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         waterWalkPS = InstantiateVFXPrefabs(waterWalkVFX, originPS, transform);
         dustWalkPS = InstantiateVFXPrefabs(dustWalkVFX, originPS, transform);
@@ -88,35 +100,51 @@ public class PlayerVFX : MonoBehaviour
     }    
     private void OnEnable()
     {
+        // Walk
         playerMovement.OnStartWalking += PlayWalkVFX;
         playerMovement.OnStopWalking += StopWalkVFX;
 
+        // Jump
         playerMovement.OnTakeOffJump += PlayTakeOffJumpVFX;
         playerMovement.OnLandingJump += PlayLandingJumpVFX;
 
+        // Wall Sliding
         playerMovement.OnStartWallSliding += PlayWallSlidingVFX;
         playerMovement.OnStopWallSliding += StopWallSlidingVFX;
 
+        // Wall Jump
         playerMovement.OnWallJump += PlayWallJumpVFX;
 
+        // Grappling-Hook
         playerMovement.OnStopRopeSwinging += PlayTakeOffJumpVFX;
         playerMovement.OnHookThrown += PlayHookThrownVFX;
+
+        // Damage Player
+        playerHealth.OnDamagePlayer += TriggerSpriteFading;
     }
     private void OnDisable()
     {
+        // Walk
         playerMovement.OnStartWalking -= PlayWalkVFX;
         playerMovement.OnStopWalking -= StopWalkVFX;
 
+        // Jump
         playerMovement.OnTakeOffJump -= PlayTakeOffJumpVFX;
         playerMovement.OnLandingJump -= PlayLandingJumpVFX;
 
+        // Wall Sliding
         playerMovement.OnStartWallSliding -= PlayWallSlidingVFX;
         playerMovement.OnStopWallSliding -= StopWallSlidingVFX;
 
+        // Wall Jump
         playerMovement.OnWallJump -= PlayWallJumpVFX;
 
+        // Grappling-Hook
         playerMovement.OnStopRopeSwinging -= PlayTakeOffJumpVFX;
         playerMovement.OnHookThrown -= PlayHookThrownVFX;
+
+        // Damage
+        playerHealth.OnDamagePlayer -= TriggerSpriteFading;
     }
     private void Update()
     {
@@ -409,6 +437,52 @@ public class PlayerVFX : MonoBehaviour
             hookThrownPS.transform.localPosition = originPS.localPosition;
             //hookThrownPS.transform.localRotation = originPS.localRotation;
         }
+    }
+    #endregion
+
+    #region Damage
+    private void TriggerSpriteFading()
+    {
+        StartCoroutine(nameof(SpriteFading));
+    }
+    private IEnumerator SpriteFading()
+    {
+        Color targetColor = spriteRenderer.color;
+        targetColor.a = 0f;
+
+        fadingTimer = 0f;
+
+        while (fadingTimer < fadingTotalDuration)
+        {
+            // Reset the Timer
+            fadingOutTimer = 0f;
+
+            // Inverse the Alpha Channel of the Target Color
+            if (spriteRenderer.color == targetColor)
+                targetColor.a = targetColor.a == 0f ? 1f : 0f;
+
+            // Set the Start Color
+            Color startColor = spriteRenderer.color;
+
+
+            while (fadingOutTimer < fadeOutDuration)
+            {
+                // Color fading
+                float t = fadingOutTimer / fadeOutDuration;
+                spriteRenderer.color = Color.Lerp(startColor, targetColor, t);
+
+                // Timers increment
+                fadingOutTimer += Time.deltaTime;
+                fadingTimer += Time.deltaTime;
+
+                yield return null;
+            }
+            spriteRenderer.color = targetColor;
+        }
+
+        // Assure the the Sprite Renderer is visible when finish the Coroutine
+        targetColor.a = 1f;
+        spriteRenderer.color = targetColor;
     }
     #endregion
     #endregion

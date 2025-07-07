@@ -1,11 +1,7 @@
 using UnityEngine;
 
 public class PlayerSFX : MonoBehaviour
-{
-    private AudioSource audioSource;
-    private PlayerMovement playerMovement;
-    private GrapplingHook grapplingHook;
-
+{    
     [Header("Walk")]
     [SerializeField] private AudioClip[] waterWalkSFX;
     [SerializeField] private AudioClip[] dustWalkSFX;
@@ -32,59 +28,89 @@ public class PlayerSFX : MonoBehaviour
     [SerializeField, Range(0f, 1f)] float ropeSwingVolume;  // ??f
     private bool isRopeSwingingSFXRunning;
 
+    [Header("Damage")]
+    [SerializeField] private AudioClip damageSFX;
+    [SerializeField] private AudioClip deathSFX;
+
     [Header("Acorn")]
     [SerializeField] private AudioClip eatAcornSFX;
 
     [Header("Pitch")]
     [SerializeField] float lowPitchRange = 0.95f;
-    [SerializeField] float highPitchRange = 1.05f;    
+    [SerializeField] float highPitchRange = 1.05f;
+
+    private AudioSource audioSource;
+    private PlayerMovement playerMovement;
+    private PlayerHealth playerHealth;
+    private PlayerHook playerHook;
 
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         playerMovement = GetComponent<PlayerMovement>();
-        grapplingHook = GetComponent<GrapplingHook>();
+        playerHook = GetComponent<PlayerHook>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
     private void OnEnable()
     {
+        // Walk
         playerMovement.OnStartWalking += TriggerWalkSFX;
         playerMovement.OnStopWalking += StopWalkSFX;
 
+        // TakeOff Jump
         playerMovement.OnTakeOffJump += PlayTakeOffJumpSFX;
         playerMovement.OnLandingJump += PlayLandingJumpSFX;
 
+        // Wall Sliding
         playerMovement.OnStartWallSliding += PlayWallSlidingSFX;
         playerMovement.OnStopWallSliding += StopWallSlidingSFX;
 
+        // Wall Jump
         playerMovement.OnWallJump += PlayWallJumpSFX;        
 
+        // Grappling-Hook
         playerMovement.OnHookThrown += PlayHookThrownSFX;
-        grapplingHook.OnHookAttached += PlayHookAttachedSFX;
+        playerHook.OnHookAttached += PlayHookAttachedSFX;
         playerMovement.OnHookRelease += PlayHookReleasedSFX;
         playerMovement.OnStartRopeSwinging += TriggerRopeSwingingSFX;
         playerMovement.OnStopRopeSwinging += StopRopeSwingingSFX;
 
+        // Damage Player
+        playerHealth.OnDamagePlayer += PlayDamageSFX;
+        playerHealth.OnDeathPlayer += PlayDeathSFX;
+
+        // Acorn
         playerMovement.OnEatAcorn += PlayEatAcornSFX;
     }
     private void OnDisable()
     {
+        // Walk
         playerMovement.OnStartWalking -= TriggerWalkSFX;
         playerMovement.OnStopWalking -= StopWalkSFX;
 
+        // TakeOff Jump
         playerMovement.OnTakeOffJump -= PlayTakeOffJumpSFX;
         playerMovement.OnLandingJump -= PlayLandingJumpSFX;
 
+        // Wall Sliding
         playerMovement.OnStartWallSliding -= PlayWallSlidingSFX;
         playerMovement.OnStopWallSliding -= StopWallSlidingSFX;
 
+        // Wall Jump
         playerMovement.OnWallJump -= PlayWallJumpSFX;
 
+        // Grappling-Hook
         playerMovement.OnHookThrown -= PlayHookThrownSFX;
-        grapplingHook.OnHookAttached -= PlayHookAttachedSFX;
+        playerHook.OnHookAttached -= PlayHookAttachedSFX;
         playerMovement.OnHookRelease -= PlayHookReleasedSFX;
         playerMovement.OnStartRopeSwinging -= TriggerRopeSwingingSFX;
         playerMovement.OnStopRopeSwinging -= StopRopeSwingingSFX;
 
+        // Damage Player
+        playerHealth.OnDamagePlayer -= PlayDamageSFX;
+        playerHealth.OnDeathPlayer -= PlayDeathSFX;
+
+        // Acorn
         playerMovement.OnEatAcorn -= PlayEatAcornSFX;
     }
     private void Update()
@@ -211,6 +237,16 @@ public class PlayerSFX : MonoBehaviour
         //audioSource.pitch = randomPitch;                
     }
     #endregion
+    #endregion
+    #region Damage-Death
+    private void PlayDamageSFX()
+    {
+        PlaySFXOneShot(damageSFX, 1f);
+    }
+    private void PlayDeathSFX()
+    {
+        PlaySFXOneShot(deathSFX, 1f);
+    }
     #endregion
     #region Acorn
     private void PlayEatAcornSFX()
