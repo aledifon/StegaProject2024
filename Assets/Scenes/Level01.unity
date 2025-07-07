@@ -1259,10 +1259,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1072431797}
   smoothTargetTime: 0.3
-  shakeDuration: 2
-  shakeStrength: 0.5
-  shakeVibrato: 100
-  shakeRandomness: 90
+  shakeDuration: 0.8
+  shakeStrength: 0.25
+  shakeVibrato: 200
+  shakeRandomness: 500
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
