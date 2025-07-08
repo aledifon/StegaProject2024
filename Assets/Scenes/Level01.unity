@@ -1688,7 +1688,7 @@ AudioSource:
   m_GameObject: {fileID: 726750015}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5362071138335964644, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
   m_audioClip: {fileID: 8300000, guid: 955c524cc9551c9489ff591cc02bcafc, type: 3}
   m_Resource: {fileID: 8300000, guid: 955c524cc9551c9489ff591cc02bcafc, type: 3}
   m_PlayOnAwake: 0
@@ -12301,7 +12301,7 @@ AudioSource:
   m_GameObject: {fileID: 1063364976}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5362071138335964644, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
   m_audioClip: {fileID: 8300000, guid: 955c524cc9551c9489ff591cc02bcafc, type: 3}
   m_Resource: {fileID: 8300000, guid: 955c524cc9551c9489ff591cc02bcafc, type: 3}
   m_PlayOnAwake: 0
@@ -12713,7 +12713,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 79fed129d1942e54aa199d62a4af3791, type: 3}
   - {fileID: 8300000, guid: e69168f715391914985cb7576f915bd2, type: 3}
   ropeSwingVolume: 0.3
-  damageSFX: {fileID: 8300000, guid: 46cdda8081d67af48b2ddca260f0f8cf, type: 3}
+  damageSFX: {fileID: 8300000, guid: 87e444fbeb202924a83b3ede549bd558, type: 3}
   deathSFX: {fileID: 8300000, guid: ad3126581aea4e94b94b1857dce7cafa, type: 3}
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
   lowPitchRange: 0.95
@@ -12814,6 +12814,8 @@ MonoBehaviour:
   isJumpBufferEnabled: 0
   forceJumpDeath: 1000
   thrustEnemyDuration: 0.08
+  thrustEnemyTimer: 0
+  isThrustEnemyTimerEnabled: 0
   textAcornUI: {fileID: 1428549074}
   elevatorLayer:
     serializedVersion: 2
@@ -12854,7 +12856,7 @@ AudioSource:
   m_GameObject: {fileID: 1072431785}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5362071138335964644, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -14577,7 +14579,7 @@ AudioSource:
   m_GameObject: {fileID: 1419110052}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -7113474693897936399, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
   m_audioClip: {fileID: 8300000, guid: 4339af1e71568bb42bda35f44e85ff0d, type: 3}
   m_Resource: {fileID: 8300000, guid: 4339af1e71568bb42bda35f44e85ff0d, type: 3}
   m_PlayOnAwake: 1
@@ -14698,6 +14700,7 @@ MonoBehaviour:
   durationSlowHitTime: 0.5
   slowDuration: 0.3
   returnDuration: 0.8
+  audioMixer: {fileID: 24100000, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
 --- !u!1 &1427650236
 GameObject:
   m_ObjectHideFlags: 0
@@ -14918,6 +14921,8 @@ MonoBehaviour:
   isJumpBufferEnabled: 0
   forceJumpDeath: 0
   thrustEnemyDuration: 0
+  thrustEnemyTimer: 0
+  isThrustEnemyTimerEnabled: 0
   textAcornUI: {fileID: 1428549074}
   elevatorLayer:
     serializedVersion: 2
@@ -15088,7 +15093,7 @@ AudioSource:
   m_GameObject: {fileID: 1427650236}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5362071138335964644, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0

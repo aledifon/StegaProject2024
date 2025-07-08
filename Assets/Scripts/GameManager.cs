@@ -5,6 +5,7 @@ using System.Timers;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,6 +44,9 @@ public class GameManager : MonoBehaviour
     [Header("Slow Hit Time DOTWeen")]
     [SerializeField] float slowDuration;            // 0.3f
     [SerializeField] float returnDuration;          // 1f;
+
+    [Header("Audio Mixer")]
+    [SerializeField] AudioMixer audioMixer;
 
     #region Events & Delegates
     public event Action<Vector2, float> OnHitPhysicsPlayer;
