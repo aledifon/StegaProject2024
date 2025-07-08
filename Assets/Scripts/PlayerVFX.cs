@@ -441,7 +441,7 @@ public class PlayerVFX : MonoBehaviour
     #endregion
 
     #region Damage
-    private void TriggerSpriteFading()
+    private void TriggerSpriteFading(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         StartCoroutine(nameof(SpriteFading));
     }
@@ -472,8 +472,9 @@ public class PlayerVFX : MonoBehaviour
                 spriteRenderer.color = Color.Lerp(startColor, targetColor, t);
 
                 // Timers increment
-                fadingOutTimer += Time.deltaTime;
-                fadingTimer += Time.deltaTime;
+                float delta = Time.unscaledDeltaTime;
+                fadingOutTimer += delta;
+                fadingTimer += delta;
 
                 yield return null;
             }

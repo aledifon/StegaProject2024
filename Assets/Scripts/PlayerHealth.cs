@@ -17,8 +17,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] CameraFollow cameraFollow;
 
     #region Events & Delegates
-    public event Action OnHitFXPlayer;    
-    public event Action<Vector2,float> OnHitPhysicsPlayer;    
+    public event Action<Vector2, float> OnHitFXPlayer;            
     public event Action OnDeathPlayer;
     #endregion
 
@@ -63,9 +62,8 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        // Invoke OnDamagePlayer Event
-        OnHitPhysicsPlayer?.Invoke(thrustEnemyDir, thrustEnemyForce);
-        OnHitFXPlayer?.Invoke();
+        // Trigger the OnHitFXPlayer Event        
+        OnHitFXPlayer?.Invoke(thrustEnemyDir, thrustEnemyForce);
     }        
     #endregion
     #region Health

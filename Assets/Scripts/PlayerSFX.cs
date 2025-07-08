@@ -239,7 +239,7 @@ public class PlayerSFX : MonoBehaviour
     #endregion
     #endregion
     #region Damage-Death
-    private void PlayDamageSFX()
+    private void PlayDamageSFX(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         PlaySFXOneShot(damageSFX, 1f);
     }

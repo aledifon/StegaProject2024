@@ -41,7 +41,7 @@ public class CameraFollow : MonoBehaviour
         playerHealth = pH;
         playerHealth.OnHitFXPlayer += CameraShaking;
     }    
-    private void CameraShaking()
+    private void CameraShaking(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         Camera.main.transform.DOShakePosition(
             duration: shakeDuration,           // Duración total del shake

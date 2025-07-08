@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using Unity.VisualScripting;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -87,6 +88,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Death")]
     [SerializeField] private float forceJumpDeath;
+
+    // Enemy Hit
+    [Header("Enemy Thrust")]
+    [SerializeField] float thrustEnemyDuration;         // 0.08f for enemyMovement.thrustToPlayer = 25f;
+    [SerializeField] float thrustEnemyTimer;
+    [SerializeField] bool isThrustEnemyTimerEnabled;    
+    private Vector2 enemyHitDir;
+    private float enemyHitThrust;    
 
     // UI        
     [Header("Acorn")]
@@ -254,12 +263,12 @@ public class PlayerMovement : MonoBehaviour
     }    
     private void OnEnable()
     {
-        playerHealth.OnHitPhysicsPlayer += ReceiveDamage;
+        GameManager.Instance.OnHitPhysicsPlayer += ReceiveDamage;
         playerHealth.OnDeathPlayer += Death;
     }
     private void OnDisable()
     {
-        playerHealth.OnHitPhysicsPlayer -= ReceiveDamage;
+        GameManager.Instance.OnHitPhysicsPlayer -= ReceiveDamage;
         playerHealth.OnDeathPlayer -= Death;
     }
     void Awake()
@@ -334,6 +343,10 @@ public class PlayerMovement : MonoBehaviour
         if (isJumping)        
             UpdateJumpTimer();
 
+        // Thrust Enemy Timer
+        if (isThrustEnemyTimerEnabled)
+            UdpateThrustEnemyTimer();
+
         // Update the Horiz & Vertical Player's Speed
         UpdateHorizSpeed();
         UpdateVerticalSpeed();                    
@@ -383,7 +396,7 @@ public class PlayerMovement : MonoBehaviour
         if (isHurt)
         {
             currentState = PlayerState.Hurting;
-            Debug.Log("From " + currentState + " state to Hurting State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+            //Debug.Log("From " + currentState + " state to Hurting State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
         }
         else
         {
@@ -392,7 +405,7 @@ public class PlayerMovement : MonoBehaviour
                 case PlayerState.Hurting:
                     if (!isHurt)
                         currentState = PlayerState.Idle;
-                    Debug.Log("From Hurt state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    //Debug.Log("From Hurt state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
                 case PlayerState.Idle:
                     if (isGrounded)
@@ -457,7 +470,7 @@ public class PlayerMovement : MonoBehaviour
                         OnStartRopeSwinging?.Invoke();
                         currentState = PlayerState.Swinging;
 
-                        Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (rb2D.linearVelocity.y < 0 && !isRecentlyJumping)
                     {
@@ -476,7 +489,7 @@ public class PlayerMovement : MonoBehaviour
                         OnStartRopeSwinging?.Invoke();
                         currentState = PlayerState.Swinging;
 
-                        Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping)
                     {
@@ -514,7 +527,7 @@ public class PlayerMovement : MonoBehaviour
                         OnStartRopeSwinging?.Invoke();
                         currentState = PlayerState.Swinging;
 
-                        Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (isWallDetected)
                     {
@@ -561,7 +574,7 @@ public class PlayerMovement : MonoBehaviour
 
                         currentState = PlayerState.Jumping;
 
-                        Debug.Log("From Swinging state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Swinging state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 default:
@@ -573,10 +586,12 @@ public class PlayerMovement : MonoBehaviour
     public void TriggerHurtingState()
     {
         isHurt = true;
+        currentState = PlayerState.Hurting;
     }
     public void DisableHurtingState()
     {
         isHurt = false;
+        //ResetVelocity();
     }
     //////////////////////////////////////////////////
     #endregion
@@ -699,7 +714,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            hookActionPressed = true;
+            hookActionPressed = true;            
 
             // Enable the Hook timer
             if (isJumping && isHookUnlocked)
@@ -897,8 +912,8 @@ public class PlayerMovement : MonoBehaviour
         //CalculateWallJumpTimes();                                                                   
         CalculateJumpTimes(wallJumpVertSpeed);
 
-        // Reset Rb velocity to avoid inconsistencies
-        rb2D.linearVelocity = Vector2.zero;
+        // Reset Rb velocity to avoid inconsistencies        
+        ResetVelocity();
 
         //wallSpeedVector = (-rayWallDir * Mathf.Cos(Mathf.Deg2Rad * 30) * wallJumpForce) +
         //                    (Vector2.up * Mathf.Sin(Mathf.Deg2Rad * 30) * wallJumpForce);
@@ -1038,6 +1053,12 @@ public class PlayerMovement : MonoBehaviour
                 rb2D.linearVelocity = new Vector2(clampedVelX, rb2D.linearVelocityY);
 
                 break;
+            case PlayerState.Hurting:
+                if (thrustEnemyTimer >= thrustEnemyDuration * 0.3f)
+                    rb2DDirVelX = enemyHitDir.x * enemyHitThrust;
+                else                    
+                    rb2DDirVelX *= 0.5f;
+                break;
             default:
                 break;
         }
@@ -1084,6 +1105,12 @@ public class PlayerMovement : MonoBehaviour
             case PlayerState.Swinging:
                 //rb2DJumpVelY = rb2D.linearVelocity.y;
                 break;
+            case PlayerState.Hurting:                
+                if (thrustEnemyTimer >= thrustEnemyDuration * 0.3f)
+                    rb2DJumpVelY = enemyHitDir.y * enemyHitThrust * 0.6f;                
+                else
+                    rb2DJumpVelY *= 0.5f;
+                break;                
             default:
                 break;
         }
@@ -1133,6 +1160,9 @@ public class PlayerMovement : MonoBehaviour
                 //                Mathf.Lerp(rb2D.linearVelocity.x, targetVelocity.x, Time.fixedDeltaTime * lerpSpeed),
                 //                targetVelocity.y);
 
+                break;
+            case PlayerState.Hurting:
+                rb2D.linearVelocity = targetVelocity;
                 break;
             default:
                 break;
@@ -1190,14 +1220,40 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Damage
+    private void UdpateThrustEnemyTimer()
+    {
+        // Jump Buffer Timer update
+        thrustEnemyTimer -= Time.fixedDeltaTime;
+
+        // Reset Jump Buffer Timer
+        if (thrustEnemyTimer <= 0)
+        {
+            ResetThrustEnemyTimer();
+        }
+    }
+    private void SetThrustEnemyTimer()
+    {
+        isThrustEnemyTimerEnabled = true;
+        thrustEnemyTimer = thrustEnemyDuration;
+    }
+    private void ResetThrustEnemyTimer()
+    {
+        isThrustEnemyTimerEnabled = false;
+        thrustEnemyTimer = 0f;
+    }
     private void ReceiveDamage(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         // Trigger the Hurting State (and also the hurting anim.)
         TriggerHurtingState();
         // reset the player's velocity        
         ResetVelocity();
+        // Set the Thrust Velocities & the Thrust Enemy Timer;
+        SetBackwardsThrustVelocities(thrustEnemyDir, thrustEnemyForce);
+        SetThrustEnemyTimer();
+
         // Backwards Thrust to the player (on opposite direction to the enemy's path)
-        StartCoroutine(TriggerBackwardsThrustCoroutine(thrustEnemyDir, thrustEnemyForce, ForceMode2D.Impulse));
+        //StartCoroutine(TriggerBackwardsThrustCoroutine(thrustEnemyDir, thrustEnemyForce, ForceMode2D.Force);
+        //BackwardsThrustEnemy(thrustEnemyDir, thrustEnemyForce, ForceMode2D.Force);
         // Disable the Player's Collider during the Hurt Animation & reset the Hurt animation after 1s.
         StartCoroutine(nameof(ExitHurtingStateAfterDelay));              
     }
@@ -1205,8 +1261,8 @@ public class PlayerMovement : MonoBehaviour
     {
         //DisableDamage();
 
-        yield return new WaitUntil(() => (playerVFX.FadingTimer >= playerVFX.FadingTotalDuration * 0.4f));
-        //yield return new WaitForSeconds(playerVFX.FadingTotalDuration * 0.4f);
+        //yield return new WaitUntil(() => (playerVFX.FadingTimer >= playerVFX.FadingTotalDuration));
+        yield return new WaitWhile(()=>isThrustEnemyTimerEnabled);
 
         // Finish the Hurting State
         DisableHurtingState();
@@ -1228,21 +1284,31 @@ public class PlayerMovement : MonoBehaviour
         // Set the Player's Rb as Dynamics again
         SetRbAsDynamics();
     }
+    private void SetBackwardsThrustVelocities(Vector2 thrustEnemyDir, float thrustEnemyForce)
+    {
+         enemyHitDir = thrustEnemyDir;
+         enemyHitThrust = thrustEnemyForce;
+    }
     private IEnumerator TriggerBackwardsThrustCoroutine(Vector2 thrustDir, float thrustForce, ForceMode2D forceMode2D)
     {
-        yield return new WaitUntil(() => Time.timeScale >= 0.6f);
+        yield return new WaitUntil(() => Time.timeScale == 1f);
 
         // Backwards Thrust to the player (on opposite direction to the enemy's path)
         BackwardsThrustEnemy(thrustDir, thrustForce, forceMode2D);
-    }
+        //BackwardsThrustVelEnemy(thrustDir, thrustForce);
+    }    
     private void BackwardsThrustEnemy(Vector2 thrustDir, float thrustForce, ForceMode2D forceMode2D)
     {        
         if (forceMode2D == ForceMode2D.Force)
             rb2D.AddForce(new Vector2(thrustDir.x * thrustForce,
-                                    thrustDir.y * thrustForce * 0.5f), ForceMode2D.Force);
+                                    thrustDir.y * thrustForce * 0.3f), ForceMode2D.Force);
         else
             rb2D.AddForce(new Vector2(thrustDir.x * thrustForce, 
-                                    thrustDir.y * thrustForce * 0.8f), ForceMode2D.Impulse);
+                                    thrustDir.y * thrustForce * 0.3f), ForceMode2D.Impulse);
+    }
+    private void BackwardsThrustVelEnemy(Vector2 thrustDir, float thrustForce)
+    {        
+        rb2D.linearVelocity = new Vector2(thrustDir.x * thrustForce*3,thrustDir.y * thrustForce);
     }
     #endregion
     #region Death
@@ -1333,7 +1399,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("IsSwinging", true);
                 break;
             case PlayerState.Hurting:
-                animator.SetBool("Hurt", true);
+                animator.SetBool("Hurt", true);                              
                 break;
             default:
                 break;
