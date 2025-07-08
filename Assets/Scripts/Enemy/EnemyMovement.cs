@@ -31,6 +31,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private float thrustToPlayer;      // ForceMode2D = Impulse --> 3-4f
                                                         // ForceMode2D = Force --> 250-300f
+                                                        // Velocity --> 25f
 
     // Boolean Flags
     private bool playerDetectionEnabled;    
@@ -84,8 +85,12 @@ public class EnemyMovement : MonoBehaviour
         else
             UpdateTargetPosition();
         
-        Patrol();
+        //Patrol();
         FlipSprite();        
+    }
+    private void FixedUpdate()
+    {
+        Patrol();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -180,7 +185,7 @@ public class EnemyMovement : MonoBehaviour
     void Patrol()
     {        
         // Update the ant's position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);        
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.fixedDeltaTime);        
     }
     #endregion
     #region Sprite

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,6 +44,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] float slowDuration;            // 0.3f
     [SerializeField] float returnDuration;          // 1f;
 
+    #region Events & Delegates
+    public event Action<Vector2, float> OnHitPhysicsPlayer;
+    #endregion
+
     // GO Refs.
     AudioSource generalAudioSource;
     PlayerHealth playerHealth;
@@ -81,7 +86,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0.2f; // Velocidad al 20%
         Time.fixedDeltaTime = 0.02f * Time.timeScale; // Ajustar física
     }
-    private void SlowMotionOnHit()
+    private void SlowMotionOnHit(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         // 1. Mata cualquier tween previo con el ID "SlowTime"
         DOTween.Kill("SlowTime");
@@ -91,15 +96,26 @@ public class GameManager : MonoBehaviour
 
         // 3. Usa DOVirtual.DelayedCall para esperar slowDuration segundos en tiempo real
         DOVirtual.DelayedCall(slowDuration, () =>
-        {
+        {            
             // 4. Cuando termina la espera, comienza el tween para interpolar Time.timeScale de 0 a 1
-            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, returnDuration)
+            DOTween.To(() => Time.timeScale, 
+                    x => 
+                        {
+                        Time.timeScale = x;
+                        Time.fixedDeltaTime = 0.02f * x;
+                        }, 
+                    1f, returnDuration)
                 //.SetEase(Ease.OutCubic)
                 .SetEase(Ease.InQuad)
                 // 5. Le da un ID para poder controlar o cancelar este tween luego
                 .SetId("SlowTime")
                 // 6. Hace que el tween corra usando tiempo real, ignorando Time.timeScale
-                .SetUpdate(true);
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    // Trigger the OnHitPhysicsPlayer Event  
+                    OnHitPhysicsPlayer?.Invoke(thrustEnemyDir, thrustEnemyForce);
+                });
         })
         // 7. Hace que la llamada retrasada también use tiempo real para contar correctamente
         .SetUpdate(true);
