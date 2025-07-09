@@ -39,11 +39,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Slow Hit Time")]
     [SerializeField] float elapsedSlowHitTime;
-    [SerializeField] float durationSlowHitTime;     // 1f;
+    [SerializeField] float durationSlowHitTime;     // 0.5f;
 
     [Header("Slow Hit Time DOTWeen")]
-    [SerializeField] float slowDuration;            // 0.3f
-    [SerializeField] float returnDuration;          // 0.8f;
+    [SerializeField] float slowMotAndDeafDelayDuration;     // 0.3f   slowduration
+    [SerializeField] float DeafBwdDuration;                 // 0.8f;  returnduration
 
     [Header("Audio Mixer")]
     [SerializeField] AudioMixer audioMixer;    
@@ -52,8 +52,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float lowPassMinFreq = 450f;
     [SerializeField] private float volumeMaxValue = 0f;
     [SerializeField] private float volumeMinValue = -15f;
-    [SerializeField] private float filterDuration = 0.5f;       //0.5f
-    [SerializeField] private float volumeDropDuration = 0.5f;   //0.5f
+    [SerializeField] private float filterDeafFwdDuration = 0.8f;       //0.8f  filterduration
+    [SerializeField] private float volumeDropDeafFwdDuration = 0.5f;   //0.5f  volumedropduration
     private string sfxLowPassParam = "SFXLowpassFreq";
     private string sfxVolumeParam = "SFXVolume";
     private string musicLowPassParam = "MusicLowpassFreq";
@@ -65,25 +65,26 @@ public class GameManager : MonoBehaviour
     // GO Refs.
     AudioSource generalAudioSource;
     PlayerHealth playerHealth;
+    PlayerMovement playerMovement;
 
     #region Unity API
     // Start is called before the first frame update
     void Awake()
     {
         if (instance != null && instance != this)
+        {
             Destroy(gameObject);
-        else
-            instance = this;
-
+            return;
+        }            
+        
+        instance = this;
         DontDestroyOnLoad(gameObject);
 
         generalAudioSource = GetComponent<AudioSource>();
 
         // Set the filterDuration
         //filterDuration = returnDuration;
-
-
-    }    
+    }
     private void OnDestroy()
     {
         if (playerHealth != null)
@@ -91,6 +92,11 @@ public class GameManager : MonoBehaviour
             playerHealth.OnHitFXPlayer -= SlowMotionOnHit;
             playerHealth.OnHitFXPlayer -= ApplyDeafeningSFX;
         }
+
+        if (playerMovement != null)
+            OnHitPhysicsPlayer -= playerMovement.ReceiveDamage;
+
+        instance = null;
     }
     #endregion
     #region Events Subscriptions
@@ -125,7 +131,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0.1f; //0.2f;
 
         // 3. Usa DOVirtual.DelayedCall para esperar slowDuration segundos en tiempo real
-        DOVirtual.DelayedCall(slowDuration, () =>
+        DOVirtual.DelayedCall(slowMotAndDeafDelayDuration, () =>
         {            
             // 4. Cuando termina la espera, comienza el tween para interpolar Time.timeScale de 0 a 1
             DOTween.To(() => Time.timeScale, 
@@ -134,7 +140,7 @@ public class GameManager : MonoBehaviour
                         Time.timeScale = x;
                         Time.fixedDeltaTime = 0.02f * x;
                         }, 
-                    1f, returnDuration)
+                    1f, DeafBwdDuration)
                 //.SetEase(Ease.OutCubic)
                 .SetEase(Ease.InQuad)
                 // 5. Le da un ID para poder controlar o cancelar este tween luego
@@ -177,7 +183,7 @@ public class GameManager : MonoBehaviour
     private void ApplyDeafeningSFX(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {        
         ApplyDeafSFX()
-            .AppendInterval(slowDuration)
+            .AppendInterval(slowMotAndDeafDelayDuration)
             .AppendCallback(() => RemoveDeafSFX());
     }
     private Tween AudioMixerParamInterpolation(AudioMixer audiomixer, string param, float targetValue, float duration, Ease easeType)
@@ -199,14 +205,14 @@ public class GameManager : MonoBehaviour
         Sequence sequence = DOTween.Sequence().SetUpdate(true);
 
         // Low Pass Filter applied for SFX Group        
-        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxLowPassParam, lowPassMinFreq, filterDuration, Ease.OutQuad));
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxLowPassParam, lowPassMinFreq, filterDeafFwdDuration, Ease.OutQuad));
         // Low Pass Filter applied for Music Group
-        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicLowPassParam, lowPassMinFreq, filterDuration, Ease.OutQuad));
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicLowPassParam, lowPassMinFreq, filterDeafFwdDuration, Ease.OutQuad));
 
         // Volume attenuation applied for SFX Group        
-        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxVolumeParam, volumeMinValue, volumeDropDuration, Ease.OutQuad));
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxVolumeParam, volumeMinValue, volumeDropDeafFwdDuration, Ease.OutQuad));
         // Volume attenuation applied for Music Group
-        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicVolumeParam, volumeMinValue, volumeDropDuration, Ease.OutQuad));
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicVolumeParam, volumeMinValue, volumeDropDeafFwdDuration, Ease.OutQuad));
 
         return sequence;    
     }
@@ -215,14 +221,14 @@ public class GameManager : MonoBehaviour
         Sequence sequence = DOTween.Sequence().SetUpdate(true);
 
         // Low Pass Filter disabled applied for SFX Group        
-        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxLowPassParam, lowPassMaxFreq, returnDuration, Ease.OutQuad));
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxLowPassParam, lowPassMaxFreq, DeafBwdDuration, Ease.OutQuad));
         // Low Pass Filter disabled applied for Music Group
-        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicLowPassParam, lowPassMaxFreq, returnDuration, Ease.OutQuad));
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicLowPassParam, lowPassMaxFreq, DeafBwdDuration, Ease.OutQuad));
 
         // Volume attenuation disabled applied for SFX Group        
-        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxVolumeParam, volumeMaxValue, returnDuration, Ease.OutQuad));
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxVolumeParam, volumeMaxValue, DeafBwdDuration, Ease.OutQuad));
         // Volume attenuation disabled applied for Music Group
-        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicVolumeParam, volumeMaxValue, returnDuration, Ease.OutQuad));
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicVolumeParam, volumeMaxValue, DeafBwdDuration, Ease.OutQuad));
 
         return sequence;
     }
