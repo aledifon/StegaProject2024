@@ -14702,7 +14702,7 @@ MonoBehaviour:
   returnDuration: 0.8
   audioMixer: {fileID: 24100000, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
   lowPassMaxFreq: 22000
-  lowPassMinFreq: 500
+  lowPassMinFreq: 450
   volumeMaxValue: 0
   volumeMinValue: -15
   filterDuration: 0.8
