@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using FronkonGames.Glitches.Interferences;
+using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class PlayerVFX : MonoBehaviour
 {    
@@ -65,6 +68,25 @@ public class PlayerVFX : MonoBehaviour
     Coroutine resetTakeOffJumpPSCoroutine;
     Coroutine resetWallJumpPSCoroutine;
 
+    [Header("Glitch")]    
+    [SerializeField] private float defGlitchDistortAmp = 0.15f;
+    [SerializeField] private float highGlitchDistortAmp = 0.8f;
+
+    [SerializeField] private float defGlitchDistortFreq = 0.3f;        
+    [SerializeField] private float highGlitchDistortFreq = 6f;
+
+    [SerializeField] private ColorBlends defGlitchColorBlend;   // ColorBlends.Solid;
+    [SerializeField] private ColorBlends highGlitchColorBlend;  // ColorBlends.Subtract;
+
+    [SerializeField] private float glitchFwdDuration;       // 0.5f
+    [SerializeField] private float glitchDelayDuration;     // 0.3f
+    [SerializeField] private float glitchBwdDuration;       // 0.8f;
+    [SerializeField] private bool isGlitchVFXEnabled;
+    public bool IsGlitchVFXEnabled => isGlitchVFXEnabled;
+    Interferences glitchVFX;
+    Interferences.Settings glitchVFXSettings;
+    [SerializeField] bool isTestGlitchVFXEnabled;
+
     #region Unity API
     void Awake()
     {        
@@ -87,16 +109,22 @@ public class PlayerVFX : MonoBehaviour
 
         // Get the current landingJumpPS Local Pos. & Rot.
         waterLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;
-        dustLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;                
+        dustLandingJumpPS.transform.localPosition += Vector3.down * playerMovement.RayLength;
 
         //Debug.Log("DustTakeOff LocalPos = " + dustTakeOffJumpPS.transform.localPosition);
         //Debug.Log("DustTakeOff LocalRot = " + dustTakeOffJumpPS.transform.localRotation);
-        
+
         //Debug.Log("DustLanding LocalPos = " + dustLandingJumpPS.transform.localPosition);
         //Debug.Log("DustLanding LocalRot = " + dustLandingJumpPS.transform.localRotation);
-        
+
         //Debug.Log("WallJump LocalPos = " + wallJumpPS.transform.localPosition);
         //Debug.Log("WallJump LocalRot = " + wallJumpPS.transform.localRotation);
+
+        // Get the Glitch VFX References
+        glitchVFX = Interferences.Instance;
+        glitchVFXSettings = Interferences.Instance.settings;
+
+        SetupInitGlitchVFXState();
     }    
     private void OnEnable()
     {
@@ -121,6 +149,7 @@ public class PlayerVFX : MonoBehaviour
 
         // Damage Player
         playerHealth.OnHitFXPlayer += TriggerSpriteFading;
+        playerHealth.OnHitFXPlayer += TriggerGlitchHitVFX;
     }
     private void OnDisable()
     {
@@ -145,11 +174,21 @@ public class PlayerVFX : MonoBehaviour
 
         // Damage
         playerHealth.OnHitFXPlayer -= TriggerSpriteFading;
+        playerHealth.OnHitFXPlayer -= TriggerGlitchHitVFX;
     }
     private void Update()
     {
         if (isWalkVFXRunning)
-            UpdateWalkVFXDirection();        
+            UpdateWalkVFXDirection();
+
+        // TEST GLITCH EFFECT
+        //if (isTestGlitchVFXEnabled)
+        //{
+        //    if (isGlitchVFXEnabled && !glitchVFX.isActive)
+        //        glitchVFX.SetActive(true);
+        //    else if (!isGlitchVFXEnabled && glitchVFX.isActive)
+        //        glitchVFX.SetActive(false);
+        //}
     }
     #endregion
     #region Private Methods
@@ -439,7 +478,6 @@ public class PlayerVFX : MonoBehaviour
         }
     }
     #endregion
-
     #region Damage
     private void TriggerSpriteFading(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
@@ -485,6 +523,129 @@ public class PlayerVFX : MonoBehaviour
         targetColor.a = 1f;
         spriteRenderer.color = targetColor;
     }
+    private void SetupInitGlitchVFXState()
+    {
+        // Setup the Initial Glitch Status & Enable the Main Camera Post-Processing
+        if (glitchVFX != null)
+            glitchVFX.SetActive(false);
+        else
+            Debug.LogError("Glitch VFX is null!");
+
+        // Enable the Camera Post-Processing
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null && mainCamera.TryGetComponent(out UniversalAdditionalCameraData cameraData))
+        {
+            cameraData.renderPostProcessing = true;
+        }
+        else
+            Debug.LogError("An error happened trying to set the renderPostProcessing property of the main camera!");
+    }
+
+    private void TriggerGlitchHitVFX(Vector2 thrustEnemyDir, float thrustEnemyForce)
+    {
+        // Enable the Glitch VFX
+        glitchVFX.SetActive(true);
+        isGlitchVFXEnabled = true;
+
+        // Define the Tweens Sequence
+        Sequence fullSequence = DOTween.Sequence().SetUpdate(true);
+
+        // Plays the Glitch VFX Fwd Sequence & the Bwd Seq. afterwards.
+        fullSequence
+            .Append(PlayFwdGlitchHitVFX())
+            .AppendInterval(glitchDelayDuration)
+            .Append(PlayBwdGlitchHitVFX())
+            .AppendCallback(() =>
+            {
+                glitchVFX.SetActive(false);
+                isGlitchVFXEnabled = false;
+            });
+    }
+    private Sequence PlayFwdGlitchHitVFX()
+    {
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
+
+        // Increment of Distortion Amplitude of Glitch VFX      
+        sequence.Join(GlitchVFXDistAmpInterp(glitchVFXSettings, highGlitchDistortAmp, glitchFwdDuration, Ease.OutQuad));
+        // Increment of Distortion Frequency of Glitch VFX
+        sequence.Join(GlitchVFXDistFreqInterp(glitchVFXSettings, highGlitchDistortFreq, glitchFwdDuration, Ease.OutQuad));
+
+        // Goes to a different Glitch Color Blend Effect
+        sequence.Join(GlitchVFXColorBlendInterp(glitchVFXSettings, highGlitchColorBlend, glitchFwdDuration, Ease.OutQuad));
+
+        return sequence;
+    }
+    private Sequence PlayBwdGlitchHitVFX()
+    {
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
+
+        // Back to def values of Distortion Amplitude of Glitch VFX      
+        sequence.Join(GlitchVFXDistAmpInterp(glitchVFXSettings, defGlitchDistortAmp, glitchBwdDuration, Ease.OutQuad));
+        // Back to def values of Distortion Frequency of Glitch VFX
+        sequence.Join(GlitchVFXDistFreqInterp(glitchVFXSettings, defGlitchDistortFreq, glitchBwdDuration, Ease.OutQuad));
+
+        // Back to the def values of Glitch Color Blend Effect
+        sequence.Join(GlitchVFXColorBlendInterp(glitchVFXSettings, defGlitchColorBlend, glitchBwdDuration, Ease.OutQuad));
+
+        return sequence;
+    }
+    private Tween GlitchVFXDistAmpInterp(Interferences.Settings glitchVFXSettings, float targetValue, float duration, Ease easeType)
+    {
+        // Interpolation for the Glitch VFX Param
+        return DOTween.To(() =>
+                glitchVFXSettings.distortionAmplitude,
+                x => glitchVFXSettings.distortionAmplitude = x,
+                targetValue,
+                duration
+        ).SetEase(easeType);
+    }
+    private Tween GlitchVFXDistFreqInterp(Interferences.Settings glitchVFXSettings, float targetValue, float duration, Ease easeType)
+    {
+        // Interpolation for the Glitch VFX Param
+        return DOTween.To(() =>
+                glitchVFXSettings.distortionFrequency,
+                x => glitchVFXSettings.distortionFrequency = x,
+                targetValue,
+                duration
+        ).SetEase(easeType);
+    }
+    private Tween GlitchVFXColorBlendInterp(Interferences.Settings glitchVFXSettings, ColorBlends targetBlend, float duration, Ease easeType)
+    {
+        int startColor = (int)glitchVFXSettings.blend;
+        int targetColor = (int)targetBlend;
+
+        // Interpolation for the Glitch VFX Param
+        return DOTween.To(() =>
+                startColor,
+                x => glitchVFXSettings.blend = (ColorBlends)x,                
+                targetColor,
+                duration
+        ).SetEase(easeType);
+    }
+
+    //private void PlayGlitchHitVFX_(Vector2 thrustEnemyDir, float thrustEnemyForce)
+    //{
+    //    glitchVFX.SetActive(true);
+    //    isGlitchVFXEnabled = true;
+
+    //    glitchVFXSettings.blend = ColorBlends.Subtract;
+    //    glitchVFXSettings.distortionAmplitude = 0.8f;
+    //    glitchVFXSettings.distortionFrequency = 6f;
+
+    //    StartCoroutine(nameof(StopGlitchHitVFXAfterDelay));
+    //}
+    //private IEnumerator StopGlitchHitVFXAfterDelay()
+    //{
+    //    yield return new WaitForSecondsRealtime(1f);
+    //    StopGlitchHitVFX();
+    //}
+    //private void StopGlitchHitVFX()
+    //{
+    //    glitchVFX.SetActive(false);
+    //    isGlitchVFXEnabled = false;
+
+    //    glitchVFXSettings.ResetDefaultValues();
+    //}
     #endregion
     #endregion
 }

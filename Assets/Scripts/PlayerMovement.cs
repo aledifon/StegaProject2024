@@ -268,7 +268,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnDisable()
     {
-        GameManager.Instance.OnHitPhysicsPlayer -= ReceiveDamage;
+        //if (GameManager.Instance != null)
+        //    GameManager.Instance.OnHitPhysicsPlayer -= ReceiveDamage;
         playerHealth.OnDeathPlayer -= Death;
     }
     void Awake()
@@ -1241,7 +1242,7 @@ public class PlayerMovement : MonoBehaviour
         isThrustEnemyTimerEnabled = false;
         thrustEnemyTimer = 0f;
     }
-    private void ReceiveDamage(Vector2 thrustEnemyDir, float thrustEnemyForce)
+    public void ReceiveDamage(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         // Trigger the Hurting State (and also the hurting anim.)
         TriggerHurtingState();

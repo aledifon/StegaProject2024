@@ -12745,6 +12745,17 @@ MonoBehaviour:
   fadeOutDuration: 0.1
   fadingTimer: 0
   fadingTotalDuration: 1.5
+  defGlitchDistortAmp: 0.15
+  highGlitchDistortAmp: 0.8
+  defGlitchDistortFreq: 0.3
+  highGlitchDistortFreq: 6
+  defGlitchColorBlend: 16
+  highGlitchColorBlend: 20
+  glitchFwdDuration: 0.5
+  glitchDelayDuration: 0.3
+  glitchBwdDuration: 0.8
+  isGlitchVFXEnabled: 0
+  isTestGlitchVFXEnabled: 0
 --- !u!114 &1072431788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14698,15 +14709,15 @@ MonoBehaviour:
   isWetSurface: 0
   elapsedSlowHitTime: 0
   durationSlowHitTime: 0.5
-  slowDuration: 0.3
-  returnDuration: 0.8
+  slowMotAndDeafDelayDuration: 0.3
+  DeafBwdDuration: 0.8
   audioMixer: {fileID: 24100000, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
   lowPassMaxFreq: 22000
   lowPassMinFreq: 450
   volumeMaxValue: 0
   volumeMinValue: -15
-  filterDuration: 0.8
-  volumeDropDuration: 0.5
+  filterDeafFwdDuration: 0.8
+  volumeDropDeafFwdDuration: 0.5
 --- !u!1 &1427650236
 GameObject:
   m_ObjectHideFlags: 0
@@ -15231,6 +15242,17 @@ MonoBehaviour:
   fadeOutDuration: 0
   fadingTimer: 0
   fadingTotalDuration: 0
+  defGlitchDistortAmp: 0.15
+  highGlitchDistortAmp: 0.8
+  defGlitchDistortFreq: 0.3
+  highGlitchDistortFreq: 6
+  defGlitchColorBlend: 16
+  highGlitchColorBlend: 20
+  glitchFwdDuration: 0
+  glitchDelayDuration: 0
+  glitchBwdDuration: 0
+  isGlitchVFXEnabled: 0
+  isTestGlitchVFXEnabled: 0
 --- !u!114 &1427650248
 MonoBehaviour:
   m_ObjectHideFlags: 0

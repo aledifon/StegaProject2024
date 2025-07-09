@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: fe29ed7f920db6d4ba291709fab7d9d4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 281861
+  packageName: 'Glitches: Interferences'
+  packageVersion: 2.1.2
+  assetPath: Assets/FronkonGames/Glitches/Interferences/Editor/Internal/Drawer.cs
+  uploadId: 751063
