@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioMixer audioMixer;    
     // Typical Range for Lowpass: 22000 (no filter) - 500 (strong filter)
     [SerializeField] private float lowPassMaxFreq = 22000f;
-    [SerializeField] private float lowPassMinFreq = 500f;
+    [SerializeField] private float lowPassMinFreq = 450f;
     [SerializeField] private float volumeMaxValue = 0f;
     [SerializeField] private float volumeMinValue = -15f;
     [SerializeField] private float filterDuration = 0.5f;       //0.5f
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
         DOTween.Kill("SlowTime");
 
         // 2. Pone el tiempo a 0 instantáneamente
-        Time.timeScale = 0.2f;
+        Time.timeScale = 0.1f; //0.2f;
 
         // 3. Usa DOVirtual.DelayedCall para esperar slowDuration segundos en tiempo real
         DOVirtual.DelayedCall(slowDuration, () =>
