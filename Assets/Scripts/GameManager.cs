@@ -43,11 +43,21 @@ public class GameManager : MonoBehaviour
 
     [Header("Slow Hit Time DOTWeen")]
     [SerializeField] float slowDuration;            // 0.3f
-    [SerializeField] float returnDuration;          // 1f;
+    [SerializeField] float returnDuration;          // 0.8f;
 
     [Header("Audio Mixer")]
-    [SerializeField] AudioMixer audioMixer;
-
+    [SerializeField] AudioMixer audioMixer;    
+    // Typical Range for Lowpass: 22000 (no filter) - 500 (strong filter)
+    [SerializeField] private float lowPassMaxFreq = 22000f;
+    [SerializeField] private float lowPassMinFreq = 500f;
+    [SerializeField] private float volumeMaxValue = 0f;
+    [SerializeField] private float volumeMinValue = -15f;
+    [SerializeField] private float filterDuration = 0.5f;       //0.5f
+    [SerializeField] private float volumeDropDuration = 0.5f;   //0.5f
+    private string sfxLowPassParam = "SFXLowpassFreq";
+    private string sfxVolumeParam = "SFXVolume";
+    private string musicLowPassParam = "MusicLowpassFreq";
+    private string musicVolumeParam = "MusicVolume";
     #region Events & Delegates
     public event Action<Vector2, float> OnHitPhysicsPlayer;
     #endregion
@@ -56,6 +66,7 @@ public class GameManager : MonoBehaviour
     AudioSource generalAudioSource;
     PlayerHealth playerHealth;
 
+    #region Unity API
     // Start is called before the first frame update
     void Awake()
     {
@@ -67,17 +78,30 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         generalAudioSource = GetComponent<AudioSource>();
+
+        // Set the filterDuration
+        //filterDuration = returnDuration;
+
+
     }    
     private void OnDestroy()
     {
         if (playerHealth != null)
+        {
             playerHealth.OnHitFXPlayer -= SlowMotionOnHit;
+            playerHealth.OnHitFXPlayer -= ApplyDeafeningSFX;
+        }
     }
+    #endregion
+    #region Events Subscriptions
     public void SubscribeEventsOfPlayerHealth(PlayerHealth pH)
     {
         playerHealth = pH;
         playerHealth.OnHitFXPlayer += SlowMotionOnHit;
+        playerHealth.OnHitFXPlayer += ApplyDeafeningSFX;
     }
+    #endregion
+    #region GameOver
     public void PlayGameOverSFx()
     {
         if(generalAudioSource.isPlaying)
@@ -85,6 +109,8 @@ public class GameManager : MonoBehaviour
 
         generalAudioSource.PlayOneShot(gameOverClip);
     }
+    #endregion
+    #region Slow Motion
     public void EnableSlowMotion()
     {
         Time.timeScale = 0.2f; // Velocidad al 20%
@@ -118,7 +144,7 @@ public class GameManager : MonoBehaviour
                 .OnComplete(() =>
                 {
                     // Trigger the OnHitPhysicsPlayer Event  
-                    OnHitPhysicsPlayer?.Invoke(thrustEnemyDir, thrustEnemyForce);
+                    OnHitPhysicsPlayer?.Invoke(thrustEnemyDir, thrustEnemyForce);                    
                 });
         })
         // 7. Hace que la llamada retrasada también use tiempo real para contar correctamente
@@ -146,5 +172,59 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 1f;
     }
+    #endregion
+    #region DeafeningAudioEffect    
+    private void ApplyDeafeningSFX(Vector2 thrustEnemyDir, float thrustEnemyForce)
+    {        
+        ApplyDeafSFX()
+            .AppendInterval(slowDuration)
+            .AppendCallback(() => RemoveDeafSFX());
+    }
+    private Tween AudioMixerParamInterpolation(AudioMixer audiomixer, string param, float targetValue, float duration, Ease easeType)
+    {
+        // Attenuation for SFX Group
+        return DOTween.To(() =>
+        {
+            float currentValue;
+            audioMixer.GetFloat(param, out currentValue);
+            return currentValue;
+        },
+                x => audioMixer.SetFloat(param, x),
+                targetValue,
+                duration
+        ).SetEase(easeType);
+    }
+    private Sequence ApplyDeafSFX()
+    {    
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
 
+        // Low Pass Filter applied for SFX Group        
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxLowPassParam, lowPassMinFreq, filterDuration, Ease.OutQuad));
+        // Low Pass Filter applied for Music Group
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicLowPassParam, lowPassMinFreq, filterDuration, Ease.OutQuad));
+
+        // Volume attenuation applied for SFX Group        
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxVolumeParam, volumeMinValue, volumeDropDuration, Ease.OutQuad));
+        // Volume attenuation applied for Music Group
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicVolumeParam, volumeMinValue, volumeDropDuration, Ease.OutQuad));
+
+        return sequence;    
+    }
+    private Sequence RemoveDeafSFX()
+    {
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
+
+        // Low Pass Filter disabled applied for SFX Group        
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxLowPassParam, lowPassMaxFreq, returnDuration, Ease.OutQuad));
+        // Low Pass Filter disabled applied for Music Group
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicLowPassParam, lowPassMaxFreq, returnDuration, Ease.OutQuad));
+
+        // Volume attenuation disabled applied for SFX Group        
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, sfxVolumeParam, volumeMaxValue, returnDuration, Ease.OutQuad));
+        // Volume attenuation disabled applied for Music Group
+        sequence.Join(AudioMixerParamInterpolation(audioMixer, musicVolumeParam, volumeMaxValue, returnDuration, Ease.OutQuad));
+
+        return sequence;
+    }
+    #endregion
 }

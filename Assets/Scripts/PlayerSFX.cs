@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerSFX : MonoBehaviour
 {    
@@ -29,7 +30,7 @@ public class PlayerSFX : MonoBehaviour
     private bool isRopeSwingingSFXRunning;
 
     [Header("Damage")]
-    [SerializeField] private AudioClip damageSFX;
+    [SerializeField] private AudioClip hitSFX;
     [SerializeField] private AudioClip deathSFX;
 
     [Header("Acorn")]
@@ -39,14 +40,16 @@ public class PlayerSFX : MonoBehaviour
     [SerializeField] float lowPitchRange = 0.95f;
     [SerializeField] float highPitchRange = 1.05f;
 
-    private AudioSource audioSource;
+    private AudioSource fxAudioSource;
+    private AudioSource hitAudioSource;
     private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
     private PlayerHook playerHook;
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        fxAudioSource = GetComponent<AudioSource>();
+        hitAudioSource = GetComponent<AudioSource>();
         playerMovement = GetComponent<PlayerMovement>();
         playerHook = GetComponent<PlayerHook>();
         playerHealth = GetComponent<PlayerHealth>();
@@ -76,7 +79,7 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStopRopeSwinging += StopRopeSwingingSFX;
 
         // Damage Player
-        playerHealth.OnHitFXPlayer += PlayDamageSFX;
+        playerHealth.OnHitFXPlayer += PlayHitSFX;
         playerHealth.OnDeathPlayer += PlayDeathSFX;
 
         // Acorn
@@ -107,7 +110,7 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStopRopeSwinging -= StopRopeSwingingSFX;
 
         // Damage Player
-        playerHealth.OnHitFXPlayer -= PlayDamageSFX;
+        playerHealth.OnHitFXPlayer -= PlayHitSFX;
         playerHealth.OnDeathPlayer -= PlayDeathSFX;
 
         // Acorn
@@ -115,27 +118,27 @@ public class PlayerSFX : MonoBehaviour
     }
     private void Update()
     {
-        if (isWalkSFXRunning && !audioSource.isPlaying)
+        if (isWalkSFXRunning && !fxAudioSource.isPlaying)
             PlayWalkSFX();        
-        else if (isRopeSwingingSFXRunning && !audioSource.isPlaying)
+        else if (isRopeSwingingSFXRunning && !fxAudioSource.isPlaying)
             PlayRopeSwingingSFX();
     }
-    private void PlaySFXOneShot(AudioClip audioClip, float volume)
+    private void PlaySFXOneShot(AudioSource audioSource, AudioClip audioClip, float volume)
     {
         audioSource.PlayOneShot(audioClip, volume);
     }
-    private void PlaySFXSingle(AudioClip audioClip)
+    private void PlaySFXSingle(AudioSource audioSource, AudioClip audioClip)
     {
         audioSource.clip = audioClip;
         audioSource.Play();
     }
-    private void PlaySFXSingle(AudioClip audioClip, float volume)
+    private void PlaySFXSingle(AudioSource audioSource, AudioClip audioClip, float volume)
     {
         audioSource.clip = audioClip;
         audioSource.volume = volume;
         audioSource.Play();
     }    
-    private void StopSFX()
+    private void StopSFX(AudioSource audioSource)
     {
         audioSource.Stop();
     }
@@ -154,64 +157,64 @@ public class PlayerSFX : MonoBehaviour
         if (GameManager.Instance.IsWetSurface)
         {
             n = Random.Range(0, waterWalkSFX.Length);
-            PlaySFXSingle(waterWalkSFX[n]);
+            PlaySFXSingle(fxAudioSource, waterWalkSFX[n]);
         }
         else
         {
             n = Random.Range(0, dustWalkSFX.Length);
-            PlaySFXSingle(dustWalkSFX[n]);
+            PlaySFXSingle(fxAudioSource, dustWalkSFX[n]);
         }            
         //float randomPitch = Random.Range(lowPitchRange,highPitchRange);
-        //audioSource.pitch = randomPitch;                
+        //fxAudioSource.pitch = randomPitch;                
     }
     #endregion
     #region Jump
     private void PlayTakeOffJumpSFX()
     {
-        PlaySFXOneShot(takeOffJumpSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, takeOffJumpSFX, 1f);
     }
     private void PlayLandingJumpSFX()
     {
         if (GameManager.Instance.IsWetSurface)
-            PlaySFXOneShot(waterLandingJumpSFX, waterLandingJumpVolume);
+            PlaySFXOneShot(fxAudioSource, waterLandingJumpSFX, waterLandingJumpVolume);
         else
-            PlaySFXOneShot(dustLandingJumpSFX, dustLandingJumpVolume);
-        audioSource.volume = 1f;
+            PlaySFXOneShot(fxAudioSource, dustLandingJumpSFX, dustLandingJumpVolume);
+        fxAudioSource.volume = 1f;
         //Debug.Log("Played Landing Jumping SFX");
     }
     #endregion
     #region Wall Sliding    
     private void StopWallSlidingSFX()
     {
-        audioSource.loop = false;
-        StopSFX();        
+        fxAudioSource.loop = false;
+        StopSFX(fxAudioSource);        
     }
     private void PlayWallSlidingSFX()
     {
-        audioSource.loop = true;
-        audioSource.time = 1.5f;
-        PlaySFXSingle(wallSlidingSFX);
+        fxAudioSource.loop = true;
+        fxAudioSource.time = 1.5f;
+        PlaySFXSingle(fxAudioSource, wallSlidingSFX);
     }
     #endregion
     #region Wall Jump
     private void PlayWallJumpSFX()
     {
-        PlaySFXOneShot(wallJumpSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, wallJumpSFX, 1f);
     }
     #endregion
     #region Grappling-Hook
     #region Hook
     private void PlayHookThrownSFX()
     {
-        PlaySFXOneShot(hookThrownSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, hookThrownSFX, 1f);
     }
     private void PlayHookAttachedSFX()
     {
-        PlaySFXOneShot(hookAttachedSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, hookAttachedSFX, 1f);
     }
     private void PlayHookReleasedSFX()
     {
-        PlaySFXOneShot(hookReleaseSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, hookReleaseSFX, 1f);
     }
     #endregion
     #region Rope Swinging
@@ -222,36 +225,36 @@ public class PlayerSFX : MonoBehaviour
     private void StopRopeSwingingSFX()
     {
         isRopeSwingingSFXRunning = false;
-        StopSFX();
+        StopSFX(fxAudioSource);
         
-        audioSource.volume = 1f;                // Reset the Volume to its def value.
+        fxAudioSource.volume = 1f;                // Reset the Volume to its def value.
     }
     private void PlayRopeSwingingSFX()
     {
         int n;
         
         n = Random.Range(0, ropeSwingSFX.Length);
-        PlaySFXSingle(ropeSwingSFX[n],ropeSwingVolume);
+        PlaySFXSingle(fxAudioSource, ropeSwingSFX[n],ropeSwingVolume);
         
         //float randomPitch = Random.Range(lowPitchRange,highPitchRange);
-        //audioSource.pitch = randomPitch;                
+        //fxAudioSource.pitch = randomPitch;                
     }
     #endregion
     #endregion
     #region Damage-Death
-    private void PlayDamageSFX(Vector2 thrustEnemyDir, float thrustEnemyForce)
+    private void PlayHitSFX(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
-        PlaySFXOneShot(damageSFX, 1f);
+        PlaySFXOneShot(hitAudioSource, hitSFX, 1f);
     }
     private void PlayDeathSFX()
     {
-        PlaySFXOneShot(deathSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, deathSFX, 1f);
     }
     #endregion
     #region Acorn
     private void PlayEatAcornSFX()
     {
-        PlaySFXOneShot(eatAcornSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, eatAcornSFX, 1f);
     }
     #endregion
 }
