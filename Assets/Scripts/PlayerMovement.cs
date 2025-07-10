@@ -41,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpHorizSpeed;                   // Wall Jumping applied Speed    
     //[SerializeField] float wallJumpVertDist;          // Wall Jumping Vert. Dist. Uds.
     [SerializeField] private float wallJumpHorizDist;   // Max allowed Horizontal Wall Jumping distance    
+    [SerializeField] private float wallJumpHorizDist2;   // Max allowed Horizontal Wall Jumping distance
+                                                        // after the player takes the control again
     [SerializeField] private float wallJumpHorizTime;   // Max Jumping time on horizontal Movement
     private float wallJumpingVertTime;                          // Wall Jumping Time (in func. of Wall Jumping distance. & Wall Jump. speed)                                                    
     Vector2 wallJumpSpeedVector;
@@ -788,9 +790,14 @@ public class PlayerMovement : MonoBehaviour
             // (Will be used to calculate the min/maxJumpingTimes on CalculateJumpSpeedMovement)  
             ResetJumpTimer();
 
-            //Set the Jumping Horizontal Speed in func. of the max Horiz Jump Distance and the Max Jump Horiz time            
+            //Set the Wall Jumping Horizontal Speed in func. of the max Wall Horiz Jump Distance and the Max Wall Jump Horiz time            
             wallJumpHorizSpeed = wallJumpHorizDist /
                                 wallJumpHorizTime;
+
+            //Set also a percentage of the Normal Jumping Horiz Speed in order to apply it when the player take
+            //the control again. 
+            jumpHorizSpeed = wallJumpHorizDist2 /
+                            maxJumpHorizTime;
 
             // Register a Wall Jumping Trigger Request
             wallJumpTriggered = true;
