@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
 
     Vector3 targetPosition;
     int indexTargetPos;
+    Rigidbody2D rb2D;
 
     [Header("Damage")]
     [SerializeField] private int damageAmount;    
@@ -54,6 +55,7 @@ public class EnemyMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        rb2D = GetComponent<Rigidbody2D>();
 
         // Init the points Vector
         points = new Vector2[pointsObjects.Length];
@@ -74,22 +76,40 @@ public class EnemyMovement : MonoBehaviour
     //{
     //    //DetectPlayer();        
     //}
+    //private void Update_()
+    //{
+    //    // Check if the player has been detected
+    //    DetectPlayer();
+
+    //    // Update the Enemy's speed & anim's speed in func. of the player has been deteced or not
+    //    if (isDetecting)
+    //        AttackPlayer();
+    //    else
+    //        UpdateTargetPosition();
+        
+    //    //Patrol();
+    //    FlipSprite();        
+    //}
+    //private void FixedUpdate_()
+    //{
+    //    Patrol();
+    //}
     private void Update()
     {
         // Check if the player has been detected
-        DetectPlayer();
+        DetectPlayer();        
 
+        //Patrol();
+        FlipSprite();
+    }
+    private void FixedUpdate()
+    {
         // Update the Enemy's speed & anim's speed in func. of the player has been deteced or not
         if (isDetecting)
             AttackPlayer();
         else
             UpdateTargetPosition();
-        
-        //Patrol();
-        FlipSprite();        
-    }
-    private void FixedUpdate()
-    {
+
         Patrol();
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -166,9 +186,10 @@ public class EnemyMovement : MonoBehaviour
     {
         speed = walkingSpeed;
         anim.speed = 1;         // Equivalent to the num of samples already set on current animation
+        float threshold = 0.01f;
 
         // Update the patrol target points
-        if (Vector2.Distance(transform.position, targetPosition) < Mathf.Epsilon)
+        if (Vector2.Distance(transform.position, targetPosition) < threshold)
         {
             SetNextTargetPosition();
         }
@@ -182,10 +203,16 @@ public class EnemyMovement : MonoBehaviour
 
         targetPosition = points[indexTargetPos];
     }
+    //void Patrol_()
+    //{        
+    //    // Update the ant's position
+    //    transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.fixedDeltaTime);        
+    //}
     void Patrol()
-    {        
+    {
         // Update the ant's position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.fixedDeltaTime);        
+        Vector2 newPos = Vector3.MoveTowards(rb2D.position, targetPosition, speed * Time.fixedDeltaTime);
+        rb2D.MovePosition(newPos);
     }
     #endregion
     #region Sprite
