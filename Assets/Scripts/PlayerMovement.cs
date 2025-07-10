@@ -383,8 +383,8 @@ public class PlayerMovement : MonoBehaviour
             OnEatAcorn?.Invoke();
 
             // Condition to pass to the next Scene
-            if (NumAcorn == 3)
-                LoadScene();
+            //if (NumAcorn == 3)
+            //    LoadScene();
         }
     }
     #endregion
