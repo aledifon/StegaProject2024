@@ -26,6 +26,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] LayerMask playerLayer;         // Player Layer
     [SerializeField] float pursuitDistance;         // Raycast Length
     [SerializeField] bool isDetecting;              // Player detection flag
+    private bool wasDetecting;                      // Previous State of Player detection flag
     Vector2 raycastDir;
 
     [Header("Player")]
@@ -107,10 +108,15 @@ public class EnemyMovement : MonoBehaviour
         // Update the Enemy's speed & anim's speed in func. of the player has been deteced or not
         if (isDetecting)
             AttackPlayer();
+        else if (wasDetecting && !isDetecting)
+            SetNextTargetPosition();
         else
             UpdateTargetPosition();
 
         Patrol();
+
+        // Get the last State of isDetecting Flag
+        wasDetecting = isDetecting;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

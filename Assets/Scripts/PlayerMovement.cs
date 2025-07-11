@@ -372,10 +372,29 @@ public class PlayerMovement : MonoBehaviour
         {
             AttackEnemy(collision.gameObject);
         }
-        else if (collision.collider.CompareTag("Acorn"))
+        //else if (collision.collider.CompareTag("Acorn"))
+        //{
+        //    // Acorn dissappear
+        //    Destroy(collision.collider.gameObject);
+        //    // Increase Acorn counter
+        //    NumAcorn++;
+        //    // Update Acorn counter UI Text
+        //    textAcornUI.text = NumAcorn.ToString();
+
+        //    // Play Acorn Fx            
+        //    OnEatAcorn?.Invoke();
+
+        //    // Condition to pass to the next Scene
+        //    //if (NumAcorn == 3)
+        //    //    LoadScene();
+        //}
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Acorn"))
         {
             // Acorn dissappear
-            Destroy(collision.collider.gameObject);
+            Destroy(collision.gameObject);
             // Increase Acorn counter
             NumAcorn++;
             // Update Acorn counter UI Text
