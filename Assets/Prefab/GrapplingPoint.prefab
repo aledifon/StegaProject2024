@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4844738715502539527}
   - component: {fileID: 343131733120293025}
   - component: {fileID: 6605120499506400800}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GrapplingPoint
-  m_TagString: Untagged
+  m_TagString: JointPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
