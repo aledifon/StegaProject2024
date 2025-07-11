@@ -40,16 +40,18 @@ public class PlayerSFX : MonoBehaviour
     [SerializeField] float lowPitchRange = 0.95f;
     [SerializeField] float highPitchRange = 1.05f;
 
-    private AudioSource fxAudioSource;
-    private AudioSource hitAudioSource;
+    [Header("Audio Sources")]
+    [SerializeField] private AudioSource fxAudioSource;
+    [SerializeField] private AudioSource hitAudioSource;
+
     private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
     private PlayerHook playerHook;
 
     void Awake()
     {
-        fxAudioSource = GetComponent<AudioSource>();
-        hitAudioSource = GetComponent<AudioSource>();
+        //fxAudioSource = GetComponent<AudioSource>();
+        //hitAudioSource = GetComponent<AudioSource>();
         playerMovement = GetComponent<PlayerMovement>();
         playerHook = GetComponent<PlayerHook>();
         playerHealth = GetComponent<PlayerHealth>();
@@ -131,13 +133,20 @@ public class PlayerSFX : MonoBehaviour
     {
         audioSource.clip = audioClip;
         audioSource.Play();
-    }
+    }    
     private void PlaySFXSingle(AudioSource audioSource, AudioClip audioClip, float volume)
     {
         audioSource.clip = audioClip;
         audioSource.volume = volume;
         audioSource.Play();
-    }    
+    }
+    private void PlaySFXSingle(AudioSource audioSource, AudioClip audioClip, float volume, float startTime)
+    {
+        audioSource.clip = audioClip;
+        audioSource.volume = volume;
+        audioSource.time = startTime;
+        audioSource.Play();
+    }
     private void StopSFX(AudioSource audioSource)
     {
         audioSource.Stop();
@@ -191,9 +200,8 @@ public class PlayerSFX : MonoBehaviour
     }
     private void PlayWallSlidingSFX()
     {
-        fxAudioSource.loop = true;
-        fxAudioSource.time = 1.5f;
-        PlaySFXSingle(fxAudioSource, wallSlidingSFX);
+        fxAudioSource.loop = true;        
+        PlaySFXSingle(fxAudioSource, wallSlidingSFX, 1f, 1.5f);
     }
     #endregion
     #region Wall Jump
