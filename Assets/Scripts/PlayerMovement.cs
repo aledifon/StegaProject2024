@@ -826,9 +826,11 @@ public class PlayerMovement : MonoBehaviour
             // Reset the Jumping Buffer Timer
             ResetJumpBufferTimer();
             // Reset the Jumping Timer
-            ResetJumpTimer();            
+            ResetJumpTimer();
             //Set the Jumping Horizontal Speed in func. of the max Horiz Jump Distance and the Max Jump Horiz time
-            jumpHorizSpeed = maxJumpHorizDist /
+            //jumpHorizSpeed = maxJumpHorizDist /
+            //                maxJumpHorizTime;
+            jumpHorizSpeed = wallJumpHorizDist2 /
                             maxJumpHorizTime;
 
             // Register a Jumping Trigger Request
