@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] AudioClip gameOverClip;    
+    [SerializeField] AudioClip endOfLevelClip;    
 
     [Header("Surface Type")]
     [SerializeField] private bool isWetSurface;
@@ -114,6 +115,15 @@ public class GameManager : MonoBehaviour
             generalAudioSource.Stop();
 
         generalAudioSource.PlayOneShot(gameOverClip);
+    }
+    #endregion
+    #region EndOfLevel
+    public void PlayEndOfLevelSFx()
+    {
+        if (generalAudioSource.isPlaying)
+            generalAudioSource.Stop();
+
+        generalAudioSource.PlayOneShot(endOfLevelClip);
     }
     #endregion
     #region Slow Motion
