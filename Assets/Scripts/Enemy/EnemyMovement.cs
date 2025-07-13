@@ -33,7 +33,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private float thrustToPlayer;      // ForceMode2D = Impulse --> 3-4f
                                                         // ForceMode2D = Force --> 250-300f
-                                                        // Velocity --> 25f
+                                                        // Velocity --> 25f    
 
     // Boolean Flags
     private bool playerDetectionEnabled;    
@@ -120,10 +120,10 @@ public class EnemyMovement : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Player") && 
-            collision.collider.GetComponent<PlayerMovement>().IsGrounded &&
+        if (collision.collider.CompareTag("Player") &&
+            /*collision.collider.GetComponent<PlayerMovement>().IsGrounded &&*/
             playerDetectionEnabled)
-        {
+        {            
             // Get the Enemy's direction
             Vector2 enemyDirection = spriteRenderer.flipX ? 
                                     Vector2.right + Vector2.up: 
@@ -174,19 +174,21 @@ public class EnemyMovement : MonoBehaviour
 
         // Raycast Launching
         isDetecting = (Vector2.Distance(transform.position, player.transform.position) <= pursuitDistance) &&
+                        (Mathf.Abs(transform.position.y - player.transform.position.y) <= 2f) && 
                         playerDetectionEnabled;
         // Raycast Debugging
-        Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
+        //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
+        Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * pursuitDistance, Color.red);
     }
     void EnablePlayerDetection()
     {
         playerDetectionEnabled = true;
     }
-    void DisablePlayerDetection()
+    public void DisablePlayerDetection()
     {
         playerDetectionEnabled = false;
     }
-    #endregion
+    #endregion    
     #region Enemy Movement
     void UpdateTargetPosition()
     {

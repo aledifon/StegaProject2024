@@ -366,29 +366,29 @@ public class PlayerMovement : MonoBehaviour
         UpdateAnimations();
     }
     // Collisions
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.CompareTag("Ant"))
-        {
-            AttackEnemy(collision.gameObject);
-        }
-        //else if (collision.collider.CompareTag("Acorn"))
-        //{
-        //    // Acorn dissappear
-        //    Destroy(collision.collider.gameObject);
-        //    // Increase Acorn counter
-        //    NumAcorn++;
-        //    // Update Acorn counter UI Text
-        //    textAcornUI.text = NumAcorn.ToString();
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.collider.CompareTag("Ant"))
+    //    {            
+    //        AttackEnemy(collision.gameObject);
+    //    }
+    //    //else if (collision.collider.CompareTag("Acorn"))
+    //    //{
+    //    //    // Acorn dissappear
+    //    //    Destroy(collision.collider.gameObject);
+    //    //    // Increase Acorn counter
+    //    //    NumAcorn++;
+    //    //    // Update Acorn counter UI Text
+    //    //    textAcornUI.text = NumAcorn.ToString();
 
-        //    // Play Acorn Fx            
-        //    OnEatAcorn?.Invoke();
+    //    //    // Play Acorn Fx            
+    //    //    OnEatAcorn?.Invoke();
 
-        //    // Condition to pass to the next Scene
-        //    //if (NumAcorn == 3)
-        //    //    LoadScene();
-        //}
-    }
+    //    //    // Condition to pass to the next Scene
+    //    //    //if (NumAcorn == 3)
+    //    //    //    LoadScene();
+    //    //}
+    //}
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Acorn"))
@@ -403,9 +403,31 @@ public class PlayerMovement : MonoBehaviour
             // Play Acorn Fx            
             OnEatAcorn?.Invoke();
 
-            // Condition to pass to the next Scene
-            //if (NumAcorn == 3)
-            //    LoadScene();
+            //// Condition to pass to the next Scene ()
+            //if (NumAcorn == 30)
+            //{
+            //    LoadSceneAfterDelay();
+            //}                
+        }
+        else if (collision.CompareTag("SuperAcorn"))
+        {
+            // Acorn dissappear
+            Destroy(collision.gameObject);
+            // Increase Acorn counter
+            NumAcorn++;
+            // Update Acorn counter UI Text
+            textAcornUI.text = NumAcorn.ToString();
+
+            // Play Finish Level Fx            
+            //OnEatAcorn?.Invoke();
+            GameManager.Instance.PlayEndOfLevelSFx();
+
+            // Reload the Level after elapsed x seconds
+            LoadSceneAfterDelay();            
+        }
+        else if (collision.CompareTag("Ant"))
+        {
+            AttackEnemy(collision.gameObject);
         }
     }
     #endregion
@@ -1244,6 +1266,7 @@ public class PlayerMovement : MonoBehaviour
         rb2D.AddForce(Vector2.up * jumpForce);
         enemy.GetComponent<Animator>().SetTrigger("Death");
         enemy.GetComponent<EnemyMovement>().PlayDeathFx();
+        enemy.GetComponent<EnemyMovement>().DisablePlayerDetection();
         Destroy(enemy,0.5f);
     }
     #endregion
@@ -1438,9 +1461,13 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Scene Management
+    private void LoadSceneAfterDelay()
+    {
+        Invoke(nameof(LoadScene),3f);
+    }
     private void LoadScene()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Level02");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Level01");
     }
     #endregion
 
