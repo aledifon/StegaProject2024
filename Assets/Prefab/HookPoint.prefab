@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 343131733120293025}
   - component: {fileID: 6605120499506400800}
   m_Layer: 10
-  m_Name: GrapplingPoint
+  m_Name: HookPoint
   m_TagString: JointPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
