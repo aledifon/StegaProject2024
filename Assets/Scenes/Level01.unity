@@ -20761,23 +20761,33 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 338575b68dee78f41a8653868f6fd9e1, type: 3}
   - {fileID: 8300000, guid: a63332a9a6fa5c34ca0008ee43ad118d, type: 3}
   - {fileID: 8300000, guid: e7c4dd15c90b25047972217bb4417211, type: 3}
+  walkVolume: 1
   takeOffJumpSFX: {fileID: 8300000, guid: a610075ff7aa5f14db7dddab277ab41b, type: 3}
+  takeOffJumpVolume: 1
   waterLandingJumpSFX: {fileID: 8300000, guid: 645c9c7b969ce2d478a921a8dc0cc853, type: 3}
   dustLandingJumpSFX: {fileID: 8300000, guid: fd667cb88efa05e4787aae31b102549e, type: 3}
   waterLandingJumpVolume: 0.3
   dustLandingJumpVolume: 0.4
   wallSlidingSFX: {fileID: 8300000, guid: 98b9cf3c1259b8e4cbaf5cd90b6f3d8f, type: 3}
+  wallSlidingVolume: 1
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
+  wallJumpVolume: 1
   hookThrownSFX: {fileID: 8300000, guid: 0110efbc859eab642b836a0e6aba675d, type: 3}
+  hookThrownVolume: 0.5
   hookAttachedSFX: {fileID: 8300000, guid: d77749aca17983445ac33f83de5af9cc, type: 3}
+  hookAttachedVolume: 1
   hookReleaseSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
+  hookReleaseVolume: 1
   ropeSwingSFX:
   - {fileID: 8300000, guid: 79fed129d1942e54aa199d62a4af3791, type: 3}
   - {fileID: 8300000, guid: e69168f715391914985cb7576f915bd2, type: 3}
-  ropeSwingVolume: 0.3
+  ropeSwingVolume: 0.4
   hitSFX: {fileID: 8300000, guid: 87e444fbeb202924a83b3ede549bd558, type: 3}
+  hitVolume: 1
   deathSFX: {fileID: 8300000, guid: ad3126581aea4e94b94b1857dce7cafa, type: 3}
+  deathVolume: 1
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
+  eatAcornVolume: 0.45
   lowPitchRange: 0.95
   highPitchRange: 1.05
   fxAudioSource: {fileID: 1072431790}
@@ -25009,12 +25019,12 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -7113474693897936399, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 4339af1e71568bb42bda35f44e85ff0d, type: 3}
-  m_Resource: {fileID: 8300000, guid: 4339af1e71568bb42bda35f44e85ff0d, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
   m_Volume: 0.25
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -25124,14 +25134,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverClip: {fileID: 8300000, guid: abd268bb84fb15d4d93d65bb883b39ac, type: 3}
+  gameOverVolume: 0.25
   endOfLevelClip: {fileID: 8300000, guid: b9f90827863b80e42b7bce4e38021d04, type: 3}
+  endOfLevelVolume: 0.25
+  LevelMusicClip: {fileID: 8300000, guid: 4339af1e71568bb42bda35f44e85ff0d, type: 3}
+  levelMusicVolume: 0.2
   isWetSurface: 0
   elapsedSlowHitTime: 0
   durationSlowHitTime: 0.5
   slowMotAndDeafDelayDuration: 0.3
   DeafBwdDuration: 0.8
   audioMixer: {fileID: 24100000, guid: 007afb57cf9f60b4bb0dec802cf4d2b3, type: 2}
-  lowPassMaxFreq: 22000
+  lowPassMaxFreq: 8000
   lowPassMinFreq: 450
   volumeMaxValue: 0
   volumeMinValue: -15
@@ -25709,21 +25723,31 @@ MonoBehaviour:
   - {fileID: 8300000, guid: aa448bbcb9582284f8cc05c9be921758, type: 3}
   - {fileID: 8300000, guid: 881a85debdac14747bddaf0810b81949, type: 3}
   dustWalkSFX: []
+  walkVolume: 0
   takeOffJumpSFX: {fileID: 0}
+  takeOffJumpVolume: 0
   waterLandingJumpSFX: {fileID: 8300000, guid: 9f77c04067f322c4fa986d3833787600, type: 3}
   dustLandingJumpSFX: {fileID: 0}
   waterLandingJumpVolume: 0
   dustLandingJumpVolume: 0
   wallSlidingSFX: {fileID: 8300000, guid: 98b9cf3c1259b8e4cbaf5cd90b6f3d8f, type: 3}
+  wallSlidingVolume: 0
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
+  wallJumpVolume: 0
   hookThrownSFX: {fileID: 0}
+  hookThrownVolume: 0
   hookAttachedSFX: {fileID: 0}
+  hookAttachedVolume: 0
   hookReleaseSFX: {fileID: 0}
+  hookReleaseVolume: 0
   ropeSwingSFX: []
   ropeSwingVolume: 0
   hitSFX: {fileID: 0}
+  hitVolume: 0
   deathSFX: {fileID: 0}
+  deathVolume: 0
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
+  eatAcornVolume: 0
   lowPitchRange: 0.95
   highPitchRange: 1.05
   fxAudioSource: {fileID: 0}
