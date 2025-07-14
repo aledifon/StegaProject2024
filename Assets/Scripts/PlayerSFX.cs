@@ -6,35 +6,45 @@ public class PlayerSFX : MonoBehaviour
     [Header("Walk")]
     [SerializeField] private AudioClip[] waterWalkSFX;
     [SerializeField] private AudioClip[] dustWalkSFX;
+    [SerializeField, Range(0f, 1f)] float walkVolume;  // 1f
     private bool isWalkSFXRunning;
 
     [Header("Jump")]
-    [SerializeField] private AudioClip takeOffJumpSFX;    
+    [SerializeField] private AudioClip takeOffJumpSFX;
+    [SerializeField, Range(0f, 1f)] float takeOffJumpVolume;  // 1f
     [SerializeField] private AudioClip waterLandingJumpSFX;
     [SerializeField] private AudioClip dustLandingJumpSFX;
     [SerializeField, Range(0f, 1f)] float waterLandingJumpVolume;  // 0.3f
     [SerializeField, Range(0f, 1f)] float dustLandingJumpVolume;  // 0.4f
 
     [Header("Wall Sliding")]
-    [SerializeField] private AudioClip wallSlidingSFX;         
+    [SerializeField] private AudioClip wallSlidingSFX;
+    [SerializeField, Range(0f, 1f)] float wallSlidingVolume;  // 1f
 
     [Header("Wall Jump")]
     [SerializeField] private AudioClip wallJumpSFX;
+    [SerializeField, Range(0f, 1f)] float wallJumpVolume;  // 1f
 
     [Header("Grappling Hook")]
-    [SerializeField] private AudioClip hookThrownSFX;    
-    [SerializeField] private AudioClip hookAttachedSFX;    
-    [SerializeField] private AudioClip hookReleaseSFX;    
+    [SerializeField] private AudioClip hookThrownSFX;
+    [SerializeField, Range(0f, 1f)] float hookThrownVolume;  //1f
+    [SerializeField] private AudioClip hookAttachedSFX;
+    [SerializeField, Range(0f, 1f)] float hookAttachedVolume;  //1f
+    [SerializeField] private AudioClip hookReleaseSFX;
+    [SerializeField, Range(0f, 1f)] float hookReleaseVolume;  //1f
     [SerializeField] private AudioClip[] ropeSwingSFX;
-    [SerializeField, Range(0f, 1f)] float ropeSwingVolume;  // ??f
+    [SerializeField, Range(0f, 1f)] float ropeSwingVolume;  // 0.4f
     private bool isRopeSwingingSFXRunning;
 
     [Header("Damage")]
     [SerializeField] private AudioClip hitSFX;
+    [SerializeField, Range(0f, 1f)] float hitVolume;        //1f
     [SerializeField] private AudioClip deathSFX;
+    [SerializeField, Range(0f, 1f)] float deathVolume;      //1f
 
     [Header("Acorn")]
     [SerializeField] private AudioClip eatAcornSFX;
+    [SerializeField, Range(0f, 1f)] float eatAcornVolume;  // 0.4f
 
     [Header("Pitch")]
     [SerializeField] float lowPitchRange = 0.95f;
@@ -159,6 +169,7 @@ public class PlayerSFX : MonoBehaviour
     private void StopWalkSFX()
     {
         isWalkSFXRunning = false;
+        fxAudioSource.volume = 1f;
     }
     private void PlayWalkSFX()
     {
@@ -166,12 +177,12 @@ public class PlayerSFX : MonoBehaviour
         if (GameManager.Instance.IsWetSurface)
         {
             n = Random.Range(0, waterWalkSFX.Length);
-            PlaySFXSingle(fxAudioSource, waterWalkSFX[n]);
+            PlaySFXSingle(fxAudioSource, waterWalkSFX[n], walkVolume);
         }
         else
         {
             n = Random.Range(0, dustWalkSFX.Length);
-            PlaySFXSingle(fxAudioSource, dustWalkSFX[n]);
+            PlaySFXSingle(fxAudioSource, dustWalkSFX[n], walkVolume);
         }            
         //float randomPitch = Random.Range(lowPitchRange,highPitchRange);
         //fxAudioSource.pitch = randomPitch;                
@@ -180,7 +191,7 @@ public class PlayerSFX : MonoBehaviour
     #region Jump
     private void PlayTakeOffJumpSFX()
     {
-        PlaySFXOneShot(fxAudioSource, takeOffJumpSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, takeOffJumpSFX, takeOffJumpVolume);
     }
     private void PlayLandingJumpSFX()
     {
@@ -201,28 +212,28 @@ public class PlayerSFX : MonoBehaviour
     private void PlayWallSlidingSFX()
     {
         fxAudioSource.loop = true;        
-        PlaySFXSingle(fxAudioSource, wallSlidingSFX, 1f, 1.5f);
+        PlaySFXSingle(fxAudioSource, wallSlidingSFX, wallSlidingVolume, 1.5f);
     }
     #endregion
     #region Wall Jump
     private void PlayWallJumpSFX()
     {
-        PlaySFXOneShot(fxAudioSource, wallJumpSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, wallJumpSFX, wallJumpVolume);
     }
     #endregion
     #region Grappling-Hook
     #region Hook
     private void PlayHookThrownSFX()
     {
-        PlaySFXOneShot(fxAudioSource, hookThrownSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, hookThrownSFX, hookThrownVolume);
     }
     private void PlayHookAttachedSFX()
     {
-        PlaySFXOneShot(fxAudioSource, hookAttachedSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, hookAttachedSFX, hookAttachedVolume);
     }
     private void PlayHookReleasedSFX()
     {
-        PlaySFXOneShot(fxAudioSource, hookReleaseSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, hookReleaseSFX, hookReleaseVolume);
     }
     #endregion
     #region Rope Swinging
@@ -252,17 +263,17 @@ public class PlayerSFX : MonoBehaviour
     #region Damage-Death
     private void PlayHitSFX(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
-        PlaySFXOneShot(hitAudioSource, hitSFX, 1f);
+        PlaySFXOneShot(hitAudioSource, hitSFX, hitVolume);
     }
     private void PlayDeathSFX()
     {
-        PlaySFXOneShot(fxAudioSource, deathSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, deathSFX, deathVolume);
     }
     #endregion
     #region Acorn
     private void PlayEatAcornSFX()
     {
-        PlaySFXOneShot(fxAudioSource, eatAcornSFX, 1f);
+        PlaySFXOneShot(fxAudioSource, eatAcornSFX, eatAcornVolume);
     }
     #endregion
 }

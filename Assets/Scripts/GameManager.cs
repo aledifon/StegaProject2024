@@ -30,8 +30,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] AudioClip gameOverClip;    
-    [SerializeField] AudioClip endOfLevelClip;    
+    [Header("Audio Clips")]
+    [SerializeField] AudioClip gameOverClip;
+    [SerializeField, Range(0f, 1f)] float gameOverVolume;  
+    [SerializeField] AudioClip endOfLevelClip;
+    [SerializeField, Range(0f, 1f)] float endOfLevelVolume;  
+    [SerializeField] AudioClip LevelMusicClip;
+    [SerializeField, Range(0f, 1f)] float levelMusicVolume;  // 0.25f
 
     [Header("Surface Type")]
     [SerializeField] private bool isWetSurface;
@@ -49,7 +54,8 @@ public class GameManager : MonoBehaviour
     [Header("Audio Mixer")]
     [SerializeField] AudioMixer audioMixer;    
     // Typical Range for Lowpass: 22000 (no filter) - 500 (strong filter)
-    [SerializeField] private float lowPassMaxFreq = 22000f;
+    // Envolving Cave feeling --> CutoffFreq = 8 KHz; Resonance = 1.5-2.5
+    [SerializeField] private float lowPassMaxFreq = 8000f;
     [SerializeField] private float lowPassMinFreq = 450f;
     [SerializeField] private float volumeMaxValue = 0f;
     [SerializeField] private float volumeMinValue = -15f;
@@ -58,7 +64,7 @@ public class GameManager : MonoBehaviour
     private string sfxLowPassParam = "SFXLowpassFreq";
     private string sfxVolumeParam = "SFXVolume";
     private string musicLowPassParam = "MusicLowpassFreq";
-    private string musicVolumeParam = "MusicVolume";
+    private string musicVolumeParam = "MusicVolume";    
     #region Events & Delegates
     public event Action<Vector2, float> OnHitPhysicsPlayer;
     #endregion
@@ -82,6 +88,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         generalAudioSource = GetComponent<AudioSource>();
+        PlayLevelMusic();
 
         // Set the filterDuration
         //filterDuration = returnDuration;
@@ -108,23 +115,43 @@ public class GameManager : MonoBehaviour
         playerHealth.OnHitFXPlayer += ApplyDeafeningSFX;
     }
     #endregion
-    #region GameOver
-    public void PlayGameOverSFx()
+    #region Audio Clips
+    #region Level Music
+    public void PlayLevelMusic()
     {
-        if(generalAudioSource.isPlaying)
+        if (generalAudioSource.isPlaying)
             generalAudioSource.Stop();
 
-        generalAudioSource.PlayOneShot(gameOverClip);
+        generalAudioSource.loop = true;
+        generalAudioSource.clip = LevelMusicClip;
+        generalAudioSource.volume = levelMusicVolume;
+        generalAudioSource.Play();
+    }
+    #endregion
+    #region Game Over
+    public void PlayGameOverSFx()
+    {
+        if (generalAudioSource.isPlaying)
+        {
+            generalAudioSource.Stop();
+            generalAudioSource.loop = false;
+        }            
+
+        generalAudioSource.PlayOneShot(gameOverClip,gameOverVolume);
     }
     #endregion
     #region EndOfLevel
     public void PlayEndOfLevelSFx()
     {
         if (generalAudioSource.isPlaying)
+        {
             generalAudioSource.Stop();
+            generalAudioSource.loop = false;
+        }            
 
-        generalAudioSource.PlayOneShot(endOfLevelClip);
+        generalAudioSource.PlayOneShot(endOfLevelClip,endOfLevelVolume);
     }
+    #endregion
     #endregion
     #region Slow Motion
     public void EnableSlowMotion()
@@ -191,10 +218,27 @@ public class GameManager : MonoBehaviour
     #endregion
     #region DeafeningAudioEffect    
     private void ApplyDeafeningSFX(Vector2 thrustEnemyDir, float thrustEnemyForce)
-    {        
+    {
+        float sfxVolumeValue1;
+        float sfxVolumeValue2;
+        float musicVolumeValue1;        
+        float musicVolumeValue2;
+
+        audioMixer.GetFloat(sfxVolumeParam, out sfxVolumeValue1);
+        audioMixer.GetFloat(musicVolumeParam, out musicVolumeValue1);
+
+        Debug.Log("Music Volume Before = " + musicVolumeValue1);
+        Debug.Log("SFX Volume Before = " + sfxVolumeValue1);
+
         ApplyDeafSFX()
             .AppendInterval(slowMotAndDeafDelayDuration)
             .AppendCallback(() => RemoveDeafSFX());
+
+        audioMixer.GetFloat(sfxVolumeParam, out sfxVolumeValue2);
+        audioMixer.GetFloat(sfxVolumeParam, out musicVolumeValue2);
+
+        Debug.Log("Music Volume After = " + musicVolumeValue2);
+        Debug.Log("SFX Volume After = " + sfxVolumeValue2);
     }
     private Tween AudioMixerParamInterpolation(AudioMixer audiomixer, string param, float targetValue, float duration, Ease easeType)
     {
