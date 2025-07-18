@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -58,6 +59,8 @@ public class PlayerSFX : MonoBehaviour
     private PlayerHealth playerHealth;
     private PlayerHook playerHook;
 
+    private AudioClip currentSFX;
+
     void Awake()
     {
         //fxAudioSource = GetComponent<AudioSource>();
@@ -65,6 +68,8 @@ public class PlayerSFX : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         playerHook = GetComponent<PlayerHook>();
         playerHealth = GetComponent<PlayerHealth>();
+
+        GameManager.Instance.SubscribeEventsOfPlayerSFX(this);
     }
     private void OnEnable()
     {
@@ -95,7 +100,7 @@ public class PlayerSFX : MonoBehaviour
         playerHealth.OnDeathPlayer += PlayDeathSFX;
 
         // Acorn
-        playerMovement.OnEatAcorn += PlayEatAcornSFX;
+        playerMovement.OnEatAcorn += PlayEatAcornSFX;        
     }
     private void OnDisable()
     {
@@ -126,28 +131,32 @@ public class PlayerSFX : MonoBehaviour
         playerHealth.OnDeathPlayer -= PlayDeathSFX;
 
         // Acorn
-        playerMovement.OnEatAcorn -= PlayEatAcornSFX;
+        playerMovement.OnEatAcorn -= PlayEatAcornSFX;        
     }
     private void Update()
     {
-        if (isWalkSFXRunning && !fxAudioSource.isPlaying)
+        if (isWalkSFXRunning && !fxAudioSource.isPlaying && !GameManager.Instance.IsPaused)
             PlayWalkSFX();        
-        else if (isRopeSwingingSFXRunning && !fxAudioSource.isPlaying)
+        else if (isRopeSwingingSFXRunning && !fxAudioSource.isPlaying && !GameManager.Instance.IsPaused)
             PlayRopeSwingingSFX();
     }
+    #region AudioManagement
     private void PlaySFXOneShot(AudioSource audioSource, AudioClip audioClip, float volume)
     {
+        currentSFX = audioClip;
         audioSource.PlayOneShot(audioClip, volume);
     }
     private void PlaySFXSingle(AudioSource audioSource, AudioClip audioClip)
     {
         audioSource.clip = audioClip;
+        currentSFX = audioClip;
         audioSource.Play();
     }    
     private void PlaySFXSingle(AudioSource audioSource, AudioClip audioClip, float volume)
     {
         audioSource.clip = audioClip;
         audioSource.volume = volume;
+        currentSFX = audioClip;
         audioSource.Play();
     }
     private void PlaySFXSingle(AudioSource audioSource, AudioClip audioClip, float volume, float startTime)
@@ -155,12 +164,38 @@ public class PlayerSFX : MonoBehaviour
         audioSource.clip = audioClip;
         audioSource.volume = volume;
         audioSource.time = startTime;
+        currentSFX = audioClip;
         audioSource.Play();
     }
     private void StopSFX(AudioSource audioSource)
     {
-        audioSource.Stop();
+        audioSource.Stop();        
     }
+    public void PauseAllSFX()
+    {
+        // For the AudioClips played with Play
+        if (waterWalkSFX.Contains(currentSFX) || dustWalkSFX.Contains(currentSFX) ||
+            ropeSwingSFX.Contains(currentSFX) || currentSFX == wallSlidingSFX)
+        {
+            fxAudioSource.Pause();
+        }
+        // For the AudioClips played with PlayOneShot
+        else
+        {
+            fxAudioSource.Stop();
+        }
+    }
+    public void ResumeAllSFX()
+    {
+        // For the AudioClips played with Play
+        if (waterWalkSFX.Contains(currentSFX) || dustWalkSFX.Contains(currentSFX) ||
+            ropeSwingSFX.Contains(currentSFX) || currentSFX == wallSlidingSFX)
+        {
+            fxAudioSource.UnPause();
+        }
+        // For the AudioClips played with PlayOneShot --> DO NOTHING        
+    }
+    #endregion
     #region Walk
     private void TriggerWalkSFX()
     {
