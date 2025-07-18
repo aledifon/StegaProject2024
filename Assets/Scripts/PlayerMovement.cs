@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.Audio;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -185,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
     public event Action OnStartRopeSwinging;
     public event Action OnStopRopeSwinging;
 
-    public event Action OnEatAcorn;
+    public event Action OnEatAcorn;    
     #endregion
 
     // Delay Time used for triggering OnLandingJump Event
@@ -209,14 +210,15 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     BoxCollider2D boxCollider2D;    
     PlayerVFX playerVFX;
+    PlayerSFX playerSFX;
     PlayerHook playerHook;
-    PlayerHealth playerHealth;
+    PlayerHealth playerHealth;    
 
     // Flip Flag
     //private bool lastFlipState;
 
     private bool isDead;
-    public bool IsDead { get => isDead; set => isDead = value; }
+    public bool IsDead { get => isDead; set => isDead = value; }    
 
     public bool SpriteRendPlayerFlipX => spriteRenderer.flipX;    
 
@@ -265,14 +267,16 @@ public class PlayerMovement : MonoBehaviour
     }    
     private void OnEnable()
     {
-        GameManager.Instance.OnHitPhysicsPlayer += ReceiveDamage;
-        playerHealth.OnDeathPlayer += Death;
+        GameManager.Instance.SubscribeEventsOfPlayerMovement(this);
+        playerHealth.OnDeathPlayer += Death;                
     }
     private void OnDisable()
     {
         //if (GameManager.Instance != null)
         //    GameManager.Instance.OnHitPhysicsPlayer -= ReceiveDamage;
-        playerHealth.OnDeathPlayer -= Death;
+        playerHealth.OnDeathPlayer -= Death;        
+
+        GameManager.Instance.DisableAllInputs();
     }
     void Awake()
     {
@@ -286,11 +290,15 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         boxCollider2D = GetComponent<BoxCollider2D>();          
         playerVFX = GetComponent<PlayerVFX>();
+        playerSFX = GetComponent<PlayerSFX>();
         playerHook = GetComponent<PlayerHook>();
         playerHealth = GetComponent<PlayerHealth>();
 
         NumAcorn = 0;
-        textAcornUI.text = NumAcorn.ToString();
+        textAcornUI.text = NumAcorn.ToString();               
+         
+        GameManager.Instance.SubscribeEventsOfPlayerMovement(this);        
+        GameManager.Instance.GetInputActionMaps(GetComponent<PlayerInput>().actions);
 
         // Just for debugging
         //GameManager.Instance.EnableSlowMotion();
@@ -735,10 +743,10 @@ public class PlayerMovement : MonoBehaviour
             isCoyoteTimerEnabled = true;
             coyoteTimer = 0f;
         }            
-    }        
+    }
     #endregion
 
-    #region Input Player 
+    #region Input Player     
     public void JumpActionInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
@@ -1469,8 +1477,7 @@ public class PlayerMovement : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Level01");
     }
-    #endregion
-
+    #endregion    
     // Old Input System
     //void InputPlayer()
     //{

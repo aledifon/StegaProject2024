@@ -6,6 +6,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using UnityEngine.Audio;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -42,7 +43,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool isWetSurface;
     public bool IsWetSurface => isWetSurface;
 
-
     [Header("Slow Hit Time")]
     [SerializeField] float elapsedSlowHitTime;
     [SerializeField] float durationSlowHitTime;     // 0.5f;
@@ -67,12 +67,24 @@ public class GameManager : MonoBehaviour
     private string musicVolumeParam = "MusicVolume";    
     #region Events & Delegates
     public event Action<Vector2, float> OnHitPhysicsPlayer;
+    public event Action OnPauseEnabled;
+    public event Action OnPauseDisabled;
     #endregion
+
+    [Header("UI")]
+    [SerializeField] private GameObject pausePanel;
 
     // GO Refs.
     AudioSource generalAudioSource;
     PlayerHealth playerHealth;
     PlayerMovement playerMovement;
+    PlayerSFX playerSFX;
+
+    // Input Player Management    
+    private InputActionAsset inputActions;
+
+    private bool isPaused = false;
+    public bool IsPaused => isPaused;
 
     #region Unity API
     // Start is called before the first frame update
@@ -90,6 +102,8 @@ public class GameManager : MonoBehaviour
         generalAudioSource = GetComponent<AudioSource>();
         PlayLevelMusic();
 
+        EnableGameplayInput();
+
         // Set the filterDuration
         //filterDuration = returnDuration;
     }
@@ -102,7 +116,15 @@ public class GameManager : MonoBehaviour
         }
 
         if (playerMovement != null)
-            OnHitPhysicsPlayer -= playerMovement.ReceiveDamage;
+        {
+            OnHitPhysicsPlayer -= playerMovement.ReceiveDamage;            
+        }
+
+        if (playerSFX != null)
+        {
+            OnPauseEnabled -= playerSFX.PauseAllSFX;            
+            OnPauseDisabled -= playerSFX.ResumeAllSFX;            
+        }        
 
         instance = null;
     }
@@ -113,6 +135,47 @@ public class GameManager : MonoBehaviour
         playerHealth = pH;
         playerHealth.OnHitFXPlayer += SlowMotionOnHit;
         playerHealth.OnHitFXPlayer += ApplyDeafeningSFX;
+    }
+    public void SubscribeEventsOfPlayerSFX(PlayerSFX pSFX)
+    {
+        playerSFX = pSFX;
+        OnPauseEnabled += playerSFX.PauseAllSFX;
+        OnPauseDisabled += playerSFX.ResumeAllSFX;
+    }
+    public void SubscribeEventsOfPlayerMovement(PlayerMovement pM)
+    {
+        playerMovement = pM;
+        OnHitPhysicsPlayer += playerMovement.ReceiveDamage;
+    }
+    #endregion
+    #region Input Action Maps
+    public void GetInputActionMaps(InputActionAsset inputActionsAsset)
+    {
+        inputActions = inputActionsAsset;
+    }    
+    public void EnableGameplayInput()
+    {
+        // Enable the Gameplay Action Map & Disable the Pause Action Map
+        inputActions.FindActionMap("Gameplay").Enable();
+        inputActions.FindActionMap("UI").Disable();
+    }
+    public void EnablePauseInput()
+    {
+        // Enable the Pause Action Map & Disable the Gamplay Action Map
+        inputActions.FindActionMap("Gameplay").Disable();
+        inputActions.FindActionMap("UI").Enable();
+    }
+    public void DisableAllInputs()
+    {
+        inputActions.FindActionMap("Gameplay").Disable();
+        inputActions.FindActionMap("UI").Disable();
+    }
+    #endregion
+    #region Input Player
+    public void PauseResumeGameInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)                    
+            TooglePause();
     }
     #endregion
     #region Audio Clips
@@ -285,6 +348,54 @@ public class GameManager : MonoBehaviour
         sequence.Join(AudioMixerParamInterpolation(audioMixer, musicVolumeParam, volumeMaxValue, DeafBwdDuration, Ease.OutQuad));
 
         return sequence;
+    }
+    #endregion
+    #region Pause-Resume    
+    private void TooglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            EnablePauseInput();
+            PauseGame();
+            OnPauseEnabled?.Invoke();
+        }
+        else
+        {
+            EnableGameplayInput();
+            ResumeGame();
+            OnPauseDisabled?.Invoke();
+        }
+    }    
+    private void PauseGame()
+    {
+        Time.timeScale = 0f;                // Stops the game (stop the physics and pending updates which are time dependent)
+
+        // Pause the Background Music
+        generalAudioSource.Pause();
+
+        // UI Panels Update
+        pausePanel.SetActive(true);
+
+        //if (sceneSelected != Scenes.Menu)
+        //    ShowMouseCursor(true);
+        // Update the Panel Selected State
+        //panelSelected = PanelSelected.Pause;
+    }
+    private void ResumeGame()
+    {
+        Time.timeScale = 1f;                // Resumes the game
+
+        // Resume the Background Music
+        generalAudioSource.UnPause();
+
+        // UI Panels Update
+        pausePanel.SetActive(false);
+
+        //if (sceneSelected != Scenes.Menu)
+        //    ShowMouseCursor(false);
+        //panelSelected = PanelSelected.Game;     // As the Pause can be launch from any Panel this could be wrong (NEEDED TO UPDATE!)
     }
     #endregion
 }
