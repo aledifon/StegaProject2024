@@ -29,7 +29,7 @@ public class ReplayManager : MonoBehaviour
         if (!startRecording && !stopRecording && startPlayback && !stopPlayback &&
             !ghost.IsPlaying)
         {
-            ghost.LoadFrames(recorder.RecordedFrames);
+            ghost.StartPlayback(recorder.RecordedFrames, recorder.InitPos);
             Debug.Log("Reproducción iniciada.");
         }
 

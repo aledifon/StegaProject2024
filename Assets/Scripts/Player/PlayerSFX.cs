@@ -96,9 +96,11 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStopRopeSwinging += StopRopeSwingingSFX;
 
         // Damage Player
-        playerHealth.OnHitFXPlayer += PlayHitSFX;
-        playerHealth.OnDeathPlayer += PlayDeathSFX;
-
+        if (playerHealth != null)
+        {
+            playerHealth.OnHitFXPlayer += PlayHitSFX;
+            playerHealth.OnDeathPlayer += PlayDeathSFX;
+        }
         // Acorn
         playerMovement.OnEatAcorn += PlayEatAcornSFX;        
     }
@@ -127,9 +129,11 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStopRopeSwinging -= StopRopeSwingingSFX;
 
         // Damage Player
-        playerHealth.OnHitFXPlayer -= PlayHitSFX;
-        playerHealth.OnDeathPlayer -= PlayDeathSFX;
-
+        if (playerHealth != null)
+        {
+            playerHealth.OnHitFXPlayer -= PlayHitSFX;
+            playerHealth.OnDeathPlayer -= PlayDeathSFX;
+        }
         // Acorn
         playerMovement.OnEatAcorn -= PlayEatAcornSFX;        
     }
