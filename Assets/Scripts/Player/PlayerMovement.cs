@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private float minJumpingTime;           // Min & Max Jumping Times (in func. of Jumping distance. & Jump. speed)                                            
     private float maxJumpingTime;
     private bool jumpPressed;    
+    public bool JumpPressed => jumpPressed;    
 
     [SerializeField] private float maxJumpHorizDist;  // Max allowed Horizontal Jumping distance
     //[SerializeField] private float maxJumpHorizTimer; // Horizontal Jumping Timer                                                      
@@ -51,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Hook")]
     [SerializeField] private bool hookActionPressed;
+    public bool HookActionPressed => hookActionPressed;
     [SerializeField] private float hookThrownMaxTime;
     public float HookThrownMaxTime => hookThrownMaxTime;
     [SerializeField] private float hookThrownTimer;
@@ -195,7 +197,8 @@ public class PlayerMovement : MonoBehaviour
     // GO Components
     Rigidbody2D rb2D;
     // Movement vars.
-    float inputX;
+    private float inputX;
+    public float InputX => inputX;
     //Vector2 inputPlayerVelocity;    // Velocity given by the player's input
     Vector2 targetVelocity;          // Desired target player Speed(Velocity Movement type through rb2D)
     Vector2 dampVelocity;            // Player's current speed storage (Velocity Movement type through r

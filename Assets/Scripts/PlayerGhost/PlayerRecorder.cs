@@ -8,9 +8,12 @@ public class PlayerRecorder : MonoBehaviour
     private bool isRecording = false;
     public bool IsRecording => isRecording;
 
+    private PlayerMovement playerMovement;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Update()
@@ -19,9 +22,9 @@ public class PlayerRecorder : MonoBehaviour
 
         var frame = new PlayerFrameData
         {
-            position = transform.position,
-            velocity = rb.linearVelocity,
-            time = Time.time
+            inputX = playerMovement.InputX,
+            jumpPressed = playerMovement.JumpPressed,
+            hookActionPressed = playerMovement.HookActionPressed
         };
 
         RecordedFrames.Add(frame);
