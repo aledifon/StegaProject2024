@@ -30,8 +30,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpingTimer;    // Jumping Timer
     private float minJumpingTime;           // Min & Max Jumping Times (in func. of Jumping distance. & Jump. speed)                                            
     private float maxJumpingTime;
-    private bool jumpPressed;    
-    public bool JumpPressed => jumpPressed;    
+    protected bool jumpPressed;    
+    public bool JumpPressed => jumpPressed;       
 
     [SerializeField] private float maxJumpHorizDist;  // Max allowed Horizontal Jumping distance
     //[SerializeField] private float maxJumpHorizTimer; // Horizontal Jumping Timer                                                      
@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool isWallJumpUnlocked;
 
     [Header("Hook")]
-    [SerializeField] private bool hookActionPressed;
+    [SerializeField] protected bool hookActionPressed;
     public bool HookActionPressed => hookActionPressed;
     [SerializeField] private float hookThrownMaxTime;
     public float HookThrownMaxTime => hookThrownMaxTime;
@@ -60,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isHookThrownEnabled;
     public bool IsHookThrownEnabled => isHookThrownEnabled;
     [SerializeField] bool isHookUnlocked;
+    protected bool IsHookUnlocked => isHookUnlocked;
 
     [Header("Swinging")]
     [SerializeField] private float swingHorizForce;         // 0.8f    
@@ -122,6 +123,7 @@ public class PlayerMovement : MonoBehaviour
     public float RayLength => rayLength;
     [SerializeField] bool isGrounded;           //Ground touching flag
     [SerializeField] bool isJumping;            //Jumping/Falling/WallJumping Flag
+    protected bool IsJumping => isJumping;            
     [SerializeField] private bool isRayGroundDetected;       // Aux. Ray Ground var
     [SerializeField] private bool isRecentlyJumping;           // Aux. var 
     public bool IsGrounded => isGrounded;
@@ -195,15 +197,15 @@ public class PlayerMovement : MonoBehaviour
     private float lastLandingTime;
 
     // GO Components
-    Rigidbody2D rb2D;
+    protected Rigidbody2D rb2D;
     // Movement vars.
-    private float inputX;
+    protected float inputX;
     public float InputX => inputX;
     //Vector2 inputPlayerVelocity;    // Velocity given by the player's input
     Vector2 targetVelocity;          // Desired target player Speed(Velocity Movement type through rb2D)
     Vector2 dampVelocity;            // Player's current speed storage (Velocity Movement type through r
     Vector2 direction;              // To handle the direction with the New Input System
-    float inputDirDeadZone = 0.2f;  // dead Zone area to not take into account (to fix Analog Stick direction bugs)
+    protected float inputDirDeadZone = 0.2f;  // dead Zone area to not take into account (to fix Analog Stick direction bugs)
 
     float rb2DDirVelX;    
     float rb2DJumpVelY;
@@ -226,8 +228,7 @@ public class PlayerMovement : MonoBehaviour
     public bool SpriteRendPlayerFlipX => spriteRenderer.flipX;    
 
     #region Unity API
-
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         if (Camera.current == null || Camera.current.name != "Main Camera") return;
 
@@ -267,13 +268,13 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawRay(rayWallOrigin + (Vector2.up * 0.02f), rayWallDir * rayWallLength);
         Gizmos.DrawRay(rayWallOrigin + (Vector2.down * 0.01f), rayWallDir * rayWallLength);
         Gizmos.DrawRay(rayWallOrigin + (Vector2.down * 0.02f), rayWallDir * rayWallLength);
-    }    
-    private void OnEnable()
+    }
+    protected virtual void OnEnable()
     {
         GameManager.Instance.SubscribeEventsOfPlayerMovement(this);
         playerHealth.OnDeathPlayer += Death;                
     }
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         //if (GameManager.Instance != null)
         //    GameManager.Instance.OnHitPhysicsPlayer -= ReceiveDamage;
@@ -281,21 +282,14 @@ public class PlayerMovement : MonoBehaviour
 
         GameManager.Instance.DisableAllInputs();
     }
-    void Awake()
+    protected virtual void Awake()
     {
         // ONLY FOR RECORDING
         // Establecer c�mara lenta (por ejemplo, a la mitad de velocidad)
         //Time.timeScale = 0.3f;
         // ONLY FOR RECORDING
-
-        rb2D = GetComponent<Rigidbody2D>();   
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-        boxCollider2D = GetComponent<BoxCollider2D>();          
-        playerVFX = GetComponent<PlayerVFX>();
-        playerSFX = GetComponent<PlayerSFX>();
-        playerHook = GetComponent<PlayerHook>();
-        playerHealth = GetComponent<PlayerHealth>();
+        
+        GetGORefs();
 
         NumAcorn = 0;
         textAcornUI.text = NumAcorn.ToString();               
@@ -306,7 +300,7 @@ public class PlayerMovement : MonoBehaviour
         // Just for debugging
         //GameManager.Instance.EnableSlowMotion();
     }
-    private void Update()
+    protected virtual void Update()
     {                       
         // Update the Input player velocity        
         //inputPlayerVelocity = new Vector2(horizontal * speed, 0);
@@ -314,7 +308,7 @@ public class PlayerMovement : MonoBehaviour
         //targetVelocity += rb2D.velocity + inputPlayerVelocity;
                         
     }
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         // Last State vars Update
         wasGrounded = isGrounded;        
@@ -377,7 +371,7 @@ public class PlayerMovement : MonoBehaviour
         UpdateAnimations();
     }
     // Collisions
-    //private void OnCollisionEnter2D(Collision2D collision)
+    //protected virtual void OnCollisionEnter2D(Collision2D collision)
     //{
     //    if (collision.collider.CompareTag("Ant"))
     //    {            
@@ -400,7 +394,7 @@ public class PlayerMovement : MonoBehaviour
     //    //    //    LoadScene();
     //    //}
     //}
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Acorn"))
         {
@@ -440,6 +434,20 @@ public class PlayerMovement : MonoBehaviour
         {
             AttackEnemy(collision.gameObject);
         }
+    }
+    #endregion
+
+    #region Get GO Refs
+    protected void GetGORefs()
+    {
+        rb2D = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        playerVFX = GetComponent<PlayerVFX>();
+        playerSFX = GetComponent<PlayerSFX>();
+        playerHook = GetComponent<PlayerHook>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
     #endregion
 
@@ -750,7 +758,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Input Player     
-    public void JumpActionInput(InputAction.CallbackContext context)
+    public virtual void JumpActionInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
         {
@@ -765,7 +773,7 @@ public class PlayerMovement : MonoBehaviour
             jumpPressed = false;            
         }            
     }
-    public void HookActionInput(InputAction.CallbackContext context)
+    public virtual void HookActionInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
         {
@@ -781,7 +789,7 @@ public class PlayerMovement : MonoBehaviour
             hookActionPressed = false;            
         }            
     }
-    public void MoveActionInput(InputAction.CallbackContext context)
+    public virtual void MoveActionInput(InputAction.CallbackContext context)
     {
         direction = context.ReadValue<Vector2>();                
 
@@ -805,7 +813,7 @@ public class PlayerMovement : MonoBehaviour
             ResetJumpBufferTimer();
         }
     }
-    private void SetJumpBufferTimer()
+    protected void SetJumpBufferTimer()
     {        
         isJumpBufferEnabled = true;
         jumpBufferTimer = jumpBufferTime;
@@ -891,7 +899,7 @@ public class PlayerMovement : MonoBehaviour
             ResetHookThrownTimer();
         }
     }
-    private void SetHookThrownTimer()
+    protected void SetHookThrownTimer()
     {        
         // Trigger the Grappling Hook (Show Line Renderer + Enable Distance Joint 2D)        
         OnHookThrown?.Invoke();
@@ -1389,7 +1397,7 @@ public class PlayerMovement : MonoBehaviour
 
     #region Sprite & Animations
     // Flip the Player sprite in function of its movement
-    void FlipSprite(float horizontal, float deadZone)
+    protected void FlipSprite(float horizontal, float deadZone)
     {
         // Evitar que el sprite se gire si acabamos de hacer wall jump
         if (isRecentlyWallJumping || currentState == PlayerState.WallBraking)

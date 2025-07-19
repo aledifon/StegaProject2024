@@ -148,8 +148,11 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnHookThrown += PlayHookThrownVFX;
 
         // Damage Player
-        playerHealth.OnHitFXPlayer += TriggerSpriteFading;
-        playerHealth.OnHitFXPlayer += TriggerGlitchHitVFX;
+        if (playerHealth != null)
+        {
+            playerHealth.OnHitFXPlayer += TriggerSpriteFading;
+            playerHealth.OnHitFXPlayer += TriggerGlitchHitVFX;
+        }
     }
     private void OnDisable()
     {
@@ -173,8 +176,11 @@ public class PlayerVFX : MonoBehaviour
         playerMovement.OnHookThrown -= PlayHookThrownVFX;
 
         // Damage
-        playerHealth.OnHitFXPlayer -= TriggerSpriteFading;
-        playerHealth.OnHitFXPlayer -= TriggerGlitchHitVFX;
+        if (playerHealth != null)
+        {
+            playerHealth.OnHitFXPlayer -= TriggerSpriteFading;
+            playerHealth.OnHitFXPlayer -= TriggerGlitchHitVFX;
+        }
     }
     private void Update()
     {

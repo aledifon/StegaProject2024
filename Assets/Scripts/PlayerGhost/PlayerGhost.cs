@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class PlayerGhost : MonoBehaviour
 {
@@ -8,21 +9,36 @@ public class PlayerGhost : MonoBehaviour
     private bool isPlaying = false;
     public bool IsPlaying => isPlaying;
 
-    public void LoadFrames(List<PlayerFrameData> frames)
+    private PlayerGhostMovement playerGhostMovement;
+
+    private Vector3 initGhostPos;
+
+    private void Awake()
+    {
+        playerGhostMovement = GetComponent<PlayerGhostMovement>();
+    }
+    public void StartPlayback(List<PlayerFrameData> frames, Vector3 initPos)
     {
         recordedFrames = frames;
+        initGhostPos = initPos;
         currentFrame = 0;
-        isPlaying = true;
+        isPlaying = true;        
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!isPlaying || recordedFrames == null || currentFrame >= recordedFrames.Count)
             return;
 
         var frame = recordedFrames[currentFrame];
 
-        transform.position = frame.inputX;
+        if (currentFrame == 0)
+            playerGhostMovement.transform.position = initGhostPos;
+
+        playerGhostMovement.RbRecordedVelocity = frame.rbVelocity;
+        playerGhostMovement.InputX = frame.inputX;
+        playerGhostMovement.JumpPressed = frame.jumpPressed;
+        playerGhostMovement.HookActionPressed = frame.hookActionPressed;
 
         currentFrame++;
     }
