@@ -21,7 +21,9 @@ public class PlayerGhost : MonoBehaviour
             return;
 
         var frame = recordedFrames[currentFrame];
-        transform.position = frame.position;
+
+        transform.position = frame.inputX;
+
         currentFrame++;
     }
 

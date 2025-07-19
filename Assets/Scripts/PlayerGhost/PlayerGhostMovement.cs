@@ -10,7 +10,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine.Audio;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerGhostMovement : MonoBehaviour
 {
     // Global vars
     [Header("Velocity")]
@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private float maxJumpingTime;
     private bool jumpPressed;    
     public bool JumpPressed => jumpPressed;    
+    private bool jumpWasPressed;
 
     [SerializeField] private float maxJumpHorizDist;  // Max allowed Horizontal Jumping distance
     //[SerializeField] private float maxJumpHorizTimer; // Horizontal Jumping Timer                                                      
@@ -53,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Hook")]
     [SerializeField] private bool hookActionPressed;
     public bool HookActionPressed => hookActionPressed;
+    private bool hookActionWasPressed;
     [SerializeField] private float hookThrownMaxTime;
     public float HookThrownMaxTime => hookThrownMaxTime;
     [SerializeField] private float hookThrownTimer;
@@ -227,47 +229,47 @@ public class PlayerMovement : MonoBehaviour
 
     #region Unity API
 
-    private void OnDrawGizmos()
-    {
-        if (Camera.current == null || Camera.current.name != "Main Camera") return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (Camera.current == null || Camera.current.name != "Main Camera") return;
 
-        // Ground Raycasts Debugging
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(groundChecks[0].position, Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[0].position + (Vector3.right * 0.01f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[0].position + (Vector3.right * 0.02f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[0].position + (Vector3.left * 0.01f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[0].position + (Vector3.left * 0.02f), Vector2.down * rayLength);
-        //Gizmos.color = Color.blue;
-        Gizmos.DrawRay(groundChecks[1].position, Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[1].position + (Vector3.right * 0.01f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[1].position + (Vector3.right * 0.02f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[1].position + (Vector3.left * 0.01f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[1].position + (Vector3.left * 0.02f), Vector2.down * rayLength);
-        //Gizmos.color = Color.green;
-        Gizmos.DrawRay(groundChecks[2].position, Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[2].position + (Vector3.right * 0.01f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[2].position + (Vector3.right * 0.02f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[2].position + (Vector3.left * 0.01f), Vector2.down * rayLength);
-        Gizmos.DrawRay(groundChecks[2].position + (Vector3.left * 0.02f), Vector2.down * rayLength);
+    //    // Ground Raycasts Debugging
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawRay(groundChecks[0].position, Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[0].position + (Vector3.right * 0.01f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[0].position + (Vector3.right * 0.02f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[0].position + (Vector3.left * 0.01f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[0].position + (Vector3.left * 0.02f), Vector2.down * rayLength);
+    //    //Gizmos.color = Color.blue;
+    //    Gizmos.DrawRay(groundChecks[1].position, Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[1].position + (Vector3.right * 0.01f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[1].position + (Vector3.right * 0.02f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[1].position + (Vector3.left * 0.01f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[1].position + (Vector3.left * 0.02f), Vector2.down * rayLength);
+    //    //Gizmos.color = Color.green;
+    //    Gizmos.DrawRay(groundChecks[2].position, Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[2].position + (Vector3.right * 0.01f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[2].position + (Vector3.right * 0.02f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[2].position + (Vector3.left * 0.01f), Vector2.down * rayLength);
+    //    Gizmos.DrawRay(groundChecks[2].position + (Vector3.left * 0.02f), Vector2.down * rayLength);
 
-        // Ceiling Raycast Debugging
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(cornerLeftCheck.position, Vector2.up * rayCornerLength);
-        Gizmos.DrawRay(cornerLeftCheck.position + (Vector3.right * 0.01f), Vector2.up * rayCornerLength);
-        Gizmos.DrawRay(cornerLeftCheck.position + (Vector3.left * 0.01f), Vector2.up * rayCornerLength);
-        Gizmos.DrawRay(cornerRightCheck.position, Vector2.up * rayCornerLength);
-        Gizmos.DrawRay(cornerRightCheck.position + (Vector3.right * 0.01f), Vector2.up * rayCornerLength);
-        Gizmos.DrawRay(cornerRightCheck.position + (Vector3.left * 0.01f), Vector2.up * rayCornerLength);
+    //    // Ceiling Raycast Debugging
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawRay(cornerLeftCheck.position, Vector2.up * rayCornerLength);
+    //    Gizmos.DrawRay(cornerLeftCheck.position + (Vector3.right * 0.01f), Vector2.up * rayCornerLength);
+    //    Gizmos.DrawRay(cornerLeftCheck.position + (Vector3.left * 0.01f), Vector2.up * rayCornerLength);
+    //    Gizmos.DrawRay(cornerRightCheck.position, Vector2.up * rayCornerLength);
+    //    Gizmos.DrawRay(cornerRightCheck.position + (Vector3.right * 0.01f), Vector2.up * rayCornerLength);
+    //    Gizmos.DrawRay(cornerRightCheck.position + (Vector3.left * 0.01f), Vector2.up * rayCornerLength);
 
-        // Ground Raycasts Debugging
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(rayWallOrigin, rayWallDir * rayWallLength);
-        Gizmos.DrawRay(rayWallOrigin + (Vector2.up * 0.01f), rayWallDir * rayWallLength);
-        Gizmos.DrawRay(rayWallOrigin + (Vector2.up * 0.02f), rayWallDir * rayWallLength);
-        Gizmos.DrawRay(rayWallOrigin + (Vector2.down * 0.01f), rayWallDir * rayWallLength);
-        Gizmos.DrawRay(rayWallOrigin + (Vector2.down * 0.02f), rayWallDir * rayWallLength);
-    }    
+    //    // Ground Raycasts Debugging
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawRay(rayWallOrigin, rayWallDir * rayWallLength);
+    //    Gizmos.DrawRay(rayWallOrigin + (Vector2.up * 0.01f), rayWallDir * rayWallLength);
+    //    Gizmos.DrawRay(rayWallOrigin + (Vector2.up * 0.02f), rayWallDir * rayWallLength);
+    //    Gizmos.DrawRay(rayWallOrigin + (Vector2.down * 0.01f), rayWallDir * rayWallLength);
+    //    Gizmos.DrawRay(rayWallOrigin + (Vector2.down * 0.02f), rayWallDir * rayWallLength);
+    //}    
     private void OnEnable()
     {
         GameManager.Instance.SubscribeEventsOfPlayerMovement(this);
@@ -400,47 +402,47 @@ public class PlayerMovement : MonoBehaviour
     //    //    //    LoadScene();
     //    //}
     //}
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Acorn"))
-        {
-            // Acorn dissappear
-            Destroy(collision.gameObject);
-            // Increase Acorn counter
-            NumAcorn++;
-            // Update Acorn counter UI Text
-            textAcornUI.text = NumAcorn.ToString();
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Acorn"))
+    //    {
+    //        // Acorn dissappear
+    //        Destroy(collision.gameObject);
+    //        // Increase Acorn counter
+    //        NumAcorn++;
+    //        // Update Acorn counter UI Text
+    //        textAcornUI.text = NumAcorn.ToString();
 
-            // Play Acorn Fx            
-            OnEatAcorn?.Invoke();
+    //        // Play Acorn Fx            
+    //        OnEatAcorn?.Invoke();
 
-            //// Condition to pass to the next Scene ()
-            //if (NumAcorn == 30)
-            //{
-            //    LoadSceneAfterDelay();
-            //}                
-        }
-        else if (collision.CompareTag("SuperAcorn"))
-        {
-            // Acorn dissappear
-            Destroy(collision.gameObject);
-            // Increase Acorn counter
-            NumAcorn++;
-            // Update Acorn counter UI Text
-            textAcornUI.text = NumAcorn.ToString();
+    //        //// Condition to pass to the next Scene ()
+    //        //if (NumAcorn == 30)
+    //        //{
+    //        //    LoadSceneAfterDelay();
+    //        //}                
+    //    }
+    //    else if (collision.CompareTag("SuperAcorn"))
+    //    {
+    //        // Acorn dissappear
+    //        Destroy(collision.gameObject);
+    //        // Increase Acorn counter
+    //        NumAcorn++;
+    //        // Update Acorn counter UI Text
+    //        textAcornUI.text = NumAcorn.ToString();
 
-            // Play Finish Level Fx            
-            //OnEatAcorn?.Invoke();
-            GameManager.Instance.PlayEndOfLevelSFx();
+    //        // Play Finish Level Fx            
+    //        //OnEatAcorn?.Invoke();
+    //        GameManager.Instance.PlayEndOfLevelSFx();
 
-            // Reload the Level after elapsed x seconds
-            LoadSceneAfterDelay();            
-        }
-        else if (collision.CompareTag("Ant"))
-        {
-            AttackEnemy(collision.gameObject);
-        }
-    }
+    //        // Reload the Level after elapsed x seconds
+    //        LoadSceneAfterDelay();            
+    //    }
+    //    else if (collision.CompareTag("Ant"))
+    //    {
+    //        AttackEnemy(collision.gameObject);
+    //    }
+    //}
     #endregion
 
     #region Player State
@@ -749,46 +751,30 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
-    #region Input Player     
-    public void JumpActionInput(InputAction.CallbackContext context)
+    #region Input Player         
+    public void JumpActionInput()
     {
-        if (context.phase == InputActionPhase.Performed)
+        if(jumpPressed && !jumpWasPressed)
         {
-            jumpPressed = true;
-
             // Enable the Jump Buffer Timer            
             SetJumpBufferTimer();
         }
 
-        if(context.phase == InputActionPhase.Canceled)
-        {
-            jumpPressed = false;            
-        }            
-    }
-    public void HookActionInput(InputAction.CallbackContext context)
+        jumpWasPressed = jumpPressed;
+    }    
+    public void HookActionInput()
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (hookActionPressed && !hookActionWasPressed)
         {
-            hookActionPressed = true;            
-
             // Enable the Hook timer
             if (isJumping && isHookUnlocked)
                 SetHookThrownTimer();
-        }        
+        }
 
-        if(context.phase == InputActionPhase.Canceled)
-        {
-            hookActionPressed = false;            
-        }            
-    }
-    public void MoveActionInput(InputAction.CallbackContext context)
-    {
-        direction = context.ReadValue<Vector2>();                
-
-        // Apply the deadZone to the Horizontal movement        
-        inputX = Mathf.Abs(direction.x) > inputDirDeadZone ? direction.x : 0f;
-        //inputX = direction.x;
-
+        hookActionWasPressed = hookActionPressed;
+    }    
+    public void MoveActionInput()
+    {        
         // Flip the player sprite & change the animations State
         FlipSprite(inputX, inputDirDeadZone);       
         //AnimatingRunning(inputX);
