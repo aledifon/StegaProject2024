@@ -14,7 +14,7 @@ using UnityEngine.Windows;
 
 public class PlayerGhostMovement : PlayerMovement
 {   
-    private PlayerGhost playerGhost;
+    private PlayerPlayback playerGhost;
 
     private bool jumpWasPressed;
     private bool hookActionWasPressed;
@@ -58,7 +58,7 @@ public class PlayerGhostMovement : PlayerMovement
     protected override void Awake()
     {
         GetGORefs();
-        playerGhost = GetComponent<PlayerGhost>();
+        playerGhost = GetComponent<PlayerPlayback>();
     }
     protected override void Update()
     {
