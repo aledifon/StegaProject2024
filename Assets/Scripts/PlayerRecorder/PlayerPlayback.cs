@@ -47,8 +47,8 @@ public class PlayerPlayback : MonoBehaviour
         if (playerPathStringData != null)
         {
             recordedFrames = JsonUtility.FromJson<PlayerFramesData>(playerPathStringData);
-            //initGhostPos = Vector3.zero;
-            initGhostPos = initPos;
+            initGhostPos = Vector3.zero;
+            //initGhostPos = initPos;
             currentFrame = 0;            
             isPlaying = true;
         }
