@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class PlayerRecorder : MonoBehaviour
 {
-    public List<PlayerFrameData> RecordedFrames { get; private set; } = new();    
+    //public List<PlayerFrameData> RecordedFrames { get; private set; } = new List<PlayerFrameData>();    
+    public PlayerFramesData RecordedFrames { get; private set; } = new PlayerFramesData();
     private bool isRecording = false;
     public bool IsRecording => isRecording;
 
@@ -32,20 +33,26 @@ public class PlayerRecorder : MonoBehaviour
             hookActionPressed = playerMovement.HookActionPressed
         };
 
-        if (RecordedFrames.Count == 0)
+        if (RecordedFrames.frames.Count == 0)
             initPos = playerMovement.transform.position;
-
-        RecordedFrames.Add(frame);               
+        // Save the Player Data on every frame
+        RecordedFrames.frames.Add(frame);        
     }
 
     public void StartRecording()
     {
-        RecordedFrames.Clear();        
+        RecordedFrames.frames.Clear();        
         isRecording = true;        
     }
 
     public void StopRecording()
     {
+        // Transform the SaveObject Data to JSON format & Save it on a file
+        string json = JsonUtility.ToJson(RecordedFrames);
+        SaveManager.Save(json);
+        Debug.Log("Saved Player Path to the JSON File");
+
+        // Stop the recording
         isRecording = false;
     }
 }
