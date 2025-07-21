@@ -1448,7 +1448,7 @@ public class PlayerMovement : MonoBehaviour
     protected void FlipSprite(float horizontal, float deadZone)
     {
         // Evitar que el sprite se gire si acabamos de hacer wall jump
-        if (isRecentlyWallJumping || currentState == PlayerState.WallBraking)
+        if (/*isRecentlyWallJumping ||*/ currentState == PlayerState.WallBraking)
             return;
 
         //if (horizontal != 0)
