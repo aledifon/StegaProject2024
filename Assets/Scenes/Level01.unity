@@ -10732,7 +10732,7 @@ MonoBehaviour:
   wallJumpHorizDist: 3
   wallJumpHorizDist2: 4.5
   wallJumpHorizTime: 0.6
-  wallJumpDelayMaxTime: 0
+  wallJumpDelayMaxTime: 0.1
   wallJumpDelayTimer: 0
   isWallJumpDelayEnabled: 0
   isWallJumpUnlocked: 1
