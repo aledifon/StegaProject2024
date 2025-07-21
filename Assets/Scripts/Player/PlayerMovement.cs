@@ -48,6 +48,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float wallJumpHorizTime;   // Max Jumping time on horizontal Movement
     private float wallJumpingVertTime;                          // Wall Jumping Time (in func. of Wall Jumping distance. & Wall Jump. speed)                                                    
     Vector2 wallJumpSpeedVector;
+    [SerializeField] private float wallJumpDelayMaxTime;    
+    [SerializeField] private float wallJumpDelayTimer;    
+    [SerializeField] private bool isWallJumpDelayEnabled;    
     [SerializeField] bool isWallJumpUnlocked;
 
     [Header("Hook")]
@@ -205,6 +208,7 @@ public class PlayerMovement : MonoBehaviour
     Vector2 targetVelocity;          // Desired target player Speed(Velocity Movement type through rb2D)
     Vector2 dampVelocity;            // Player's current speed storage (Velocity Movement type through r
     Vector2 direction;              // To handle the direction with the New Input System
+    Vector2 lastDirection;
     protected float inputDirDeadZone = 0.2f;  // dead Zone area to not take into account (to fix Analog Stick direction bugs)
 
     float rb2DDirVelX;    
@@ -343,6 +347,10 @@ public class PlayerMovement : MonoBehaviour
         // Hook Thrown
         if (isHookThrownEnabled)
             UdpateHookThrownTimer();
+
+        // Wall Jump Delay Timer
+        if (isWallJumpDelayEnabled)
+            UdpateWallJumpDelayTimer();
 
         // Update the player state
         UpdatePlayerState();
@@ -542,8 +550,9 @@ public class PlayerMovement : MonoBehaviour
                     }
                     break;
                 case PlayerState.WallJumping:
-                    if (rb2D.linearVelocity.y > 0 && inputX != 0)
+                    if (rb2D.linearVelocity.y > 0 && inputX != 0  && !isWallJumpDelayEnabled)
                     {
+                        // Wait for a some frames (wallJumpDelayMaxTime) to assure a proper wall Jump
                         currentState = PlayerState.Jumping;
                     }
                     else if (playerHook.IsHookAttached)
@@ -791,15 +800,23 @@ public class PlayerMovement : MonoBehaviour
     }
     public virtual void MoveActionInput(InputAction.CallbackContext context)
     {
-        direction = context.ReadValue<Vector2>();                
+        direction = context.ReadValue<Vector2>();
+        lastDirection = direction;                      
 
+        // Block the inputX & Sprite flipping update during certain frames
+        // When triggered THE WallJumpDelayTimer --> inputX = 0;                
+        
+        UpdateInputAndSprite(direction);
+    }
+    private void UpdateInputAndSprite(Vector2 direction)
+    {
         // Apply the deadZone to the Horizontal movement        
-        inputX = Mathf.Abs(direction.x) > inputDirDeadZone ? direction.x : 0f;
-        //inputX = direction.x;
+        inputX = (Mathf.Abs(direction.x) > inputDirDeadZone && !isWallJumpDelayEnabled) ?
+                direction.x :
+                0f;
 
         // Flip the player sprite & change the animations State
-        FlipSprite(inputX, inputDirDeadZone);       
-        //AnimatingRunning(inputX);
+        FlipSprite(inputX, inputDirDeadZone);
     }
     #region Jumping Buffer    
     private void UdpateJumpBufferTimer()
@@ -917,6 +934,34 @@ public class PlayerMovement : MonoBehaviour
             OnHookRelease?.Invoke();        
     }
     #endregion
+    #region Hook
+    private void UdpateWallJumpDelayTimer()
+    {
+        // Jump Buffer Timer update
+        wallJumpDelayTimer -= Time.fixedDeltaTime;
+
+        // Reset Jump Buffer Timer
+        if (wallJumpDelayTimer <= 0)
+        {
+            ResetWallJumpDelayTimer();
+        }
+    }
+    protected void SetWallJumpDelayTimer()
+    {
+        // Set to 0 the inputX to assure no sprite turns
+        inputX = 0f;
+
+        wallJumpDelayTimer = wallJumpDelayMaxTime;
+        isWallJumpDelayEnabled = true;
+    }
+    private void ResetWallJumpDelayTimer()
+    {
+        isWallJumpDelayEnabled = false;
+        wallJumpDelayTimer = 0f;
+
+        UpdateInputAndSprite(lastDirection);
+    }
+    #endregion
     #endregion
 
     #region RigidBody
@@ -984,6 +1029,9 @@ public class PlayerMovement : MonoBehaviour
 
         // Reset Rb velocity to avoid inconsistencies        
         ResetVelocity();
+
+        // Blocks all the changes on inputX & Sprite flipping during certain frames
+        SetWallJumpDelayTimer();
 
         //wallSpeedVector = (-rayWallDir * Mathf.Cos(Mathf.Deg2Rad * 30) * wallJumpForce) +
         //                    (Vector2.up * Mathf.Sin(Mathf.Deg2Rad * 30) * wallJumpForce);

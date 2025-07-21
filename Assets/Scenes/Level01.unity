@@ -10434,7 +10434,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &938598644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10732,6 +10732,9 @@ MonoBehaviour:
   wallJumpHorizDist: 3
   wallJumpHorizDist2: 4.5
   wallJumpHorizTime: 0.6
+  wallJumpDelayMaxTime: 0
+  wallJumpDelayTimer: 0
+  isWallJumpDelayEnabled: 0
   isWallJumpUnlocked: 1
   hookActionPressed: 0
   hookThrownMaxTime: 0.2
@@ -11142,7 +11145,7 @@ Transform:
   m_GameObject: {fileID: 938598643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 43.665, y: -0.922, z: 0}
+  m_LocalPosition: {x: 43.6, y: -0.922, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23392,6 +23395,9 @@ MonoBehaviour:
   wallJumpHorizDist: 3
   wallJumpHorizDist2: 4.5
   wallJumpHorizTime: 0.6
+  wallJumpDelayMaxTime: 0.1
+  wallJumpDelayTimer: 0
+  isWallJumpDelayEnabled: 0
   isWallJumpUnlocked: 1
   hookActionPressed: 0
   hookThrownMaxTime: 0.2
@@ -28621,6 +28627,9 @@ MonoBehaviour:
   wallJumpHorizDist: 3
   wallJumpHorizDist2: 0
   wallJumpHorizTime: 0.6
+  wallJumpDelayMaxTime: 0
+  wallJumpDelayTimer: 0
+  isWallJumpDelayEnabled: 0
   isWallJumpUnlocked: 0
   hookActionPressed: 0
   hookThrownMaxTime: 0
