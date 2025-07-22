@@ -886,7 +886,7 @@ public class PlayerMovement : MonoBehaviour
                             maxJumpHorizTime;
 
             // Register a Jumping Trigger Request
-            jumpTriggered = true;
+            jumpTriggered = true;            
         }
         // Otherwise, if a Wall Jump is detected (wallFwdDetected by raycastWallFwd)
         else if ((!isGrounded && isWallDetected) && isJumpBufferEnabled)
@@ -908,6 +908,10 @@ public class PlayerMovement : MonoBehaviour
 
             // Register a Wall Jumping Trigger Request
             wallJumpTriggered = true;
+            
+            Debug.Log("Entered in Wall-Jump Triggered");
+            Debug.Log("Wall Jump Horiz Speed = " + wallJumpHorizSpeed);
+            Debug.Log("Jump Horiz Speed Speed = " + jumpHorizSpeed);
         }
         else if (isRopeSwinging && isJumpBufferEnabled)
         {
@@ -1073,7 +1077,10 @@ public class PlayerMovement : MonoBehaviour
         //rb2D.velocity = wallJumpSpeedVector;        
 
         // Flip Sprite
-        spriteRenderer.flipX = !spriteRenderer.flipX;      
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+
+
+        Debug.Log("Wall Jump Speed Vector = " + wallJumpSpeedVector);
     }
     IEnumerator DisableWallJumpTriggerFlag()
     {
