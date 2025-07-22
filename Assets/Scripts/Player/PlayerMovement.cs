@@ -376,7 +376,8 @@ public class PlayerMovement : MonoBehaviour
         //AnimatingJumping();
 
         // Animations
-        UpdateAnimations();
+        //UpdateAnimations();
+        UpdateAnimationSpeed();
     }
     // Collisions
     //protected virtual void OnCollisionEnter2D(Collision2D collision)
@@ -467,6 +468,7 @@ public class PlayerMovement : MonoBehaviour
         if (isHurt)
         {
             currentState = PlayerState.Hurting;
+            UpdateAnimations();
             //Debug.Log("From " + currentState + " state to Hurting State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
         }
         else
@@ -475,7 +477,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 case PlayerState.Hurting:
                     if (!isHurt)
+                    {
                         currentState = PlayerState.Idle;
+                        UpdateAnimations();
+                    }                        
                     //Debug.Log("From Hurt state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
                 case PlayerState.Idle:
@@ -484,7 +489,9 @@ public class PlayerMovement : MonoBehaviour
                         if (inputX != 0)
                         {
                             currentState = PlayerState.Running;
+                            UpdateAnimations();
                             OnStartWalking?.Invoke();
+                            //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                         }
                         //else if (!isGrounded && rb2D.velocity.y > 0)
                         else if (jumpTriggered)
@@ -492,12 +499,16 @@ public class PlayerMovement : MonoBehaviour
                             TriggerJump();
                             OnTakeOffJump?.Invoke();            // Trigger Take Off Jump Event        
                             currentState = PlayerState.Jumping;
+                            UpdateAnimations();
 
                             //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                         }
                     }
                     else if (rb2D.linearVelocity.y < Mathf.Epsilon)
+                    {
                         currentState = PlayerState.Falling;
+                        UpdateAnimations();
+                    }
 
                     //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
@@ -508,6 +519,8 @@ public class PlayerMovement : MonoBehaviour
                         {
                             OnStopWalking?.Invoke();        // Trigger Stop Walking Event
                             currentState = PlayerState.Idle;
+                            UpdateAnimations();
+                            //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                         }
                         //else if (!isGrounded && rb2D.velocity.y > 0)
                         else if (jumpTriggered)
@@ -517,6 +530,7 @@ public class PlayerMovement : MonoBehaviour
                             OnTakeOffJump?.Invoke();        // Trigger Take Off Jump Event        
 
                             currentState = PlayerState.Jumping;
+                            UpdateAnimations();
                             //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                         }
                     }
@@ -524,6 +538,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         OnStopWalking?.Invoke();        // Trigger Stop Walking Event
                         currentState = PlayerState.Falling;
+                        UpdateAnimations();
                     }
                     //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
@@ -533,6 +548,7 @@ public class PlayerMovement : MonoBehaviour
                         TriggerWallJump();
                         OnWallJump?.Invoke();           // Trigger Wall Jump Event
                         currentState = PlayerState.WallJumping;
+                        UpdateAnimations();
                         //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (playerHook.IsHookAttached)
@@ -540,12 +556,14 @@ public class PlayerMovement : MonoBehaviour
                         ResetPlayerSpeedBeforeSwinging();
                         OnStartRopeSwinging?.Invoke();
                         currentState = PlayerState.Swinging;
+                        UpdateAnimations();
 
                         //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (rb2D.linearVelocity.y < 0 && !isRecentlyJumping)
                     {
                         currentState = PlayerState.Falling;
+                        UpdateAnimations();
                         //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
@@ -554,18 +572,21 @@ public class PlayerMovement : MonoBehaviour
                     {
                         // Wait for a some frames (wallJumpDelayMaxTime) to assure a proper wall Jump
                         currentState = PlayerState.Jumping;
+                        UpdateAnimations();
                     }
                     else if (playerHook.IsHookAttached)
                     {
                         ResetPlayerSpeedBeforeSwinging();
                         OnStartRopeSwinging?.Invoke();
                         currentState = PlayerState.Swinging;
+                        UpdateAnimations();
 
                         //Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping)
                     {
                         currentState = PlayerState.Falling;
+                        UpdateAnimations();
                     }
                     //Debug.Log("From Wall Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
@@ -575,6 +596,7 @@ public class PlayerMovement : MonoBehaviour
                         TriggerJump();
                         OnTakeOffJump?.Invoke();                // Trigger Take Off Jump Event        
                         currentState = PlayerState.Jumping;
+                        UpdateAnimations();
                         //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (isGrounded)
@@ -590,6 +612,7 @@ public class PlayerMovement : MonoBehaviour
                             OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
                         }
                         currentState = PlayerState.Idle;
+                        UpdateAnimations();
 
                         //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
@@ -598,6 +621,7 @@ public class PlayerMovement : MonoBehaviour
                         ResetPlayerSpeedBeforeSwinging();
                         OnStartRopeSwinging?.Invoke();
                         currentState = PlayerState.Swinging;
+                        UpdateAnimations();
 
                         //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
@@ -605,6 +629,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         OnStartWallSliding?.Invoke();           // Trigger Start Wall Sliding Event        
                         currentState = PlayerState.WallBraking;
+                        UpdateAnimations();
                         //Debug.Log("From Falling state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
@@ -619,6 +644,7 @@ public class PlayerMovement : MonoBehaviour
                         OnStopWallSliding?.Invoke();            // Trigger Stop Wall Sliding Event
                         OnLandingJump?.Invoke();                // Trigger Landing Jump Event        
                         currentState = PlayerState.Idle;
+                        UpdateAnimations();
                     }
                     else
                     {
@@ -626,6 +652,7 @@ public class PlayerMovement : MonoBehaviour
                         {
                             OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
                             currentState = PlayerState.Falling;
+                            UpdateAnimations();
                         }
                         else if (wallJumpTriggered)
                         {
@@ -633,6 +660,7 @@ public class PlayerMovement : MonoBehaviour
                             TriggerWallJump();
                             OnWallJump?.Invoke();               // Trigger Wall Jump Event
                             currentState = PlayerState.WallJumping;
+                            UpdateAnimations();
                         }
                     }
                     //Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
@@ -645,6 +673,7 @@ public class PlayerMovement : MonoBehaviour
                         OnHookRelease?.Invoke();            // Trigger Hook Release (Hook Jump) Event        
 
                         currentState = PlayerState.Jumping;
+                        UpdateAnimations();
 
                         //Debug.Log("From Swinging state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
@@ -659,6 +688,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isHurt = true;
         currentState = PlayerState.Hurting;
+        UpdateAnimations();
     }
     public void DisableHurtingState()
     {
@@ -1484,13 +1514,21 @@ public class PlayerMovement : MonoBehaviour
     }
     private void ClearAnimationFlags()
     {
-        animator.SetBool("IsIdle", false);
-        animator.SetBool("IsRunning", false);
-        animator.SetBool("IsJumping", false);
-        animator.SetBool("IsFalling", false);
-        animator.SetBool("IsWallSliding", false);
-        animator.SetBool("IsSwinging", false);
-        animator.SetBool("Hurt", false);
+        animator.ResetTrigger("IsIdle");
+        animator.ResetTrigger("IsRunning");
+        animator.ResetTrigger("IsJumping");
+        animator.ResetTrigger("IsFalling");
+        animator.ResetTrigger("IsWallSliding");
+        animator.ResetTrigger("IsSwinging");
+        animator.ResetTrigger("Hurt");
+    }
+    private void UpdateAnimations_(string triggerParamName)
+    {
+        animator.SetTrigger(triggerParamName);
+    }
+    private void UpdateAnimationSpeed()
+    {
+        animator.SetFloat("Speed", Math.Abs(rb2D.linearVelocityX));
     }
     private void UpdateAnimations()
     {
@@ -1499,30 +1537,36 @@ public class PlayerMovement : MonoBehaviour
         switch (currentState)
         {
             case PlayerState.Idle:
-                animator.SetBool("IsIdle", true);
+                animator.SetTrigger("IsIdle");
                 break;
             case PlayerState.Running:
-                animator.SetBool("IsRunning", true);
+                animator.SetTrigger("IsRunning");
                 break;
             case PlayerState.Jumping:
             case PlayerState.WallJumping:
-                animator.SetBool("IsJumping", true);
+                animator.SetTrigger("IsJumping");
                 break;
             case PlayerState.Falling:
-                animator.SetBool("IsFalling", true);
+                animator.SetTrigger("IsFalling");
                 break;
             case PlayerState.WallBraking:
-                animator.SetBool("IsWallSliding", true);
+                animator.SetTrigger("IsWallSliding");
                 break;
             case PlayerState.Swinging:
-                animator.SetBool("IsSwinging", true);
+                animator.SetTrigger("IsSwinging");
                 break;
             case PlayerState.Hurting:
-                animator.SetBool("Hurt", true);                              
+                animator.SetTrigger("Hurt");                              
                 break;
             default:
                 break;
         }
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (currentState == PlayerState.Falling && stateInfo.IsName("IsIdle") &&
+            isWallDetected)
+            Debug.Log("Current State is " + currentState + 
+                " ;; IsFalling: " + animator.GetBool("IsFalling"));
     }
 
     #endregion
