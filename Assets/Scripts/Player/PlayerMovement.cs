@@ -653,6 +653,8 @@ public class PlayerMovement : MonoBehaviour
                             OnStopWallSliding?.Invoke();        // Trigger Stop Wall Sliding Event
                             currentState = PlayerState.Falling;
                             UpdateAnimations();
+                            // Flip Sprite
+                            spriteRenderer.flipX = !spriteRenderer.flipX;
                         }
                         else if (wallJumpTriggered)
                         {
@@ -1078,7 +1080,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Flip Sprite
         spriteRenderer.flipX = !spriteRenderer.flipX;
-
 
         Debug.Log("Wall Jump Speed Vector = " + wallJumpSpeedVector);
     }
