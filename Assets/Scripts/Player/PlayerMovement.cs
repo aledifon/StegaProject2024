@@ -583,12 +583,19 @@ public class PlayerMovement : MonoBehaviour
 
                         //Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
+                    else if (wallJumpTriggered)
+                    {                        
+                        TriggerWallJump();
+                        OnWallJump?.Invoke();               // Trigger Wall Jump Event
+                        currentState = PlayerState.WallJumping;
+                        UpdateAnimations();
+                    }
                     else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping)
                     {
                         currentState = PlayerState.Falling;
                         UpdateAnimations();
                     }
-                    //Debug.Log("From Wall Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    Debug.Log("From Wall Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
                 case PlayerState.Falling:
                     if (jumpTriggered)
@@ -665,7 +672,7 @@ public class PlayerMovement : MonoBehaviour
                             UpdateAnimations();
                         }
                     }
-                    //Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
                 case PlayerState.Swinging:
                     if (jumpTriggered)
@@ -911,7 +918,7 @@ public class PlayerMovement : MonoBehaviour
             // Register a Wall Jumping Trigger Request
             wallJumpTriggered = true;
             
-            Debug.Log("Entered in Wall-Jump Triggered");
+            Debug.Log("Entered in Wall-Jump Triggered on State " + currentState);
             Debug.Log("Wall Jump Horiz Speed = " + wallJumpHorizSpeed);
             Debug.Log("Jump Horiz Speed Speed = " + jumpHorizSpeed);
         }
@@ -928,7 +935,7 @@ public class PlayerMovement : MonoBehaviour
                             maxJumpHorizTime;
 
             // Register a Jumping Trigger Request
-            jumpTriggered = true;
+            jumpTriggered = true;            
         }
     }
     private void UpdateJumpTimer()
