@@ -587,7 +587,7 @@ public class PlayerMovement : MonoBehaviour
                     {                        
                         TriggerWallJump();
                         OnWallJump?.Invoke();               // Trigger Wall Jump Event
-                        currentState = PlayerState.WallJumping;
+                        //currentState = PlayerState.WallJumping;
                         UpdateAnimations();
                     }
                     else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping)
