@@ -187,6 +187,7 @@ public class PlayerMovement : MonoBehaviour
     public event Action OnStopWallSliding;
 
     public event Action OnWallJump;
+    public event Action OnStopAirSpin;
 
     public event Action OnHookThrown;
     public event Action OnHookRelease;    
@@ -545,6 +546,7 @@ public class PlayerMovement : MonoBehaviour
                 case PlayerState.Jumping:
                     if (wallJumpTriggered)
                     {
+                        OnStopAirSpin?.Invoke();
                         TriggerWallJump();
                         OnWallJump?.Invoke();           // Trigger Wall Jump Event
                         currentState = PlayerState.WallJumping;
@@ -553,6 +555,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else if (playerHook.IsHookAttached)
                     {
+                        OnStopAirSpin?.Invoke();
                         ResetPlayerSpeedBeforeSwinging();
                         OnStartRopeSwinging?.Invoke();
                         currentState = PlayerState.Swinging;
@@ -562,6 +565,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else if (rb2D.linearVelocity.y < 0 && !isRecentlyJumping)
                     {
+                        OnStopAirSpin?.Invoke();
                         currentState = PlayerState.Falling;
                         UpdateAnimations();
                         //Debug.Log("From Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
@@ -576,6 +580,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else if (playerHook.IsHookAttached)
                     {
+                        OnStopAirSpin?.Invoke();
                         ResetPlayerSpeedBeforeSwinging();
                         OnStartRopeSwinging?.Invoke();
                         currentState = PlayerState.Swinging;
@@ -584,7 +589,8 @@ public class PlayerMovement : MonoBehaviour
                         //Debug.Log("From WallJumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (wallJumpTriggered)
-                    {                        
+                    {
+                        OnStopAirSpin?.Invoke();
                         TriggerWallJump();
                         OnWallJump?.Invoke();               // Trigger Wall Jump Event
                         //currentState = PlayerState.WallJumping;
@@ -592,6 +598,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else if (rb2D.linearVelocity.y < 0 && !isRecentlyWallJumping)
                     {
+                        OnStopAirSpin?.Invoke();
                         currentState = PlayerState.Falling;
                         UpdateAnimations();
                     }

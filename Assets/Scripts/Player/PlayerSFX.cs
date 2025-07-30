@@ -24,7 +24,10 @@ public class PlayerSFX : MonoBehaviour
 
     [Header("Wall Jump")]
     [SerializeField] private AudioClip wallJumpSFX;
-    [SerializeField, Range(0f, 1f)] float wallJumpVolume;  // 1f
+    [SerializeField, Range(0f, 1f)] float wallJumpVolume;  // 1f    
+    [SerializeField] private AudioClip airSpinSFX;
+    [SerializeField, Range(0f, 1f)] float airSpinVolume;  // 1f
+    private bool isAirSpinSFXRunning;
 
     [Header("Grappling Hook")]
     [SerializeField] private AudioClip hookThrownSFX;
@@ -86,7 +89,9 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStopWallSliding += StopWallSlidingSFX;
 
         // Wall Jump
-        playerMovement.OnWallJump += PlayWallJumpSFX;        
+        //playerMovement.OnWallJump += PlayWallJumpSFX;        
+        playerMovement.OnWallJump += PlayAirSpinSFX;
+        playerMovement.OnStopAirSpin += StopAirSpinSFX;
 
         // Grappling-Hook
         playerMovement.OnHookThrown += PlayHookThrownSFX;
@@ -119,7 +124,9 @@ public class PlayerSFX : MonoBehaviour
         playerMovement.OnStopWallSliding -= StopWallSlidingSFX;
 
         // Wall Jump
-        playerMovement.OnWallJump -= PlayWallJumpSFX;
+        //playerMovement.OnWallJump -= PlayWallJumpSFX;
+        playerMovement.OnWallJump -= PlayAirSpinSFX;
+        playerMovement.OnStopAirSpin -= StopAirSpinSFX;
 
         // Grappling-Hook
         playerMovement.OnHookThrown -= PlayHookThrownSFX;
@@ -143,6 +150,8 @@ public class PlayerSFX : MonoBehaviour
             PlayWalkSFX();        
         else if (isRopeSwingingSFXRunning && !fxAudioSource.isPlaying && !GameManager.Instance.IsPaused)
             PlayRopeSwingingSFX();
+        //else if (isAirSpinSFXRunning && !fxAudioSource.isPlaying && !GameManager.Instance.IsPaused)
+        //    PlayAirSpinSFX();
     }
     #region AudioManagement
     private void PlaySFXOneShot(AudioSource audioSource, AudioClip audioClip, float volume)
@@ -259,6 +268,33 @@ public class PlayerSFX : MonoBehaviour
     {
         PlaySFXOneShot(fxAudioSource, wallJumpSFX, wallJumpVolume);
     }
+
+    #region Walk
+    private void TriggerAirSpinSFX()
+    {
+        isAirSpinSFXRunning = true;
+    }
+    private void StopAirSpinSFX()
+    {
+        //isAirSpinSFXRunning = false;
+        //fxAudioSource.volume = 1f;
+
+        fxAudioSource.loop = false;
+        StopSFX(fxAudioSource);
+    }
+    private void PlayAirSpinSFX()
+    {
+        //int n;        
+        //n = Random.Range(0, airSpinSFX.Length);
+        //PlaySFXSingle(fxAudioSource, airSpinSFX[n], airSpinVolume);
+        fxAudioSource.loop = true;
+        PlaySFXSingle(fxAudioSource, airSpinSFX, airSpinVolume);
+
+        //float randomPitch = Random.Range(lowPitchRange,highPitchRange);
+        //fxAudioSource.pitch = randomPitch;                
+    }
+    #endregion
+
     #endregion
     #region Grappling-Hook
     #region Hook
