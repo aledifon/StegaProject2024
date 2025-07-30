@@ -10755,6 +10755,8 @@ MonoBehaviour:
   wallSlidingVolume: 1
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
   wallJumpVolume: 1
+  airSpinSFX: {fileID: 0}
+  airSpinVolume: 0
   hookThrownSFX: {fileID: 8300000, guid: 0110efbc859eab642b836a0e6aba675d, type: 3}
   hookThrownVolume: 0.5
   hookAttachedSFX: {fileID: 8300000, guid: d77749aca17983445ac33f83de5af9cc, type: 3}
@@ -23401,6 +23403,8 @@ MonoBehaviour:
   wallSlidingVolume: 1
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
   wallJumpVolume: 1
+  airSpinSFX: {fileID: 8300000, guid: c4f5c6aec69cab34ba9473ce88cb60ba, type: 3}
+  airSpinVolume: 1
   hookThrownSFX: {fileID: 8300000, guid: 0110efbc859eab642b836a0e6aba675d, type: 3}
   hookThrownVolume: 0.5
   hookAttachedSFX: {fileID: 8300000, guid: d77749aca17983445ac33f83de5af9cc, type: 3}
@@ -29129,6 +29133,8 @@ MonoBehaviour:
   wallSlidingVolume: 0
   wallJumpSFX: {fileID: 8300000, guid: 84f81539e67891c449f2b8d2743733f9, type: 3}
   wallJumpVolume: 0
+  airSpinSFX: {fileID: 0}
+  airSpinVolume: 0
   hookThrownSFX: {fileID: 0}
   hookThrownVolume: 0
   hookAttachedSFX: {fileID: 0}
