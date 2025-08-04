@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float smoothTime; // time will takes to reach the speed.
     [SerializeField] float lerpSpeed;  // Interpolation Time
+    [SerializeField] float smoothKeyboardSpeed; // Smoothing speed given to the movement when is
+                                                // performed by the keyboard
 
     [Header("Jump")]
     [SerializeField] float jumpForce;       // Jumping applied Force
@@ -379,6 +381,10 @@ public class PlayerMovement : MonoBehaviour
         // Animations
         //UpdateAnimations();
         UpdateAnimationSpeed();
+
+        UpdateInputAndSprite(direction);
+
+        //Debug.Log($" inputX: {inputX}");
     }
     // Collisions
     //protected virtual void OnCollisionEnter2D(Collision2D collision)
@@ -858,17 +864,39 @@ public class PlayerMovement : MonoBehaviour
         // Block the inputX & Sprite flipping update during certain frames
         // When triggered THE WallJumpDelayTimer --> inputX = 0;                
         
-        UpdateInputAndSprite(direction);
+        //UpdateInputAndSprite(direction);
     }
     private void UpdateInputAndSprite(Vector2 direction)
     {
-        // Apply the deadZone to the Horizontal movement        
-        inputX = (Mathf.Abs(direction.x) > inputDirDeadZone && !isWallJumpDelayEnabled) ?
-                direction.x :
-                0f;
+        //// Apply the deadZone to the Horizontal movement        
+        //inputX = (Mathf.Abs(direction.x) > inputDirDeadZone && !isWallJumpDelayEnabled) ?
+        //        direction.x :
+        //        0f;        
 
-        // Flip the player sprite & change the animations State
-        FlipSprite(inputX, inputDirDeadZone);
+        if (IsKeyboardActive())
+        {
+            inputX = Mathf.MoveTowards(inputX, 
+                                    direction.x, 
+                                    smoothKeyboardSpeed * Time.deltaTime);
+            //Debug.Log("Dir = " + direction.x);
+            Debug.Log("InputX = " + inputX);
+        }
+        else
+        {
+            // Apply the deadZone to the Horizontal movement        
+            inputX = (Mathf.Abs(direction.x) > inputDirDeadZone && !isWallJumpDelayEnabled) ?
+                    direction.x :
+                    0f;
+        }
+
+            // Flip the player sprite & change the animations State
+            FlipSprite(inputX, inputDirDeadZone);
+
+        //Debug.Log($"Held DirX: {direction.x} | inputX: {inputX} | Delta: {smoothKeyboardSpeed * Time.deltaTime}");
+    }
+    private bool IsKeyboardActive()
+    {        
+        return (Keyboard.current != null && Keyboard.current.anyKey.isPressed);
     }
     #region Jumping Buffer    
     private void UdpateJumpBufferTimer()

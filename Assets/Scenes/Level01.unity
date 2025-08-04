@@ -10917,6 +10917,7 @@ MonoBehaviour:
   speed: 10
   smoothTime: 0.35
   lerpSpeed: 10
+  smoothKeyboardSpeed: 0
   jumpForce: 1000
   jumpVertSpeed: 10
   jumpHorizSpeed: 0
@@ -23669,6 +23670,7 @@ MonoBehaviour:
   speed: 10
   smoothTime: 0.35
   lerpSpeed: 10
+  smoothKeyboardSpeed: 10
   jumpForce: 1000
   jumpVertSpeed: 10
   jumpHorizSpeed: 0
@@ -28901,6 +28903,7 @@ MonoBehaviour:
   speed: 10
   smoothTime: 0.35
   lerpSpeed: 10
+  smoothKeyboardSpeed: 0
   jumpForce: 380
   jumpVertSpeed: 10
   jumpHorizSpeed: 0
