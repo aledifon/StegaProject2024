@@ -1,10 +1,11 @@
 using Demo_Project;
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
+using UnityEditor;
 using UnityEngine;
-using DG.Tweening;
-using System;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
@@ -176,6 +177,21 @@ public class GameManager : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Performed)                    
             TooglePause();
+    }
+    public void QuitGame(InputAction.CallbackContext context)
+    {
+        //if (isWebGL)
+        //    SceneManager.LoadScene(Scenes.Menu.ToString());
+        //else
+            QuitGame();
+    }
+    public void QuitGame()
+    {
+    #if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+    #else
+        Application.Quit();            
+    #endif
     }
     #endregion
     #region Audio Clips
