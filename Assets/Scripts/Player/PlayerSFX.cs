@@ -28,6 +28,7 @@ public class PlayerSFX : MonoBehaviour
     [SerializeField] private AudioClip airSpinSFX;
     [SerializeField, Range(0f, 1f)] float airSpinVolume;  // 1f
     private bool isAirSpinSFXRunning;
+    public bool IsAirSpinSFXRunning => isAirSpinSFXRunning;
 
     [Header("Grappling Hook")]
     [SerializeField] private AudioClip hookThrownSFX;
@@ -276,7 +277,7 @@ public class PlayerSFX : MonoBehaviour
     }
     private void StopAirSpinSFX()
     {
-        //isAirSpinSFXRunning = false;
+        isAirSpinSFXRunning = false;
         //fxAudioSource.volume = 1f;
 
         fxAudioSource.loop = false;
@@ -287,8 +288,10 @@ public class PlayerSFX : MonoBehaviour
         //int n;        
         //n = Random.Range(0, airSpinSFX.Length);
         //PlaySFXSingle(fxAudioSource, airSpinSFX[n], airSpinVolume);
+        
         fxAudioSource.loop = true;
         PlaySFXSingle(fxAudioSource, airSpinSFX, airSpinVolume);
+        isAirSpinSFXRunning = true;
 
         //float randomPitch = Random.Range(lowPitchRange,highPitchRange);
         //fxAudioSource.pitch = randomPitch;                
