@@ -16,7 +16,7 @@ public class ElevatorVolatile : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private GameObject dustStonesVFX;    
     [SerializeField] Transform[] psPositions;
-    private ParticleSystem[] dustStonesPS = new ParticleSystem[3];
+    private ParticleSystem[] dustStonesPS;
     [SerializeField] private float vfxPlaybackTime;
 
     [Header("SFX")]    
@@ -41,7 +41,11 @@ public class ElevatorVolatile : MonoBehaviour
             Debug.LogError("Tilemap Renderer Not found on any child of the Platform");
 
         // Setup VFX & SFX
-        if (dustStonesPS != null && psPositions != null)
+        if(psPositions != null)
+            dustStonesPS = new ParticleSystem[psPositions.Length];
+        else
+            Debug.LogError("The refs. to the PS posititons are not properly initialised through the Inspector");
+        if (dustStonesPS != null)
             SetupVFX();
         else
             Debug.LogError("The refs. to the PS and/or the PS positions are not properly initialised");
