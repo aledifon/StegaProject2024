@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class ElevatorMovement : MonoBehaviour
+public class ElevatorVolatile : MonoBehaviour
 {
     // Class vars.
     [Header("Patrol points")]
@@ -19,9 +19,6 @@ public class ElevatorMovement : MonoBehaviour
                                                   // 
 
     BoxCollider2D collider;
-    [SerializeField, Range(0f, 5f)] float waitingTime;
-    bool waitingTimerEnabled;
-     
 
     void Awake()
     {                
@@ -41,8 +38,7 @@ public class ElevatorMovement : MonoBehaviour
     private void Update()
     {
         UpdateTargetPosition();
-        if(!waitingTimerEnabled)
-            Patrol();
+        Patrol();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -69,14 +65,7 @@ public class ElevatorMovement : MonoBehaviour
                 indexTargetPos++;
 
             targetPosition = patrolPoints[indexTargetPos];
-            StartCoroutine(nameof(EnableWaitingTimer));
         }
-    }
-    IEnumerator EnableWaitingTimer()
-    {
-        waitingTimerEnabled = true;
-        yield return new WaitForSeconds(waitingTime);
-        waitingTimerEnabled = false;
     }
     void Patrol()
     {        
