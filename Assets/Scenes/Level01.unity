@@ -1141,7 +1141,7 @@ Transform:
   m_GameObject: {fileID: 134922688}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.25, y: -0.2, z: 0}
+  m_LocalPosition: {x: -0.3, y: 0.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2472,7 +2472,7 @@ Transform:
   m_GameObject: {fileID: 236515782}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.305, y: -0.109, z: 0}
+  m_LocalPosition: {x: 0.355, y: 0.161, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5790,7 +5790,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8, y: 2, z: -12.134909}
+  m_LocalPosition: {x: 47.17, y: 2, z: -12.134909}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8681,7 +8681,7 @@ Transform:
   m_GameObject: {fileID: 757806639}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: 0.625, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0.895, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9696,7 +9696,7 @@ Transform:
   m_GameObject: {fileID: 818174291}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.25, y: -0.2, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11473,7 +11473,7 @@ Animator:
   m_GameObject: {fileID: 938598643}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d15b8206e7cc582439eb7e140a6baf7f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 60ecabbed1cc64346917d0154940c635, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -11546,17 +11546,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.09}
+  m_Offset: {x: 0, y: 0.07}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.5, y: 2.9}
+    pivot: {x: 0.49733698, y: 0.44727388}
+    oldSize: {x: 1.375, y: 1.875}
     newSize: {x: 5.625, y: 3.625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1.65}
+  m_Size: {x: 0.6, y: 1.65}
   m_EdgeRadius: 0
 --- !u!212 &938598656
 SpriteRenderer:
@@ -11602,8 +11602,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f00b4747e194d43ebba76abc9ea17f57, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 4723107735738678597, guid: 120a43fcd6041f947941d97857325a64, type: 3}
+  m_Color: {r: 0.16352195, g: 0.16352195, b: 0.16352195, a: 0.90588236}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -23772,7 +23772,7 @@ Transform:
   m_GameObject: {fileID: 1069018699}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.25, y: -1.006881, z: 0}
+  m_LocalPosition: {x: -0.3, y: -0.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24484,7 +24484,7 @@ Transform:
   m_GameObject: {fileID: 1072431785}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.889986, y: 0.9699999, z: 0}
+  m_LocalPosition: {x: 47.08001, y: 0.9699999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25132,7 +25132,7 @@ Transform:
   m_GameObject: {fileID: 1104512966}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: -1.006881, z: 0}
+  m_LocalPosition: {x: 0.3, y: -0.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29515,6 +29515,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0472738d-8e64-4a48-a693-c03f78f40562
     m_ActionName: 'UI/Resume[/Keyboard/p,/Keyboard/escape,/DualShock4GamepadHID/start]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 363ce4d1-c8bc-4649-ac18-ff76265a0363
+    m_ActionName: 'UI/Quit[/Keyboard/q]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -33835,7 +33839,7 @@ Transform:
   m_GameObject: {fileID: 1811070426}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.006881, z: 0}
+  m_LocalPosition: {x: 0, y: -0.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35153,7 +35157,7 @@ Transform:
   m_GameObject: {fileID: 1945237131}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.25, y: 0.625, z: 0}
+  m_LocalPosition: {x: -0.3, y: 0.895, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
