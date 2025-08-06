@@ -9,6 +9,7 @@ TagManager:
   - JointPoint
   - SuperAcorn
   - Platform
+  - Column
   layers:
   - Default
   - TransparentFX
