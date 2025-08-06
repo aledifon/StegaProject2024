@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEngine.GraphicsBuffer;
 
-public class ElevatorVolatile : MonoBehaviour
+public class GEOVolatile : MonoBehaviour
 {
     // Settings
     [Header("Vanishing Settings")]
     [SerializeField] float vanishingTime;
-    [SerializeField] float reappearingTime;    
+    [SerializeField] float reappearingTime;
+    [SerializeField] bool isDestructible;       // The GO will be destroyed or disabled after vanishing.
+    [SerializeField] bool isDestroyedByTrigger; // In case the column will be destroyed by an Event
+    [SerializeField] bool destroyTrigger;
     private bool isVanished;
     public bool IsVanished => isVanished;
 
@@ -26,24 +29,46 @@ public class ElevatorVolatile : MonoBehaviour
     [SerializeField] AudioClip breakSFX;
 
     // GO Refs
-    BoxCollider2D collider;
+    Collider2D playerCollider;
+    BoxCollider2D colliderFloor;
+    BoxCollider2D colliderWall;
     TilemapRenderer tilemapRenderer;
     AudioSource audioSource;
     
-    private Coroutine vanishCoroutine;
+    private bool isCoroutineRunning;
+    private bool isColumn;
 
     #region Unity API
     void Awake()
-    {   
-        // Get the Platform's Collider ref.
-        collider = GetComponentInChildren<BoxCollider2D>();
-        if (collider == null)
-            Debug.LogError("Collider Not found on any child of the Platform");
+    {
+        // For ColumnVolatile GO
+        if (gameObject.CompareTag("Column"))
+        {
+            isColumn = true;
+
+            Transform child = transform.Find("ColumnFloor");
+            colliderFloor = child.GetComponent<BoxCollider2D>();
+
+            child = transform.Find("ColumnWall");
+            colliderWall = child.GetComponent<BoxCollider2D>();
+
+            if (colliderFloor == null || colliderWall == null)
+                Debug.LogError("Colliders werer Not found on any child of the Column GO");
+        }
+        // For PlatformVolatile GO
+        else
+        {
+            isColumn = false;
+
+            colliderFloor = GetComponentInChildren<BoxCollider2D>();
+            if (colliderFloor == null)
+                Debug.LogError("Collider Not found on any child of the Platform");
+        }                    
 
         // Get the Tilemap Renderer ref.
         tilemapRenderer = GetComponentInChildren<TilemapRenderer>();
         if ((tilemapRenderer) == null)
-            Debug.LogError("Tilemap Renderer Not found on any child of the Platform");
+            Debug.LogError("Tilemap Renderer Not found on any child of the Platform GO");
 
         if (tilemapRenderer.material == null)
         {
@@ -66,34 +91,65 @@ public class ElevatorVolatile : MonoBehaviour
             Debug.LogError("The refs. to the PS and/or the PS positions are not properly initialised");
 
         audioSource = GetComponent<AudioSource>();
+
+        // Force to be autodestructible in case is configure as destructible By Trigger
+        if (isDestroyedByTrigger)
+            isDestructible = true;
     }    
     private void Update()
     {
-        
+        if (isDestroyedByTrigger && destroyTrigger && !isCoroutineRunning && !isVanished)
+        {
+            destroyTrigger = false;
+            StartCoroutine(nameof(VanishPlatform));
+        }                                
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Player"))
+        if ((isColumn && collision.otherCollider == colliderFloor) || !isColumn)
         {
-            collision.collider.transform.SetParent(transform, true);
+            if (collision.collider.CompareTag("Player"))
+            {
+                playerCollider = collision.collider;
+                playerCollider.transform.SetParent(transform, true);
 
-            if (vanishCoroutine != null)
-                StopCoroutine(vanishCoroutine);
-
-            vanishCoroutine = StartCoroutine(nameof(VanishPlatform));
+                if (!isDestroyedByTrigger)
+                {
+                    if (!isCoroutineRunning)                        
+                        StartCoroutine(nameof(VanishPlatform));
+                }
+            }
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Player"))
+        if ((isColumn && collision.otherCollider == colliderFloor) || !isColumn)
         {
-            collision.collider.transform.SetParent(null, true);
+            if (collision.collider.CompareTag("Player"))
+            {
+                playerCollider = collision.collider;
+                HandleExitPlatform();
+            }
+        }
+    }
+    private void OnDestroy()
+    {
+        HandleExitPlatform();
+    }
+    private void HandleExitPlatform()
+    {
+        if (playerCollider != null)
+        {
+            playerCollider.transform.SetParent(null, true);
+            playerCollider = null;
         }
     }
     #endregion    
     #region Enabling Platform
     IEnumerator VanishPlatform()
-    {                        
+    {                      
+        isCoroutineRunning = true;
+
         // Start playing the FXs         
         StartCoroutine(PlayVFXForTime(vanishingTime));        
         PLaySFX();
@@ -106,19 +162,31 @@ public class ElevatorVolatile : MonoBehaviour
         EnablePlatform(false);
         isVanished = true;
 
-        // Start the fade in of the platform once a 90% of the reappearing Time has elapsed
-        yield return new WaitForSeconds(reappearingTime*0.9f);        
-        yield return StartCoroutine(SpriteFadeInOut(true, reappearingTime * 0.1f));
+        if (isDestructible)
+        {
+            HandleExitPlatform();
+            isCoroutineRunning = false;
+            Destroy(gameObject,1f);
+            yield break;
+        }
+        else
+        {
+            // Start the fade in of the platform once a 90% of the reappearing Time has elapsed
+            yield return new WaitForSeconds(reappearingTime * 0.9f);
+            yield return StartCoroutine(SpriteFadeInOut(true, reappearingTime * 0.1f));
+            // Re-Enable the platform's collider once the Reappearing time has completely elapsed       
+            EnablePlatform(true);
+            isVanished = false;
+        }
 
-        // Re-Enable the platform's collider once the Reappearing time has completely elapsed       
-        EnablePlatform(true);
-        isVanished = false;        
+        isCoroutineRunning = false;
     }
     private void EnablePlatform(bool enable)
     {
-        // Enable/Disable the Collider & the Tilemap Renderer
-        collider.enabled = enable;
-        //tilemapRenderer.enabled = enable;        
+        // Enable/Disable the Colliders (also the Wall's collider in case of Column)       
+        colliderFloor.enabled = enable;
+        if (isColumn)
+            colliderWall.enabled = enable;
     }
     #endregion
     #region Sprite Fading
@@ -179,6 +247,12 @@ public class ElevatorVolatile : MonoBehaviour
     {
         if (ps.isPlaying)
             ps.Stop();
+    }
+    #endregion
+    #region Destroy Trigger
+    public void DestroyTrigger()
+    {
+        destroyTrigger = true;
     }
     #endregion
 }
