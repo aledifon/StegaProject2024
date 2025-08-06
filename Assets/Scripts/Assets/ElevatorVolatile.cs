@@ -13,11 +13,14 @@ public class ElevatorVolatile : MonoBehaviour
     private bool isVanished;
     public bool IsVanished => isVanished;
 
+    // TilemapRenderer Material
+    Material instanceMaterial;
+
     [Header("VFX")]
     [SerializeField] private GameObject dustStonesVFX;    
     [SerializeField] Transform[] psPositions;
     private ParticleSystem[] dustStonesPS;
-    [SerializeField] private float vfxPlaybackTime;
+    //[SerializeField] private float vfxPlaybackTime;
 
     [Header("SFX")]    
     [SerializeField] AudioClip breakSFX;
@@ -26,6 +29,8 @@ public class ElevatorVolatile : MonoBehaviour
     BoxCollider2D collider;
     TilemapRenderer tilemapRenderer;
     AudioSource audioSource;
+    
+    private Coroutine vanishCoroutine;
 
     #region Unity API
     void Awake()
@@ -40,8 +45,18 @@ public class ElevatorVolatile : MonoBehaviour
         if ((tilemapRenderer) == null)
             Debug.LogError("Tilemap Renderer Not found on any child of the Platform");
 
+        if (tilemapRenderer.material == null)
+        {
+            Debug.LogError("It was not found any default material assigned to the Tilemap Renderer!");
+        }
+        else
+        {
+            instanceMaterial = new Material(tilemapRenderer.material);
+            tilemapRenderer.material = instanceMaterial;
+        } 
+        
         // Setup VFX & SFX
-        if(psPositions != null)
+        if (psPositions != null)
             dustStonesPS = new ParticleSystem[psPositions.Length];
         else
             Debug.LogError("The refs. to the PS posititons are not properly initialised through the Inspector");
@@ -61,7 +76,11 @@ public class ElevatorVolatile : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             collision.collider.transform.SetParent(transform, true);
-            StartCoroutine(nameof(EnableVanishingTimer));
+
+            if (vanishCoroutine != null)
+                StopCoroutine(vanishCoroutine);
+
+            vanishCoroutine = StartCoroutine(nameof(VanishPlatform));
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -73,27 +92,56 @@ public class ElevatorVolatile : MonoBehaviour
     }
     #endregion    
     #region Enabling Platform
-    IEnumerator EnableVanishingTimer()
-    {        
+    IEnumerator VanishPlatform()
+    {                        
         // Start playing the FXs         
-        StartCoroutine(PlayVFXForTime(vfxPlaybackTime));
+        StartCoroutine(PlayVFXForTime(vanishingTime));        
         PLaySFX();
 
-        // Vanish the platform after elapsed the vanishing Time
-        yield return new WaitForSeconds(vanishingTime);
+        // Wait for an 60% of the Vanishing Time has elapsed and the start the Fade In
+        yield return new WaitForSeconds(vanishingTime*0.6f);
+        yield return StartCoroutine(SpriteFadeInOut(false, vanishingTime*0.4f));
+
+        // Disable the platform's collider once the vanishing Time has elapsed
         EnablePlatform(false);
         isVanished = true;
 
-        // Reappear the platform after a certain time
-        yield return new WaitForSeconds(reappearingTime);
+        // Start the fade in of the platform once a 90% of the reappearing Time has elapsed
+        yield return new WaitForSeconds(reappearingTime*0.9f);        
+        yield return StartCoroutine(SpriteFadeInOut(true, reappearingTime * 0.1f));
+
+        // Re-Enable the platform's collider once the Reappearing time has completely elapsed       
         EnablePlatform(true);
-        isVanished = false;
+        isVanished = false;        
     }
     private void EnablePlatform(bool enable)
     {
         // Enable/Disable the Collider & the Tilemap Renderer
         collider.enabled = enable;
-        tilemapRenderer.enabled = enable;
+        //tilemapRenderer.enabled = enable;        
+    }
+    #endregion
+    #region Sprite Fading
+    // fadeInOut = true --> Fade In | fadeInOut = false --> Fade Out
+    private IEnumerator SpriteFadeInOut(bool fadeIn, float fadingTime)
+    {
+        float fadingTimer = fadingTime;
+
+        Color newColor = tilemapRenderer.material.color;        
+
+        while (fadingTimer > 0f)
+        {            
+            newColor.a = fadeIn ? 
+                        (1 - (fadingTimer / fadingTime)) :
+                        (fadingTimer / fadingTime);            
+            tilemapRenderer.material.color = newColor;
+
+            fadingTimer -= Time.deltaTime;
+            yield return null;
+        }
+
+        newColor.a = fadeIn ? 1f : 0f;
+        tilemapRenderer.material.color = newColor;
     }
     #endregion
     #region SFX
