@@ -9,6 +9,7 @@ using System.Collections;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.Audio;
+using System.ComponentModel;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -175,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Enums")]
     [SerializeField] private CornerDetected cornerDetected = CornerDetected.NoCeiling;
     [SerializeField] private PlayerState currentState = PlayerState.Idle;
-    public PlayerState CurrentState => currentState;
+    public PlayerState CurrentState => currentState;    
     #endregion
 
     #region Events & Delegates
@@ -1626,6 +1627,22 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #endregion
+
+    public void UnlockPowerUp(ItemTypeEnum.ItemType item)
+    {
+        if (item == ItemTypeEnum.ItemType.ClimbingBoots)
+        {
+            isWallJumpUnlocked = true;
+            Debug.Log("Climbing Boots Unlocked!");
+        }            
+        else if (item == ItemTypeEnum.ItemType.Hook)
+        {
+            isHookUnlocked = true;
+            Debug.Log("Grappling-Hook Unlocked!");
+        }            
+        else
+            Debug.LogError("The opened chest contains neither the boots nor the hook");
+    }
 
     #region Scene Management
     private void LoadSceneAfterDelay()
