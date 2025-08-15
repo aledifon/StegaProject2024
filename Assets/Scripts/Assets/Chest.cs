@@ -7,7 +7,8 @@ public class Chest : MonoBehaviour
 {    
     Animator animator;
     AudioSource audiouSource;
-    [SerializeField] AudioClip clip;
+    [SerializeField] AudioClip chestClip;
+    [SerializeField] AudioClip powerUpClip;
 
     [Header("Item")]
     [SerializeField] Sprite itemSprite;
@@ -15,14 +16,14 @@ public class Chest : MonoBehaviour
     private Color colorItemTextBox;
     [SerializeField] string itemText;
     SpriteRenderer itemSpriteRenderer;
+    private Color colorSprite;
     BoxCollider2D collider;
     
     [SerializeField] private ItemTypeEnum.ItemType itemType;
 
     [Header("Fading")]
     [SerializeField, Range(0f,5f)] float fadingTime;
-    private float fadingTimer;
-    private Color colorSprite;
+    private float fadingTimer;    
     [SerializeField, Range(0f, 2f)] float targetPosY;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -63,15 +64,23 @@ public class Chest : MonoBehaviour
     private IEnumerator OpenChest()
     {        
         animator.SetTrigger("Open");
-        audiouSource.PlayOneShot(clip);
+        audiouSource.PlayOneShot(chestClip);
 
-        yield return StartCoroutine(nameof(FadingAndMoving));
+        yield return new WaitForSeconds(fadingTime*0.6f);        
 
-        yield return new WaitForSeconds(5f);
+        //yield return new WaitUntil(() => !audiouSource.isPlaying);
+
+        audiouSource.PlayOneShot(powerUpClip);
+
+        yield return StartCoroutine(FadingAndMoving(fadingTime * 0.4f));
+
+        yield return new WaitUntil(() => !audiouSource.isPlaying);
+
+        //yield return new WaitForSeconds(5f);
         Destroy(gameObject);
     }
 
-    private IEnumerator FadingAndMoving()
+    private IEnumerator FadingAndMoving(float MaxTime)
     {   
         fadingTimer = 0f;
 
@@ -86,14 +95,14 @@ public class Chest : MonoBehaviour
         Vector2 targetPos = itemTransform.localPosition;
         targetPos.y = targetPos.y + targetPosY;
 
-        float speed = Vector2.Distance(itemTransform.localPosition, targetPos)/fadingTime;
+        float speed = Vector2.Distance(itemTransform.localPosition, targetPos)/MaxTime;
 
-        while (fadingTimer < fadingTime)
+        while (fadingTimer < MaxTime)
         {
-            colorSprite.a = fadingTimer / fadingTime;
+            colorSprite.a = fadingTimer / MaxTime;
             itemSpriteRenderer.color = colorSprite;
 
-            colorItemTextBox.a = fadingTimer / fadingTime;
+            colorItemTextBox.a = fadingTimer / MaxTime;
             itemTextBox.color = colorItemTextBox;
 
             itemTransform.localPosition = Vector2.MoveTowards(itemTransform.localPosition, targetPos, speed*Time.deltaTime);
