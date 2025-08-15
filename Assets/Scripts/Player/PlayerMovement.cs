@@ -1628,6 +1628,7 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
 
+    #region CollectibleItems
     public void UnlockPowerUp(ItemTypeEnum.ItemType item)
     {
         if (item == ItemTypeEnum.ItemType.ClimbingBoots)
@@ -1643,6 +1644,14 @@ public class PlayerMovement : MonoBehaviour
         else
             Debug.LogError("The opened chest contains neither the boots nor the hook");
     }
+    public void IncreaseAcorns()
+    {
+        // Increase Acorn counter
+        NumAcorn++;
+        // Update Acorn counter UI Text
+        textAcornUI.text = NumAcorn.ToString();
+    }
+    #endregion
 
     #region Scene Management
     private void LoadSceneAfterDelay()
