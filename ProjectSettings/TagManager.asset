@@ -10,6 +10,8 @@ TagManager:
   - SuperAcorn
   - Platform
   - Column
+  - EndRolling
+  - Slope
   layers:
   - Default
   - TransparentFX
