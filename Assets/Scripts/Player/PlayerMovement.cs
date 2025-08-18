@@ -153,6 +153,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isHurt;
     public bool IsHurt => isHurt;
 
+    [Header("Key")]
+    [SerializeField] bool isKeyUnlocked;
+
     #region Enums    
     private enum CornerDetected
     {
@@ -1643,6 +1646,11 @@ public class PlayerMovement : MonoBehaviour
         }            
         else
             Debug.LogError("The opened chest contains neither the boots nor the hook");
+    }
+    public void UnlockKey()
+    {
+        isKeyUnlocked = true;
+        Debug.Log("Golden Key Unlocked!");
     }
     public void IncreaseAcorns()
     {
