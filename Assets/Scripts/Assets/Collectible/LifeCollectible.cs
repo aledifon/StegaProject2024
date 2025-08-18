@@ -6,7 +6,7 @@ using UnityEngine;
 public class LifeCollectible : MonoBehaviour
 {
     //Animator animator;
-    AudioSource audiouSource;
+    AudioSource audioSource;
     bool isCaptured = false;
 
     [SerializeField] AudioClip clip;
@@ -39,7 +39,7 @@ public class LifeCollectible : MonoBehaviour
     void Awake()
     {
         // Get components on the parent GO        
-        audiouSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         collider = GetComponent<Collider2D>();
 
         // Get the SpriteRenderer Component on the Item Child & the textPos
@@ -56,8 +56,8 @@ public class LifeCollectible : MonoBehaviour
         textBox.color = colorTextBox;
 
         // Get the Sprite starting pos. & set the target pos.
-        movePos[0] = canvasPos.localPosition;
-        movePos[1] = canvasPos.localPosition;
+        movePos[0] = itemPos.localPosition;
+        movePos[1] = itemPos.localPosition;
         movePos[1].y += DeltaPosY;
     }
     private void Update()
@@ -104,12 +104,12 @@ public class LifeCollectible : MonoBehaviour
 
     private IEnumerator CaptureLife()
     {        
-        audiouSource.PlayOneShot(clip);
+        audioSource.PlayOneShot(clip);
         rotationSpeed *= 10f; 
 
         yield return StartCoroutine(nameof(FadingAndMoving));
 
-        yield return new WaitUntil(() => !audiouSource.isPlaying);
+        yield return new WaitUntil(() => !audioSource.isPlaying);
         
         Destroy(gameObject);
     }
