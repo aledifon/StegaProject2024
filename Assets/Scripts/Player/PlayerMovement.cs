@@ -154,7 +154,8 @@ public class PlayerMovement : MonoBehaviour
     public bool IsHurt => isHurt;
 
     [Header("Key")]
-    [SerializeField] bool isKeyUnlocked;
+    [SerializeField] private bool isKeyUnlocked;
+    public bool IsKeyUnlocked => isKeyUnlocked;
 
     #region Enums    
     private enum CornerDetected
