@@ -30,7 +30,7 @@ public class EnemyMovement : MonoBehaviour
     Vector2 raycastDir;
 
     [Header("Player")]
-    [SerializeField] private GameObject player;
+    private GameObject player;
     [SerializeField] private float thrustToPlayer;      // ForceMode2D = Impulse --> 3-4f
                                                         // ForceMode2D = Force --> 250-300f
                                                         // Velocity --> 25f    
@@ -57,6 +57,11 @@ public class EnemyMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         rb2D = GetComponent<Rigidbody2D>();
+
+        // Get the Player's Reference
+        player = GameObject.Find("Player");
+        if (player == null)
+            Debug.LogError("The Enemy can't find the GO Player");
 
         // Init the points Vector
         points = new Vector2[pointsObjects.Length];
