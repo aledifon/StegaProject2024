@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
                                                 // performed by the keyboard
 
     [Header("Jump")]
-    [SerializeField] float jumpForce;       // Jumping applied Force
+    [SerializeField] float jumpEnemyThrust;
     [SerializeField] float jumpVertSpeed;       // Jumping applied Force
     [SerializeField] private float jumpHorizSpeed;       // Jumping applied Force
     [SerializeField] bool jumpTriggered;    // Jumping applied Force
@@ -451,10 +451,10 @@ public class PlayerMovement : MonoBehaviour
             // Reload the Level after elapsed x seconds
             LoadSceneAfterDelay();            
         }
-        else if (collision.CompareTag("Ant"))
-        {
-            AttackEnemy(collision.gameObject);
-        }
+        //else if (collision.CompareTag("Ant"))
+        //{
+        //    AttackEnemy(collision.gameObject);
+        //}
     }
     #endregion
 
@@ -1416,16 +1416,20 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Attack
-    private void AttackEnemy(GameObject enemy)
-    {
-        if(isGrounded)
-            return;
+    //private void AttackEnemyOld(GameObject enemy)
+    //{
+    //    if(isGrounded)
+    //        return;
 
-        rb2D.AddForce(Vector2.up * jumpForce);
-        enemy.GetComponent<Animator>().SetTrigger("Death");
-        enemy.GetComponent<EnemyMovement>().PlayDeathFx();
-        enemy.GetComponent<EnemyMovement>().DisablePlayerDetection();
-        Destroy(enemy,0.5f);
+    //    rb2D.AddForce(Vector2.up * jumpForce);
+    //    enemy.GetComponent<Animator>().SetTrigger("Death");
+    //    enemy.GetComponent<Rat>().PlayDeathFx();
+    //    enemy.GetComponent<Rat>().DisablePlayerDetection();
+    //    Destroy(enemy,0.5f);
+    //}
+    public void UpwardsEnemyImpulse()
+    {        
+        rb2D.AddForce(Vector2.up * jumpEnemyThrust);        
     }
     #endregion
 

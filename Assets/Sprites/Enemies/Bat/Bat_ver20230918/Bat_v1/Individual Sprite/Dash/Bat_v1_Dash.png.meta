@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: 4c009e19b9fcd3140bf33f45f0f1e335
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 529726130445670740
+    second: Bat_v1_Dash_0
+  - first:
+      213: 2412841235066212634
+    second: Bat_v1_Dash_1
+  - first:
+      213: 7607445846552130514
+    second: Bat_v1_Dash_2
+  - first:
+      213: -7757138810792017204
+    second: Bat_v1_Dash_3
+  - first:
+      213: -8594512469149865550
+    second: Bat_v1_Dash_4
+  - first:
+      213: -5840520826947215384
+    second: Bat_v1_Dash_5
+  - first:
+      213: 1515334021504474064
+    second: Bat_v1_Dash_6
+  - first:
+      213: 6517520535891789921
+    second: Bat_v1_Dash_7
+  - first:
+      213: -8995184126872936644
+    second: Bat_v1_Dash_8
+  - first:
+      213: -3087337272585898771
+    second: Bat_v1_Dash_9
+  - first:
+      213: -2369864693855580730
+    second: Bat_v1_Dash_10
+  - first:
+      213: 7413019626877914850
+    second: Bat_v1_Dash_11
+  - first:
+      213: -8482233993455319844
+    second: Bat_v1_Dash_12
+  - first:
+      213: -8519001711745774343
+    second: Bat_v1_Dash_13
+  - first:
+      213: -2687049997468551524
+    second: Bat_v1_Dash_14
+  - first:
+      213: 6242681628893240085
+    second: Bat_v1_Dash_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bat_v1_Dash_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 13
+        width: 35
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 459d479eb17f95700800000000000000
+      internalID: 529726130445670740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_1
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 12
+        width: 36
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a11598bc1522c7120800000000000000
+      internalID: 2412841235066212634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_2
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 8
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d3b2c301b3139960800000000000000
+      internalID: 7607445846552130514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_3
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 8
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc28855c95b195490800000000000000
+      internalID: -7757138810792017204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_4
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 8
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b928aae1782ab880800000000000000
+      internalID: -8594512469149865550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_5
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 10
+        width: 20
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ef5a86904d42fea0800000000000000
+      internalID: -5840520826947215384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_6
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 14
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0db96d3934c870510800000000000000
+      internalID: 1515334021504474064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_7
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 14
+        width: 29
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 168c4266562e27a50800000000000000
+      internalID: 6517520535891789921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_8
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 14
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3f9184f1bfaa2380800000000000000
+      internalID: -8995184126872936644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_9
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 14
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de4b1b5ab139725d0800000000000000
+      internalID: -3087337272585898771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_10
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 14
+        width: 29
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cd8ff4fd9c8c1fd0800000000000000
+      internalID: -2369864693855580730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_11
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 14
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ee8e05231650e660800000000000000
+      internalID: 7413019626877914850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_12
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 13
+        width: 34
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd44a5eaf1d094a80800000000000000
+      internalID: -8482233993455319844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_13
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 0
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fcc27a241d66c980800000000000000
+      internalID: -8519001711745774343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_14
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 5
+        width: 30
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c963c2f834ea5bad0800000000000000
+      internalID: -2687049997468551524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Dash_15
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 14
+        width: 39
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51bd908cdd572a650800000000000000
+      internalID: 6242681628893240085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Bat_v1_Dash_0: 529726130445670740
+      Bat_v1_Dash_1: 2412841235066212634
+      Bat_v1_Dash_10: -2369864693855580730
+      Bat_v1_Dash_11: 7413019626877914850
+      Bat_v1_Dash_12: -8482233993455319844
+      Bat_v1_Dash_13: -8519001711745774343
+      Bat_v1_Dash_14: -2687049997468551524
+      Bat_v1_Dash_15: 6242681628893240085
+      Bat_v1_Dash_2: 7607445846552130514
+      Bat_v1_Dash_3: -7757138810792017204
+      Bat_v1_Dash_4: -8594512469149865550
+      Bat_v1_Dash_5: -5840520826947215384
+      Bat_v1_Dash_6: 1515334021504474064
+      Bat_v1_Dash_7: 6517520535891789921
+      Bat_v1_Dash_8: -8995184126872936644
+      Bat_v1_Dash_9: -3087337272585898771
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
