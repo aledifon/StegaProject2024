@@ -22,8 +22,7 @@ public class PlayerHealth : MonoBehaviour
     #endregion
 
     // GO Components        
-    PlayerMovement playerMovement;
-    EnemyMovement enemyMovement;
+    PlayerMovement playerMovement;    
 
     #region Unity API
     void Awake()

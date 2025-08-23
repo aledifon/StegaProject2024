@@ -47,6 +47,10 @@ public class PlayerSFX : MonoBehaviour
     [SerializeField] private AudioClip deathSFX;
     [SerializeField, Range(0f, 1f)] float deathVolume;      //1f
 
+    [Header("Enemy Jump")]
+    [SerializeField] private AudioClip enemyJumpSFX;
+    [SerializeField, Range(0f, 1f)] float enemyJumpVolume;  //1f
+
     [Header("Acorn")]
     [SerializeField] private AudioClip eatAcornSFX;
     [SerializeField, Range(0f, 1f)] float eatAcornVolume;  // 0.4f
@@ -352,6 +356,12 @@ public class PlayerSFX : MonoBehaviour
     private void PlayEatAcornSFX()
     {
         PlaySFXOneShot(fxAudioSource, eatAcornSFX, eatAcornVolume);
+    }
+    #endregion
+    #region Enemy Jump
+    public void PlayEnemyJumpSFX()
+    {
+        PlaySFXOneShot(fxAudioSource, enemyJumpSFX, enemyJumpVolume);
     }
     #endregion
 }
