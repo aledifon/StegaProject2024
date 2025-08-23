@@ -250,6 +250,9 @@ public class Rat : MonoBehaviour
             // Disable the Player Detection (Also the colliders?)
             DisablePlayerDetection();
 
+            // Set Rb as kinematics
+            SetRBConfig(RigidbodyType2D.Kinematic);
+
             // Disable the both Enemy Colliders (Body & Receive Damage)
             EnableRatColliders(false);
 
