@@ -82,7 +82,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -96,7 +96,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -149,9 +149,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 13
-        width: 35
-        height: 25
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,10 +170,10 @@ TextureImporter:
       name: Bat_v1_Dash_1
       rect:
         serializedVersion: 2
-        x: 39
-        y: 12
-        width: 36
-        height: 20
+        x: 40
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,10 +192,10 @@ TextureImporter:
       name: Bat_v1_Dash_2
       rect:
         serializedVersion: 2
-        x: 90
-        y: 8
-        width: 19
-        height: 25
+        x: 80
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -214,10 +214,10 @@ TextureImporter:
       name: Bat_v1_Dash_3
       rect:
         serializedVersion: 2
-        x: 131
-        y: 8
-        width: 16
-        height: 25
+        x: 120
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -236,10 +236,10 @@ TextureImporter:
       name: Bat_v1_Dash_4
       rect:
         serializedVersion: 2
-        x: 171
-        y: 8
-        width: 16
-        height: 25
+        x: 160
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -258,10 +258,10 @@ TextureImporter:
       name: Bat_v1_Dash_5
       rect:
         serializedVersion: 2
-        x: 208
-        y: 10
-        width: 20
-        height: 23
+        x: 200
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -280,10 +280,10 @@ TextureImporter:
       name: Bat_v1_Dash_6
       rect:
         serializedVersion: 2
-        x: 241
-        y: 14
-        width: 30
-        height: 16
+        x: 240
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -302,10 +302,10 @@ TextureImporter:
       name: Bat_v1_Dash_7
       rect:
         serializedVersion: 2
-        x: 282
-        y: 14
-        width: 29
-        height: 16
+        x: 280
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -324,10 +324,10 @@ TextureImporter:
       name: Bat_v1_Dash_8
       rect:
         serializedVersion: 2
-        x: 321
-        y: 14
-        width: 30
-        height: 16
+        x: 320
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -346,10 +346,10 @@ TextureImporter:
       name: Bat_v1_Dash_9
       rect:
         serializedVersion: 2
-        x: 361
-        y: 14
-        width: 30
-        height: 16
+        x: 360
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -368,10 +368,10 @@ TextureImporter:
       name: Bat_v1_Dash_10
       rect:
         serializedVersion: 2
-        x: 402
-        y: 14
-        width: 29
-        height: 16
+        x: 400
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -390,10 +390,10 @@ TextureImporter:
       name: Bat_v1_Dash_11
       rect:
         serializedVersion: 2
-        x: 441
-        y: 14
-        width: 30
-        height: 16
+        x: 440
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -412,10 +412,10 @@ TextureImporter:
       name: Bat_v1_Dash_12
       rect:
         serializedVersion: 2
-        x: 483
-        y: 13
-        width: 34
-        height: 15
+        x: 480
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -434,10 +434,10 @@ TextureImporter:
       name: Bat_v1_Dash_13
       rect:
         serializedVersion: 2
-        x: 527
+        x: 520
         y: 0
-        width: 25
-        height: 25
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -456,10 +456,10 @@ TextureImporter:
       name: Bat_v1_Dash_14
       rect:
         serializedVersion: 2
-        x: 565
-        y: 5
-        width: 30
-        height: 21
+        x: 560
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -478,10 +478,10 @@ TextureImporter:
       name: Bat_v1_Dash_15
       rect:
         serializedVersion: 2
-        x: 601
-        y: 14
-        width: 39
-        height: 12
+        x: 600
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -500,7 +500,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 568957f1e48ef434088f73aa4ce86f37
     internalID: 0
     vertices: []
     indices: 
