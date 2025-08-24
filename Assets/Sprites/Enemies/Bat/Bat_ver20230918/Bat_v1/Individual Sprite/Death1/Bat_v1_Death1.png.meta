@@ -76,7 +76,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -90,7 +90,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -142,10 +142,10 @@ TextureImporter:
       name: Bat_v1_Death1_0
       rect:
         serializedVersion: 2
-        x: 6
+        x: 0
         y: 0
-        width: 22
-        height: 35
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -164,10 +164,10 @@ TextureImporter:
       name: Bat_v1_Death1_1
       rect:
         serializedVersion: 2
-        x: 43
-        y: 3
-        width: 27
-        height: 27
+        x: 40
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,9 +187,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 11
-        width: 37
-        height: 17
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,10 +208,10 @@ TextureImporter:
       name: Bat_v1_Death1_3
       rect:
         serializedVersion: 2
-        x: 119
-        y: 12
+        x: 120
+        y: 0
         width: 40
-        height: 15
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -230,10 +230,10 @@ TextureImporter:
       name: Bat_v1_Death1_4
       rect:
         serializedVersion: 2
-        x: 168
-        y: 10
-        width: 25
-        height: 26
+        x: 160
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -252,10 +252,10 @@ TextureImporter:
       name: Bat_v1_Death1_5
       rect:
         serializedVersion: 2
-        x: 212
-        y: 9
-        width: 20
-        height: 29
+        x: 200
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -274,10 +274,10 @@ TextureImporter:
       name: Bat_v1_Death1_6
       rect:
         serializedVersion: 2
-        x: 253
-        y: 8
-        width: 18
-        height: 30
+        x: 240
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -296,10 +296,10 @@ TextureImporter:
       name: Bat_v1_Death1_7
       rect:
         serializedVersion: 2
-        x: 293
-        y: 8
-        width: 17
-        height: 30
+        x: 280
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -318,10 +318,10 @@ TextureImporter:
       name: Bat_v1_Death1_8
       rect:
         serializedVersion: 2
-        x: 333
-        y: 8
-        width: 17
-        height: 30
+        x: 320
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -340,10 +340,10 @@ TextureImporter:
       name: Bat_v1_Death1_9
       rect:
         serializedVersion: 2
-        x: 373
-        y: 8
-        width: 17
-        height: 30
+        x: 360
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -362,10 +362,10 @@ TextureImporter:
       name: Bat_v1_Death1_10
       rect:
         serializedVersion: 2
-        x: 415
-        y: 8
-        width: 14
-        height: 27
+        x: 400
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -384,10 +384,10 @@ TextureImporter:
       name: Bat_v1_Death1_11
       rect:
         serializedVersion: 2
-        x: 456
-        y: 8
-        width: 12
-        height: 27
+        x: 440
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -406,10 +406,10 @@ TextureImporter:
       name: Bat_v1_Death1_12
       rect:
         serializedVersion: 2
-        x: 497
-        y: 8
-        width: 10
-        height: 26
+        x: 480
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -428,10 +428,10 @@ TextureImporter:
       name: Bat_v1_Death1_13
       rect:
         serializedVersion: 2
-        x: 539
-        y: 8
-        width: 167
-        height: 23
+        x: 520
+        y: 0
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -446,11 +446,99 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Death1_14
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 0
+        width: 40
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6338ec2b6479a64786d2ee5b3ca4ac1
+      internalID: -805329620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Death1_15
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 40
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 710d91a0365755c489d8d4246030edd1
+      internalID: -2022586634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Death1_16
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 40
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b9647df8ccc1c74a838e84b613ccb79
+      internalID: -234877847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bat_v1_Death1_17
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 0
+        width: 40
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d1115c05d2cb3548a268c31f8a08584
+      internalID: 1860920547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 47493d856d64e1d449382e554ae93e17
     internalID: 0
     vertices: []
     indices: 
@@ -466,6 +554,10 @@ TextureImporter:
       Bat_v1_Death1_11: 4028110412067063214
       Bat_v1_Death1_12: 2836256386789669638
       Bat_v1_Death1_13: -8433155617582848298
+      Bat_v1_Death1_14: -805329620
+      Bat_v1_Death1_15: -2022586634
+      Bat_v1_Death1_16: -234877847
+      Bat_v1_Death1_17: 1860920547
       Bat_v1_Death1_2: -3433660262103446887
       Bat_v1_Death1_3: 3700891580524214433
       Bat_v1_Death1_4: 7431531174429101913
