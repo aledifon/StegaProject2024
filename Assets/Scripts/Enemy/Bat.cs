@@ -20,6 +20,7 @@ public class Bat : MonoBehaviour
         public Vector2 targetPosition;
         public Vector2 originPosition;
         public Vector2 middlePoint;
+        public Vector2 bezierControlPoint;
     }
     private Positions positions;              
 
@@ -77,8 +78,10 @@ public class Bat : MonoBehaviour
 
     [Header("SFX")]
     [SerializeField] private AudioClip idleSFX;
-    [SerializeField] private AudioClip alertSFX;
-    [SerializeField] private AudioClip idleAlertSFX;
+    [SerializeField] private AudioClip alertSFX;    
+    [SerializeField] private AudioClip idleAlertSFX;            
+    [SerializeField] private float delayIdleAlertSFX;
+    [SerializeField] private AudioClip flyingAlertSFX;
     [SerializeField] private AudioClip attackSFX;
     [SerializeField] private AudioClip deathSFX;
 
@@ -96,7 +99,7 @@ public class Bat : MonoBehaviour
     public EnemyState CurrentState => currentState;
 
     // Boolean Flags
-    private bool playerDetectionEnabled;    
+    private bool isPlayerDetectionEnabled;    
 
     // GOs 
     SpriteRenderer spriteRenderer;
@@ -108,26 +111,25 @@ public class Bat : MonoBehaviour
     Collider2D hitBoxCollider;                          // Trigger collider used as the attack collider (AttackPlayer)    
     Collider2D attackAreaCollider;                      // Trigger collider used as the attack area collider (AttackPlayer)    
 
-    private Vector2 initAttackColliderOffset = Vector2.zero;    
+    private Vector2 attackAreaColliderWorldPos = Vector2.zero;    
 
     #region Unity API
     void Awake()
     {
         // Get the Component Refs. from this GO
+        audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             Debug.LogError("The AudioSource Component does not exist in this GO.");
-        else
-            audioSource = GetComponent<AudioSource>();
+        else        
+            PlayIdleSFX();
 
+        spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
             Debug.LogError("The Sprite Renderer Component does not exist in this GO.");
-        else
-            spriteRenderer = GetComponent<SpriteRenderer>();
 
+        animator = GetComponent<Animator>();
         if (animator == null)
-            Debug.LogError("The Animator Component does not exist in this GO.");
-        else
-            animator = GetComponent<Animator>();
+            Debug.LogError("The Animator Component does not exist in this GO.");        
 
         // Get the Components refs. from the children
         hitBoxCollider = transform.Find("HitBox").GetComponent<Collider2D>();
@@ -143,7 +145,8 @@ public class Bat : MonoBehaviour
             Debug.LogError("The Attack Area Collider Component was not found on any child of the gameobject " + gameObject);
         else
         {
-            initAttackColliderOffset = attackAreaCollider.offset;
+            // Save the initial World Pos. of the Attack Area Collider
+            attackAreaColliderWorldPos = attackAreaCollider.transform.position;
         }
 
         // Get the Player GO's References
@@ -216,52 +219,46 @@ public class Bat : MonoBehaviour
         
         // Update the Enemy state
         UpdateEnemyState();
+
+        Debug.Log(attackAreaCollider.enabled);
     }
 
     public void OnChildTriggerEnter(string id, Collider2D collision)
     {
-        if (id == "HitBox" && collision.CompareTag("Player"))
+        if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
         {
-            Debug.Log("Player entró en el HitBox");
-
-            Attack();
+            Debug.Log("Player entered on the HitBox");
 
             DisablePlayerDetection();
-            Invoke(nameof(EnablePlayerDetection),
-                collision.collider.GetComponent<PlayerVFX>().FadingTotalDuration + 2f);
+
+            Attack();            
         }
         else if (id == "HurtBox" && collision.CompareTag("Player"))
         {
-            Debug.Log("Player entró en el HurtBox");
+            Debug.Log("Player entered on the HurtBox");
 
-            if (playerMovement.IsGrounded)
-                return;
-
-            playerMovement.UpwardsEnemyImpulse();
-            playerSFX.PlayEnemyJumpSFX();
-
-            isDeath = true;
+            ReceivePlayerAttack();
         }
         else if (id == "AttackArea" && collision.CompareTag("Player"))
         {
             isOnAttackArea = true;
-            Debug.Log("Player entró en la AttackArea");
+            Debug.Log("Player entered on the AttackArea");
         }
     }
     public void OnChildTriggerExit(string id, Collider2D collision)
     {
         if (id == "HitBox" && collision.CompareTag("Player"))
         {
-            Debug.Log("Player salió del HitBox");
+            Debug.Log("Player exit from the HitBox");
         }
         else if (id == "HurtBox" && collision.CompareTag("Player"))
         {
-            Debug.Log("Player salió del HurtBox");
+            Debug.Log("Player exit from the HurtBox");
         }
         else if (id == "AttackArea" && collision.CompareTag("Player"))
         {
             isOnAttackArea = false;
-            Debug.Log("Player salio de la AttackArea");
+            Debug.Log("Player exit from the AttackArea");
         }
     }
     #endregion
@@ -315,6 +312,12 @@ public class Bat : MonoBehaviour
 
                     if (!isAppearanceTimerEnabled)
                     {
+                        // Enable the Player Detection again
+                        EnablePlayerDetection();
+
+                        // Enable the Attack Area Collider again
+                        EnableAttackAreaCollider(true);
+
                         // Update the state
                         currentState = EnemyState.IdleAlert;
 
@@ -326,9 +329,9 @@ public class Bat : MonoBehaviour
                     }
                     break;
                 case EnemyState.IdleAlert:
-                    // Attack Timer Update
+                    // Attack Timer Update (Only when at least 1 attack has been performed)
                     if (isFirstAttackDone && isWaitForAttackTimerEnabled)
-                        UdpateAttackTimer();
+                        UdpateWaitForAttackTimer();
 
                     // State Update
                     if (!isOnDetectArea)
@@ -337,8 +340,11 @@ public class Bat : MonoBehaviour
                         SetReturnToIdleTimer();
 
                         // Reset the Attack Timer and the First Attack Done flag
-                        ResetAttackTimer();
+                        ResetWaitForAttackTimer();
                         ResetFirstAttackDone();
+
+                        // Disable the Attack Area Collider till we came back again to Idle Alert State
+                        EnableAttackAreaCollider(false);
 
                         // Update the state
                         currentState = EnemyState.ReturnToIdle;
@@ -352,9 +358,18 @@ public class Bat : MonoBehaviour
                     else if (isOnAttackArea && !isWaitForAttackTimerEnabled)
                     {
                         // Set the Patrol Timer
-                        SetPatrolTimer();
+                        SetAttackTimer();
                         // Set the corresponding Target pos. of the Arc Patrol
                         SetNextTargetPosition();
+
+                        // Disable the Attack Area Collider during the Attack Animation
+                        EnableAttackAreaCollider(false);
+
+                        // Get the Bezier Control Point (needed for reaching the set middle point in the half of the attack anim.)
+                        positions.bezierControlPoint = GetBezierMiddleTargetPoint(
+                                                positions.originPosition,
+                                                positions.targetPosition,
+                                                positions.middlePoint);
 
                         // Update the state
                         currentState = EnemyState.AttackAndMovement;
@@ -368,22 +383,27 @@ public class Bat : MonoBehaviour
                     break;
                 case EnemyState.AttackAndMovement:
                     // Idle Timer Update
-                    UdpatePatrolTimer();
+                    UdpateAttackTimer();
 
                     // Patrol Update
                     UpdateTargetPosition(0.01f);
-                    ArcPatrol(Mathf.Clamp(attackTimer,0,1), isAttackTimerEnabled);
+                    ArcPatrol(Mathf.Clamp01(1 - (attackTimer/attackMaxTime)), isAttackTimerEnabled);
 
                     //if (isAttackDone)
-                    if(!isAttackTimerEnabled)
+                    if(!isAttackTimerEnabled /*&& isReachedPos*/)
                     {
-                        // Reset the Attack Done Flags
-                        ResetAttackDone();
+                        // Reset the Attack Done Flags                        
                         if (!isFirstAttackDone)
                             SetFirstAttackDone();
 
                         // Set the Attack Timer
-                        SetAttackTimer();
+                        SetWaitForAttackTimer();
+
+                        // Enable the Player Detection again
+                        EnablePlayerDetection();
+
+                        // Enable the Attack Area Collider again
+                        EnableAttackAreaCollider(true);
 
                         // Update the state
                         currentState = EnemyState.IdleAlert;
@@ -467,8 +487,8 @@ public class Bat : MonoBehaviour
         isAppearanceTimerEnabled = true;
     }
     #endregion
-    #region Attack Timer       
-    private void UdpateAttackTimer()
+    #region Wait for Attack Timer       
+    private void UdpateWaitForAttackTimer()
     {
         // Idle Timer update
         waitForAttackTimer -= Time.fixedDeltaTime;
@@ -476,15 +496,15 @@ public class Bat : MonoBehaviour
         // Reset Idle Timer
         if (waitForAttackTimer <= 0)
         {
-            ResetAttackTimer();
+            ResetWaitForAttackTimer();
         }
     }
-    private void ResetAttackTimer()
+    private void ResetWaitForAttackTimer()
     {
         isWaitForAttackTimerEnabled = false;
         waitForAttackTimer = 0f;
     }
-    private void SetAttackTimer()
+    private void SetWaitForAttackTimer()
     {
         waitForAttackTimer = waitForAttackMaxTime;
         isWaitForAttackTimerEnabled = true;
@@ -509,17 +529,56 @@ public class Bat : MonoBehaviour
         //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
         Debug.DrawRay(transform.position, enemyToPlayerVector.normalized * detectAreaDistance, Color.red);
     }
-    //private void CheckAttackArea()
-    //{           
-    //    RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position,enemyToPlayerVector.normalized, attackAreaDistance, playerLayer);
-
-    //    isOnAttackArea = raycastHit2D && Mathf.Abs(enemyToPlayerVector.x) <= attackAreaDistance;
-
-    //    Debug.DrawRay(transform.position, enemyToPlayerVector.normalized * rayLength, Color.blue);
-    //}
+    void EnablePlayerDetection()
+    {
+        isPlayerDetectionEnabled = true;
+    }
+    public void DisablePlayerDetection()
+    {
+        isPlayerDetectionEnabled = false;
+    }
     #endregion
 
-    #region Attack  
+    #region Colliders
+    private void EnableAttackAreaCollider(bool enable)
+    {
+        if (enable)
+            SetAttackAreaColliderPos();
+        attackAreaCollider.enabled = enable;
+    }
+    private void SetAttackAreaColliderPos()
+    {
+        // Set the correct offset for the Attack Collider 
+        attackAreaCollider.transform.position = attackAreaColliderWorldPos;
+    }
+    #endregion
+
+    #region Attack
+    #region Enemy Attack
+    public void Attack()
+    {
+        // Get the Enemy's direction
+        Vector2 enemyDirection = spriteRenderer.flipX ?
+                                Vector2.left + Vector2.up :
+                                Vector2.right + Vector2.up;
+
+        // Take Player's Damage & Disable the player's detection for a certain time            
+        playerHealth.TakeDamage(damageAmount, enemyDirection, thrustToPlayer);
+    }
+    #endregion
+    #region Player Attack
+    private void ReceivePlayerAttack()
+    {
+        if (playerMovement.IsGrounded)
+            return;
+
+        playerMovement.UpwardsEnemyImpulse();
+        playerSFX.PlayEnemyJumpSFX();
+
+        isDeath = true;
+    }
+    #endregion
+    #region Attack Patrol
     void UpdateTargetPosition(float threshold)
     {        
         // Check if the enemy reached its target position
@@ -558,7 +617,7 @@ public class Bat : MonoBehaviour
     void ArcPatrol(float time, bool isTimerEnabled)
     {
         if (isTimerEnabled)        
-            transform.position = QuadraticBezier(positions.originPosition, positions.targetPosition, positions.middlePoint, 1-time);                    
+            transform.position = QuadraticBezier(positions.originPosition, positions.targetPosition, positions.bezierControlPoint, time);                    
         else        
             transform.position = positions.targetPosition;                                     
     }
@@ -566,8 +625,13 @@ public class Bat : MonoBehaviour
     {
         return Mathf.Pow(1 - t, 2) * a + 2 * (1 - t) * t * c + Mathf.Pow(t, 2) * b;
     }
+    private Vector2 GetBezierMiddleTargetPoint(Vector2 a, Vector2 b, Vector2 c)
+    {
+        return 2f * c - 0.5f * (a + b);
+    }
+    #endregion
     #region Attack Timer       
-    private void UdpatePatrolTimer()
+    private void UdpateAttackTimer()
     {
         // Idle Timer update
         attackTimer -= Time.fixedDeltaTime;
@@ -575,29 +639,21 @@ public class Bat : MonoBehaviour
         // Reset Idle Timer
         if (attackTimer <= 0)
         {
-            ResetPatrolTimer();
+            ResetAttackTimer();
         }
     }
-    private void ResetPatrolTimer()
+    private void ResetAttackTimer()
     {
         isAttackTimerEnabled = false;
         attackTimer = 0f;
     }
-    private void SetPatrolTimer()
+    private void SetAttackTimer()
     {
         attackTimer = attackMaxTime;
         isAttackTimerEnabled = true;
     }
     #endregion
-    #region Attack Flags
-    public void SetAttackDone()
-    {
-        isAttackDone = true;
-    }
-    public void ResetAttackDone()
-    {
-        isAttackDone = false;
-    }
+    #region Attack Flags    
     public void SetFirstAttackDone()
     {
         isFirstAttackDone = true;
@@ -612,12 +668,7 @@ public class Bat : MonoBehaviour
     #region Sprite & Animations
     void FlipSprite()
     {         
-        spriteRenderer.flipX = (enemyToPlayerVector.x >= 0) ? false : true;
-
-        // Set the correct offset for the Attack Collider 
-        attackAreaCollider.offset = spriteRenderer.flipX ?
-                                initAttackColliderOffset * Vector2.left :
-                                initAttackColliderOffset;
+        spriteRenderer.flipX = (enemyToPlayerVector.x >= 0) ? false : true;        
     }
     private void ClearAnimationFlags()
     {
@@ -630,9 +681,11 @@ public class Bat : MonoBehaviour
 
         switch (currentState)
         {
-            //case EnemyState.Idle:
-            //    animator.SetTrigger("IsIdle");
-            //    break;
+            case EnemyState.Idle:
+                //animator.SetTrigger("IsIdle");
+                StopAudioSource();
+                PlayIdleSFX();
+                break;
             case EnemyState.Appearance:
                 StopAudioSource();
                 PlayAlertSFX();
@@ -640,7 +693,8 @@ public class Bat : MonoBehaviour
                 break;
             case EnemyState.IdleAlert:
                 StopAudioSource();
-                //PlayIdleAlertSFX();
+                PlayFlyingAlertSFX();
+                StartCoroutine(nameof(PlayIdleAlertContinuously));
                 break;
             case EnemyState.AttackAndMovement:
                 StopAudioSource();
@@ -648,7 +702,7 @@ public class Bat : MonoBehaviour
                 animator.SetTrigger("Attack");
                 break;
             case EnemyState.ReturnToIdle:
-                //StopAudioSource();
+                StopAudioSource();
                 //PlayReturnToIdleSFX();
                 animator.SetBool("IsPlayerDetected", isOnDetectArea);
                 break;
@@ -676,17 +730,37 @@ public class Bat : MonoBehaviour
     {
         audioSource.Stop();
     }
-    private void PlayDeathSFX()
+    private void PlayIdleSFX()
     {
-        PlayOneShotSFX(deathSFX);
-    }
-    public void PlayAttackSFX()
-    {
-        PlayOneShotSFX(attackSFX);
+        PlayOnLoopSFX(idleSFX);
     }
     public void PlayAlertSFX()
     {
         PlayOneShotSFX(alertSFX);
-    }        
+    }
+    private IEnumerator PlayIdleAlertContinuously()
+    {        
+        while (currentState == EnemyState.IdleAlert)
+        {            
+            PlayIdleAlertSFX();
+            yield return new WaitForSeconds(idleAlertSFX.length + delayIdleAlertSFX);
+        }                
+    }
+    private void PlayIdleAlertSFX()
+    {
+        PlayOneShotSFX(idleAlertSFX);
+    }    
+    private void PlayFlyingAlertSFX()
+    {
+        PlayOnLoopSFX(flyingAlertSFX);
+    }
+    public void PlayAttackSFX()
+    {
+        PlayOneShotSFX(attackSFX);
+    }    
+    private void PlayDeathSFX()
+    {
+        PlayOneShotSFX(deathSFX);
+    }
     #endregion
 }

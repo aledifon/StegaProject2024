@@ -18,7 +18,7 @@ public class LifeCollectible : MonoBehaviour
     Transform itemPos;
     Transform canvasPos;
 
-    Collider2D collider;
+    Collider2D myCollider;
 
     [Header("Fading")]
     [SerializeField, Range(0f, 10f)] float fadingTime;
@@ -40,7 +40,7 @@ public class LifeCollectible : MonoBehaviour
     {
         // Get components on the parent GO        
         audioSource = GetComponent<AudioSource>();
-        collider = GetComponent<Collider2D>();
+        myCollider = GetComponent<Collider2D>();
 
         // Get the SpriteRenderer Component on the Item Child & the textPos
         itemPos = transform.Find("Item");
@@ -69,7 +69,7 @@ public class LifeCollectible : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !isCaptured)
         {
-            collider.enabled = false;
+            myCollider.enabled = false;
             isCaptured = true;
 
             // Register the checkpoint pos. as the player Respawn position.          
