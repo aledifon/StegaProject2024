@@ -17,7 +17,7 @@ public class Chest : MonoBehaviour
     [SerializeField] string itemText;
     SpriteRenderer itemSpriteRenderer;
     private Color colorSprite;
-    BoxCollider2D collider;
+    BoxCollider2D myCollider;
     
     [SerializeField] private ItemTypeEnum.ItemType itemType;
 
@@ -32,7 +32,7 @@ public class Chest : MonoBehaviour
         // Get components on the parent GO
         animator = GetComponent<Animator>();
         audiouSource = GetComponent<AudioSource>();
-        collider = GetComponent<BoxCollider2D>();
+        myCollider = GetComponent<BoxCollider2D>();
 
         // Get the SpriteRenderer Component on the Item Child
         itemSpriteRenderer = transform.Find("Item").GetComponent<SpriteRenderer>();        
@@ -55,7 +55,7 @@ public class Chest : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collider.enabled = false;
+            myCollider.enabled = false;
             collision.gameObject.GetComponent<PlayerMovement>().UnlockPowerUp(itemType);
             StartCoroutine(nameof(OpenChest));            
         }

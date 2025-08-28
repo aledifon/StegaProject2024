@@ -12,21 +12,21 @@ public class GemCollectible : MonoBehaviour
 
     [SerializeField] AudioClip clip;       
 
-    Collider2D collider;        
+    private Collider2D myCollider;        
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         // Get components on the parent GO        
         audioSource = GetComponent<AudioSource>();
-        collider = GetComponent<Collider2D>();      
+        myCollider = GetComponent<Collider2D>();      
         spriteRenderer = GetComponent<SpriteRenderer>();
     }        
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && !isCaptured)
         {
-            collider.enabled = false;
+            myCollider.enabled = false;
             spriteRenderer.enabled = false;
             isCaptured = true;
 

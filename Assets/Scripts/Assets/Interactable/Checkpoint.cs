@@ -17,7 +17,7 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] string text;
     Transform textPos;
 
-    BoxCollider2D collider;
+    BoxCollider2D myCollider;
 
     [Header("Fading")]
     [SerializeField, Range(0f, 5f)] float fadingTime;
@@ -34,7 +34,7 @@ public class Checkpoint : MonoBehaviour
         // Get components on the parent GO
         animator = GetComponent<Animator>();
         audiouSource = GetComponent<AudioSource>();
-        collider = GetComponent<BoxCollider2D>();
+        myCollider = GetComponent<BoxCollider2D>();
 
         // Get the SpriteRenderer Component on the Item Child
         textPos = transform.Find("Item");                
@@ -66,7 +66,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !isCaptured)
         {
-            collider.enabled = false;
+            myCollider.enabled = false;
             isCaptured = true;
 
             // Register the checkpoint pos. as the player Respawn position.          

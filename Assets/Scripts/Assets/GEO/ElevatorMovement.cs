@@ -18,7 +18,7 @@ public class ElevatorMovement : MonoBehaviour
     [SerializeField] int normalSpeed;             // Elevator's normal speed
                                                   // 
 
-    BoxCollider2D collider;
+    BoxCollider2D myCollider;
     [SerializeField, Range(0f, 5f)] float waitingTime;
     bool waitingTimerEnabled;
      
@@ -34,8 +34,8 @@ public class ElevatorMovement : MonoBehaviour
         // Set the initial patrol position
         targetPosition = patrolPoints[indexTargetPos];        
 
-        collider = GetComponentInChildren<BoxCollider2D>();
-        if (collider == null)
+        myCollider = GetComponentInChildren<BoxCollider2D>();
+        if (myCollider == null)
             Debug.LogError("Collider Not found on any child of the Platform");
     }    
     private void Update()
