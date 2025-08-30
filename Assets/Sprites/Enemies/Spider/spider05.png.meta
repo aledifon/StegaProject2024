@@ -180,7 +180,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -232,10 +232,10 @@ TextureImporter:
       name: spider05_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 268
-        width: 44
-        height: 34
+        x: 0
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -254,10 +254,10 @@ TextureImporter:
       name: spider05_1
       rect:
         serializedVersion: 2
-        x: 73
-        y: 271
-        width: 44
-        height: 37
+        x: 64
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -276,10 +276,10 @@ TextureImporter:
       name: spider05_2
       rect:
         serializedVersion: 2
-        x: 137
-        y: 272
-        width: 44
-        height: 38
+        x: 128
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -298,10 +298,10 @@ TextureImporter:
       name: spider05_3
       rect:
         serializedVersion: 2
-        x: 201
-        y: 270
-        width: 44
-        height: 31
+        x: 192
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -320,10 +320,10 @@ TextureImporter:
       name: spider05_4
       rect:
         serializedVersion: 2
-        x: 267
-        y: 268
-        width: 44
-        height: 36
+        x: 256
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -342,10 +342,10 @@ TextureImporter:
       name: spider05_5
       rect:
         serializedVersion: 2
-        x: 329
-        y: 267
-        width: 43
-        height: 42
+        x: 320
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -364,10 +364,10 @@ TextureImporter:
       name: spider05_6
       rect:
         serializedVersion: 2
-        x: 395
-        y: 268
-        width: 44
-        height: 36
+        x: 384
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -386,10 +386,10 @@ TextureImporter:
       name: spider05_7
       rect:
         serializedVersion: 2
-        x: 457
-        y: 268
-        width: 44
-        height: 36
+        x: 448
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -408,10 +408,10 @@ TextureImporter:
       name: spider05_8
       rect:
         serializedVersion: 2
-        x: 522
-        y: 267
-        width: 43
-        height: 42
+        x: 512
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -430,10 +430,10 @@ TextureImporter:
       name: spider05_9
       rect:
         serializedVersion: 2
-        x: 585
-        y: 268
-        width: 44
-        height: 36
+        x: 576
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -452,10 +452,10 @@ TextureImporter:
       name: spider05_10
       rect:
         serializedVersion: 2
-        x: 16
-        y: 203
-        width: 33
-        height: 38
+        x: 0
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -474,10 +474,10 @@ TextureImporter:
       name: spider05_11
       rect:
         serializedVersion: 2
-        x: 71
-        y: 203
-        width: 41
-        height: 38
+        x: 64
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -496,10 +496,10 @@ TextureImporter:
       name: spider05_12
       rect:
         serializedVersion: 2
-        x: 131
-        y: 203
-        width: 43
-        height: 35
+        x: 128
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -518,10 +518,10 @@ TextureImporter:
       name: spider05_13
       rect:
         serializedVersion: 2
-        x: 203
-        y: 203
-        width: 36
-        height: 38
+        x: 192
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -540,10 +540,10 @@ TextureImporter:
       name: spider05_14
       rect:
         serializedVersion: 2
-        x: 269
-        y: 204
-        width: 35
-        height: 38
+        x: 256
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -562,10 +562,10 @@ TextureImporter:
       name: spider05_15
       rect:
         serializedVersion: 2
-        x: 330
-        y: 204
-        width: 40
-        height: 37
+        x: 320
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -584,10 +584,10 @@ TextureImporter:
       name: spider05_16
       rect:
         serializedVersion: 2
-        x: 398
-        y: 204
-        width: 35
-        height: 38
+        x: 384
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -606,10 +606,10 @@ TextureImporter:
       name: spider05_17
       rect:
         serializedVersion: 2
-        x: 462
-        y: 204
-        width: 35
-        height: 38
+        x: 448
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -628,10 +628,10 @@ TextureImporter:
       name: spider05_18
       rect:
         serializedVersion: 2
-        x: 522
-        y: 205
-        width: 41
-        height: 36
+        x: 512
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -650,10 +650,10 @@ TextureImporter:
       name: spider05_19
       rect:
         serializedVersion: 2
-        x: 589
-        y: 204
-        width: 36
-        height: 38
+        x: 576
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -672,10 +672,10 @@ TextureImporter:
       name: spider05_20
       rect:
         serializedVersion: 2
-        x: 9
-        y: 141
-        width: 44
-        height: 37
+        x: 0
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -694,10 +694,10 @@ TextureImporter:
       name: spider05_21
       rect:
         serializedVersion: 2
-        x: 73
-        y: 136
-        width: 44
-        height: 40
+        x: 64
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -716,10 +716,10 @@ TextureImporter:
       name: spider05_22
       rect:
         serializedVersion: 2
-        x: 135
-        y: 136
-        width: 48
-        height: 36
+        x: 128
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -738,10 +738,10 @@ TextureImporter:
       name: spider05_23
       rect:
         serializedVersion: 2
-        x: 201
-        y: 140
-        width: 44
-        height: 34
+        x: 192
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -760,10 +760,10 @@ TextureImporter:
       name: spider05_24
       rect:
         serializedVersion: 2
-        x: 265
-        y: 138
-        width: 43
-        height: 40
+        x: 256
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -782,10 +782,10 @@ TextureImporter:
       name: spider05_25
       rect:
         serializedVersion: 2
-        x: 329
-        y: 135
-        width: 43
-        height: 44
+        x: 320
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -804,10 +804,10 @@ TextureImporter:
       name: spider05_26
       rect:
         serializedVersion: 2
-        x: 393
-        y: 138
-        width: 43
-        height: 40
+        x: 384
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -826,10 +826,10 @@ TextureImporter:
       name: spider05_27
       rect:
         serializedVersion: 2
-        x: 458
-        y: 138
-        width: 43
-        height: 40
+        x: 448
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -848,10 +848,10 @@ TextureImporter:
       name: spider05_28
       rect:
         serializedVersion: 2
-        x: 522
-        y: 135
-        width: 43
-        height: 44
+        x: 512
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -870,10 +870,10 @@ TextureImporter:
       name: spider05_29
       rect:
         serializedVersion: 2
-        x: 586
-        y: 138
-        width: 43
-        height: 40
+        x: 576
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -892,10 +892,10 @@ TextureImporter:
       name: spider05_30
       rect:
         serializedVersion: 2
-        x: 15
-        y: 75
-        width: 33
-        height: 38
+        x: 0
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -914,10 +914,10 @@ TextureImporter:
       name: spider05_31
       rect:
         serializedVersion: 2
-        x: 80
-        y: 75
-        width: 41
-        height: 38
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -936,10 +936,10 @@ TextureImporter:
       name: spider05_32
       rect:
         serializedVersion: 2
-        x: 146
-        y: 75
-        width: 43
-        height: 35
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -958,10 +958,10 @@ TextureImporter:
       name: spider05_33
       rect:
         serializedVersion: 2
-        x: 209
-        y: 75
-        width: 36
-        height: 38
+        x: 192
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -980,10 +980,10 @@ TextureImporter:
       name: spider05_34
       rect:
         serializedVersion: 2
-        x: 271
-        y: 76
-        width: 36
-        height: 38
+        x: 256
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1002,10 +1002,10 @@ TextureImporter:
       name: spider05_35
       rect:
         serializedVersion: 2
-        x: 333
-        y: 77
-        width: 41
-        height: 36
+        x: 320
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1024,10 +1024,10 @@ TextureImporter:
       name: spider05_36
       rect:
         serializedVersion: 2
-        x: 399
-        y: 76
-        width: 35
-        height: 38
+        x: 384
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1046,10 +1046,10 @@ TextureImporter:
       name: spider05_37
       rect:
         serializedVersion: 2
-        x: 463
-        y: 76
-        width: 35
-        height: 38
+        x: 448
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1068,10 +1068,10 @@ TextureImporter:
       name: spider05_38
       rect:
         serializedVersion: 2
-        x: 526
-        y: 76
-        width: 40
-        height: 37
+        x: 512
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1090,10 +1090,10 @@ TextureImporter:
       name: spider05_39
       rect:
         serializedVersion: 2
-        x: 592
-        y: 76
-        width: 35
-        height: 38
+        x: 576
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1112,10 +1112,10 @@ TextureImporter:
       name: spider05_40
       rect:
         serializedVersion: 2
-        x: 9
-        y: 13
-        width: 44
-        height: 37
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1134,10 +1134,10 @@ TextureImporter:
       name: spider05_41
       rect:
         serializedVersion: 2
-        x: 75
-        y: 17
-        width: 40
-        height: 28
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1156,10 +1156,10 @@ TextureImporter:
       name: spider05_42
       rect:
         serializedVersion: 2
-        x: 141
-        y: 22
-        width: 36
-        height: 22
+        x: 128
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1178,10 +1178,10 @@ TextureImporter:
       name: spider05_43
       rect:
         serializedVersion: 2
-        x: 205
-        y: 19
-        width: 36
-        height: 23
+        x: 192
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1200,7 +1200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 9987000f6db593b4fb165640d987c3d9
     internalID: 0
     vertices: []
     indices: 

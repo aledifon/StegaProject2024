@@ -1,15 +1,9 @@
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Linq;
-using UnityEngine.UIElements;
-using System.Collections.Generic;
 using System.Collections;
 using System;
-using Unity.VisualScripting;
-using UnityEngine.Audio;
-using System.ComponentModel;
 
 public class PlayerMovement : MonoBehaviour
 {

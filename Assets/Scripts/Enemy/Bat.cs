@@ -1,12 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.LowLevel;
-using UnityEngine.UIElements;
-using UnityEngine.Windows;
-using static PlayerMovement;
 
 public class Bat : MonoBehaviour
 {

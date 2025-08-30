@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class TriggerForwarder : MonoBehaviour
+public class TriggerForwarderBat : MonoBehaviour
 {
     private string colliderId;
     private Bat bat;

@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: 7f899342614b9ab4986b689ca3259f01
+guid: 6a0cd834407454e4795f7f52562160bd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3766411634235151340
-    second: teia_0
-  - first:
-      213: -7684929039967974117
-    second: teia_1
-  - first:
-      213: 527149578636530309
-    second: teia_2
-  - first:
-      213: 2528520403938691308
-    second: teia_3
-  - first:
-      213: -3888384752805353984
-    second: teia_4
+      213: 8957498739127362109
+    second: Acid VFX 01 Repeatable10_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -112,89 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: teia_0
+      name: Acid VFX 01 Repeatable10_0
       rect:
         serializedVersion: 2
-        x: 1383
-        y: 2487
-        width: 234
-        height: 242
+        x: 8
+        y: 10
+        width: 18
+        height: 13
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 41ce38fe2940bbbc0800000000000000
-      internalID: -3766411634235151340
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: teia_1
-      rect:
-        serializedVersion: 2
-        x: 263
-        y: 1375
-        width: 410
-        height: 394
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b1d00a031c5a95590800000000000000
-      internalID: -7684929039967974117
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: teia_2
-      rect:
-        serializedVersion: 2
-        x: 1023
-        y: 1079
-        width: 930
-        height: 954
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5829022bfbfc05700800000000000000
-      internalID: 527149578636530309
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: teia_3
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 55
-        width: 929
-        height: 953
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ce8c71429eb171320800000000000000
-      internalID: 2528520403938691308
+      spriteID: d3222b5f4ad6f4c70800000000000000
+      internalID: 8957498739127362109
       vertices: []
       indices: 
       edges: []
@@ -203,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5c56c95ca03758042b21ec75e4061e7d
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -213,11 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      teia_0: -3766411634235151340
-      teia_1: -7684929039967974117
-      teia_2: 527149578636530309
-      teia_3: 2528520403938691308
-      teia_4: -3888384752805353984
+      Acid VFX 01 Repeatable10_0: 8957498739127362109
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
