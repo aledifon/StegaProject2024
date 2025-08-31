@@ -26,7 +26,7 @@ public class SpiderProjectile : MonoBehaviour
     private void Awake()
     {
         collider = GetComponent<Collider2D>();
-        shootingDir = transform.localPosition;                  
+        anim = GetComponent<Animator>();        
     }
     // Update is called once per frame
     void Update()
@@ -118,6 +118,10 @@ public class SpiderProjectile : MonoBehaviour
     #endregion
 
     #region Shooting
+    public void SetShootingDir()
+    {
+        shootingDir = transform.localPosition;
+    }
     public void Shooting()
     {
         ReturnToInitState();

@@ -119,6 +119,9 @@ public class Spider : MonoBehaviour
             InitProjectiles();
         else
             Debug.LogError("No Prefab ref. for the projectiles is attached to this GO");
+
+        // Player detection will be always enabled except for a few secs. when the player is detected.
+        EnablePlayerDetection();
     }    
     private void Update()
     {                        
@@ -548,15 +551,19 @@ public class Spider : MonoBehaviour
 
             projectiles[i] = InstantiateProjectilePrefabs(projectilePrefab, originPosition, transform);
 
+            // Projectiles initial settings
             projectiles[i].InitPlayerRefs(playerHealth,player);
+            projectiles[i].SetShootingDir();
+
+            // Disable the GO by def.
             projectiles[i].gameObject.SetActive(false);
         }
     }    
     private SpiderProjectile InstantiateProjectilePrefabs(GameObject prefab, Vector3 originPos, Transform parentTransform)
     {
         SpiderProjectile projectile = Instantiate(prefab, parentTransform).GetComponent<SpiderProjectile>();
-        projectile.transform.localPosition = originPos;
-        projectile.transform.rotation = prefab.transform.rotation;
+        projectile.transform.localPosition = originPos;        
+        projectile.transform.rotation = prefab.transform.rotation;        
 
         return projectile;
 
@@ -706,7 +713,14 @@ public class Spider : MonoBehaviour
 
                 animator.speed = alertPatrolAnimSpeed;
                 animator.SetTrigger("Patrol");
-                break;                        
+                break;
+            case EnemyState.Attack:
+                StopAudioSource();
+                PlayAttackSFX();
+
+                animator.speed = DefaultAnimSpeed;
+                animator.SetTrigger("Attack");
+                break;
             case EnemyState.Death:
                 animator.speed = DefaultAnimSpeed;
                 animator.SetTrigger("Die");
