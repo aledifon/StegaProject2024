@@ -51,7 +51,8 @@ public class Spider : MonoBehaviour
     private float attackAnimLength;
 
     [Header("Cadence Attack Timer")]
-    [SerializeField] private float cadenceAttackMaxTime;        // Set a Random value from a Range every time
+    [SerializeField] private float cadenceAttackMaxTime;        // A Random value from min to max will be set in every frame
+    [SerializeField] private float cadenceAttackMinTime;        
     [SerializeField] private float cadenceAttackTimer;
     [SerializeField] private bool isCadenceAttackTimerEnabled;
 
@@ -482,7 +483,8 @@ public class Spider : MonoBehaviour
     }
     private void SetCadenceAttackTimer()
     {
-        cadenceAttackTimer = Random.Range(3f,cadenceAttackMaxTime);
+        cadenceAttackTimer = Random.Range(cadenceAttackMinTime, cadenceAttackMaxTime);
+        //cadenceAttackTimer = cadenceAttackMaxTime;
         isCadenceAttackTimerEnabled = true;
     }
     #endregion
@@ -556,7 +558,10 @@ public class Spider : MonoBehaviour
 
             // Projectiles initial settings
             projectiles[i].InitPlayerRefs(playerHealth,player);
-            projectiles[i].SetShootingDir();
+            projectiles[i].SetShootingSettings(cadenceAttackMinTime*0.9f);
+
+            // Set an specific name to each projectile
+            projectiles[i].name = "Projectile_" + i;
 
             // Disable the GO by def.
             projectiles[i].gameObject.SetActive(false);
@@ -566,7 +571,7 @@ public class Spider : MonoBehaviour
     {
         SpiderProjectile projectile = Instantiate(prefab, parentTransform).GetComponent<SpiderProjectile>();
         projectile.transform.localPosition = originPos;        
-        projectile.transform.rotation = prefab.transform.rotation;        
+        projectile.transform.rotation = prefab.transform.rotation;                
 
         return projectile;
 

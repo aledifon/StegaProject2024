@@ -1,5 +1,6 @@
 using Demo_Project;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SpiderProjectile : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class SpiderProjectile : MonoBehaviour
     [SerializeField] private float speed;
 
     [Header("Shooting Timer")]
-    [SerializeField] private float shootingMaxTime;
+    private float shootingMaxTime;
     private float shootingTimer;
     private bool isShootingTimerEnabled;
     
@@ -21,30 +22,36 @@ public class SpiderProjectile : MonoBehaviour
     private GameObject player;
     private PlayerHealth playerHealth;
     private Animator anim;
+    private SpriteRenderer sprite;
 
     #region Unity API
     private void Awake()
     {
         collider = GetComponent<Collider2D>();
-        anim = GetComponent<Animator>();        
+        anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
     }
     // Update is called once per frame
     void Update()
     {
         if (isShootingTimerEnabled)
-        {            
-            transform.position += (Vector3)shootingDir.normalized * speed * Time.deltaTime;
+        {           
+            // Movement update only enabled if no collision has happened.
+            if(collider.enabled)
+                transform.position += (Vector3)shootingDir.normalized * speed * Time.deltaTime;
+
             UdpateShootingTimer();
         }
+
+        string str = gameObject.activeSelf ? "enabled" : "disabled";        
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            collider.enabled = false;
-            SetExplodeAnim();            
-            Attack();
-            ResetShootingTimer();
+            collider.enabled = false;            
+            SetExplodeAnim();
+            Attack();            
         }
     }
     #endregion
@@ -104,11 +111,10 @@ public class SpiderProjectile : MonoBehaviour
     {
         isShootingTimerEnabled = false;
         shootingTimer = 0f;
-
-        if (collider.enabled)
-            DisableGO();
-        else
-            Invoke(nameof(DisableGO), 0.5f);
+        
+        DisableGO();
+        //else
+        //    Invoke(nameof(DisableGO), 3f);
     }    
     private void SetShootingTimer()
     {
@@ -118,9 +124,10 @@ public class SpiderProjectile : MonoBehaviour
     #endregion
 
     #region Shooting
-    public void SetShootingDir()
+    public void SetShootingSettings(float maxShootTime)
     {
         shootingDir = transform.localPosition;
+        shootingMaxTime = maxShootTime;
     }
     public void Shooting()
     {
@@ -140,11 +147,14 @@ public class SpiderProjectile : MonoBehaviour
 
     #region Animations
     public void SetIdleAnim()
-    {
-        anim.SetTrigger("Idle");
+    {        
+        //sprite.enabled = true;
+        anim.ResetTrigger("Explode");
+        anim.SetTrigger("Idle");        
     }
     public void SetExplodeAnim()
     {
+        anim.ResetTrigger("Idle");
         anim.SetTrigger("Explode");
     }
     #endregion

@@ -30371,7 +30371,8 @@ MonoBehaviour:
   isIdleTimerEnabled: 0
   attackTimer: 0
   isAttackTimerEnabled: 0
-  cadenceAttackMaxTime: 5
+  cadenceAttackMaxTime: 4
+  cadenceAttackMinTime: 2.5
   cadenceAttackTimer: 0
   isCadenceAttackTimerEnabled: 0
   normalPatrolSpeed: 3
