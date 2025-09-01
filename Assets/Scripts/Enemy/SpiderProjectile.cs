@@ -17,6 +17,8 @@ public class SpiderProjectile : MonoBehaviour
     private bool isShootingTimerEnabled;
     
     private Vector2 shootingDir;
+    private Vector2 shootingDirRotated;
+    private float shootAngleInc;
 
     private Collider2D collider;
     private GameObject player;
@@ -89,9 +91,26 @@ public class SpiderProjectile : MonoBehaviour
 
     #region Reset State
     private void ReturnToInitState()
-    {        
-        transform.localPosition = shootingDir;
+    {
+        //Calculate Rotated Vector
+        int randomChoice = Random.Range(0,3);
+
+        if (randomChoice == 0)
+            shootingDirRotated = shootingDir;
+        else if (randomChoice == 1)
+            shootingDirRotated = Quaternion.Euler(0, 0, shootAngleInc) * shootingDir;
+        else if (randomChoice == 2)
+            shootingDirRotated = Quaternion.Euler(0, 0, -shootAngleInc) * shootingDir;
+
+        // Alternative shootingDir Update Method        
+        //float randomAngleInc = Random.Range(-shootAngleInc, shootAngleInc);        
+        //shootingDirRotated = Quaternion.Euler(0, 0, shootAngleInc) * shootingDir;
+
+        transform.localPosition = shootingDirRotated;
         collider.enabled = true;
+
+        if (gameObject.name == "Projectile_3")
+            Debug.Log("Pos = " + transform.localPosition);
     }
     #endregion    
 
@@ -124,10 +143,11 @@ public class SpiderProjectile : MonoBehaviour
     #endregion
 
     #region Shooting
-    public void SetShootingSettings(float maxShootTime)
+    public void SetShootingSettings(float maxShootTime, float shootAngle)
     {
         shootingDir = transform.localPosition;
         shootingMaxTime = maxShootTime;
+        shootAngleInc = shootAngle;
     }
     public void Shooting()
     {
