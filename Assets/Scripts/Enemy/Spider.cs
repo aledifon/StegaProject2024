@@ -227,7 +227,7 @@ public class Spider : MonoBehaviour
             // Save the initial World Pos. of the Attack Area Collider
             attackAreaColliderWorldPos = attackAreaCollider.transform.position;
 
-            EnableAttackAreaCollider(true);
+            EnableAttackAreaCollider(true);            
         }
 
         // Get the Player GO's References
@@ -519,15 +519,18 @@ public class Spider : MonoBehaviour
         collider.enabled = enable;
     }
     private void EnableAttackAreaCollider(bool enable)
-    {
-        if (enable)
-            SetAttackAreaColliderPos();
+    {        
         attackAreaCollider.enabled = enable;
     }
     private void SetAttackAreaColliderPos()
     {
         // Set the correct offset for the Attack Collider 
         attackAreaCollider.transform.position = attackAreaColliderWorldPos;
+    }
+    private void UnsetAttackAreaColliderParent()
+    {
+        // Unset the parent of the Attack Area Collider 
+        attackAreaCollider.transform.SetParent(null);
     }
     #endregion
 
