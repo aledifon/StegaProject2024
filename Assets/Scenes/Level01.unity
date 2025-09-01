@@ -30380,8 +30380,9 @@ MonoBehaviour:
   alertPatrolAnimSpeed: 1.5
   isDeath: 0
   projectilePrefab: {fileID: 2997550117949204081, guid: 2c5924c3ae02ab244a0182190c245d93, type: 3}
-  projectileNum: 4
-  projectilesInitAngle: 45
+  projectileNum: 6
+  projectilesInitAngle: 0
+  projectileAngleDelta: 40
   idleSFX: {fileID: 0}
   normalPatrolSFX: {fileID: 0}
   alertPatrolSFX: {fileID: 0}

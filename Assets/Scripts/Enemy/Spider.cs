@@ -54,7 +54,7 @@ public class Spider : MonoBehaviour
     [SerializeField] private float cadenceAttackMaxTime;        // A Random value from min to max will be set in every frame
     [SerializeField] private float cadenceAttackMinTime;        
     [SerializeField] private float cadenceAttackTimer;
-    [SerializeField] private bool isCadenceAttackTimerEnabled;
+    [SerializeField] private bool isCadenceAttackTimerEnabled;    
 
     [Header("Speed")]
     [SerializeField] private float normalPatrolSpeed;
@@ -69,8 +69,9 @@ public class Spider : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     private SpiderProjectile[] projectiles;
     [SerializeField,Range(2,8)] private int projectileNum;
-    [SerializeField] private float projectilesInitAngle;        // = 45º;
-    private float projectilesIncAngle;                          // = 360º/projectileNum;
+    [SerializeField] private float projectilesInitAngle;            // = 45º;  (Angle applied to position the 1st Projectile)
+    [SerializeField] private float projectileAngleDelta;            // Random angle delta applied every shoot
+    private float projectilesAngleOffset;                           // = 360º/projectileNum; (Angle between projectiles)
 
     [Header("SFX")]
     [SerializeField] private AudioClip idleSFX;
@@ -149,7 +150,7 @@ public class Spider : MonoBehaviour
     {
         if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
         {
-            Debug.Log("Player entered on the HitBox");
+            //Debug.Log("Player entered on the HitBox");
 
             DisablePlayerDetection();
 
@@ -159,7 +160,7 @@ public class Spider : MonoBehaviour
         }
         else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
         {
-            Debug.Log("Player entered on the HurtBox");
+            //Debug.Log("Player entered on the HurtBox");
 
             DisablePlayerDetection();
 
@@ -168,23 +169,23 @@ public class Spider : MonoBehaviour
         else if (id == "AttackArea" && collision.CompareTag("Player"))
         {
             isOnAttackArea = true;
-            Debug.Log("Player entered on the AttackArea");
+            //Debug.Log("Player entered on the AttackArea");
         }
     }
     public void OnChildTriggerExit(string id, Collider2D collision)
     {
         if (id == "HitBox" && collision.CompareTag("Player"))
         {
-            Debug.Log("Player exit from the HitBox");
+            //Debug.Log("Player exit from the HitBox");
         }
         else if (id == "HurtBox" && collision.CompareTag("Player"))
         {
-            Debug.Log("Player exit from the HurtBox");
+            //Debug.Log("Player exit from the HurtBox");
         }
         else if (id == "AttackArea" && collision.CompareTag("Player"))
         {
             isOnAttackArea = false;
-            Debug.Log("Player exit from the AttackArea");
+            //Debug.Log("Player exit from the AttackArea");
         }
     }
     #endregion
@@ -270,7 +271,7 @@ public class Spider : MonoBehaviour
             Destroy(gameObject, 3f);
 
             // Debug
-            Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+            //Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
 
             // State Update
             currentState = EnemyState.Death;
@@ -298,7 +299,7 @@ public class Spider : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (!isIdleTimerEnabled)
                     {
@@ -310,7 +311,7 @@ public class Spider : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.NormalPatrol:                                    
@@ -329,7 +330,7 @@ public class Spider : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Normal Patrol states to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Normal Patrol states to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }                    
                     else if (isOnAttackArea)
                     {
@@ -341,7 +342,7 @@ public class Spider : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Normal Patrol state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Normal Patrol state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.AlertPatrol:
@@ -369,7 +370,7 @@ public class Spider : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Alert Patrol state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Alert Patrol state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (!isCadenceAttackTimerEnabled)
                     {           
@@ -381,7 +382,7 @@ public class Spider : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Alert Patrol state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Alert Patrol state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Attack:
@@ -403,11 +404,11 @@ public class Spider : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Death:
-                    Debug.Log("I am on Death State");
+                    //Debug.Log("I am on Death State");
                     break;
                 default:
                     // Default logic
@@ -544,8 +545,8 @@ public class Spider : MonoBehaviour
         float initAngle = projectilesInitAngle * Mathf.Deg2Rad;
         float currentAngle = initAngle;
         //float incDeg = 90f * Mathf.Deg2Rad;
-        projectilesIncAngle = (360f/projectileNum);
-        float incAngle = projectilesIncAngle * Mathf.Deg2Rad;
+        projectilesAngleOffset = (360f/projectileNum);
+        float incAngle = projectilesAngleOffset * Mathf.Deg2Rad;
 
         float initOffset = 0.5f;
 
@@ -558,7 +559,7 @@ public class Spider : MonoBehaviour
 
             // Projectiles initial settings
             projectiles[i].InitPlayerRefs(playerHealth,player);
-            projectiles[i].SetShootingSettings(cadenceAttackMinTime*0.9f);
+            projectiles[i].SetShootingSettings(cadenceAttackMinTime*0.9f,projectileAngleDelta);
 
             // Set an specific name to each projectile
             projectiles[i].name = "Projectile_" + i;
