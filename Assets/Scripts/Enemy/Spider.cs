@@ -1,4 +1,4 @@
-using Demo_Project;
+using System.Collections;
 using UnityEngine;
 
 public class Spider : MonoBehaviour
@@ -77,7 +77,7 @@ public class Spider : MonoBehaviour
     [SerializeField] private AudioClip idleSFX;
     [SerializeField] private AudioClip normalPatrolSFX;
     [SerializeField] private AudioClip alertPatrolSFX;
-    [SerializeField] private AudioClip alertSFX;
+    [SerializeField] private AudioClip alertSFX;    
     [SerializeField] private AudioClip attackSFX;
     [SerializeField] private AudioClip deathSFX;           
 
@@ -717,8 +717,8 @@ public class Spider : MonoBehaviour
                 animator.SetTrigger("Patrol");
                 break;
             case EnemyState.AlertPatrol:
-                StopAudioSource();
-                PlayAlertPatrolSFX();
+                StopAudioSource();                                
+                PlayAlertPatrolSFX();                                
 
                 animator.speed = alertPatrolAnimSpeed;
                 animator.SetTrigger("Patrol");
@@ -743,13 +743,13 @@ public class Spider : MonoBehaviour
     #region Audio
     public void PlayOneShotSFX(AudioClip clip)
     {
-        //audioSource.PlayOneShot(clip);
+        audioSource.PlayOneShot(clip);
     }
     public void PlayOnLoopSFX(AudioClip clip)
     {
-        //audioSource.clip = clip;
-        //audioSource.loop = true;
-        //audioSource.Play();
+        audioSource.clip = clip;
+        audioSource.loop = true;
+        audioSource.Play();
     }
     public void StopAudioSource()
     {

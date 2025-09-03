@@ -30382,13 +30382,13 @@ MonoBehaviour:
   projectilePrefab: {fileID: 2997550117949204081, guid: 2c5924c3ae02ab244a0182190c245d93, type: 3}
   projectileNum: 6
   projectilesInitAngle: 0
-  projectileAngleDelta: 40
-  idleSFX: {fileID: 0}
-  normalPatrolSFX: {fileID: 0}
-  alertPatrolSFX: {fileID: 0}
-  alertSFX: {fileID: 0}
-  attackSFX: {fileID: 0}
-  deathSFX: {fileID: 0}
+  projectileAngleDelta: 20
+  idleSFX: {fileID: 8300000, guid: 050354fa40d94e74ab5e72128dcbd529, type: 3}
+  normalPatrolSFX: {fileID: 8300000, guid: adf540533e009eb44aa47e2aa49d9421, type: 3}
+  alertPatrolSFX: {fileID: 8300000, guid: 76befff1b6cd83f44b20a91c8f62f51a, type: 3}
+  alertSFX: {fileID: 8300000, guid: 8acaf80858797a4449e1590bb2d24c9c, type: 3}
+  attackSFX: {fileID: 8300000, guid: 526efb852d6dd2549b01514b99e2d1ee, type: 3}
+  deathSFX: {fileID: 8300000, guid: 027652cb916de2e498489109bca757fd, type: 3}
   currentState: 0
 --- !u!1 &1053108279
 GameObject:

@@ -1,4 +1,5 @@
 using Demo_Project;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -11,7 +12,10 @@ public class SpiderProjectile : MonoBehaviour
     [Header("Shooting Speed")]
     [SerializeField] private float speed;
 
-    [Header("Shooting Timer")]
+    [Header("SFX")]
+    [SerializeField] private AudioClip shootSFX;    
+    [SerializeField] private AudioClip explodeSFX;
+    
     private float shootingMaxTime;
     private float shootingTimer;
     private bool isShootingTimerEnabled;
@@ -25,6 +29,7 @@ public class SpiderProjectile : MonoBehaviour
     private PlayerHealth playerHealth;
     private Animator anim;
     private SpriteRenderer sprite;
+    private AudioSource audioSource;
 
     #region Unity API
     private void Awake()
@@ -32,6 +37,7 @@ public class SpiderProjectile : MonoBehaviour
         collider = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
     }
     // Update is called once per frame
     void Update()
@@ -53,7 +59,8 @@ public class SpiderProjectile : MonoBehaviour
         {
             collider.enabled = false;            
             SetExplodeAnim();
-            Attack();            
+            Attack();
+            audioSource.PlayOneShot(explodeSFX);
         }
     }
     #endregion
@@ -154,6 +161,7 @@ public class SpiderProjectile : MonoBehaviour
         ReturnToInitState();
         transform.SetParent(null);
         SetShootingTimer();
+        audioSource.PlayOneShot(shootSFX);
     }
     #endregion
 
@@ -177,5 +185,5 @@ public class SpiderProjectile : MonoBehaviour
         anim.ResetTrigger("Idle");
         anim.SetTrigger("Explode");
     }
-    #endregion
+    #endregion    
 }
