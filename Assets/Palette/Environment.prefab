@@ -2282,6 +2282,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 17, y: 2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 224
+      m_TileSpriteIndex: 224
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 1
@@ -2732,6 +2742,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: d23134f0934bc014d9a0efca4dfe2d11, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 626f97325c3e8ff449c91debdc778b0f, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 7fe6693610e35db4ebc6755c76b0b8d5, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 9a3f72f076ab840149080d30379776b2, type: 3}
@@ -3181,8 +3193,10 @@ Tilemap:
     m_Data: {fileID: 21300444, guid: 9a3f72f076ab840149080d30379776b2, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300446, guid: 9a3f72f076ab840149080d30379776b2, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 7482667652216324306, guid: 27e773a3abb456f4497b2270eeb0a502, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 224
+  - m_RefCount: 225
     m_Data:
       e00: 1
       e01: 0
@@ -3201,13 +3215,13 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 224
+  - m_RefCount: 225
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: 0, y: -22, z: 0}
-  m_Size: {x: 37, y: 22, z: 1}
+  m_Origin: {x: 3, y: -22, z: 0}
+  m_Size: {x: 34, y: 25, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -3244,6 +3258,9 @@ TilemapRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3321,7 +3338,7 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &1544313087248045260
+--- !u!114 &5325798845449355979
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
