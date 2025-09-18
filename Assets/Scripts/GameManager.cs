@@ -75,6 +75,9 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject pausePanel;
 
+    [Header("Slow Motion Test")]
+    [SerializeField] private bool slowMotionEnabled;
+
     // GO Refs.
     AudioSource generalAudioSource;
     PlayerHealth playerHealth;
@@ -104,6 +107,9 @@ public class GameManager : MonoBehaviour
         PlayLevelMusic();
 
         EnableGameplayInput();
+
+        if(slowMotionEnabled)
+            EnableSlowMotion();
 
         // Set the filterDuration
         //filterDuration = returnDuration;

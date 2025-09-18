@@ -36,13 +36,13 @@ public class PlayerMovement : MonoBehaviour
                                                              // (Calculated in func. of maxJumpDistance & Player's speed)        
 
     [Header("Wall Jump")]
-    [SerializeField] float wallJumpVertSpeed;           // Wall Jumping applied Speed
+    [SerializeField] float wallJumpVertSpeed;           // Wall Jumping applied Speed                   || Previous value = 12f   
     private float wallJumpHorizSpeed;                   // Wall Jumping applied Speed    
     //[SerializeField] float wallJumpVertDist;          // Wall Jumping Vert. Dist. Uds.
-    [SerializeField] private float wallJumpHorizDist;   // Max allowed Horizontal Wall Jumping distance    
-    [SerializeField] private float wallJumpHorizDist2;   // Max allowed Horizontal Wall Jumping distance
-                                                        // after the player takes the control again
-    [SerializeField] private float wallJumpHorizTime;   // Max Jumping time on horizontal Movement
+    [SerializeField] private float wallJumpHorizDist;   // Max allowed Horizontal Wall Jumping distance  || Previous value = 3f   
+    [SerializeField] private float wallJumpHorizDist2;   // Max allowed Horizontal Wall Jumping distance || Previous value = 4.5f   
+                                                         // after the player takes the control again
+    [SerializeField] private float wallJumpHorizTime;   // Max Jumping time on horizontal Movement       || Previous value = 0.6f   
     private float wallJumpingVertTime;                          // Wall Jumping Time (in func. of Wall Jumping distance. & Wall Jump. speed)                                                    
     Vector2 wallJumpSpeedVector;
     [SerializeField] private float wallJumpDelayMaxTime;    
