@@ -193,7 +193,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -373,12 +373,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vanishingTime: 1.5
   reappearingTime: 3
+  isDestructible: 0
+  isDestroyedByTrigger: 0
+  destroyTrigger: 0
   dustStonesVFX: {fileID: 5873754517777239851, guid: 80ee810b6256c034a94cdc1ad2ba14aa, type: 3}
   psPositions:
   - {fileID: 2799262860375603881}
   - {fileID: 8788962191035868143}
   - {fileID: 8554046681889199680}
-  vfxPlaybackTime: 1.5
   breakSFX: {fileID: 8300000, guid: ba41134695881774f8f58cc4104fd04a, type: 3}
 --- !u!82 &3849719544029599760
 AudioSource:
