@@ -537,6 +537,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vanishingTime: 1.5
   reappearingTime: 3
+  isDestructible: 0
+  isDestroyedByTrigger: 0
+  destroyTrigger: 0
   dustStonesVFX: {fileID: 5873754517777239851, guid: 80ee810b6256c034a94cdc1ad2ba14aa, type: 3}
   psPositions:
   - {fileID: 1299362644998502890}
@@ -976,7 +979,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
