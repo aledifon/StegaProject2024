@@ -12,6 +12,10 @@ public class Boulder : MonoBehaviour
     Rigidbody2D rb2D;
     SpriteRenderer spriteRenderer;
 
+    [Header("Dynamic Settings")]
+    [SerializeField] float gravityScale;
+    [SerializeField] float mass;
+
     [Header("Audio")]
     [SerializeField] AudioClip clip;
 
@@ -151,7 +155,7 @@ public class Boulder : MonoBehaviour
     private void SetRBAsDynamic()
     {
         rb2D.bodyType = RigidbodyType2D.Dynamic;
-        rb2D.mass = 100f;
-        rb2D.gravityScale = 4f;
+        rb2D.mass = mass;
+        rb2D.gravityScale = gravityScale;
     }
 }
