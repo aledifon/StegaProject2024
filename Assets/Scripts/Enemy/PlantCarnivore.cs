@@ -270,7 +270,9 @@ public class PlantCarnivore : MonoBehaviour
     {
         // Raycast Launching
         isOnAttackRange = Physics2D.Raycast(transform.position, enemyToPlayerVector.normalized, attackHorizRange, playerLayer) &&
-                          (player.transform.position.x > transform.position.x);
+                          (spriteRenderer.flipX ? 
+                          (player.transform.position.x < transform.position.x) : 
+                          (player.transform.position.x > transform.position.x));
 
         // Raycast Debugging
         //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
