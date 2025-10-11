@@ -203,6 +203,8 @@ public class PlayerMovement : MonoBehaviour
 
     // GO Components
     protected Rigidbody2D rb2D;
+    public float rb2DPlayerVelY => rb2D.linearVelocityY;
+    public float rb2DPlayerVelX => rb2D.linearVelocityX;
     // Movement vars.
     protected float inputX;
     public float InputX => inputX;
@@ -218,6 +220,7 @@ public class PlayerMovement : MonoBehaviour
 
     // GO Components
     SpriteRenderer spriteRenderer;
+    public SpriteRenderer SpriteRendPlayer => spriteRenderer;
     Animator animator;
     BoxCollider2D boxCollider2D;    
     PlayerVFX playerVFX;
@@ -305,6 +308,16 @@ public class PlayerMovement : MonoBehaviour
 
         // Just for debugging
         //GameManager.Instance.EnableSlowMotion();
+
+        StartCoroutine(nameof(WaitForCameraAndSendRefs));        
+    }
+    private IEnumerator WaitForCameraAndSendRefs()
+    {
+        yield return new WaitUntil(() => Camera.main != null);
+
+        CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
+        if (cameraFollow != null)
+            cameraFollow.GetRefsOfPlayerMovement(this);
     }
     protected virtual void Update()
     {                       
@@ -1272,9 +1285,13 @@ public class PlayerMovement : MonoBehaviour
         {
             case PlayerState.Idle:
             case PlayerState.Running:
-            case PlayerState.Falling:
+            case PlayerState.Falling:            
+                //rb2DJumpVelY = rb2D.linearVelocity.y;
+                rb2DJumpVelY = Mathf.Clamp(rb2D.linearVelocity.y,-18f,5f);
+                break;
             case PlayerState.WallBraking:
-                rb2DJumpVelY = rb2D.linearVelocity.y;
+                //rb2DJumpVelY = rb2D.linearVelocity.y;
+                rb2DJumpVelY = Mathf.Clamp(rb2D.linearVelocity.y, -10f, 0f);
                 break;
             case PlayerState.Jumping:
             case PlayerState.WallJumping:
