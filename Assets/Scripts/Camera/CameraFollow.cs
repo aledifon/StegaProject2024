@@ -49,8 +49,8 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] Vector4 currentBounds;
     [SerializeField] Vector4 targetBounds;
     [SerializeField] float boundsLerpSpeed = 3f;
-    CamBoundariesTriggerArea currentBoundsArea;
-    CamBoundariesTriggerArea lastBoundsArea;
+    [SerializeField] CamBoundariesTriggerArea currentBoundsArea;
+    [SerializeField] CamBoundariesTriggerArea lastBoundsArea;
 
     [Header("Camera Shaking")]
     [SerializeField] float shakeDuration;   // 2f
@@ -227,22 +227,33 @@ public class CameraFollow : MonoBehaviour
     private void SetInitialBoundaries()
     {
         // Detecta qué collider (área de límites) contiene la posición inicial del player
-        Collider2D hit = Physics2D.OverlapPoint(player.position, LayerMask.GetMask("CameraBounds"));
+        Collider2D hit = Physics2D.OverlapPoint(player.position, LayerMask.GetMask("CamTriggerArea"));
 
         if (hit != null)
         {
             //CamBoundariesTriggerArea area = hit.GetComponent<CamBoundariesTriggerArea>();
-            CamBoundariesTriggerArea area = hit.GetComponentInParent<CamBoundariesTriggerArea>();
+            CamBoundariesTriggerArea area = hit.GetComponent<CamBoundariesTriggerArea>();
 
             if (area != null)
             {
                 currentBounds = area.GetBounds();
                 targetBounds = currentBounds;
             }
+            // If the player is on non-Boundary area then "infinite" margins will be applied
+            else
+            {
+                currentBoundsArea = null;
+                currentBounds = new Vector4(-1000f, 1000f, -1000f, 1000f);
+                targetBounds = currentBounds;
+            }
+                
         }
         else
         {
             Debug.LogWarning("CameraFollow: No se encontró un área de límites en la posición inicial del player.");
+            currentBoundsArea = null;
+            currentBounds = new Vector4(-1000f, 1000f, -1000f, 1000f);
+            targetBounds = currentBounds;
         }
     }
     public void SetTargetBoundaries(CamBoundariesTriggerArea enteringArea)
@@ -270,7 +281,8 @@ public class CameraFollow : MonoBehaviour
             else
             {
                 currentBoundsArea = null;
-                targetBounds = new Vector4(float.MinValue, float.MaxValue, float.MinValue, float.MaxValue);
+                currentBounds = new Vector4(-1000f, 1000f, -1000f, 1000f);
+                targetBounds = currentBounds;
             }
         }
         // We exit from the Last Area and we are still in a "bounding" Area
