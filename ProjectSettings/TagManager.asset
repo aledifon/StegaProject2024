@@ -24,7 +24,7 @@ TagManager:
   - Wall
   - Platform
   - JointLayer
-  - CameraBounds
+  - CamTriggerArea
   - 
   - 
   - 
