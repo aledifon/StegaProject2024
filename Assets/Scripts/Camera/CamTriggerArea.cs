@@ -20,7 +20,11 @@ public class CamTriggerArea : MonoBehaviour
     private void Awake()
     {
         colliderTrigger = GetComponent<Collider2D>();
-        cameraFollow = Camera.main.GetComponent<CameraFollow>();
+        
+        cameraFollow = FindAnyObjectByType<CameraFollow>();
+        //cameraFollow = Camera.main.GetComponent<CameraFollow>();
+        if (cameraFollow == null)
+            Debug.LogError("CameraFollow component Not Found on the Scene!");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -28,21 +32,17 @@ public class CamTriggerArea : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             // Acorn dissappear
-            colliderTrigger.enabled = false;
+            colliderTrigger.enabled = false;            
 
-            //player = collision.GetComponent<PlayerMovement>();
-            //if (player == null)
-            //    Debug.LogError("PlayerMovement component not found on Player GO");
-
-            if (isExitCamArea)
-                cameraFollow.SetCameraDefSettings(sizeSmoothTime);
-            else
-                cameraFollow.SetCameraSettings(camOffsetMask,
-                                            xCamOffset,
-                                            yCamOffset,
-                                            zCamOffset,
-                                            sizeCam,
-                                            sizeSmoothTime);
+            //if (isExitCamArea)
+            //    cameraFollow.SetCameraDefSettings(sizeSmoothTime);
+            //else
+            //    cameraFollow.SetCameraSettings(camOffsetMask,
+            //                                xCamOffset,
+            //                                yCamOffset,
+            //                                zCamOffset,
+            //                                sizeCam,
+            //                                sizeSmoothTime);
         }
     }
 
