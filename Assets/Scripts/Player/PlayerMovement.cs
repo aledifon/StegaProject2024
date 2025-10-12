@@ -309,7 +309,17 @@ public class PlayerMovement : MonoBehaviour
         // Just for debugging
         //GameManager.Instance.EnableSlowMotion();
 
-        StartCoroutine(nameof(WaitForCameraAndSendRefs));        
+        //StartCoroutine(nameof(WaitForCameraAndSendRefs));
+        SendRefsToCamera();
+    }
+    private void SendRefsToCamera()
+    {
+        CameraFollow cameraFollow = FindAnyObjectByType<CameraFollow>();                
+
+        if (cameraFollow != null)
+            cameraFollow.GetRefsOfPlayerMovement(this);
+        else
+            Debug.LogError("CameraFollow component Not Found on the Scene!");
     }
     private IEnumerator WaitForCameraAndSendRefs()
     {
@@ -318,6 +328,8 @@ public class PlayerMovement : MonoBehaviour
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
         if (cameraFollow != null)
             cameraFollow.GetRefsOfPlayerMovement(this);
+        else
+            Debug.LogError("CameraFollow component Not Found on the Scene!");
     }
     protected virtual void Update()
     {                       

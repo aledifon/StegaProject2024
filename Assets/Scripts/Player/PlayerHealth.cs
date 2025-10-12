@@ -12,9 +12,8 @@ public class PlayerHealth : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Image acornLife;
     [SerializeField] private float amountLife;               
-
-    [Header("Camera")]
-    [SerializeField] CameraFollow cameraFollow;
+    
+    CameraFollow cameraFollow;
 
     #region Events & Delegates
     public event Action<Vector2, float> OnHitFXPlayer;            
@@ -31,17 +30,28 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
 
         GameManager.Instance.SubscribeEventsOfPlayerHealth(this);
-        StartCoroutine(nameof(WaitForCameraAndSubscribe));
+        //StartCoroutine(nameof(WaitForCameraAndSubscribe));
+        SendRefsToCamera();
     }
-    #endregion
+    #endregion    
+    private void SendRefsToCamera()
+    {
+        cameraFollow = FindAnyObjectByType<CameraFollow>();                
+
+        if (cameraFollow != null)
+            cameraFollow.SubscribeEventsOfPlayerHealth(this);
+        else
+            Debug.LogError("CameraFollow component Not Found on the Scene!");
+    }
     private IEnumerator WaitForCameraAndSubscribe()
     {
-        yield return new WaitUntil(()=> Camera.main != null);
+        yield return new WaitUntil(() => Camera.main != null);
 
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
-        if (cameraFollow!= null)
-            cameraFollow.SubscribeEventsOfPlayerHealth(this);    
-    }    
+        if (cameraFollow != null)
+            cameraFollow.SubscribeEventsOfPlayerHealth(this);
+    }
+
     #region Damage
     // Player's Damage Handler 
     public void TakeDamage(int damageAmount, Vector2 thrustEnemyDir, float thrustEnemyForce)
