@@ -25,8 +25,8 @@ public class CameraFollow : MonoBehaviour
     [Header("Boundaries")]
     [SerializeField] CamBoundariesTriggerArea TotalBoundsArea;
     private CinemachineConfiner2D confiner2D;
-    //[SerializeField] CamBoundariesTriggerArea currentBoundsArea;
-    //[SerializeField] CamBoundariesTriggerArea lastBoundsArea;
+    [SerializeField] CamBoundariesTriggerArea currentBoundsArea;
+    [SerializeField] CamBoundariesTriggerArea lastBoundsArea;
 
     // Refs.    
     private PlayerMovement playerMovement;
@@ -51,8 +51,8 @@ public class CameraFollow : MonoBehaviour
     private void Start()
     {
         // Set the initial Cam Boundaries
-        if(player != null)
-            SetInitialBoundaries();
+        //if(player != null)
+        //    SetInitialBoundaries();
     }
     private void LateUpdate()
     {
@@ -82,6 +82,9 @@ public class CameraFollow : MonoBehaviour
     {
         SetTargetBoundaries(TotalBoundsArea);
 
+        currentBoundsArea = TotalBoundsArea;
+        lastBoundsArea = TotalBoundsArea;
+
         //// Detecta qué collider (área de límites) contiene la posición inicial del player
         //Collider2D hit = Physics2D.OverlapPoint(player.position, LayerMask.GetMask("CamTriggerArea"));
 
@@ -99,11 +102,7 @@ public class CameraFollow : MonoBehaviour
         //}
     }
     public void SetTargetBoundaries(CamBoundariesTriggerArea enteringArea)
-    {
-        // Set the current Area as the last Bondary Area and the New are as the current one
-        //lastBoundsArea = currentBoundsArea;
-        //currentBoundsArea = enteringArea;
-
+    {        
         if(confiner2D != null && enteringArea != null)
         {
             var boundsCollider = enteringArea.BoundsCollider;
@@ -111,9 +110,16 @@ public class CameraFollow : MonoBehaviour
                 Debug.LogError("The Bounds Collider Not Found on the gameobject " + enteringArea.gameObject);
             else
             {
+                if (confiner2D.BoundingShape2D != null)
+                    return;
+
                 // Assign the Collider of the new entering area to the Cinemachine Confiner2
-                confiner2D.BoundingShape2D = boundsCollider;    
-                // The Confiner will be updated on the next frame                
+                confiner2D.BoundingShape2D = boundsCollider;
+                // The Confiner will be updated on the next frame
+                
+                // Set the current Area as the last Bondary Area and the New are as the current one
+                lastBoundsArea = currentBoundsArea;
+                currentBoundsArea = enteringArea;
             }                
         }
     }
@@ -121,10 +127,21 @@ public class CameraFollow : MonoBehaviour
     {
         // Remove the Confiner 2D boundaires "No limits", (only if we are exiting from a
         // different area than the assigned one)
-        if(confiner2D != null && confiner2D.BoundingShape2D == exitingArea.BoundsCollider)
-        {
-            //confiner2D.BoundingShape2D = null;
-            confiner2D.BoundingShape2D = TotalBoundsArea.BoundsCollider;
+
+
+        // Every time we leave an area we have 2 scenarios checkin the confiner2D.BoundingShape2D:
+        // 1. It's set the same than the area we are currently exiting --> Set the boundaries of the Previous Saved Area
+        // 2. It's set a different one than the area we are currently exiting --> Just Update the Previous Area Ref. to the "non-limits" one.        
+        if(confiner2D != null)
+        {            
+            if (confiner2D.BoundingShape2D == exitingArea.BoundsCollider)
+            {
+                SetTargetBoundaries(lastBoundsArea);                
+            }                             
+            else if (confiner2D.BoundingShape2D != exitingArea.BoundsCollider)
+            {
+                lastBoundsArea = TotalBoundsArea;                
+            }              
         }
     }
     #endregion
