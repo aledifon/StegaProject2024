@@ -78,6 +78,13 @@ public class GameManager : MonoBehaviour
     [Header("Slow Motion Test")]
     [SerializeField] private bool slowMotionEnabled;
 
+    // Checkpoint    
+    [Header("Starting Pos")]
+    [SerializeField] private Transform initPos;
+    [SerializeField] private CamBoundariesTriggerArea initCamBoundTriggerArea;
+    private CamTriggerAreaData lastCheckpointData = new CamTriggerAreaData();    
+    public CamTriggerAreaData LastCheckpointData => lastCheckpointData;    
+
     // GO Refs.
     AudioSource generalAudioSource;
     PlayerHealth playerHealth;
@@ -113,6 +120,9 @@ public class GameManager : MonoBehaviour
 
         // Set the filterDuration
         //filterDuration = returnDuration;
+
+        // Set the Initial CheckPoint Data
+        SetInitCheckPointData();
     }
     private void OnDestroy()
     {
@@ -419,5 +429,24 @@ public class GameManager : MonoBehaviour
         //    ShowMouseCursor(false);
         //panelSelected = PanelSelected.Game;     // As the Pause can be launch from any Panel this could be wrong (NEEDED TO UPDATE!)
     }
+    #endregion
+    #region CheckPoint
+    private void SetInitCheckPointData()
+    {
+        lastCheckpointData.camTriggerAreaId = CamTriggerAreaEnum.CamTriggerArea.Init;
+        if (initPos == null || initCamBoundTriggerArea == null)
+            Debug.LogError("No any Init Respawn Pos and/or Cam Bound Trigger Area were assigned!");
+        else
+        {
+            lastCheckpointData.respawnPos = initPos;
+            lastCheckpointData.respawnCamBoundTriggerArea = initCamBoundTriggerArea;
+        }
+    }
+    public void SetLastCheckPointData(CamTriggerAreaData camTriggerAreaData)
+    {
+        lastCheckpointData = camTriggerAreaData;        
+
+        // Update the Player's position
+    }    
     #endregion
 }

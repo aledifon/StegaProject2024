@@ -7,7 +7,7 @@ public class Checkpoint : MonoBehaviour
 {
     Animator animator;
     AudioSource audiouSource;
-    bool isCaptured = false;
+    bool isCaptured = false;    
 
     [SerializeField] AudioClip clip;
 
@@ -27,6 +27,9 @@ public class Checkpoint : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private GameObject sparksVFX;
     private ParticleSystem[] sparksPS = new ParticleSystem[3];
+
+    [Header("Camera Confiner Data")]    
+    [SerializeField] private CamTriggerAreaData checkPointAreaData;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -60,7 +63,20 @@ public class Checkpoint : MonoBehaviour
             sparksPS[2] = InstantiateVFXPrefabs(sparksVFX, transform, transform);
             rotationX = Quaternion.AngleAxis(-30f, Vector3.up);
             sparksPS[2].transform.localRotation *= rotationX;            
+        }
+
+        // Check if the Camera Confiner Data are correctly set
+        if(checkPointAreaData.respawnPos == null)
+        {
+            Debug.LogError("No Respawn Pos assigned!");
+            checkPointAreaData.respawnPos = transform;
         }            
+
+        if (checkPointAreaData.camTriggerAreaId == CamTriggerAreaEnum.CamTriggerArea.Init)
+            Debug.LogError("The Area Id position set is not correct!");
+
+        if (checkPointAreaData.respawnCamBoundTriggerArea == null)
+            Debug.LogError("No Cam Bound Trigger Area is assigned to this Checkpoint GO!");
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -70,7 +86,7 @@ public class Checkpoint : MonoBehaviour
             isCaptured = true;
 
             // Register the checkpoint pos. as the player Respawn position.          
-            // GameManager.Instance.RegisterCheckPoint();
+            GameManager.Instance.SetLastCheckPointData(checkPointAreaData);
 
             StartCoroutine(nameof(CaptureCheckpoint));
         }
