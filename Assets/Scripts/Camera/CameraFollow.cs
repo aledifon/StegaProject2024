@@ -1,5 +1,7 @@
 using DG.Tweening;
+using System.Collections;
 using Unity.Cinemachine;
+using UnityEditor;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -28,6 +30,11 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] CamBoundariesTriggerArea currentBoundsArea;
     [SerializeField] CamBoundariesTriggerArea lastBoundsArea;
 
+    private bool ignoreTriggerAtStart = true;
+    private bool confinerTriggersEnabled = false;
+    public bool ConfinerTriggersEnabled => confinerTriggersEnabled; 
+    private float ignoreTriggerTime = 0.2f;    
+
     // Refs.    
     private PlayerMovement playerMovement;
     private SpriteRenderer playerSprite;
@@ -51,8 +58,14 @@ public class CameraFollow : MonoBehaviour
     private void Start()
     {
         // Set the initial Cam Boundaries
-        //if(player != null)
-        //    SetInitialBoundaries();
+        if (player != null && GameManager.Instance.LastCheckpointData != null)
+            SetConfinerFromCheckpoint(GameManager.Instance.LastCheckpointData.respawnCamBoundTriggerArea);
+
+        // Manage when the Collider Triggers of the Confiners will be enabled
+        if (ignoreTriggerAtStart)
+            StartCoroutine(EnableTriggersAfterDelay(ignoreTriggerTime));
+        else
+            confinerTriggersEnabled = true;
     }
     private void LateUpdate()
     {
@@ -78,28 +91,17 @@ public class CameraFollow : MonoBehaviour
     }
     #endregion
     #region Boundaries
-    private void SetInitialBoundaries()
+    private IEnumerator EnableTriggersAfterDelay(float ignoreTime)
     {
-        SetTargetBoundaries(TotalBoundsArea);
+        yield return new WaitForSeconds(ignoreTime);
+        confinerTriggersEnabled = true;
+    }
+    private void SetConfinerFromCheckpoint(CamBoundariesTriggerArea camArea)
+    {               
+        SetTargetBoundaries(camArea);
 
-        currentBoundsArea = TotalBoundsArea;
-        lastBoundsArea = TotalBoundsArea;
-
-        //// Detecta qué collider (área de límites) contiene la posición inicial del player
-        //Collider2D hit = Physics2D.OverlapPoint(player.position, LayerMask.GetMask("CamTriggerArea"));
-
-        //if (hit != null)
-        //{
-        //    //CamBoundariesTriggerArea area = hit.GetComponent<CamBoundariesTriggerArea>();
-        //    CamBoundariesTriggerArea area = hit.GetComponent<CamBoundariesTriggerArea>();
-
-        //    if (area != null)
-        //        SetTargetBoundaries(area);            
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("CameraFollow: Was not found a Cam Limited area on the player initial position.");            
-        //}
+        currentBoundsArea = camArea;
+        lastBoundsArea = null;        
     }
     public void SetTargetBoundaries(CamBoundariesTriggerArea enteringArea)
     {        
@@ -110,8 +112,8 @@ public class CameraFollow : MonoBehaviour
                 Debug.LogError("The Bounds Collider Not Found on the gameobject " + enteringArea.gameObject);
             else
             {
-                if (confiner2D.BoundingShape2D != null)
-                    return;
+                if (confiner2D.BoundingShape2D == enteringArea.BoundsCollider)
+                    return; // ya estamos usando este confiner
 
                 // Assign the Collider of the new entering area to the Cinemachine Confiner2
                 confiner2D.BoundingShape2D = boundsCollider;
@@ -135,14 +137,30 @@ public class CameraFollow : MonoBehaviour
         if(confiner2D != null)
         {            
             if (confiner2D.BoundingShape2D == exitingArea.BoundsCollider)
-            {
-                SetTargetBoundaries(lastBoundsArea);                
+            {                                
+                SetTargetBoundaries(CheckCamTriggerArea());
             }                             
             else if (confiner2D.BoundingShape2D != exitingArea.BoundsCollider)
             {
-                lastBoundsArea = TotalBoundsArea;                
+                lastBoundsArea = null;                
             }              
         }
+    }
+    private CamBoundariesTriggerArea CheckCamTriggerArea()
+    {
+        CamBoundariesTriggerArea area;
+        area = null;
+
+        // Detecta qué collider (área de límites) contiene la posición inicial del player
+        Collider2D hit = Physics2D.OverlapPoint(player.position, LayerMask.GetMask("CamTriggerArea"));        
+
+        if (hit != null)                    
+            area = hit.GetComponent<CamBoundariesTriggerArea>();
+
+        if (area == null)
+            area = TotalBoundsArea;
+
+        return area;
     }
     #endregion
     #region Offsets

@@ -4600,6 +4600,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkpointId
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 326584260}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnPos
+      value: 
+      objectReference: {fileID: 2131572461}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.camTriggerAreaId
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 326584260}
     - target: {fileID: 7027866629462597089, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 56.5
@@ -4642,7 +4662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_Name
-      value: Checkpoint4
+      value: Checkpoint04
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_IsActive
@@ -6232,6 +6252,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkpointId
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 1564685368}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnPos
+      value: 
+      objectReference: {fileID: 1103712797}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.camTriggerAreaId
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 1564685368}
     - target: {fileID: 7027866629462597089, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 128.5
@@ -6274,7 +6314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_Name
-      value: Checkpoint5
+      value: Checkpoint05
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_IsActive
@@ -12863,6 +12903,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkpointId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: respawnConfinerCollider
+      value: 
+      objectReference: {fileID: 1322276469}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 394524320}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnPos
+      value: 
+      objectReference: {fileID: 1648581352}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.camTriggerAreaId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 394524320}
     - target: {fileID: 7027866629462597089, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4
@@ -12905,7 +12969,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_Name
-      value: Checkpoint2
+      value: Checkpoint02
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_IsActive
@@ -13856,7 +13920,7 @@ GameObject:
   - component: {fileID: 326584261}
   - component: {fileID: 326584260}
   - component: {fileID: 326584259}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: TotalAreaCamTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20192,7 +20256,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.550003, y: 1.862999, z: -10.01}
+  m_LocalPosition: {x: 128.55, y: 46.863, z: -10.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26562,6 +26626,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3189315619075654935, guid: adecd244dcf4e894abdd7faf343f2d71, type: 3}
   m_PrefabInstance: {fileID: 637508776}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &642758334
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 642758335}
+  m_Layer: 0
+  m_Name: SpawnPos00
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &642758335
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642758334}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &644426904
 GameObject:
   m_ObjectHideFlags: 0
@@ -32697,6 +32792,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1355249355681789982, guid: d2a860d78ce295a4d810ba8d41b4de29, type: 3}
   m_PrefabInstance: {fileID: 750683407}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &812460566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 812460567}
+  m_Layer: 0
+  m_Name: SpawnPos01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &812460567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812460566}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 40, y: 27, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &814567611
 GameObject:
   m_ObjectHideFlags: 0
@@ -38777,7 +38903,7 @@ Transform:
   m_GameObject: {fileID: 895413750}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.550003, y: 1.862999, z: -10.01}
+  m_LocalPosition: {x: 128.55, y: 46.863, z: -10.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -211869,7 +211995,7 @@ Transform:
   m_GameObject: {fileID: 1072431785}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.550003, y: 1.862999, z: 0}
+  m_LocalPosition: {x: 128.55, y: 46.863, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -213369,6 +213495,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 113.56777, y: -0.66342807, z: -0.067915924}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1103712796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1103712797}
+  m_Layer: 0
+  m_Name: SpawnPos05
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1103712797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103712796}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 128.5, y: 17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -215252,6 +215409,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1177584699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1177584700}
+  m_Layer: 0
+  m_Name: SpawnPos03
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1177584700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177584699}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 69, y: 64, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1180443240
 GameObject:
   m_ObjectHideFlags: 0
@@ -221816,6 +222004,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkpointId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: respawnConfinerCollider
+      value: 
+      objectReference: {fileID: 1548317038}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 326584260}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnPos
+      value: 
+      objectReference: {fileID: 1177584700}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.camTriggerAreaId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 326584260}
     - target: {fileID: 7027866629462597089, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 69
@@ -221858,7 +222070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_Name
-      value: Checkpoint3
+      value: Checkpoint03
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_IsActive
@@ -226878,6 +227090,8 @@ MonoBehaviour:
   volumeDropDeafFwdDuration: 0.5
   pausePanel: {fileID: 1980167304}
   slowMotionEnabled: 0
+  initPos: {fileID: 642758335}
+  initCamBoundTriggerArea: {fileID: 422694092}
 --- !u!114 &1419110056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235214,6 +235428,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1648581351
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1648581352}
+  m_Layer: 0
+  m_Name: SpawnPos02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1648581352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648581351}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -253901,6 +254146,37 @@ MonoBehaviour:
   zCamOffset: 0
   sizeCam: 8.5
   sizeSmoothTime: 2
+--- !u!1 &2131572460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2131572461}
+  m_Layer: 0
+  m_Name: SpawnPos04
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2131572461
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131572460}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 56.5, y: 87, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2133851049
 GameObject:
   m_ObjectHideFlags: 0
@@ -255086,6 +255362,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkpointId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: respawnConfinerCollider
+      value: 
+      objectReference: {fileID: 1322276469}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 394524320}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnPos
+      value: 
+      objectReference: {fileID: 812460567}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.camTriggerAreaId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672900635016478574, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
+      propertyPath: checkPointAreaData.respawnCamBoundTriggerArea
+      value: 
+      objectReference: {fileID: 394524320}
     - target: {fileID: 7027866629462597089, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40
@@ -255128,7 +255428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_Name
-      value: Checkpoint
+      value: Checkpoint01
       objectReference: {fileID: 0}
     - target: {fileID: 8354255899967748190, guid: 78a7fd9d7b889e04ea696c2a9b53f19a, type: 3}
       propertyPath: m_IsActive
@@ -255345,17 +255645,23 @@ SceneRoots:
   - {fileID: 918305944}
   - {fileID: 913591485}
   - {fileID: 1488607365}
+  - {fileID: 642758335}
   - {fileID: 1225300229}
   - {fileID: 8515443190927688086}
+  - {fileID: 812460567}
   - {fileID: 281028912}
+  - {fileID: 1648581352}
   - {fileID: 616169350}
   - {fileID: 466623602}
   - {fileID: 1306326344}
+  - {fileID: 1177584700}
   - {fileID: 1464069977}
   - {fileID: 1270242384}
   - {fileID: 60976062}
+  - {fileID: 2131572461}
   - {fileID: 1369731070}
   - {fileID: 111347359}
+  - {fileID: 1103712797}
   - {fileID: 8309504242618032540}
   - {fileID: 7576640934038464006}
   - {fileID: 691227817}

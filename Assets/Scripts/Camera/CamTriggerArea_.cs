@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CamTriggerArea : MonoBehaviour
+public class CamTriggerArea_ : MonoBehaviour
 {
     Collider2D colliderTrigger;
     //PlayerMovement player;
