@@ -55,6 +55,10 @@ public class PlayerSFX : MonoBehaviour
     [SerializeField] private AudioClip eatAcornSFX;
     [SerializeField, Range(0f, 1f)] float eatAcornVolume;  // 0.4f
 
+    [Header("Lifes")]
+    [SerializeField] private AudioClip getLifeSFX;
+    [SerializeField, Range(0f, 1f)] float getLifeVolume;  // 0.4f
+
     [Header("Pitch")]
     [SerializeField] float lowPitchRange = 0.95f;
     [SerializeField] float highPitchRange = 1.05f;
@@ -113,6 +117,9 @@ public class PlayerSFX : MonoBehaviour
         }
         // Acorn
         playerMovement.OnEatAcorn += PlayEatAcornSFX;        
+        
+        // Life
+        playerMovement.OnGetLife += PlayGetLifeSFX;        
     }
     private void OnDisable()
     {
@@ -148,6 +155,9 @@ public class PlayerSFX : MonoBehaviour
         }
         // Acorn
         playerMovement.OnEatAcorn -= PlayEatAcornSFX;        
+        
+        // Life
+        playerMovement.OnGetLife -= PlayGetLifeSFX;        
     }
     private void Update()
     {
@@ -356,6 +366,12 @@ public class PlayerSFX : MonoBehaviour
     private void PlayEatAcornSFX()
     {
         PlaySFXOneShot(fxAudioSource, eatAcornSFX, eatAcornVolume);
+    }
+    #endregion
+    #region Life
+    private void PlayGetLifeSFX()
+    {
+        PlaySFXOneShot(fxAudioSource, getLifeSFX, getLifeVolume);
     }
     #endregion
     #region Enemy Jump

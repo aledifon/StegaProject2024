@@ -20538,7 +20538,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 128.55, y: 46.863, z: -10.01}
+  m_LocalPosition: {x: 2.550003, y: 1.862999, z: -10.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39262,7 +39262,7 @@ Transform:
   m_GameObject: {fileID: 895413750}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 128.55, y: 46.863, z: -10.01}
+  m_LocalPosition: {x: 2.550003, y: 1.862999, z: -10.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41810,6 +41810,8 @@ MonoBehaviour:
   enemyJumpVolume: 0
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
   eatAcornVolume: 0.45
+  getLifeSFX: {fileID: 0}
+  getLifeVolume: 0
   lowPitchRange: 0.95
   highPitchRange: 1.05
   fxAudioSource: {fileID: 938598652}
@@ -41911,10 +41913,8 @@ MonoBehaviour:
   thrustEnemyDuration: 0.08
   thrustEnemyTimer: 0
   isThrustEnemyTimerEnabled: 0
-  textAcornUI: {fileID: 1428549074}
-  elevatorLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  textGemsUI: {fileID: 0}
+  textLifesUI: {fileID: 0}
   groundChecks:
   - {fileID: 1811070427}
   - {fileID: 1069018700}
@@ -211898,6 +211898,8 @@ MonoBehaviour:
   enemyJumpVolume: 1
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
   eatAcornVolume: 0.45
+  getLifeSFX: {fileID: 8300000, guid: ba7af307a3048c446aa9d91806e39e52, type: 3}
+  getLifeVolume: 1
   lowPitchRange: 0.95
   highPitchRange: 1.05
   fxAudioSource: {fileID: 1072431790}
@@ -211954,7 +211956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
-  acornLife: {fileID: 1116674855}
+  iconLife: {fileID: 1116674855}
   amountLife: 0.2
 --- !u!114 &1072431789
 MonoBehaviour:
@@ -212015,10 +212017,8 @@ MonoBehaviour:
   thrustEnemyDuration: 0.08
   thrustEnemyTimer: 0
   isThrustEnemyTimerEnabled: 0
-  textAcornUI: {fileID: 1428549074}
-  elevatorLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  textGemsUI: {fileID: 1428549074}
+  textLifesUI: {fileID: 482023406}
   groundChecks:
   - {fileID: 1671145974}
   - {fileID: 2145068751}
@@ -212429,7 +212429,7 @@ Transform:
   m_GameObject: {fileID: 1072431785}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 128.55, y: 46.863, z: 0}
+  m_LocalPosition: {x: 2.550003, y: 1.862999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -215080,7 +215080,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -19, y: -10}
-  m_SizeDelta: {x: 180, y: 85}
+  m_SizeDelta: {x: 170, y: 75}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1146728865
 MonoBehaviour:
@@ -227523,6 +227523,9 @@ MonoBehaviour:
   filterDeafFwdDuration: 0.8
   volumeDropDeafFwdDuration: 0.5
   pausePanel: {fileID: 1980167304}
+  gemsUIImage: {fileID: 2010716870}
+  lifesUIImage: {fileID: 1044315658}
+  healthUIImage: {fileID: 1116674854}
   slowMotionEnabled: 0
   initPos: {fileID: 642758335}
   initCamBoundTriggerArea: {fileID: 422694092}
@@ -227869,10 +227872,8 @@ MonoBehaviour:
   thrustEnemyDuration: 0
   thrustEnemyTimer: 0
   isThrustEnemyTimerEnabled: 0
-  textAcornUI: {fileID: 1428549074}
-  elevatorLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  textGemsUI: {fileID: 0}
+  textLifesUI: {fileID: 0}
   groundChecks:
   - {fileID: 2030953632}
   - {fileID: 258753212}
@@ -228158,7 +228159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
-  acornLife: {fileID: 1116674855}
+  iconLife: {fileID: 0}
   amountLife: 0.2
 --- !u!114 &1427650247
 MonoBehaviour:
@@ -228254,6 +228255,8 @@ MonoBehaviour:
   enemyJumpVolume: 0
   eatAcornSFX: {fileID: 8300000, guid: 0286cb6c655576644a8871257da47764, type: 3}
   eatAcornVolume: 0
+  getLifeSFX: {fileID: 0}
+  getLifeVolume: 0
   lowPitchRange: 0.95
   highPitchRange: 1.05
   fxAudioSource: {fileID: 0}

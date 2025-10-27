@@ -10,7 +10,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float currentHealth;
 
     [Header("UI")]
-    [SerializeField] private Image acornLife;
+    [SerializeField] private Image iconLife;
     [SerializeField] private float amountLife;               
     
     CameraFollow cameraFollow;
@@ -62,7 +62,7 @@ public class PlayerHealth : MonoBehaviour
             return;
 
         // Update's Player's Life and Acorn Life's UI
-        //DecreaseHealth(damageAmount);
+        DecreaseHealth(damageAmount);
 
         // If Health <=0 --> Executes Death Method
         if (currentHealth <= 0)
@@ -70,6 +70,12 @@ public class PlayerHealth : MonoBehaviour
             Death();
             return;
         }
+
+        // Play The Health VFX
+        PlayerHealthVFX.Play(
+            GameManager.Instance.HealthUIImage,
+            1f, 60f, 220, 150f,
+            1f, 2f);
 
         // Trigger the OnHitFXPlayer Event        
         OnHitFXPlayer?.Invoke(thrustEnemyDir, thrustEnemyForce);
@@ -80,13 +86,15 @@ public class PlayerHealth : MonoBehaviour
     {
         // Update's Player's Life and Acorn Life's UI
         currentHealth -= amount;
-        acornLife.fillAmount = currentHealth / maxHealth;
+        currentHealth = Mathf.Clamp(currentHealth,0,maxHealth);
+        iconLife.fillAmount = currentHealth / maxHealth;
     }
     private void IncreaseHealth(int amount)
     {
         // Update's Player's Life and Acorn Life's UI
         currentHealth += amount;
-        acornLife.fillAmount = currentHealth / maxHealth;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        iconLife.fillAmount = currentHealth / maxHealth;
     }
     #endregion
     #region Death
