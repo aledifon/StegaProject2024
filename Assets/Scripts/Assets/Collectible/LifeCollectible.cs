@@ -69,11 +69,18 @@ public class LifeCollectible : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !isCaptured)
         {
-            myCollider.enabled = false;
             isCaptured = true;
 
-            // Register the checkpoint pos. as the player Respawn position.          
-            // GameManager.Instance.RegisterCheckPoint();
+            // Save the sprite before disabling it
+            Sprite lifeSprite = itemSprite.sprite;
+
+            myCollider.enabled = false;            
+
+            // Increase Lifes counter
+            collision.gameObject.GetComponent<PlayerMovement>().IncreaseLifes();
+
+            // Play Life Fly VFX
+            CollectItemFlyFX.Play(lifeSprite, transform.position, GameManager.Instance.LifesUIImage);
 
             StartCoroutine(nameof(CaptureLife));            
         }

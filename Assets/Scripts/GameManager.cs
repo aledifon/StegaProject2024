@@ -74,6 +74,12 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private RectTransform gemsUIImage;
+    public RectTransform GemsUIImage => gemsUIImage;    
+    [SerializeField] private RectTransform lifesUIImage;
+    public RectTransform LifesUIImage => lifesUIImage;    
+    [SerializeField] private RectTransform healthUIImage;
+    public RectTransform HealthUIImage => healthUIImage;    
 
     [Header("Slow Motion Test")]
     [SerializeField] private bool slowMotionEnabled;
@@ -123,6 +129,9 @@ public class GameManager : MonoBehaviour
 
         // Set the Initial CheckPoint Data
         SetInitCheckPointData();
+
+        // Get the Gems UI Position
+        CheckGemsUIRef();
     }
     private void OnDestroy()
     {
@@ -447,6 +456,47 @@ public class GameManager : MonoBehaviour
         lastCheckpointData = camTriggerAreaData;        
 
         // Update the Player's position
-    }    
+    }
+    #endregion
+    #region GemsUIPos
+    private void CheckGemsUIRef()
+    {
+        if (gemsUIImage == null)
+        {
+            Debug.LogError("No Gems UI Image Pos. Ref assigned to GameManager!");
+            return;
+        }
+        if (lifesUIImage == null)
+        {
+            Debug.LogError("No Lifes UI Image Pos. Ref assigned to GameManager!");
+            return;
+        }
+        if (healthUIImage == null)
+        {
+            Debug.LogError("No Health UI Image Pos. Ref assigned to GameManager!");
+            return;
+        }
+        //Camera cam = Camera.main;
+        //if (cam == null)
+        //    cam = FindFirstObjectByType<Camera>();
+    }
+    //public Vector3 GetGemsUIPos()
+    //{                
+    //    // Convert the Gem UI Pos from Screen Pos to World Pos 
+    //    Vector3 screenPos = gemsUIImage.position;
+    //    Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+    //    worldPos.z = 0;
+
+    //    return worldPos;
+    //}
+    //public Vector3 GetLifesUIPos()
+    //{                
+    //    // Convert the Gem UI Pos from Screen Pos to World Pos 
+    //    Vector3 screenPos = lifesUIImage.position;
+    //    Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+    //    worldPos.z = 0;
+
+    //    return worldPos;
+    //}
     #endregion
 }

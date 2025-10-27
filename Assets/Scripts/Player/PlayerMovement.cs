@@ -104,16 +104,32 @@ public class PlayerMovement : MonoBehaviour
     private float enemyHitThrust;    
 
     // UI        
-    [Header("Acorn")]
-    [SerializeField] private TextMeshProUGUI textAcornUI;
-    private float numAcorn;
-    private float NumAcorn
-    { get { return numAcorn; } 
-      set { numAcorn = Mathf.Clamp(value,0,99); } 
+    [Header("Gems")]
+    [SerializeField] private TextMeshProUGUI textGemsUI;
+    private float numGems;
+    private float NumGems
+    { get { return numGems; } 
+      set 
+        {
+            if (value >= 10)
+            {
+                numGems = 0;
+                IncreaseLifes();
+                // Play Get Life SFx            
+                OnGetLife?.Invoke();
+            }                
+            else
+                numGems = value; 
+        } 
     }
 
-    [Header("Elevator")]
-    [SerializeField] LayerMask elevatorLayer;
+    [Header("Lifes")]
+    [SerializeField] private TextMeshProUGUI textLifesUI;
+    private float numLifes;
+    private float NumLifes
+    { get { return numLifes; } 
+      set { numLifes = Mathf.Clamp(value,0,99); } 
+    }    
 
     [Header("Raycast")]
     // Raycast Ground check
@@ -196,6 +212,7 @@ public class PlayerMovement : MonoBehaviour
     public event Action OnStopRopeSwinging;
 
     public event Action OnEatAcorn;    
+    public event Action OnGetLife;    
     #endregion
 
     // Delay Time used for triggering OnLandingJump Event
@@ -300,9 +317,12 @@ public class PlayerMovement : MonoBehaviour
         
         GetGORefs();
 
-        NumAcorn = 0;
-        textAcornUI.text = NumAcorn.ToString();               
-         
+        NumGems = 0;
+        textGemsUI.text = NumGems.ToString();
+
+        NumLifes = 0;
+        textLifesUI.text = NumLifes.ToString();
+
         GameManager.Instance.SubscribeEventsOfPlayerMovement(this);        
         GameManager.Instance.GetInputActionMaps(GetComponent<PlayerInput>().actions);
 
@@ -441,9 +461,9 @@ public class PlayerMovement : MonoBehaviour
             // Acorn dissappear
             Destroy(collision.gameObject);
             // Increase Acorn counter
-            NumAcorn++;
+            NumGems++;
             // Update Acorn counter UI Text
-            textAcornUI.text = NumAcorn.ToString();
+            textGemsUI.text = NumGems.ToString();
 
             // Play Acorn Fx            
             OnEatAcorn?.Invoke();
@@ -459,9 +479,9 @@ public class PlayerMovement : MonoBehaviour
             // Acorn dissappear
             Destroy(collision.gameObject);
             // Increase Acorn counter
-            NumAcorn++;
+            NumGems++;
             // Update Acorn counter UI Text
-            textAcornUI.text = NumAcorn.ToString();
+            textGemsUI.text = NumGems.ToString();
 
             // Play Finish Level Fx            
             //OnEatAcorn?.Invoke();
@@ -1680,12 +1700,19 @@ public class PlayerMovement : MonoBehaviour
         isKeyUnlocked = true;
         Debug.Log("Golden Key Unlocked!");
     }
-    public void IncreaseAcorns()
+    public void IncreaseGems()
     {
-        // Increase Acorn counter
-        NumAcorn++;
-        // Update Acorn counter UI Text
-        textAcornUI.text = NumAcorn.ToString();
+        // Increase Gems counter
+        NumGems++;
+        // Update Gems counter UI Text
+        textGemsUI.text = NumGems.ToString();
+    }
+    public void IncreaseLifes()
+    {
+        // Increase Lifes counter
+        NumLifes++;
+        // Update Lifes counter UI Text
+        textLifesUI.text = NumLifes.ToString();
     }
     #endregion
 

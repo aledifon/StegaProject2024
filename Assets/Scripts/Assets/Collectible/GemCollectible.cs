@@ -20,24 +20,27 @@ public class GemCollectible : MonoBehaviour
         // Get components on the parent GO        
         audioSource = GetComponent<AudioSource>();
         myCollider = GetComponent<Collider2D>();      
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();        
     }        
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && !isCaptured)
         {
-            myCollider.enabled = false;
-            spriteRenderer.enabled = false;
             isCaptured = true;
+
+            // Save the sprite before disabling it
+            Sprite gemsprite = spriteRenderer.sprite;
+
+            myCollider.enabled = false;
+            spriteRenderer.enabled = false;            
 
             audioSource.PlayOneShot(clip);
 
-            collision.gameObject.GetComponent<PlayerMovement>().IncreaseAcorns();
-
             // Increase Gems counter
-            // NumAcorn++;
-            // Update Gems counter UI Text
-            // textAcornUI.text = NumAcorn.ToString();
+            collision.gameObject.GetComponent<PlayerMovement>().IncreaseGems();
+
+            // Play Gem Fly VFX
+            CollectItemFlyFX.Play(gemsprite, transform.position,GameManager.Instance.GemsUIImage);
 
             Destroy(gameObject,2f);
         }
