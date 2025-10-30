@@ -1,14 +1,16 @@
-using Demo_Project;
 using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Timers;
 using UnityEditor;
+//using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
+using static ScenesEnum;
+using TMPro;
 public class GameManager : MonoBehaviour
 {
     // Singleton instance of GameManager
@@ -31,6 +33,9 @@ public class GameManager : MonoBehaviour
             return instance; 
         }
     }
+
+    public static readonly bool isWebGL = Application.platform == RuntimePlatform.WebGLPlayer;
+    //public static readonly bool isWebGL = false;     // true = WebGL, false = Windows
 
     [Header("Audio Clips")]
     [SerializeField] AudioClip gameOverClip;
@@ -79,7 +84,29 @@ public class GameManager : MonoBehaviour
     [SerializeField] private RectTransform lifesUIImage;
     public RectTransform LifesUIImage => lifesUIImage;    
     [SerializeField] private RectTransform healthUIImage;
-    public RectTransform HealthUIImage => healthUIImage;    
+    public RectTransform HealthUIImage => healthUIImage;
+
+
+    private GameObject canvas;
+
+    private GameObject introPanel;          // Disable->Enable +
+                                            // Fade In/Out Color Image (Black-->Red-->Black)
+
+    private Image stegaImage;               // Fade In/Out alpha Image (0->100->0)
+    private Image aledifonImage;            // Fade In/Out alpha Text (0->100->0)
+
+    private GameObject menuPanel;
+    private TextMeshProUGUI titleText;      // Fade In/Out alpha Image (0->100)
+    private GameObject optionTextContainer; // Disable->Enable
+    private GameObject selectorOption;      // Disable->Enable
+    private TextMeshProUGUI buildVersion;   // Disable->Enable
+
+    private GameObject controlsPanel;       
+    private GameObject introScenePanel;
+    private TextMeshProUGUI introSceneText; // Machine writting VFX
+
+    private UIMenuSelectEnum.UIMenuSelect uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
+    private Scenes sceneSelected = Scenes.Menu;
 
     [Header("Slow Motion Test")]
     [SerializeField] private bool slowMotionEnabled;
@@ -111,10 +138,14 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
             return;
-        }            
-        
+        }        
+
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;  // Subscribe to the event.
+
+        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
 
         generalAudioSource = GetComponent<AudioSource>();
         PlayLevelMusic();
@@ -132,9 +163,16 @@ public class GameManager : MonoBehaviour
 
         // Get the Gems UI Position
         CheckGemsUIRef();
+
+        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
     }
     private void OnDestroy()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
+        // ONLY SHOULD BE CALLED WHEN CLOSED LEVEL SCENE
+
         if (playerHealth != null)
         {
             playerHealth.OnHitFXPlayer -= SlowMotionOnHit;
@@ -150,9 +188,46 @@ public class GameManager : MonoBehaviour
         {
             OnPauseEnabled -= playerSFX.PauseAllSFX;            
             OnPauseDisabled -= playerSFX.ResumeAllSFX;            
-        }        
+        }
+
+        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
+        // ONLY SHOULD BE CALLED WHEN CLOSED LEVEL SCENE
 
         instance = null;
+    }
+    #endregion
+    #region Scene Management
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        canvas = GameObject.Find("Canvas");
+        if (canvas == null)
+            Debug.LogError("The Canvas object is null");
+
+        // Parsing the Scene Name to enum typedata
+        if (System.Enum.TryParse(SceneManager.GetActiveScene().name, out Scenes currentScene))
+        {
+            switch (currentScene)
+            {
+                case Scenes.Menu:
+
+                    // Set the new Scene as the current one
+                    sceneSelected = currentScene;
+
+                    // Get all the GO's Refs
+
+
+
+                    break;
+                case Scenes.Level:
+
+                    // Set the new Scene as the current one
+                    sceneSelected = currentScene;
+
+                    // Get all the GO's Refs
+
+                    break;
+            }
+        }
     }
     #endregion
     #region Events Subscriptions
@@ -179,25 +254,106 @@ public class GameManager : MonoBehaviour
     {
         inputActions = inputActionsAsset;
     }    
+    public void EnableUIMainMenuInput()
+    {
+        // Enable the UI-Main Menu Action Map & Disable the others.
+        inputActions.FindActionMap("UI-MainMenu").Enable();
+        inputActions.FindActionMap("Gameplay").Disable();
+        inputActions.FindActionMap("UI-InGame").Disable();
+    }
     public void EnableGameplayInput()
     {
-        // Enable the Gameplay Action Map & Disable the Pause Action Map
+        // Enable the Gameplay Action Map & Disable the others.
         inputActions.FindActionMap("Gameplay").Enable();
-        inputActions.FindActionMap("UI").Disable();
+        inputActions.FindActionMap("UI-InGame").Disable();
+        inputActions.FindActionMap("UI-MainMenu").Disable();
     }
     public void EnablePauseInput()
     {
-        // Enable the Pause Action Map & Disable the Gamplay Action Map
+        // Enable the Pause Action Map & Disable the others.        
+        inputActions.FindActionMap("UI-InGame").Enable();
         inputActions.FindActionMap("Gameplay").Disable();
-        inputActions.FindActionMap("UI").Enable();
+        inputActions.FindActionMap("UI-MainMenu").Disable();
     }
     public void DisableAllInputs()
     {
         inputActions.FindActionMap("Gameplay").Disable();
-        inputActions.FindActionMap("UI").Disable();
+        inputActions.FindActionMap("UI-InGame").Disable();
+        inputActions.FindActionMap("UI-MainMenu").Disable();
     }
     #endregion
     #region Input Player
+    public void KeyPressedUI(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            // Depending where I am ('Panel') and selection ('Start Game'/'Options')                       
+
+            // If (currentPanel == MenuPanel) && StartText.enabled -->
+            // StartText.disable
+            // StartButton & OptionsButton enabled
+            uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
+
+            // Else if (currentPanel == MenuPanel) && 'Options' Selected -->
+            // currentPanel = OptionsPanel            
+
+            // Else if (currentPanel == MenuPanel) && 'Quit Game' Selected -->
+            // QuitGame();
+
+            // Else if (currentPanel == MenuPanel) && 'Start Game' Selected -->
+            // currentPanel = IntroScenePanel
+            // Delay x secs
+            // LoadScene(LevelScene);
+
+            // Else if (currentPanel == OptionsPanel) -->
+            // currentPanel = MenuPanel
+            uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
+        }
+    }
+    public virtual void SwitchSelectionUI(InputAction.CallbackContext context)
+    {
+        Vector2 direction = context.ReadValue<Vector2>();
+
+        // If currentPanel != MenuPanel -->
+        // return;
+
+        // Else -->
+        float vertical = direction.y;
+        if (vertical > 0.5f) 
+            ;//NavigateUp()
+        else if (vertical < 0.5f)
+            ;//NavigateDown()
+    }
+    public void NavigateUp()
+    {
+        if (uiMenuSelect == UIMenuSelectEnum.UIMenuSelect.StartGame)
+        {
+            uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.QuitGame;            
+        }
+
+        else
+        {
+            uiMenuSelect++;
+        }
+
+        // Update the Visual Select on UI
+        // VisualArray[uiMenuSelect]
+    }
+    public void NavigateDown()
+    {
+        if (uiMenuSelect == UIMenuSelectEnum.UIMenuSelect.QuitGame)
+        {
+            uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;            
+        }
+
+        else
+        {
+            uiMenuSelect--;
+        }
+
+        // Update the Visual Select on UI
+        // VisualArray[uiMenuSelect]
+    }
     public void PauseResumeGameInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)                    

@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: 1047ecf5ce4440f4589b1ac3deca69af
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7314456130870445464
+    second: SelectionKeyBoardTransp_0
+  - first:
+      213: -578656508554538853
+    second: SelectionKeyBoardTransp_1
+  - first:
+      213: 5266530796580268854
+    second: SelectionKeyBoardTransp_2
+  - first:
+      213: 2108299968345561378
+    second: SelectionKeyBoardTransp_3
+  - first:
+      213: 989522160696821371
+    second: SelectionKeyBoardTransp_4
+  - first:
+      213: -3401426505666579364
+    second: SelectionKeyBoardTransp_5
+  - first:
+      213: 7604669168833793650
+    second: SelectionKeyBoardTransp_6
+  - first:
+      213: -4605426483490548831
+    second: SelectionKeyBoardTransp_7
+  - first:
+      213: 536955027479882182
+    second: SelectionKeyBoardTransp_8
+  - first:
+      213: 9119690665745226733
+    second: SelectionKeyBoardTransp_9
+  - first:
+      213: 2487347679804953053
+    second: SelectionKeyBoardTransp_10
+  - first:
+      213: -6274090260859408786
+    second: SelectionKeyBoardTransp_11
+  - first:
+      213: -3109869882278047817
+    second: SelectionKeyBoardTransp_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_0
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89506bde81b228560800000000000000
+      internalID: 7314456130870445464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_1
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9093a8a8f238f7f0800000000000000
+      internalID: -578656508554538853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_2
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63b62d03bd9761940800000000000000
+      internalID: 5266530796580268854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_3
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2295435a6af224d10800000000000000
+      internalID: 2108299968345561378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_4
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7606b5992d7bbd00800000000000000
+      internalID: 989522160696821371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_5
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5435285d94bbc0d0800000000000000
+      internalID: -3401426505666579364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_6
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 179
+        width: 114
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27e04ba5156398960800000000000000
+      internalID: 7604669168833793650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_7
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 179
+        width: 115
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a39e5c830d3610c0800000000000000
+      internalID: -4605426483490548831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_8
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 177
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c96c49a0c5a37700800000000000000
+      internalID: 536955027479882182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_9
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 121
+        width: 418
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: deb9031a756af8e70800000000000000
+      internalID: 9119690665745226733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_10
+      rect:
+        serializedVersion: 2
+        x: 888
+        y: 122
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd19aa74985d48220800000000000000
+      internalID: 2487347679804953053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_11
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 122
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6eacb83624fde8a0800000000000000
+      internalID: -6274090260859408786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SelectionKeyBoardTransp_12
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 122
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bf8121a1d587d4d0800000000000000
+      internalID: -3109869882278047817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SelectionKeyBoardTransp_0: 7314456130870445464
+      SelectionKeyBoardTransp_1: -578656508554538853
+      SelectionKeyBoardTransp_10: 2487347679804953053
+      SelectionKeyBoardTransp_11: -6274090260859408786
+      SelectionKeyBoardTransp_12: -3109869882278047817
+      SelectionKeyBoardTransp_2: 5266530796580268854
+      SelectionKeyBoardTransp_3: 2108299968345561378
+      SelectionKeyBoardTransp_4: 989522160696821371
+      SelectionKeyBoardTransp_5: -3401426505666579364
+      SelectionKeyBoardTransp_6: 7604669168833793650
+      SelectionKeyBoardTransp_7: -4605426483490548831
+      SelectionKeyBoardTransp_8: 536955027479882182
+      SelectionKeyBoardTransp_9: 9119690665745226733
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

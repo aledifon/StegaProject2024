@@ -1,0 +1,1963 @@
+fileFormatVersion: 2
+guid: 34f92253f3c0bbf44ba5fd71dda1da62
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3255742040150580819
+    second: InvSelectKeyBoardTransp_0
+  - first:
+      213: 800419415032026062
+    second: InvSelectKeyBoardTransp_1
+  - first:
+      213: 106655714243257769
+    second: InvSelectKeyBoardTransp_2
+  - first:
+      213: 253820605989788821
+    second: InvSelectKeyBoardTransp_3
+  - first:
+      213: -4705631167043784138
+    second: InvSelectKeyBoardTransp_4
+  - first:
+      213: -4789855815864868021
+    second: InvSelectKeyBoardTransp_5
+  - first:
+      213: 3755373789049099700
+    second: InvSelectKeyBoardTransp_6
+  - first:
+      213: 9160542410039588571
+    second: InvSelectKeyBoardTransp_7
+  - first:
+      213: -4184526081835005502
+    second: InvSelectKeyBoardTransp_8
+  - first:
+      213: 7729808432802964252
+    second: InvSelectKeyBoardTransp_9
+  - first:
+      213: -1690681128711705443
+    second: InvSelectKeyBoardTransp_10
+  - first:
+      213: 420280086400809763
+    second: InvSelectKeyBoardTransp_11
+  - first:
+      213: -4969264404058656421
+    second: InvSelectKeyBoardTransp_12
+  - first:
+      213: -540118086971918442
+    second: InvSelectKeyBoardTransp_13
+  - first:
+      213: -8866803999184496617
+    second: InvSelectKeyBoardTransp_14
+  - first:
+      213: 1288297720543104693
+    second: InvSelectKeyBoardTransp_15
+  - first:
+      213: 357625435673779509
+    second: InvSelectKeyBoardTransp_16
+  - first:
+      213: -5283247182276459197
+    second: InvSelectKeyBoardTransp_17
+  - first:
+      213: -1334430824818592877
+    second: InvSelectKeyBoardTransp_18
+  - first:
+      213: 9086777857647224729
+    second: InvSelectKeyBoardTransp_19
+  - first:
+      213: 3583623732782925590
+    second: InvSelectKeyBoardTransp_20
+  - first:
+      213: 6670347722804051530
+    second: InvSelectKeyBoardTransp_21
+  - first:
+      213: -1233207553794024024
+    second: InvSelectKeyBoardTransp_22
+  - first:
+      213: -4482977742367508794
+    second: InvSelectKeyBoardTransp_23
+  - first:
+      213: 3831793006374462505
+    second: InvSelectKeyBoardTransp_24
+  - first:
+      213: 7275533341223823526
+    second: InvSelectKeyBoardTransp_25
+  - first:
+      213: 2154833408141460305
+    second: InvSelectKeyBoardTransp_26
+  - first:
+      213: -8054900469423221421
+    second: InvSelectKeyBoardTransp_27
+  - first:
+      213: 272478569200751829
+    second: InvSelectKeyBoardTransp_28
+  - first:
+      213: -6760336615142090661
+    second: InvSelectKeyBoardTransp_29
+  - first:
+      213: -2210528206421431900
+    second: InvSelectKeyBoardTransp_30
+  - first:
+      213: -7682591867835852934
+    second: InvSelectKeyBoardTransp_31
+  - first:
+      213: 189275610466994110
+    second: InvSelectKeyBoardTransp_32
+  - first:
+      213: -5527326827753700924
+    second: InvSelectKeyBoardTransp_33
+  - first:
+      213: -4886815564127204903
+    second: InvSelectKeyBoardTransp_34
+  - first:
+      213: 2498784553014202235
+    second: InvSelectKeyBoardTransp_35
+  - first:
+      213: 5428081570647924926
+    second: InvSelectKeyBoardTransp_36
+  - first:
+      213: 4490610896834654606
+    second: InvSelectKeyBoardTransp_37
+  - first:
+      213: 1986785873101706381
+    second: InvSelectKeyBoardTransp_38
+  - first:
+      213: -4462331576699192798
+    second: InvSelectKeyBoardTransp_39
+  - first:
+      213: -8681416933511803115
+    second: InvSelectKeyBoardTransp_40
+  - first:
+      213: -7619307172013436675
+    second: InvSelectKeyBoardTransp_41
+  - first:
+      213: -6124190088601542317
+    second: InvSelectKeyBoardTransp_42
+  - first:
+      213: -8626145071434794496
+    second: InvSelectKeyBoardTransp_43
+  - first:
+      213: 5009229797601843864
+    second: InvSelectKeyBoardTransp_44
+  - first:
+      213: -1014478609982292720
+    second: InvSelectKeyBoardTransp_45
+  - first:
+      213: 6005148129991879874
+    second: InvSelectKeyBoardTransp_46
+  - first:
+      213: -2517961342956683329
+    second: InvSelectKeyBoardTransp_47
+  - first:
+      213: -8475991647342283447
+    second: InvSelectKeyBoardTransp_48
+  - first:
+      213: 1056797408410672916
+    second: InvSelectKeyBoardTransp_49
+  - first:
+      213: -4798698271239566805
+    second: InvSelectKeyBoardTransp_50
+  - first:
+      213: 5253316932329395023
+    second: InvSelectKeyBoardTransp_51
+  - first:
+      213: -131991801130190326
+    second: InvSelectKeyBoardTransp_52
+  - first:
+      213: 8044807192700579673
+    second: InvSelectKeyBoardTransp_53
+  - first:
+      213: 6106091799020376014
+    second: InvSelectKeyBoardTransp_54
+  - first:
+      213: -3850833454531502945
+    second: InvSelectKeyBoardTransp_55
+  - first:
+      213: -2323358875164068773
+    second: InvSelectKeyBoardTransp_56
+  - first:
+      213: -1533066621551332670
+    second: InvSelectKeyBoardTransp_57
+  - first:
+      213: -2292618717640462316
+    second: InvSelectKeyBoardTransp_58
+  - first:
+      213: 2911749247931711904
+    second: InvSelectKeyBoardTransp_59
+  - first:
+      213: 495087754965542666
+    second: InvSelectKeyBoardTransp_60
+  - first:
+      213: -4333401735592791705
+    second: InvSelectKeyBoardTransp_61
+  - first:
+      213: -2606540000231400113
+    second: InvSelectKeyBoardTransp_62
+  - first:
+      213: 6381599940112506939
+    second: InvSelectKeyBoardTransp_63
+  - first:
+      213: 8994635376747715615
+    second: InvSelectKeyBoardTransp_64
+  - first:
+      213: 28883915234484911
+    second: InvSelectKeyBoardTransp_65
+  - first:
+      213: -6674387238585327737
+    second: InvSelectKeyBoardTransp_66
+  - first:
+      213: 1719785744646438598
+    second: InvSelectKeyBoardTransp_67
+  - first:
+      213: -3215721280494624745
+    second: InvSelectKeyBoardTransp_68
+  - first:
+      213: 6001447409129001763
+    second: InvSelectKeyBoardTransp_69
+  - first:
+      213: -8554792251622802960
+    second: InvSelectKeyBoardTransp_70
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_0
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35e1b77c228be2d20800000000000000
+      internalID: 3255742040150580819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_1
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec35f489739ab1b00800000000000000
+      internalID: 800419415032026062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_2
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a52cb89ecaea7100800000000000000
+      internalID: 106655714243257769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_3
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59c12b01f70c58300800000000000000
+      internalID: 253820605989788821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_4
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6323954926d32beb0800000000000000
+      internalID: -4705631167043784138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_5
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4329026383078db0800000000000000
+      internalID: -4789855815864868021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_6
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b595177094cd1430800000000000000
+      internalID: 3755373789049099700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_7
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd67f4c89c8c02f70800000000000000
+      internalID: 9160542410039588571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_8
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c90edaf2b39de5c0800000000000000
+      internalID: -4184526081835005502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_9
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c132a0bb0dbc54b60800000000000000
+      internalID: 7729808432802964252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_10
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9caea6987e7988e0800000000000000
+      internalID: -1690681128711705443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_11
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32b3718038225d500800000000000000
+      internalID: 420280086400809763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_12
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 390
+        width: 48
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5137115a50a90bb0800000000000000
+      internalID: -4969264404058656421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_13
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 335
+        width: 48
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6977649267d1188f0800000000000000
+      internalID: -540118086971918442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_14
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7185897bdb8c2f480800000000000000
+      internalID: -8866803999184496617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_15
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5becaed73f3f0e110800000000000000
+      internalID: 1288297720543104693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_16
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53ddaff507a86f400800000000000000
+      internalID: 357625435673779509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_17
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34504d7fda22ea6b0800000000000000
+      internalID: -5283247182276459197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_18
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3933b552c362b7de0800000000000000
+      internalID: -1334430824818592877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_19
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 997a2f55158ba1e70800000000000000
+      internalID: 9086777857647224729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_20
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6178f215cc69bb130800000000000000
+      internalID: 3583623732782925590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_21
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4e3212b9e5d19c50800000000000000
+      internalID: 6670347722804051530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_22
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ad57cd7344c2eee0800000000000000
+      internalID: -1233207553794024024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_23
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c6b332ce7349c1c0800000000000000
+      internalID: -4482977742367508794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_24
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 924a6c500734d2530800000000000000
+      internalID: 3831793006374462505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_25
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 335
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a82823c603e7f460800000000000000
+      internalID: 7275533341223823526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_26
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 335
+        width: 75
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1538a62619187ed10800000000000000
+      internalID: 2154833408141460305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_27
+      rect:
+        serializedVersion: 2
+        x: 887
+        y: 338
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 355d6e223be373090800000000000000
+      internalID: -8054900469423221421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_28
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 337
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d41e16a0d908c300800000000000000
+      internalID: 272478569200751829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_29
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 338
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5893649aa57e22a0800000000000000
+      internalID: -6760336615142090661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_30
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 283
+        width: 74
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a9e442ee40a251e0800000000000000
+      internalID: -2210528206421431900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_31
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a77d65b7663f16590800000000000000
+      internalID: -7682591867835852934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_32
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb7c7863a2170a200800000000000000
+      internalID: 189275610466994110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_33
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c10142098dfa43b0800000000000000
+      internalID: -5527326827753700924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_34
+      rect:
+        serializedVersion: 2
+        x: 369
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d90959c22b8e2cb0800000000000000
+      internalID: -4886815564127204903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_35
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7f05a4df477da220800000000000000
+      internalID: 2498784553014202235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_36
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb06056ed6b645b40800000000000000
+      internalID: 5428081570647924926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_37
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e81f35281dad15e30800000000000000
+      internalID: 4490610896834654606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_38
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d84ddf2a93b729b10800000000000000
+      internalID: 1986785873101706381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_39
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22af5dcc21d9212c0800000000000000
+      internalID: -4462331576699192798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_40
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51fc7fa8b49658780800000000000000
+      internalID: -8681416933511803115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_41
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 283
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df09d81fe78c24690800000000000000
+      internalID: -7619307172013436675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_42
+      rect:
+        serializedVersion: 2
+        x: 888
+        y: 282
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 351efefcf81820ba0800000000000000
+      internalID: -6124190088601542317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_43
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 282
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00a7424c2c6c94880800000000000000
+      internalID: -8626145071434794496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_44
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 282
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89a1c5cf5fb548540800000000000000
+      internalID: 5009229797601843864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_45
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 231
+        width: 88
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01df5c34419dbe1f0800000000000000
+      internalID: -1014478609982292720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_46
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cc64c75862965350800000000000000
+      internalID: 6005148129991879874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_47
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbfb6e2df776e0dd0800000000000000
+      internalID: -2517961342956683329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_48
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9453cf4218a3f5a80800000000000000
+      internalID: -8475991647342283447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_49
+      rect:
+        serializedVersion: 2
+        x: 490
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41f1fdfc4af7aae00800000000000000
+      internalID: 1056797408410672916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_50
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2a0c7ec859976db0800000000000000
+      internalID: -4798698271239566805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_51
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f43d90caae787e840800000000000000
+      internalID: 5253316932329395023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_52
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0afe5cf7221b2ef0800000000000000
+      internalID: -131991801130190326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_53
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 231
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95fec6fb485e4af60800000000000000
+      internalID: 8044807192700579673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_54
+      rect:
+        serializedVersion: 2
+        x: 760
+        y: 231
+        width: 87
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecf0986c3223db450800000000000000
+      internalID: 6106091799020376014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_55
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9c957d20671f8ac0800000000000000
+      internalID: -3850833454531502945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_56
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b543818a965c1cfd0800000000000000
+      internalID: -2323358875164068773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_57
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c2bc6db70479bae0800000000000000
+      internalID: -1533066621551332670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_58
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 410f0a15c6bfe20e0800000000000000
+      internalID: -2292618717640462316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_59
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a10bfd838c986820800000000000000
+      internalID: 2911749247931711904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_60
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a07ed57a0b7eed600800000000000000
+      internalID: 495087754965542666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_61
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7613ee0b41aacd3c0800000000000000
+      internalID: -4333401735592791705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_62
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4d5c590ea5b3dbd0800000000000000
+      internalID: -2606540000231400113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_63
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b306f09955fff8850800000000000000
+      internalID: 6381599940112506939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_64
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 179
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1c9533383d53dc70800000000000000
+      internalID: 8994635376747715615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_65
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 121
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa2264394cd966000800000000000000
+      internalID: 28883915234484911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_66
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 121
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78f98be3b20df53a0800000000000000
+      internalID: -6674387238585327737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_67
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 121
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ce7e6fd508edd710800000000000000
+      internalID: 1719785744646438598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_68
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 121
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 710247378867f53d0800000000000000
+      internalID: -3215721280494624745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_69
+      rect:
+        serializedVersion: 2
+        x: 734
+        y: 121
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 323925f1f9c694350800000000000000
+      internalID: 6001447409129001763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InvSelectKeyBoardTransp_70
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 121
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f932cab5c5474980800000000000000
+      internalID: -8554792251622802960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      InvSelectKeyBoardTransp_0: 3255742040150580819
+      InvSelectKeyBoardTransp_1: 800419415032026062
+      InvSelectKeyBoardTransp_10: -1690681128711705443
+      InvSelectKeyBoardTransp_11: 420280086400809763
+      InvSelectKeyBoardTransp_12: -4969264404058656421
+      InvSelectKeyBoardTransp_13: -540118086971918442
+      InvSelectKeyBoardTransp_14: -8866803999184496617
+      InvSelectKeyBoardTransp_15: 1288297720543104693
+      InvSelectKeyBoardTransp_16: 357625435673779509
+      InvSelectKeyBoardTransp_17: -5283247182276459197
+      InvSelectKeyBoardTransp_18: -1334430824818592877
+      InvSelectKeyBoardTransp_19: 9086777857647224729
+      InvSelectKeyBoardTransp_2: 106655714243257769
+      InvSelectKeyBoardTransp_20: 3583623732782925590
+      InvSelectKeyBoardTransp_21: 6670347722804051530
+      InvSelectKeyBoardTransp_22: -1233207553794024024
+      InvSelectKeyBoardTransp_23: -4482977742367508794
+      InvSelectKeyBoardTransp_24: 3831793006374462505
+      InvSelectKeyBoardTransp_25: 7275533341223823526
+      InvSelectKeyBoardTransp_26: 2154833408141460305
+      InvSelectKeyBoardTransp_27: -8054900469423221421
+      InvSelectKeyBoardTransp_28: 272478569200751829
+      InvSelectKeyBoardTransp_29: -6760336615142090661
+      InvSelectKeyBoardTransp_3: 253820605989788821
+      InvSelectKeyBoardTransp_30: -2210528206421431900
+      InvSelectKeyBoardTransp_31: -7682591867835852934
+      InvSelectKeyBoardTransp_32: 189275610466994110
+      InvSelectKeyBoardTransp_33: -5527326827753700924
+      InvSelectKeyBoardTransp_34: -4886815564127204903
+      InvSelectKeyBoardTransp_35: 2498784553014202235
+      InvSelectKeyBoardTransp_36: 5428081570647924926
+      InvSelectKeyBoardTransp_37: 4490610896834654606
+      InvSelectKeyBoardTransp_38: 1986785873101706381
+      InvSelectKeyBoardTransp_39: -4462331576699192798
+      InvSelectKeyBoardTransp_4: -4705631167043784138
+      InvSelectKeyBoardTransp_40: -8681416933511803115
+      InvSelectKeyBoardTransp_41: -7619307172013436675
+      InvSelectKeyBoardTransp_42: -6124190088601542317
+      InvSelectKeyBoardTransp_43: -8626145071434794496
+      InvSelectKeyBoardTransp_44: 5009229797601843864
+      InvSelectKeyBoardTransp_45: -1014478609982292720
+      InvSelectKeyBoardTransp_46: 6005148129991879874
+      InvSelectKeyBoardTransp_47: -2517961342956683329
+      InvSelectKeyBoardTransp_48: -8475991647342283447
+      InvSelectKeyBoardTransp_49: 1056797408410672916
+      InvSelectKeyBoardTransp_5: -4789855815864868021
+      InvSelectKeyBoardTransp_50: -4798698271239566805
+      InvSelectKeyBoardTransp_51: 5253316932329395023
+      InvSelectKeyBoardTransp_52: -131991801130190326
+      InvSelectKeyBoardTransp_53: 8044807192700579673
+      InvSelectKeyBoardTransp_54: 6106091799020376014
+      InvSelectKeyBoardTransp_55: -3850833454531502945
+      InvSelectKeyBoardTransp_56: -2323358875164068773
+      InvSelectKeyBoardTransp_57: -1533066621551332670
+      InvSelectKeyBoardTransp_58: -2292618717640462316
+      InvSelectKeyBoardTransp_59: 2911749247931711904
+      InvSelectKeyBoardTransp_6: 3755373789049099700
+      InvSelectKeyBoardTransp_60: 495087754965542666
+      InvSelectKeyBoardTransp_61: -4333401735592791705
+      InvSelectKeyBoardTransp_62: -2606540000231400113
+      InvSelectKeyBoardTransp_63: 6381599940112506939
+      InvSelectKeyBoardTransp_64: 8994635376747715615
+      InvSelectKeyBoardTransp_65: 28883915234484911
+      InvSelectKeyBoardTransp_66: -6674387238585327737
+      InvSelectKeyBoardTransp_67: 1719785744646438598
+      InvSelectKeyBoardTransp_68: -3215721280494624745
+      InvSelectKeyBoardTransp_69: 6001447409129001763
+      InvSelectKeyBoardTransp_7: 9160542410039588571
+      InvSelectKeyBoardTransp_70: -8554792251622802960
+      InvSelectKeyBoardTransp_8: -4184526081835005502
+      InvSelectKeyBoardTransp_9: 7729808432802964252
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
