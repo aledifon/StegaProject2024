@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 
 using static ScenesEnum;
 using TMPro;
+using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     // Singleton instance of GameManager
@@ -89,16 +90,18 @@ public class GameManager : MonoBehaviour
 
     private GameObject canvas;
 
+    // Menu Scene Refs
     private GameObject introPanel;          // Disable->Enable +
                                             // Fade In/Out Color Image (Black-->Red-->Black)
 
     private Image stegaImage;               // Fade In/Out alpha Image (0->100->0)
-    private Image aledifonImage;            // Fade In/Out alpha Text (0->100->0)
+    private TextMeshProUGUI aledifonText;   // Fade In/Out alpha Text (0->100->0)
 
     private GameObject menuPanel;
     private TextMeshProUGUI titleText;      // Fade In/Out alpha Image (0->100)
     private GameObject optionTextContainer; // Disable->Enable
-    private GameObject selectorOption;      // Disable->Enable
+    private List<RectTransform> optionPositions;
+    private RectTransform selectorOption;   // Disable->Enable
     private TextMeshProUGUI buildVersion;   // Disable->Enable
 
     private GameObject controlsPanel;       
@@ -106,6 +109,9 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI introSceneText; // Machine writting VFX
 
     private UIMenuSelectEnum.UIMenuSelect uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
+
+    // Level Scene Refs
+
     private Scenes sceneSelected = Scenes.Menu;
 
     [Header("Slow Motion Test")]
@@ -213,9 +219,38 @@ public class GameManager : MonoBehaviour
                     // Set the new Scene as the current one
                     sceneSelected = currentScene;
 
-                    // Get all the GO's Refs
+                    // Get all the Menu Scene GO Refs.
+                    GetMenuSceneRefs();
+
+                    // Start playing Title Screen Audio
+                    //PlayMainTitleAudioClip();
+
+                    // Set the Menu Scene Sequence on the 1st State
+                    /*
+                     * 1. Enable IntroPanel & Start Intro Panel on Black Colour
+                     * 2. IntroPanel.Color.Lerp(Black->Red)
+                     * 3. StegaImage.Color.alpha.Lerp(0->100)
+                     * 4. Delay 2s
+                     * 5. StegaImage.Color.alpha.Lerp(100->0)
+                     * 6. AledifonText.Color.alpha.Lerp(0->100)
+                     * 7. Delay 2s
+                     * 8. AledifonText.Color.alpha.Lerp(100->0)
+                     * 9. IntroPanel.Color.Lerp(Red->Black)
+                     * 10. Disable IntroPanel & Enable MenuPanel
+                     * 11. TitleText.Color.alpha.Lerp(0->100)
+                     * 12. Enable OptionTextContainer, Selector & BuildVersionText
+                     *     Also Enable InputActionMap
+                     * 13. If Selected Controls --> Enable ControlsPanel
+                     *     Press any key (From Control Panel) --> Disable ControlsPanel
+                     * 14. If Selected Quit Game --> Quit Game
+                     * 15. If Selected Start Game --> Enable IntroScenePanel & Disable InputActionMap
+                     *     Start machine typewritting         
+                     * 16. When Text is finished --> LoadScene(LevelScene);
+                     */
 
 
+                    // Hide the Mouse Cursor
+                    ShowMouseCursor(false);
 
                     break;
                 case Scenes.Level:
@@ -223,10 +258,106 @@ public class GameManager : MonoBehaviour
                     // Set the new Scene as the current one
                     sceneSelected = currentScene;
 
-                    // Get all the GO's Refs
+                    //
+                    GetLevelSceneRefs();
 
                     break;
             }
+        }
+    }
+    private void GetMenuSceneRefs()
+    {
+        // Get all the Intro Panel GO's Refs                    
+        introPanel = canvas.transform.Find("IntroPanel")?.gameObject;
+        if (introPanel == null)
+            Debug.LogError("The " + introPanel.name + " object is null");
+        else
+        {
+            stegaImage = introPanel.transform.Find("StegaImage")?.GetComponent<Image>();
+            if (stegaImage == null)
+                Debug.LogError("The " + stegaImage.name + " component was not found " +
+                                "on the " + introPanel.name + "GO ");
+
+            aledifonText = introPanel.transform.Find("AledifonText")?.GetComponent<TextMeshProUGUI>();
+            if (aledifonText == null)
+                Debug.LogError("The " + aledifonText.name + " component was not found " +
+                                "on the " + introPanel.name + "GO ");
+        }
+
+        // Get all the Menu Panel GO's Refs                    
+        menuPanel = canvas.transform.Find("MenuPanel")?.gameObject;
+        if (menuPanel == null)
+            Debug.LogError("The " + menuPanel.name + " object is null");
+        else
+        {
+
+            titleText = menuPanel.transform.Find("TitleText")?.GetComponent<TextMeshProUGUI>();
+            if (titleText == null)
+                Debug.LogError("The " + titleText.name + " component was not found " +
+                                "on the " + menuPanel.name + "GO ");
+
+            optionTextContainer = menuPanel.transform.Find("OptionTextContainer")?.gameObject;
+            if (optionTextContainer == null)
+                Debug.LogError("The " + optionTextContainer.name + " GO was not found " +
+                                "on the " + menuPanel.name + "GO ");
+            else
+            {
+                optionPositions = new List<RectTransform>();
+                foreach (Transform child in optionTextContainer.transform)
+                {
+                    var rect = child.GetComponent<RectTransform>();
+                    if (rect != null)
+                        optionPositions.Add(rect);
+                }
+            }
+
+            selectorOption = menuPanel.transform.Find("Selector").GetComponent<RectTransform>();
+            if (selectorOption == null)
+                Debug.LogError("The " + selectorOption.name + " component was not found " +
+                                "on the " + menuPanel.name + "GO ");
+
+            buildVersion = menuPanel.transform.Find("BuildVersionText").GetComponent<TextMeshProUGUI>();
+            if (buildVersion == null)
+                Debug.LogError("The " + buildVersion.name + " component was not found " +
+                                "on the " + menuPanel.name + "GO ");
+        }
+
+        // Get all the Controls Panel GO's Refs                    
+        controlsPanel = canvas.transform.Find("ControlsPanel")?.gameObject;
+        if (controlsPanel == null)
+            Debug.LogError("The " + controlsPanel.name + " object is null");
+
+        // Get all the Intro Scene Panel GO's Refs                    
+        introScenePanel = canvas.transform.Find("IntroScenePanel")?.gameObject;
+        if (introScenePanel == null)
+            Debug.LogError("The " + introScenePanel.name + " object is null");
+    }
+    private void GetLevelSceneRefs()
+    {
+        // Get all the GO's Refs                    
+        pausePanel = canvas.transform.Find("PausePanel")?.gameObject;
+        if (pausePanel == null)
+            Debug.LogError("The Pause Panel object is null");
+
+        // Missing ControlsPanel
+
+        // Missing EndScenePanel
+
+    }
+    public void ShowMouseCursor(bool enable)
+    {
+        if (enable)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            // Force the updating of the mouse cursor on the next frame
+            //StartCoroutine(nameof(FixCursorVisibility));
         }
     }
     #endregion
