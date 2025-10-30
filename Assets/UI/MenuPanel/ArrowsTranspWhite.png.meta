@@ -1,0 +1,3055 @@
+fileFormatVersion: 2
+guid: b7f22529a25414c4dbde5dc5da0d6a8a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3462365179606574488
+    second: ArrowsTranspWhite_0
+  - first:
+      213: 8028611266824299559
+    second: ArrowsTranspWhite_1
+  - first:
+      213: -6859414577845807870
+    second: ArrowsTranspWhite_2
+  - first:
+      213: -1195026304259548044
+    second: ArrowsTranspWhite_3
+  - first:
+      213: 4905445240582187381
+    second: ArrowsTranspWhite_4
+  - first:
+      213: 2749917217407291240
+    second: ArrowsTranspWhite_5
+  - first:
+      213: -1303564685081710624
+    second: ArrowsTranspWhite_6
+  - first:
+      213: -7887771082234287043
+    second: ArrowsTranspWhite_7
+  - first:
+      213: -1867310946849880891
+    second: ArrowsTranspWhite_8
+  - first:
+      213: 7461352872749302350
+    second: ArrowsTranspWhite_9
+  - first:
+      213: -243704687056011215
+    second: ArrowsTranspWhite_10
+  - first:
+      213: -1407057421503771856
+    second: ArrowsTranspWhite_11
+  - first:
+      213: 3633680083208886568
+    second: ArrowsTranspWhite_12
+  - first:
+      213: 6239188531935933660
+    second: ArrowsTranspWhite_13
+  - first:
+      213: -5294174163814356768
+    second: ArrowsTranspWhite_14
+  - first:
+      213: 8990760327658537641
+    second: ArrowsTranspWhite_15
+  - first:
+      213: -8286298652391142985
+    second: ArrowsTranspWhite_16
+  - first:
+      213: -5637098672878880863
+    second: ArrowsTranspWhite_17
+  - first:
+      213: 7805775877255805483
+    second: ArrowsTranspWhite_18
+  - first:
+      213: 4243281217028620021
+    second: ArrowsTranspWhite_19
+  - first:
+      213: -3992079235890236674
+    second: ArrowsTranspWhite_20
+  - first:
+      213: 4791681489970669458
+    second: ArrowsTranspWhite_21
+  - first:
+      213: 5977460209626881114
+    second: ArrowsTranspWhite_22
+  - first:
+      213: -7885107836697366423
+    second: ArrowsTranspWhite_23
+  - first:
+      213: -1513919000384154447
+    second: ArrowsTranspWhite_24
+  - first:
+      213: -4336153819602970734
+    second: ArrowsTranspWhite_25
+  - first:
+      213: 8702137119982020984
+    second: ArrowsTranspWhite_26
+  - first:
+      213: 1632771127238163258
+    second: ArrowsTranspWhite_27
+  - first:
+      213: 8324621782897667020
+    second: ArrowsTranspWhite_28
+  - first:
+      213: 898589989058437513
+    second: ArrowsTranspWhite_29
+  - first:
+      213: -4644108090234001510
+    second: ArrowsTranspWhite_30
+  - first:
+      213: 5164954582306237277
+    second: ArrowsTranspWhite_31
+  - first:
+      213: -6094862477423321027
+    second: ArrowsTranspWhite_32
+  - first:
+      213: -9153132495983362859
+    second: ArrowsTranspWhite_33
+  - first:
+      213: 2901424876669606647
+    second: ArrowsTranspWhite_34
+  - first:
+      213: 4166519959895174105
+    second: ArrowsTranspWhite_35
+  - first:
+      213: -1744649342821214791
+    second: ArrowsTranspWhite_36
+  - first:
+      213: -1076001087244539645
+    second: ArrowsTranspWhite_37
+  - first:
+      213: 4652701731667031820
+    second: ArrowsTranspWhite_38
+  - first:
+      213: -261789809721343985
+    second: ArrowsTranspWhite_39
+  - first:
+      213: 3085474224948389491
+    second: ArrowsTranspWhite_40
+  - first:
+      213: -2026448654384061888
+    second: ArrowsTranspWhite_41
+  - first:
+      213: 3099601078145779016
+    second: ArrowsTranspWhite_42
+  - first:
+      213: 7790721166716187184
+    second: ArrowsTranspWhite_43
+  - first:
+      213: 7402688365041938987
+    second: ArrowsTranspWhite_44
+  - first:
+      213: 7504412788066422608
+    second: ArrowsTranspWhite_45
+  - first:
+      213: 5625222744780013714
+    second: ArrowsTranspWhite_46
+  - first:
+      213: -4131970750545011776
+    second: ArrowsTranspWhite_47
+  - first:
+      213: 6004747659503792434
+    second: ArrowsTranspWhite_48
+  - first:
+      213: -7680032899419821654
+    second: ArrowsTranspWhite_49
+  - first:
+      213: 6091010608773223183
+    second: ArrowsTranspWhite_50
+  - first:
+      213: 2962611682849216439
+    second: ArrowsTranspWhite_51
+  - first:
+      213: 8158557427295295284
+    second: ArrowsTranspWhite_52
+  - first:
+      213: 3778219290406769382
+    second: ArrowsTranspWhite_53
+  - first:
+      213: 3627941032065779315
+    second: ArrowsTranspWhite_54
+  - first:
+      213: -2001264734317818750
+    second: ArrowsTranspWhite_55
+  - first:
+      213: 160633170118854737
+    second: ArrowsTranspWhite_56
+  - first:
+      213: 7043963342569497314
+    second: ArrowsTranspWhite_57
+  - first:
+      213: -351606824389147594
+    second: ArrowsTranspWhite_58
+  - first:
+      213: 6147958933138355815
+    second: ArrowsTranspWhite_59
+  - first:
+      213: -8437119828245648787
+    second: ArrowsTranspWhite_60
+  - first:
+      213: -8036297386091603799
+    second: ArrowsTranspWhite_61
+  - first:
+      213: 9021424978086837658
+    second: ArrowsTranspWhite_62
+  - first:
+      213: 3249602194101587764
+    second: ArrowsTranspWhite_63
+  - first:
+      213: 8846690868099011035
+    second: ArrowsTranspWhite_64
+  - first:
+      213: -6927861352503325163
+    second: ArrowsTranspWhite_65
+  - first:
+      213: 4550936364782874823
+    second: ArrowsTranspWhite_66
+  - first:
+      213: 5664964189744781771
+    second: ArrowsTranspWhite_67
+  - first:
+      213: 8462233755023050063
+    second: ArrowsTranspWhite_68
+  - first:
+      213: -5150422050049430411
+    second: ArrowsTranspWhite_69
+  - first:
+      213: -9176100118903272204
+    second: ArrowsTranspWhite_70
+  - first:
+      213: -2121563129017564092
+    second: ArrowsTranspWhite_71
+  - first:
+      213: 6843039463567765998
+    second: ArrowsTranspWhite_72
+  - first:
+      213: -496404927132358490
+    second: ArrowsTranspWhite_73
+  - first:
+      213: -863797615017448160
+    second: ArrowsTranspWhite_74
+  - first:
+      213: -7398936578445840201
+    second: ArrowsTranspWhite_75
+  - first:
+      213: -3250484705296277046
+    second: ArrowsTranspWhite_76
+  - first:
+      213: -3307710956899107985
+    second: ArrowsTranspWhite_77
+  - first:
+      213: 1914757184206168683
+    second: ArrowsTranspWhite_78
+  - first:
+      213: 8106893825921564442
+    second: ArrowsTranspWhite_79
+  - first:
+      213: -7000142194832987918
+    second: ArrowsTranspWhite_80
+  - first:
+      213: -4520158687644391226
+    second: ArrowsTranspWhite_81
+  - first:
+      213: 5298863803549755562
+    second: ArrowsTranspWhite_82
+  - first:
+      213: -1624181207503605656
+    second: ArrowsTranspWhite_83
+  - first:
+      213: 6216616835224551962
+    second: ArrowsTranspWhite_84
+  - first:
+      213: 7981278846226157293
+    second: ArrowsTranspWhite_85
+  - first:
+      213: 8410074237696855057
+    second: ArrowsTranspWhite_86
+  - first:
+      213: -2340163558739185260
+    second: ArrowsTranspWhite_87
+  - first:
+      213: -1192121308258051159
+    second: ArrowsTranspWhite_88
+  - first:
+      213: -6377970813717330026
+    second: ArrowsTranspWhite_89
+  - first:
+      213: -2187845541510016149
+    second: ArrowsTranspWhite_90
+  - first:
+      213: 6681836077393100867
+    second: ArrowsTranspWhite_91
+  - first:
+      213: 1329148482300028703
+    second: ArrowsTranspWhite_92
+  - first:
+      213: 6932780197202160348
+    second: ArrowsTranspWhite_93
+  - first:
+      213: 60899503747133932
+    second: ArrowsTranspWhite_94
+  - first:
+      213: 8566347431739207285
+    second: ArrowsTranspWhite_95
+  - first:
+      213: -718155113544326991
+    second: ArrowsTranspWhite_96
+  - first:
+      213: 7953627227892483266
+    second: ArrowsTranspWhite_97
+  - first:
+      213: 9129630185890694878
+    second: ArrowsTranspWhite_98
+  - first:
+      213: 7271853768229467793
+    second: ArrowsTranspWhite_99
+  - first:
+      213: -4311209723079459945
+    second: ArrowsTranspWhite_100
+  - first:
+      213: 1213521220150939229
+    second: ArrowsTranspWhite_101
+  - first:
+      213: 4271651400109724864
+    second: ArrowsTranspWhite_102
+  - first:
+      213: 6577320631889672601
+    second: ArrowsTranspWhite_103
+  - first:
+      213: -2137133913968662012
+    second: ArrowsTranspWhite_104
+  - first:
+      213: -8738089897561962349
+    second: ArrowsTranspWhite_105
+  - first:
+      213: -6968509134033518701
+    second: ArrowsTranspWhite_106
+  - first:
+      213: 7561603197906323392
+    second: ArrowsTranspWhite_107
+  - first:
+      213: -2096767924684919008
+    second: ArrowsTranspWhite_108
+  - first:
+      213: -1139532298253149244
+    second: ArrowsTranspWhite_109
+  - first:
+      213: 5698311391792194623
+    second: ArrowsTranspWhite_110
+  - first:
+      213: -5733507778880977033
+    second: ArrowsTranspWhite_111
+  - first:
+      213: -871076382101089380
+    second: ArrowsTranspWhite_112
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_0
+      rect:
+        serializedVersion: 2
+        x: 1559
+        y: 4452
+        width: 234
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 895a12559cacc0030800000000000000
+      internalID: 3462365179606574488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_1
+      rect:
+        serializedVersion: 2
+        x: 1815
+        y: 4452
+        width: 98
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 724e2c6e86b5b6f60800000000000000
+      internalID: 8028611266824299559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_2
+      rect:
+        serializedVersion: 2
+        x: 1942
+        y: 4452
+        width: 95
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2055d50c8c67ec0a0800000000000000
+      internalID: -6859414577845807870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_3
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 4449
+        width: 178
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47c9c5568e96a6fe0800000000000000
+      internalID: -1195026304259548044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_4
+      rect:
+        serializedVersion: 2
+        x: 2234
+        y: 4452
+        width: 284
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5792806c474a31440800000000000000
+      internalID: 4905445240582187381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_5
+      rect:
+        serializedVersion: 2
+        x: 2628
+        y: 4452
+        width: 39
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86fca49b32ba92620800000000000000
+      internalID: 2749917217407291240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_6
+      rect:
+        serializedVersion: 2
+        x: 2706
+        y: 4449
+        width: 161
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0efe5f353dec8ede0800000000000000
+      internalID: -1303564685081710624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_7
+      rect:
+        serializedVersion: 2
+        x: 2885
+        y: 4449
+        width: 178
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3ca3ddedf1098290800000000000000
+      internalID: -7887771082234287043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_8
+      rect:
+        serializedVersion: 2
+        x: 3097
+        y: 4452
+        width: 163
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c480d7569af516e0800000000000000
+      internalID: -1867310946849880891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_9
+      rect:
+        serializedVersion: 2
+        x: 3288
+        y: 4449
+        width: 146
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e420014e7ec0c8760800000000000000
+      internalID: 7461352872749302350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_10
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 3617
+        width: 515
+        height: 493
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 130cde9d0ef2e9cf0800000000000000
+      internalID: -243704687056011215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_11
+      rect:
+        serializedVersion: 2
+        x: 1285
+        y: 3668
+        width: 547
+        height: 388
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03bc0b4eab0297ce0800000000000000
+      internalID: -1407057421503771856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_12
+      rect:
+        serializedVersion: 2
+        x: 2333
+        y: 3646
+        width: 68
+        height: 437
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 829d31b98cc6d6230800000000000000
+      internalID: 3633680083208886568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_13
+      rect:
+        serializedVersion: 2
+        x: 2430
+        y: 3646
+        width: 325
+        height: 437
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd47bb4c9ec069650800000000000000
+      internalID: 6239188531935933660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_14
+      rect:
+        serializedVersion: 2
+        x: 3138
+        y: 3871
+        width: 137
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e86bc2d5a05786b0800000000000000
+      internalID: -5294174163814356768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_15
+      rect:
+        serializedVersion: 2
+        x: 3236
+        y: 3871
+        width: 137
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a203c602e895cc70800000000000000
+      internalID: 8990760327658537641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_16
+      rect:
+        serializedVersion: 2
+        x: 3334
+        y: 3871
+        width: 136
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b98d614747210d80800000000000000
+      internalID: -8286298652391142985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_17
+      rect:
+        serializedVersion: 2
+        x: 3363
+        y: 3622
+        width: 344
+        height: 483
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a77a37af9005c1b0800000000000000
+      internalID: -5637098672878880863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_18
+      rect:
+        serializedVersion: 2
+        x: 4132
+        y: 3680
+        width: 537
+        height: 367
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2a3528bdcfa35c60800000000000000
+      internalID: 7805775877255805483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_19
+      rect:
+        serializedVersion: 2
+        x: 3138
+        y: 3751
+        width: 137
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fef317f8c923ea30800000000000000
+      internalID: 4243281217028620021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_20
+      rect:
+        serializedVersion: 2
+        x: 3236
+        y: 3751
+        width: 137
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef2bc8df5194998c0800000000000000
+      internalID: -3992079235890236674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_21
+      rect:
+        serializedVersion: 2
+        x: 3334
+        y: 3751
+        width: 136
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 297248e7de87f7240800000000000000
+      internalID: 4791681489970669458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_22
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 2926
+        width: 566
+        height: 249
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5c97d5046434f250800000000000000
+      internalID: 5977460209626881114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_23
+      rect:
+        serializedVersion: 2
+        x: 1302
+        y: 2924
+        width: 560
+        height: 253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 960310a1338729290800000000000000
+      internalID: -7885107836697366423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_24
+      rect:
+        serializedVersion: 2
+        x: 2611
+        y: 3168
+        width: 61
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b45363b0ba7dfae0800000000000000
+      internalID: -1513919000384154447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_25
+      rect:
+        serializedVersion: 2
+        x: 3173
+        y: 2877
+        width: 539
+        height: 347
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2979c133313e2d3c0800000000000000
+      internalID: -4336153819602970734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_26
+      rect:
+        serializedVersion: 2
+        x: 4364
+        y: 2858
+        width: 303
+        height: 385
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 879e44fca9334c870800000000000000
+      internalID: 8702137119982020984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_27
+      rect:
+        serializedVersion: 2
+        x: 2611
+        y: 3092
+        width: 61
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3b7b8e70b4c8a610800000000000000
+      internalID: 1632771127238163258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_28
+      rect:
+        serializedVersion: 2
+        x: 2684
+        y: 3092
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccb2813e76ff68370800000000000000
+      internalID: 8324621782897667020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_29
+      rect:
+        serializedVersion: 2
+        x: 2230
+        y: 3019
+        width: 64
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 981ec8885de687c00800000000000000
+      internalID: 898589989058437513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_30
+      rect:
+        serializedVersion: 2
+        x: 2308
+        y: 3019
+        width: 61
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a97a5172c40dc8fb0800000000000000
+      internalID: -4644108090234001510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_31
+      rect:
+        serializedVersion: 2
+        x: 2382
+        y: 3019
+        width: 63
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5ba367d3da9da740800000000000000
+      internalID: 5164954582306237277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_32
+      rect:
+        serializedVersion: 2
+        x: 2457
+        y: 3019
+        width: 64
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3063566ed2ba6ba0800000000000000
+      internalID: -6094862477423321027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_33
+      rect:
+        serializedVersion: 2
+        x: 2535
+        y: 3019
+        width: 61
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dcb3d28d7a89f080800000000000000
+      internalID: -9153132495983362859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_34
+      rect:
+        serializedVersion: 2
+        x: 2611
+        y: 3019
+        width: 61
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fa9f5c8d8ee34820800000000000000
+      internalID: 2901424876669606647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_35
+      rect:
+        serializedVersion: 2
+        x: 2684
+        y: 3019
+        width: 64
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9db602f04d372d930800000000000000
+      internalID: 4166519959895174105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_36
+      rect:
+        serializedVersion: 2
+        x: 2760
+        y: 3019
+        width: 63
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b5d58f8aa2c9c7e0800000000000000
+      internalID: -1744649342821214791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_37
+      rect:
+        serializedVersion: 2
+        x: 4064
+        y: 3021
+        width: 66
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 309ead846b64111f0800000000000000
+      internalID: -1076001087244539645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_38
+      rect:
+        serializedVersion: 2
+        x: 4137
+        y: 3014
+        width: 225
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c07bbd9e297b19040800000000000000
+      internalID: 4652701731667031820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_39
+      rect:
+        serializedVersion: 2
+        x: 2611
+        y: 2943
+        width: 61
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f000eb91e8fed5cf0800000000000000
+      internalID: -261789809721343985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_40
+      rect:
+        serializedVersion: 2
+        x: 2684
+        y: 2943
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3762ca5c57ec1da20800000000000000
+      internalID: 3085474224948389491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_41
+      rect:
+        serializedVersion: 2
+        x: 2611
+        y: 2870
+        width: 61
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 042aed77fab90e3e0800000000000000
+      internalID: -2026448654384061888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_42
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 1998
+        width: 457
+        height: 457
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8450c4812cef30b20800000000000000
+      internalID: 3099601078145779016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_43
+      rect:
+        serializedVersion: 2
+        x: 1342
+        y: 2008
+        width: 283
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0323c36cf933e1c60800000000000000
+      internalID: 7790721166716187184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_44
+      rect:
+        serializedVersion: 2
+        x: 1544
+        y: 2008
+        width: 191
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b22fd3dc8d1abb660800000000000000
+      internalID: 7402688365041938987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_45
+      rect:
+        serializedVersion: 2
+        x: 1652
+        y: 2008
+        width: 188
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05f0990bba7052860800000000000000
+      internalID: 7504412788066422608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_46
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 1993
+        width: 451
+        height: 464
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2908f0d584ec01e40800000000000000
+      internalID: 5625222744780013714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_47
+      rect:
+        serializedVersion: 2
+        x: 3248
+        y: 2211
+        width: 286
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cbd5779e7a48a6c0800000000000000
+      internalID: -4131970750545011776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_48
+      rect:
+        serializedVersion: 2
+        x: 3434
+        y: 2211
+        width: 285
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 231f49a8e26255350800000000000000
+      internalID: 6004747659503792434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_49
+      rect:
+        serializedVersion: 2
+        x: 4205
+        y: 1993
+        width: 457
+        height: 464
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa9a4ceb4ca0b6590800000000000000
+      internalID: -7680032899419821654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_50
+      rect:
+        serializedVersion: 2
+        x: 3248
+        y: 1984
+        width: 286
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f03501b80ed978450800000000000000
+      internalID: 6091010608773223183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_51
+      rect:
+        serializedVersion: 2
+        x: 3434
+        y: 1984
+        width: 285
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b756a301af4d1920800000000000000
+      internalID: 2962611682849216439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_52
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 1139
+        width: 290
+        height: 515
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4379f8511c4093170800000000000000
+      internalID: 8158557427295295284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_53
+      rect:
+        serializedVersion: 2
+        x: 2321
+        y: 1156
+        width: 424
+        height: 500
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e259304d6eee6430800000000000000
+      internalID: 3778219290406769382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_54
+      rect:
+        serializedVersion: 2
+        x: 3278
+        y: 1617
+        width: 46
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3764852a529095230800000000000000
+      internalID: 3627941032065779315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_55
+      rect:
+        serializedVersion: 2
+        x: 3317
+        y: 1578
+        width: 46
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28c4879c3541a34e0800000000000000
+      internalID: -2001264734317818750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_56
+      rect:
+        serializedVersion: 2
+        x: 3390
+        y: 1617
+        width: 46
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1584414640faa3200800000000000000
+      internalID: 160633170118854737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_57
+      rect:
+        serializedVersion: 2
+        x: 3429
+        y: 1578
+        width: 46
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e26abce65f21c160800000000000000
+      internalID: 7043963342569497314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_58
+      rect:
+        serializedVersion: 2
+        x: 4161
+        y: 1173
+        width: 340
+        height: 466
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6348ea3c477de1bf0800000000000000
+      internalID: -351606824389147594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_59
+      rect:
+        serializedVersion: 2
+        x: 4303
+        y: 1173
+        width: 339
+        height: 469
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 766b66f8310f15550800000000000000
+      internalID: 6147958933138355815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_60
+      rect:
+        serializedVersion: 2
+        x: 1351
+        y: 1566
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6a630ec73459ea80800000000000000
+      internalID: -8437119828245648787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_61
+      rect:
+        serializedVersion: 2
+        x: 1429
+        y: 1561
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a81c900b16597090800000000000000
+      internalID: -8036297386091603799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_62
+      rect:
+        serializedVersion: 2
+        x: 1498
+        y: 1561
+        width: 46
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9db3b2583a823d70800000000000000
+      internalID: 9021424978086837658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_63
+      rect:
+        serializedVersion: 2
+        x: 1556
+        y: 1180
+        width: 293
+        height: 430
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43f41c87af7e81d20800000000000000
+      internalID: 3249602194101587764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_64
+      rect:
+        serializedVersion: 2
+        x: 3356
+        y: 1539
+        width: 46
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd1dbb60972c5ca70800000000000000
+      internalID: 8846690868099011035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_65
+      rect:
+        serializedVersion: 2
+        x: 3468
+        y: 1539
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51ec1e62eca4bdf90800000000000000
+      internalID: -6927861352503325163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_66
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 1232
+        width: 202
+        height: 329
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c07a4a038c282f30800000000000000
+      internalID: 4550936364782874823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_67
+      rect:
+        serializedVersion: 2
+        x: 1378
+        y: 1517
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc9db039aeefd9e40800000000000000
+      internalID: 5664964189744781771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_68
+      rect:
+        serializedVersion: 2
+        x: 1405
+        y: 1471
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45087ee3c4ef6570800000000000000
+      internalID: 8462233755023050063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_69
+      rect:
+        serializedVersion: 2
+        x: 1454
+        y: 1515
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57ce67ffe660688b0800000000000000
+      internalID: -5150422050049430411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_70
+      rect:
+        serializedVersion: 2
+        x: 1525
+        y: 1515
+        width: 44
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fcc9551f81f7a080800000000000000
+      internalID: -9176100118903272204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_71
+      rect:
+        serializedVersion: 2
+        x: 3392
+        y: 1500
+        width: 49
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 444875e1391be82e0800000000000000
+      internalID: -2121563129017564092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_72
+      rect:
+        serializedVersion: 2
+        x: 3507
+        y: 1500
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee1bfe9d22c57fe50800000000000000
+      internalID: 6843039463567765998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_73
+      rect:
+        serializedVersion: 2
+        x: 1481
+        y: 1469
+        width: 46
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a8a58d495a6c19f0800000000000000
+      internalID: -496404927132358490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_74
+      rect:
+        serializedVersion: 2
+        x: 1549
+        y: 1469
+        width: 46
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02d2e0f45ac2304f0800000000000000
+      internalID: -863797615017448160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_75
+      rect:
+        serializedVersion: 2
+        x: 3431
+        y: 1461
+        width: 47
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b077161262b15990800000000000000
+      internalID: -7398936578445840201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_76
+      rect:
+        serializedVersion: 2
+        x: 3544
+        y: 1461
+        width: 46
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac1a9f0e165f3e2d0800000000000000
+      internalID: -3250484705296277046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_77
+      rect:
+        serializedVersion: 2
+        x: 1432
+        y: 1422
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6b7c52e866a812d0800000000000000
+      internalID: -3307710956899107985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_78
+      rect:
+        serializedVersion: 2
+        x: 1508
+        y: 1420
+        width: 44
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b626cb3a385929a10800000000000000
+      internalID: 1914757184206168683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_79
+      rect:
+        serializedVersion: 2
+        x: 3470
+        y: 1422
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1fbcd58bf8718070800000000000000
+      internalID: 8106893825921564442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_80
+      rect:
+        serializedVersion: 2
+        x: 3510
+        y: 1383
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f8a1cb13cf7ade90800000000000000
+      internalID: -7000142194832987918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_81
+      rect:
+        serializedVersion: 2
+        x: 3583
+        y: 1422
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c86f865f9b2541c0800000000000000
+      internalID: -4520158687644391226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_82
+      rect:
+        serializedVersion: 2
+        x: 3622
+        y: 1383
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa822c30e88598940800000000000000
+      internalID: 5298863803549755562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_83
+      rect:
+        serializedVersion: 2
+        x: 1456
+        y: 1376
+        width: 47
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 860f1eb0ccfb579e0800000000000000
+      internalID: -1624181207503605656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_84
+      rect:
+        serializedVersion: 2
+        x: 1534
+        y: 1373
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a12c548131cd54650800000000000000
+      internalID: 6216616835224551962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_85
+      rect:
+        serializedVersion: 2
+        x: 3470
+        y: 1344
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dee46a2f2d233ce60800000000000000
+      internalID: 7981278846226157293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_86
+      rect:
+        serializedVersion: 2
+        x: 3583
+        y: 1344
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11cc590f5f596b470800000000000000
+      internalID: 8410074237696855057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_87
+      rect:
+        serializedVersion: 2
+        x: 1432
+        y: 1327
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 491790d54a1168fd0800000000000000
+      internalID: -2340163558739185260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_88
+      rect:
+        serializedVersion: 2
+        x: 1508
+        y: 1324
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9abda1c7cfbb47fe0800000000000000
+      internalID: -1192121308258051159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_89
+      rect:
+        serializedVersion: 2
+        x: 3431
+        y: 1305
+        width: 47
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 697c19c3655ec77a0800000000000000
+      internalID: -6377970813717330026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_90
+      rect:
+        serializedVersion: 2
+        x: 3544
+        y: 1305
+        width: 46
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b639fda521633a1e0800000000000000
+      internalID: -2187845541510016149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_91
+      rect:
+        serializedVersion: 2
+        x: 1405
+        y: 1281
+        width: 46
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 340c760b286aabc50800000000000000
+      internalID: 6681836077393100867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_92
+      rect:
+        serializedVersion: 2
+        x: 1481
+        y: 1276
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f172e35a085127210800000000000000
+      internalID: 1329148482300028703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_93
+      rect:
+        serializedVersion: 2
+        x: 1549
+        y: 1276
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdae810abde263060800000000000000
+      internalID: 6932780197202160348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_94
+      rect:
+        serializedVersion: 2
+        x: 3392
+        y: 1268
+        width: 49
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce178d7a6cb58d000800000000000000
+      internalID: 60899503747133932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_95
+      rect:
+        serializedVersion: 2
+        x: 3507
+        y: 1268
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57e256b4a97c1e670800000000000000
+      internalID: 8566347431739207285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_96
+      rect:
+        serializedVersion: 2
+        x: 1378
+        y: 1232
+        width: 47
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b06f8baab99806f0800000000000000
+      internalID: -718155113544326991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_97
+      rect:
+        serializedVersion: 2
+        x: 1456
+        y: 1229
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c4086ad2d5f06e60800000000000000
+      internalID: 7953627227892483266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_98
+      rect:
+        serializedVersion: 2
+        x: 1525
+        y: 1229
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed6c2b08846f2be70800000000000000
+      internalID: 9129630185890694878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_99
+      rect:
+        serializedVersion: 2
+        x: 3317
+        y: 1190
+        width: 46
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19637e96970dae460800000000000000
+      internalID: 7271853768229467793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_100
+      rect:
+        serializedVersion: 2
+        x: 3356
+        y: 1229
+        width: 46
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79b73af39918b24c0800000000000000
+      internalID: -4311209723079459945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_101
+      rect:
+        serializedVersion: 2
+        x: 3429
+        y: 1190
+        width: 46
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5ece76ce1b47d010800000000000000
+      internalID: 1213521220150939229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_102
+      rect:
+        serializedVersion: 2
+        x: 3468
+        y: 1229
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c417d3f054f74b30800000000000000
+      internalID: 4271651400109724864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_103
+      rect:
+        serializedVersion: 2
+        x: 1351
+        y: 1185
+        width: 47
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 999b1ad3446574b50800000000000000
+      internalID: 6577320631889672601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_104
+      rect:
+        serializedVersion: 2
+        x: 1429
+        y: 1180
+        width: 44
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40a257c37006752e0800000000000000
+      internalID: -2137133913968662012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_105
+      rect:
+        serializedVersion: 2
+        x: 1498
+        y: 1180
+        width: 46
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 398c368d8811cb680800000000000000
+      internalID: -8738089897561962349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_106
+      rect:
+        serializedVersion: 2
+        x: 3278
+        y: 1154
+        width: 46
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39ffdd30dd1ea4f90800000000000000
+      internalID: -6968509134033518701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_107
+      rect:
+        serializedVersion: 2
+        x: 3390
+        y: 1151
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c70aaf9b0630f860800000000000000
+      internalID: 7561603197906323392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_108
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 372
+        width: 501
+        height: 381
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02fe8b08ea8c6e2e0800000000000000
+      internalID: -2096767924684919008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_109
+      rect:
+        serializedVersion: 2
+        x: 1338
+        y: 294
+        width: 433
+        height: 550
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cb598889619f20f0800000000000000
+      internalID: -1139532298253149244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_110
+      rect:
+        serializedVersion: 2
+        x: 2242
+        y: 309
+        width: 574
+        height: 510
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f34e5571508741f40800000000000000
+      internalID: 5698311391792194623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_111
+      rect:
+        serializedVersion: 2
+        x: 3246
+        y: 343
+        width: 522
+        height: 486
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7774cd27d0d7e60b0800000000000000
+      internalID: -5733507778880977033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ArrowsTranspWhite_112
+      rect:
+        serializedVersion: 2
+        x: 4125
+        y: 355
+        width: 471
+        height: 510
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c93d1a845a059e3f0800000000000000
+      internalID: -871076382101089380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 69918b9a3022de445806dae563dd53b9
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      ArrowsTranspWhite_0: 3462365179606574488
+      ArrowsTranspWhite_1: 8028611266824299559
+      ArrowsTranspWhite_10: -243704687056011215
+      ArrowsTranspWhite_100: -4311209723079459945
+      ArrowsTranspWhite_101: 1213521220150939229
+      ArrowsTranspWhite_102: 4271651400109724864
+      ArrowsTranspWhite_103: 6577320631889672601
+      ArrowsTranspWhite_104: -2137133913968662012
+      ArrowsTranspWhite_105: -8738089897561962349
+      ArrowsTranspWhite_106: -6968509134033518701
+      ArrowsTranspWhite_107: 7561603197906323392
+      ArrowsTranspWhite_108: -2096767924684919008
+      ArrowsTranspWhite_109: -1139532298253149244
+      ArrowsTranspWhite_11: -1407057421503771856
+      ArrowsTranspWhite_110: 5698311391792194623
+      ArrowsTranspWhite_111: -5733507778880977033
+      ArrowsTranspWhite_112: -871076382101089380
+      ArrowsTranspWhite_12: 3633680083208886568
+      ArrowsTranspWhite_13: 6239188531935933660
+      ArrowsTranspWhite_14: -5294174163814356768
+      ArrowsTranspWhite_15: 8990760327658537641
+      ArrowsTranspWhite_16: -8286298652391142985
+      ArrowsTranspWhite_17: -5637098672878880863
+      ArrowsTranspWhite_18: 7805775877255805483
+      ArrowsTranspWhite_19: 4243281217028620021
+      ArrowsTranspWhite_2: -6859414577845807870
+      ArrowsTranspWhite_20: -3992079235890236674
+      ArrowsTranspWhite_21: 4791681489970669458
+      ArrowsTranspWhite_22: 5977460209626881114
+      ArrowsTranspWhite_23: -7885107836697366423
+      ArrowsTranspWhite_24: -1513919000384154447
+      ArrowsTranspWhite_25: -4336153819602970734
+      ArrowsTranspWhite_26: 8702137119982020984
+      ArrowsTranspWhite_27: 1632771127238163258
+      ArrowsTranspWhite_28: 8324621782897667020
+      ArrowsTranspWhite_29: 898589989058437513
+      ArrowsTranspWhite_3: -1195026304259548044
+      ArrowsTranspWhite_30: -4644108090234001510
+      ArrowsTranspWhite_31: 5164954582306237277
+      ArrowsTranspWhite_32: -6094862477423321027
+      ArrowsTranspWhite_33: -9153132495983362859
+      ArrowsTranspWhite_34: 2901424876669606647
+      ArrowsTranspWhite_35: 4166519959895174105
+      ArrowsTranspWhite_36: -1744649342821214791
+      ArrowsTranspWhite_37: -1076001087244539645
+      ArrowsTranspWhite_38: 4652701731667031820
+      ArrowsTranspWhite_39: -261789809721343985
+      ArrowsTranspWhite_4: 4905445240582187381
+      ArrowsTranspWhite_40: 3085474224948389491
+      ArrowsTranspWhite_41: -2026448654384061888
+      ArrowsTranspWhite_42: 3099601078145779016
+      ArrowsTranspWhite_43: 7790721166716187184
+      ArrowsTranspWhite_44: 7402688365041938987
+      ArrowsTranspWhite_45: 7504412788066422608
+      ArrowsTranspWhite_46: 5625222744780013714
+      ArrowsTranspWhite_47: -4131970750545011776
+      ArrowsTranspWhite_48: 6004747659503792434
+      ArrowsTranspWhite_49: -7680032899419821654
+      ArrowsTranspWhite_5: 2749917217407291240
+      ArrowsTranspWhite_50: 6091010608773223183
+      ArrowsTranspWhite_51: 2962611682849216439
+      ArrowsTranspWhite_52: 8158557427295295284
+      ArrowsTranspWhite_53: 3778219290406769382
+      ArrowsTranspWhite_54: 3627941032065779315
+      ArrowsTranspWhite_55: -2001264734317818750
+      ArrowsTranspWhite_56: 160633170118854737
+      ArrowsTranspWhite_57: 7043963342569497314
+      ArrowsTranspWhite_58: -351606824389147594
+      ArrowsTranspWhite_59: 6147958933138355815
+      ArrowsTranspWhite_6: -1303564685081710624
+      ArrowsTranspWhite_60: -8437119828245648787
+      ArrowsTranspWhite_61: -8036297386091603799
+      ArrowsTranspWhite_62: 9021424978086837658
+      ArrowsTranspWhite_63: 3249602194101587764
+      ArrowsTranspWhite_64: 8846690868099011035
+      ArrowsTranspWhite_65: -6927861352503325163
+      ArrowsTranspWhite_66: 4550936364782874823
+      ArrowsTranspWhite_67: 5664964189744781771
+      ArrowsTranspWhite_68: 8462233755023050063
+      ArrowsTranspWhite_69: -5150422050049430411
+      ArrowsTranspWhite_7: -7887771082234287043
+      ArrowsTranspWhite_70: -9176100118903272204
+      ArrowsTranspWhite_71: -2121563129017564092
+      ArrowsTranspWhite_72: 6843039463567765998
+      ArrowsTranspWhite_73: -496404927132358490
+      ArrowsTranspWhite_74: -863797615017448160
+      ArrowsTranspWhite_75: -7398936578445840201
+      ArrowsTranspWhite_76: -3250484705296277046
+      ArrowsTranspWhite_77: -3307710956899107985
+      ArrowsTranspWhite_78: 1914757184206168683
+      ArrowsTranspWhite_79: 8106893825921564442
+      ArrowsTranspWhite_8: -1867310946849880891
+      ArrowsTranspWhite_80: -7000142194832987918
+      ArrowsTranspWhite_81: -4520158687644391226
+      ArrowsTranspWhite_82: 5298863803549755562
+      ArrowsTranspWhite_83: -1624181207503605656
+      ArrowsTranspWhite_84: 6216616835224551962
+      ArrowsTranspWhite_85: 7981278846226157293
+      ArrowsTranspWhite_86: 8410074237696855057
+      ArrowsTranspWhite_87: -2340163558739185260
+      ArrowsTranspWhite_88: -1192121308258051159
+      ArrowsTranspWhite_89: -6377970813717330026
+      ArrowsTranspWhite_9: 7461352872749302350
+      ArrowsTranspWhite_90: -2187845541510016149
+      ArrowsTranspWhite_91: 6681836077393100867
+      ArrowsTranspWhite_92: 1329148482300028703
+      ArrowsTranspWhite_93: 6932780197202160348
+      ArrowsTranspWhite_94: 60899503747133932
+      ArrowsTranspWhite_95: 8566347431739207285
+      ArrowsTranspWhite_96: -718155113544326991
+      ArrowsTranspWhite_97: 7953627227892483266
+      ArrowsTranspWhite_98: 9129630185890694878
+      ArrowsTranspWhite_99: 7271853768229467793
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
