@@ -29,9 +29,23 @@ public class PlayerHealth : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();                        
         currentHealth = maxHealth;
 
-        GameManager.Instance.SubscribeEventsOfPlayerHealth(this);
+        //GameManager.Instance.SubscribeEventsOfPlayerHealth(this);
         //StartCoroutine(nameof(WaitForCameraAndSubscribe));
         SendRefsToCamera();
+    }
+    private void OnEnable()
+    {
+        // Subscription to PLayerHealth Events from the GameManager
+        // (Need to be OnEnable to assure the GameManager is ready)
+        if (GameManager.Instance != null)
+            GameManager.Instance.SubscribeEventsOfPlayerHealth(this);
+    }
+    private void OnDisable()
+    {
+        // Unsubscription to PLayerHealth Events from the GameManager
+        // (Need to be OnDisable to assure clean the refs when switching Scenes)
+        if (GameManager.Instance != null)
+            GameManager.Instance.UnsubscribeEventsOfPlayerHealth();
     }
     #endregion    
     private void SendRefsToCamera()

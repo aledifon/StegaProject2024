@@ -25189,7 +25189,7 @@ GameObject:
   - component: {fileID: 577528987}
   - component: {fileID: 577528986}
   m_Layer: 5
-  m_Name: LifeBackground
+  m_Name: HealthBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26918,7 +26918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 642758335}
   m_Layer: 0
-  m_Name: SpawnPos00
+  m_Name: SpawnInitPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27897,7 +27897,7 @@ GameObject:
   - component: {fileID: 675039089}
   - component: {fileID: 675039088}
   m_Layer: 5
-  m_Name: PanelTextNumLifes
+  m_Name: LifesPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212265,6 +212265,18 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 363ce4d1-c8bc-4649-ac18-ff76265a0363
     m_ActionName: 'UI/Quit[/Keyboard/q]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8bd20f56-6597-4a1d-b3d8-a847bcf209b6
+    m_ActionName: 'UI-MainMenu/PressKey[/Keyboard/space,/XInputControllerWindows/buttonSouth,/XInputControllerWindows/buttonNorth,/XInputControllerWindows/buttonWest,/XInputControllerWindows/buttonEast,/XInputControllerWindows/start,/XInputControllerWindows/select]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 76a31980-8993-43b9-809e-2026995391ce
+    m_ActionName: 'UI-MainMenu/Move[/Keyboard/w,/Keyboard/s,/Keyboard/upArrow,/Keyboard/downArrow,/XInputControllerWindows/leftStick]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7bbd995c-42bd-48ee-ad38-acaa4f042eca
+    m_ActionName: 'UI-MainMenu/Quit[/Keyboard/q,/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -214296,7 +214308,7 @@ GameObject:
   - component: {fileID: 1116674856}
   - component: {fileID: 1116674855}
   m_Layer: 5
-  m_Name: Life
+  m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215055,7 +215067,7 @@ GameObject:
   - component: {fileID: 1146728866}
   - component: {fileID: 1146728865}
   m_Layer: 5
-  m_Name: PanelTextNumGems
+  m_Name: GemsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227522,13 +227534,7 @@ MonoBehaviour:
   volumeMinValue: -15
   filterDeafFwdDuration: 0.8
   volumeDropDeafFwdDuration: 0.5
-  pausePanel: {fileID: 1980167304}
-  gemsUIImage: {fileID: 2010716870}
-  lifesUIImage: {fileID: 1044315658}
-  healthUIImage: {fileID: 1116674854}
   slowMotionEnabled: 0
-  initPos: {fileID: 642758335}
-  initCamBoundTriggerArea: {fileID: 422694092}
 --- !u!114 &1419110056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227536,13 +227542,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1419110052}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c210d2a9ff8ae2746b248d74f32eeeda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recorder: {fileID: 1072431802}
-  playback: {fileID: 938598644}
   startRecording: 0
   stopRecording: 0
   startPlayback: 0
@@ -247815,7 +247819,7 @@ GameObject:
   - component: {fileID: 1968681369}
   - component: {fileID: 1968681368}
   m_Layer: 5
-  m_Name: PanelLife
+  m_Name: HealthPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257131,7 +257135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2788536590485902166, guid: d327c24a3975d6245b8ce3de44626736, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5687965254440582019, guid: d327c24a3975d6245b8ce3de44626736, type: 3}
       propertyPath: m_LocalPosition.x

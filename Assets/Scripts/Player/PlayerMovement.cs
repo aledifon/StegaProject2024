@@ -297,16 +297,32 @@ public class PlayerMovement : MonoBehaviour
     }
     protected virtual void OnEnable()
     {
-        GameManager.Instance.SubscribeEventsOfPlayerMovement(this);
+        // Subscription to PLayerMovement Events from the GameManager
+        // (Need to be OnEnable to assure the GameManager is ready)
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SubscribeEventsOfPlayerMovement(this);
+            GameManager.Instance.EnableReplayManagerAndGetRefs();
+            GameManager.Instance.GetInputActionMaps(GetComponent<PlayerInput>().actions);
+        }
+        
         playerHealth.OnDeathPlayer += Death;                
     }
     protected virtual void OnDisable()
     {
         //if (GameManager.Instance != null)
         //    GameManager.Instance.OnHitPhysicsPlayer -= ReceiveDamage;
-        playerHealth.OnDeathPlayer -= Death;        
+        playerHealth.OnDeathPlayer -= Death;                
 
-        GameManager.Instance.DisableAllInputs();
+        // Unsubscription to PLayerMovement Events from the GameManager
+        // (Need to be OnDisable to assure clean the refs when switching Scenes)
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.DisableAllInputs();            // PENDING TO BE MANAGED FROM
+                                                                // SCENE MANAGEMENT ON GameManager.cs!!
+            GameManager.Instance.DisableReplayManagerAndCleanRefs();
+            GameManager.Instance.UnsubscribeEventsOfPlayerMovement();
+        }            
     }
     protected virtual void Awake()
     {
@@ -322,10 +338,7 @@ public class PlayerMovement : MonoBehaviour
 
         NumLifes = 0;
         textLifesUI.text = NumLifes.ToString();
-
-        GameManager.Instance.SubscribeEventsOfPlayerMovement(this);        
-        GameManager.Instance.GetInputActionMaps(GetComponent<PlayerInput>().actions);
-
+        
         // Just for debugging
         //GameManager.Instance.EnableSlowMotion();
 
