@@ -439,6 +439,9 @@ public class GameManager : MonoBehaviour
                         // Enable the IntroScenePanel
                         introScenePanel.SetActive(true);
 
+                        // Disable all player's input
+                        DisableAllInputs();
+
                         // Update Menu Scene State
                         menuSceneCurrentState = MenuSceneState.IntroScenePanelShowText;
                     }
@@ -473,14 +476,15 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(1f);
 
+                    // Load the Level
+                    SceneManager.LoadScene(Scenes.Level.ToString());
+
                     // Update Menu Scene State
                     menuSceneCurrentState = MenuSceneState.StartGame;
-
                     break;
 
                 case MenuSceneState.StartGame:
-
-                    SceneManager.LoadScene(Scenes.Level.ToString());
+                    
                     break;
             }
             yield return null;
