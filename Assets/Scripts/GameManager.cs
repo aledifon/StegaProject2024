@@ -78,16 +78,7 @@ public class GameManager : MonoBehaviour
     public event Action OnPauseDisabled;
     #endregion
 
-    [Header("UI")]
-    [SerializeField] private GameObject pausePanel;
-    [SerializeField] private RectTransform gemsUIImage;
-    public RectTransform GemsUIImage => gemsUIImage;    
-    [SerializeField] private RectTransform lifesUIImage;
-    public RectTransform LifesUIImage => lifesUIImage;    
-    [SerializeField] private RectTransform healthUIImage;
-    public RectTransform HealthUIImage => healthUIImage;
-
-
+    [Header("UI")]    
     private GameObject canvas;
 
     // Menu Scene Refs
@@ -110,17 +101,39 @@ public class GameManager : MonoBehaviour
 
     private UIMenuSelectEnum.UIMenuSelect uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
 
-    // Level Scene Refs
+    // Level Scene Refs    
+    private GameObject healthPanel;    
+    private RectTransform healthUIImage;
+    public RectTransform HealthUIImage => healthUIImage;
+
+    private GameObject gemsPanel;
+    private RectTransform gemsUIImage;
+    public RectTransform GemsUIImage => gemsUIImage;
+
+    private GameObject lifesPanel;
+    private RectTransform lifesUIImage;
+    public RectTransform LifesUIImage => lifesUIImage;
+
+    private GameObject pausePanel;
+
+    private GameObject endScenePanel;
+    private TextMeshProUGUI endSceneText; // Machine writting VFX
+    private TextMeshProUGUI endSceneText2; // Machine writting VFX
+
+    private GameObject creditsGamePanel;
+    private TextMeshProUGUI creditsText;      // Fade In/Out alpha Image (0->100->0)
+    private TextMeshProUGUI madeByText;       // Fade In/Out alpha Text (0->100->0)
+    private TextMeshProUGUI endGameText;      // Fade In/Out alpha Text (0->100->0)
 
     private Scenes sceneSelected = Scenes.Menu;
 
     [Header("Slow Motion Test")]
     [SerializeField] private bool slowMotionEnabled;
 
-    // Checkpoint    
+    // Checkpoint & Starting Pos.   
     [Header("Starting Pos")]
-    [SerializeField] private Transform initPos;
-    [SerializeField] private CamBoundariesTriggerArea initCamBoundTriggerArea;
+    private Transform initPos;
+    private CamBoundariesTriggerArea initCamBoundTriggerArea;
     private CamTriggerAreaData lastCheckpointData = new CamTriggerAreaData();    
     public CamTriggerAreaData LastCheckpointData => lastCheckpointData;    
 
@@ -129,6 +142,11 @@ public class GameManager : MonoBehaviour
     PlayerHealth playerHealth;
     PlayerMovement playerMovement;
     PlayerSFX playerSFX;
+
+    // Player Ghost Refs
+    ReplayManager replayManager;
+    PlayerPlayback playerPlayback;
+    PlayerRecorder playerRecorder;
 
     // Input Player Management    
     private InputActionAsset inputActions;
@@ -151,54 +169,29 @@ public class GameManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;  // Subscribe to the event.
 
-        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
-
+        // Get GameManager refs
         generalAudioSource = GetComponent<AudioSource>();
-        PlayLevelMusic();
+        replayManager = GetComponent<ReplayManager>();
 
-        EnableGameplayInput();
+        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
+        //PlayLevelMusic();
 
-        if(slowMotionEnabled)
-            EnableSlowMotion();
+        //EnableGameplayInput();
 
-        // Set the filterDuration
-        //filterDuration = returnDuration;
+        //if(slowMotionEnabled)
+        //    EnableSlowMotion();
 
-        // Set the Initial CheckPoint Data
-        SetInitCheckPointData();
+        //// Set the filterDuration
+        ////filterDuration = returnDuration;
 
-        // Get the Gems UI Position
-        CheckGemsUIRef();
+        //// Set the Initial CheckPoint Data
+        //SetInitCheckPointData();        
 
         // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
     }
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-
-        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
-        // ONLY SHOULD BE CALLED WHEN CLOSED LEVEL SCENE
-
-        if (playerHealth != null)
-        {
-            playerHealth.OnHitFXPlayer -= SlowMotionOnHit;
-            playerHealth.OnHitFXPlayer -= ApplyDeafeningSFX;
-        }
-
-        if (playerMovement != null)
-        {
-            OnHitPhysicsPlayer -= playerMovement.ReceiveDamage;            
-        }
-
-        if (playerSFX != null)
-        {
-            OnPauseEnabled -= playerSFX.PauseAllSFX;            
-            OnPauseDisabled -= playerSFX.ResumeAllSFX;            
-        }
-
-        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
-        // ONLY SHOULD BE CALLED WHEN CLOSED LEVEL SCENE
-
+        SceneManager.sceneLoaded -= OnSceneLoaded;        
         instance = null;
     }
     #endregion
@@ -221,6 +214,9 @@ public class GameManager : MonoBehaviour
 
                     // Get all the Menu Scene GO Refs.
                     GetMenuSceneRefs();
+
+                    // Set the ReplayManager as disabled
+                    DisableReplayManagerAndCleanRefs();
 
                     // Start playing Title Screen Audio
                     //PlayMainTitleAudioClip();
@@ -258,9 +254,25 @@ public class GameManager : MonoBehaviour
                     // Set the new Scene as the current one
                     sceneSelected = currentScene;
 
-                    //
+                    // Get the GO Refs
                     GetLevelSceneRefs();
+                    GetLevelRefs();
 
+                    PlayLevelMusic();
+
+                    EnableGameplayInput();
+
+                    //if (slowMotionEnabled)
+                    //    EnableSlowMotion();
+
+                    // Set the filterDuration
+                    //filterDuration = returnDuration;
+
+                    // Set the Initial CheckPoint Data
+                    SetInitCheckPointData();                    
+
+                    break;
+                default:
                     break;
             }
         }
@@ -335,14 +347,91 @@ public class GameManager : MonoBehaviour
     private void GetLevelSceneRefs()
     {
         // Get all the GO's Refs                    
+        healthPanel = canvas.transform.Find("HealthPanel")?.gameObject;
+        if (healthPanel == null)
+            Debug.LogError("The " + healthPanel.name + " object is null");
+        else
+        {
+            healthUIImage = healthPanel.transform.Find("Health")?.GetComponent<RectTransform>();
+            if (healthUIImage == null)
+                Debug.LogError("The " + healthUIImage.name + " component was not found " +
+                                "on the " + healthPanel.name + "GO ");
+        }
+
+        gemsPanel = canvas.transform.Find("GemsPanel")?.gameObject;
+        if (gemsPanel == null)
+            Debug.LogError("The " + gemsPanel.name + " object is null");
+        else
+        {
+            gemsUIImage = gemsPanel.transform.Find("GemsCountImage")?.GetComponent<RectTransform>();
+            if (gemsUIImage == null)
+                Debug.LogError("The " + gemsUIImage.name + " component was not found " +
+                                "on the " + gemsPanel.name + "GO ");
+        }
+
+        lifesPanel = canvas.transform.Find("LifesPanel")?.gameObject;
+        if (lifesPanel == null)
+            Debug.LogError("The " + lifesPanel.name + " object is null");
+        else
+        {
+            lifesUIImage = lifesPanel.transform.Find("LifesCountImage")?.GetComponent<RectTransform>();
+            if (lifesUIImage == null)
+                Debug.LogError("The " + lifesUIImage.name + " component was not found " +
+                                "on the " + lifesPanel.name + "GO ");
+        }
+
         pausePanel = canvas.transform.Find("PausePanel")?.gameObject;
         if (pausePanel == null)
-            Debug.LogError("The Pause Panel object is null");
+            Debug.LogError("The " + pausePanel.name + " object is null");
+                
+        endScenePanel = canvas.transform.Find("EndScenePanel")?.gameObject;
+        if (endScenePanel == null)
+            Debug.LogError("The " + endScenePanel.name + " object is null");
+        else
+        {
+            endSceneText = endScenePanel.transform.Find("StoryTextEN")?.GetComponent<TextMeshProUGUI>();
+            if (endSceneText == null)
+                Debug.LogError("The " + endSceneText.name + " component was not found " +
+                                "on the " + endScenePanel.name + "GO ");
+            
+            endSceneText2 = endScenePanel.transform.Find("ContinueTextEN")?.GetComponent<TextMeshProUGUI>();
+            if (endSceneText2 == null)
+                Debug.LogError("The " + endSceneText2.name + " component was not found " +
+                                "on the " + endScenePanel.name + "GO ");
+        }
 
-        // Missing ControlsPanel
+        creditsGamePanel = canvas.transform.Find("CreditsGamePanel")?.gameObject;
+        if (creditsGamePanel == null)
+            Debug.LogError("The " + creditsGamePanel.name + " object is null");
+        //else
+        //{
+        //    creditsText = creditsGamePanel.transform.Find("CreditsText")?.GetComponent<TextMeshProUGUI>();
+        //    if (creditsText == null)
+        //        Debug.LogError("The " + creditsText.name + " component was not found " +
+        //                        "on the " + creditsGamePanel.name + "GO ");
+            
+        //    madeByText = creditsGamePanel.transform.Find("MadeByText")?.GetComponent<TextMeshProUGUI>();
+        //    if (madeByText == null)
+        //        Debug.LogError("The " + madeByText.name + " component was not found " +
+        //                        "on the " + creditsGamePanel.name + "GO ");
+            
+        //    endGameText = creditsGamePanel.transform.Find("EndGameText")?.GetComponent<TextMeshProUGUI>();
+        //    if (endGameText == null)
+        //        Debug.LogError("The " + endGameText.name + " component was not found " +
+        //                        "on the " + creditsGamePanel.name + "GO ");
+        //}           
 
-        // Missing EndScenePanel
+    }
+    private void GetLevelRefs()
+    {
+        // Get all the GO's Refs                    
+        initPos = GameObject.Find("SpawnInitPos")?.transform;
+        if (initPos == null)
+            Debug.LogError("The " + initPos.name + " component is null");
 
+        initCamBoundTriggerArea = GameObject.Find("InitAreaCamTrigger")?.GetComponent<CamBoundariesTriggerArea>();
+        if (initCamBoundTriggerArea == null)
+            Debug.LogError("The " + initCamBoundTriggerArea.name + " component is null");
     }
     public void ShowMouseCursor(bool enable)
     {
@@ -368,16 +457,67 @@ public class GameManager : MonoBehaviour
         playerHealth.OnHitFXPlayer += SlowMotionOnHit;
         playerHealth.OnHitFXPlayer += ApplyDeafeningSFX;
     }
+    public void UnsubscribeEventsOfPlayerHealth()
+    {
+        if (playerHealth != null)
+        {            
+            playerHealth.OnHitFXPlayer -= SlowMotionOnHit;
+            playerHealth.OnHitFXPlayer -= ApplyDeafeningSFX;
+            playerHealth = null;
+        }
+    }
     public void SubscribeEventsOfPlayerSFX(PlayerSFX pSFX)
     {
         playerSFX = pSFX;
         OnPauseEnabled += playerSFX.PauseAllSFX;
         OnPauseDisabled += playerSFX.ResumeAllSFX;
     }
+    public void UnsubscribeEventsOfPlayerSFX()
+    {
+        if (playerSFX != null)
+        {
+            OnPauseEnabled -= playerSFX.PauseAllSFX;
+            OnPauseDisabled -= playerSFX.ResumeAllSFX;
+            playerSFX = null;
+        }
+    }
     public void SubscribeEventsOfPlayerMovement(PlayerMovement pM)
     {
         playerMovement = pM;
         OnHitPhysicsPlayer += playerMovement.ReceiveDamage;
+    }
+    public void UnsubscribeEventsOfPlayerMovement()
+    {
+        if (playerMovement != null)
+        {
+            OnHitPhysicsPlayer -= playerMovement.ReceiveDamage;
+            playerMovement = null;
+        }
+    }
+    public void EnableReplayManagerAndGetRefs()
+    {        
+        if (playerMovement != null)
+        {            
+            // Get the Player Recorder & Playback Refs
+            playerPlayback = GameObject.Find("PlayerGhost")?.GetComponent<PlayerPlayback>();
+            playerRecorder = playerMovement.gameObject.GetComponent<PlayerRecorder>();
+
+            if (playerPlayback != null && playerRecorder != null)
+            {                
+                replayManager.enabled = true;
+                replayManager.GetPlayerRefs(playerRecorder, playerPlayback);
+            }                
+            else
+                Debug.LogWarning("Either " + playerPlayback.name + " and/or +" +
+                                playerRecorder.name + " scripts were not found on the Scene");
+        }        
+    }
+    public void DisableReplayManagerAndCleanRefs()
+    {
+        playerPlayback = null;
+        playerRecorder = null;
+
+        replayManager.enabled = false;
     }
     #endregion
     #region Input Action Maps
@@ -745,28 +885,7 @@ public class GameManager : MonoBehaviour
         // Update the Player's position
     }
     #endregion
-    #region GemsUIPos
-    private void CheckGemsUIRef()
-    {
-        if (gemsUIImage == null)
-        {
-            Debug.LogError("No Gems UI Image Pos. Ref assigned to GameManager!");
-            return;
-        }
-        if (lifesUIImage == null)
-        {
-            Debug.LogError("No Lifes UI Image Pos. Ref assigned to GameManager!");
-            return;
-        }
-        if (healthUIImage == null)
-        {
-            Debug.LogError("No Health UI Image Pos. Ref assigned to GameManager!");
-            return;
-        }
-        //Camera cam = Camera.main;
-        //if (cam == null)
-        //    cam = FindFirstObjectByType<Camera>();
-    }
+    #region GemsUIPos    
     //public Vector3 GetGemsUIPos()
     //{                
     //    // Convert the Gem UI Pos from Screen Pos to World Pos 

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ReplayManager : MonoBehaviour
 {
-    public PlayerRecorder recorder;
-    public PlayerPlayback playback;
+    private PlayerRecorder recorder;
+    private PlayerPlayback playback;
 
     public bool startRecording;
     public bool stopRecording;
@@ -14,9 +14,25 @@ public class ReplayManager : MonoBehaviour
     {
         SaveManager.Init();
     }
-
+    public void GetPlayerRefs(PlayerRecorder pr, PlayerPlayback pb)
+    {
+        recorder = pr;
+        playback = pb;
+    }
+    public void CleanPlayerRefs()
+    {
+        recorder = null;
+        playback = null;
+    }
     void Update()
     {
+        if (recorder == null || playback == null)
+        {
+            Debug.LogWarning("The "+ recorder.name + " and/or the " + playback.name + 
+                            " refs. were not found on the Scene!!");
+            return;
+        }
+
         // Triggered by myself manually
 
         if (startRecording && !stopRecording && !startPlayback && ! stopPlayback &&

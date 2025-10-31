@@ -81,10 +81,15 @@ public class PlayerSFX : MonoBehaviour
         playerHook = GetComponent<PlayerHook>();
         playerHealth = GetComponent<PlayerHealth>();
 
-        GameManager.Instance.SubscribeEventsOfPlayerSFX(this);
+        //GameManager.Instance.SubscribeEventsOfPlayerSFX(this);
     }
     private void OnEnable()
     {
+        // Subscription to PLayerSFX Events from the GameManager
+        // (Need to be OnEnable to assure the GameManager is ready)
+        if (GameManager.Instance != null)
+            GameManager.Instance.SubscribeEventsOfPlayerSFX(this);
+
         // Walk
         playerMovement.OnStartWalking += TriggerWalkSFX;
         playerMovement.OnStopWalking += StopWalkSFX;
@@ -123,6 +128,11 @@ public class PlayerSFX : MonoBehaviour
     }
     private void OnDisable()
     {
+        // Unsubscription to PLayerSFX Events from the GameManager
+        // (Need to be OnDisable to assure clean the refs when switching Scenes)
+        if (GameManager.Instance != null)
+            GameManager.Instance.UnsubscribeEventsOfPlayerSFX();
+
         // Walk
         playerMovement.OnStartWalking -= TriggerWalkSFX;
         playerMovement.OnStopWalking -= StopWalkSFX;
