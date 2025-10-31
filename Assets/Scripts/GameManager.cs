@@ -10,6 +10,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 using static ScenesEnum;
+using static MenuSceneStateEnum;
+using static UIMenuSelectEnum;
+
 using TMPro;
 using System.Collections.Generic;
 public class GameManager : MonoBehaviour
@@ -84,6 +87,7 @@ public class GameManager : MonoBehaviour
     // Menu Scene Refs
     private GameObject introPanel;          // Disable->Enable +
                                             // Fade In/Out Color Image (Black-->Red-->Black)
+    private Image introPanelImage;
 
     private Image stegaImage;               // Fade In/Out alpha Image (0->100->0)
     private TextMeshProUGUI aledifonText;   // Fade In/Out alpha Text (0->100->0)
@@ -93,13 +97,28 @@ public class GameManager : MonoBehaviour
     private GameObject optionTextContainer; // Disable->Enable
     private List<RectTransform> optionPositions;
     private RectTransform selectorOption;   // Disable->Enable
-    private TextMeshProUGUI buildVersion;   // Disable->Enable
+    private TextMeshProUGUI buildVersionText;   // Disable->Enable
 
     private GameObject controlsPanel;       
     private GameObject introScenePanel;
     private TextMeshProUGUI introSceneText; // Machine writting VFX
+    private string introSceneTextStrEN = "And so the intrepid explorer, eager in his desire for " +
+                                        "discovery, decided to venture into the silent depths in " +
+                                        "search of something that had long been lost...";
 
-    private UIMenuSelectEnum.UIMenuSelect uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
+    private string introSceneTextStrFR = "Et alors, l'intrépide explorateur, avide de découvertes, " +
+                                        "décida de s'enfoncer dans les profondeurs silencieuses à " +
+                                        "la recherche de quelque chose qui avait disparu depuis " +
+                                        "longtemps...";
+
+    private string introSceneTextStrES = "Y entonces el intrepido explorador, ávido por su deseo de " +
+                                        "descubrimiento decidió adentrarse en las profundidades " +
+                                        "silenciosas en busqueda de algo que llevaba mucho tiempo " +
+                                        "perdido...";
+
+    private UIMenuSelect uiMenuSelect = UIMenuSelect.StartGame;
+    private MenuSceneState menuSceneCurrentState = MenuSceneState.Init;
+    private bool keyPressed = false;
 
     // Level Scene Refs    
     private GameObject healthPanel;    
@@ -125,7 +144,7 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI madeByText;       // Fade In/Out alpha Text (0->100->0)
     private TextMeshProUGUI endGameText;      // Fade In/Out alpha Text (0->100->0)
 
-    private Scenes sceneSelected = Scenes.Menu;
+    private Scenes sceneSelected = Scenes.Menu;    
 
     [Header("Slow Motion Test")]
     [SerializeField] private bool slowMotionEnabled;
@@ -195,6 +214,289 @@ public class GameManager : MonoBehaviour
         instance = null;
     }
     #endregion
+    #region Menu Scene
+    private IEnumerator UpdateSceneState()
+    {
+        while (menuSceneCurrentState < MenuSceneState.StartGame)
+        {
+            // Set the Menu Scene Sequence on the 1st State
+            /*
+             * 1. Enable IntroPanel & Start Intro Panel on Black Colour
+             * 2. IntroPanel.Color.alpha(0->100)
+             * 3. StegaImage.Color.alpha.Lerp(0->100)
+             * 4. Delay 2s
+             * 5. StegaImage.Color.alpha.Lerp(100->0)
+             * 6. AledifonText.Color.alpha.Lerp(0->100)
+             * 7. Delay 2s
+             * 8. AledifonText.Color.alpha.Lerp(100->0)
+             * 9. IntroPanel.Color.aplha(100->0)
+             * 10. Disable IntroPanel & Enable MenuPanel
+             * 11. TitleText.Color.alpha.Lerp(0->100)
+             * 12. Enable OptionTextContainer, Selector & BuildVersionText
+             *     Also Enable InputActionMap
+             * 13. If Selected Controls --> Enable ControlsPanel
+             *     Press any key (From Control Panel) --> Disable ControlsPanel
+             * 14. If Selected Quit Game --> Quit Game
+             * 15. If Selected Start Game --> Enable IntroScenePanel & Disable InputActionMap
+             *     Start machine typewritting         
+             * 16. When Text is finished --> LoadScene(LevelScene);
+             */
+
+            Color introPanelImageTargetColor;
+            Color introPanelStegaImageTargetColor;
+            Color introPanelAledifonTextTargetColor;
+
+            Color menuPanelTitleTextTargetColor;
+
+            switch (menuSceneCurrentState)
+            {
+                // Enable IntroPanel
+                case MenuSceneState.Init:
+
+                    // Enable the IntroPanel
+                    introPanel.SetActive(true);                    
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.IntroPanelFadeIn;
+                    break;
+
+                // Intro Panel from Black to Red Colour Fade In
+                case MenuSceneState.IntroPanelFadeIn:
+
+                    //Set The target Color
+                    introPanelImageTargetColor = introPanelImage.color;
+                    introPanelImageTargetColor.a = 1f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return introPanelImage
+                        .DOColor(introPanelImageTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();                    
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.IntroPanelStegaImageFadeIn;                    
+                    break;
+                
+                // Stega Image Fade In
+                case MenuSceneState.IntroPanelStegaImageFadeIn:
+
+                    //Set The target Color
+                    introPanelStegaImageTargetColor = stegaImage.color;
+                    introPanelStegaImageTargetColor.a = 1f;
+
+                    // Alpha Color FadeIn (0->100)
+                    yield return stegaImage
+                        .DOColor(introPanelStegaImageTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay (Keeps the for x secs)
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.IntroPanelStegaImageFadeOut;
+                    break;
+
+                // Stega Image Fade Out
+                case MenuSceneState.IntroPanelStegaImageFadeOut:
+
+                    //Set The target Color
+                    introPanelStegaImageTargetColor = stegaImage.color;
+                    introPanelStegaImageTargetColor.a = 0f;
+
+                    // Alpha Color FadeOut (100->0)
+                    yield return stegaImage
+                        .DOColor(introPanelStegaImageTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay (Keeps the for x secs)
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.IntroPanelAledifonTextFadeIn;
+                    break;
+
+                // Aledifon Text Fade In
+                case MenuSceneState.IntroPanelAledifonTextFadeIn:
+
+                    //Set The target Color
+                    introPanelAledifonTextTargetColor = aledifonText.color;
+                    introPanelAledifonTextTargetColor.a = 1f;
+
+                    // Alpha Color FadeIn (0->100)
+                    yield return aledifonText
+                        .DOColor(introPanelAledifonTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay (Keeps the for x secs)
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.IntroPanelAledifonTextFadeOut;
+                    break;
+
+                case MenuSceneState.IntroPanelAledifonTextFadeOut:
+
+                    //Set The target Color
+                    introPanelAledifonTextTargetColor = aledifonText.color;
+                    introPanelAledifonTextTargetColor.a = 0f;
+
+                    // Alpha Color FadeOut (100->0)
+                    yield return aledifonText
+                        .DOColor(introPanelAledifonTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay (Keeps the for x secs)
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.IntroPanelFadeOut;
+                    break;
+
+                case MenuSceneState.IntroPanelFadeOut:
+
+                    //Set The target Color
+                    introPanelImageTargetColor = introPanelImage.color;
+                    introPanelImageTargetColor.a = 0f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return introPanelImage
+                        .DOColor(introPanelImageTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay (Keeps the for x secs)
+                    yield return new WaitForSeconds(1f);
+
+                    // Disable the IntroPanel
+                    introPanel.SetActive(false);
+                    // Enable the MenuPanel
+                    menuPanel.SetActive(true);
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.MenuPanelTitleTextFadeIn;
+                    break;
+
+                case MenuSceneState.MenuPanelTitleTextFadeIn:
+
+                    //Set The target Color
+                    menuPanelTitleTextTargetColor = titleText.color;
+                    menuPanelTitleTextTargetColor.a = 0f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return titleText
+                        .DOColor(menuPanelTitleTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay (Keeps the for x secs)
+                    yield return new WaitForSeconds(1f);
+
+                    // Enable the all the subpanels
+                    optionTextContainer.SetActive(true);
+                    selectorOption.gameObject.SetActive(true);
+                    buildVersionText.gameObject.SetActive(true);
+
+                    // Enable the UI Inputs
+                    EnableUIMainMenuInput();
+
+                    // Init the MenuPanelState & the Selector State Visual on UI
+                    uiMenuSelect = UIMenuSelect.StartGame;
+                    //
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.MenuPanelState;
+                    break;
+
+                case MenuSceneState.MenuPanelState:
+
+                    if (!keyPressed)
+                        break;
+
+                    // Reset the KeyPressed Boolean Flag
+                    keyPressed = false;
+
+                    if (uiMenuSelect == UIMenuSelect.QuitGame)
+                    {
+                        // Update Menu Scene State
+                        menuSceneCurrentState = MenuSceneState.QuitGameState;
+                    }
+                    else if (uiMenuSelect == UIMenuSelect.Controls)
+                    {
+                        // Enable the ControlsPanel
+                        controlsPanel.SetActive(true);
+
+                        // Update Menu Scene State
+                        menuSceneCurrentState = MenuSceneState.ControlPanelState;
+                    }                        
+                    else if (uiMenuSelect == UIMenuSelect.StartGame)
+                    {
+                        // Disable the MenuPanel
+                        menuPanel.SetActive(false);
+                        // Enable the IntroScenePanel
+                        introScenePanel.SetActive(true);
+
+                        // Update Menu Scene State
+                        menuSceneCurrentState = MenuSceneState.IntroScenePanelShowText;
+                    }
+                    break;
+
+                case MenuSceneState.ControlPanelState:
+
+                    if (!keyPressed)
+                        break;
+
+                    // Reset the KeyPressed Boolean Flag
+                    keyPressed = false;
+
+                    // Enable the ControlsPanel
+                    controlsPanel.SetActive(false);
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.MenuPanelState;
+
+                    break;
+
+                case MenuSceneState.QuitGameState:
+
+                    QuitGame();
+                    break;
+
+                case MenuSceneState.IntroScenePanelShowText:
+
+                    // Perform Type writting machine
+                    yield return StartCoroutine(TypeWrittingText(introSceneText,introSceneTextStrEN));
+
+                    // Delay
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.StartGame;
+
+                    break;
+
+                case MenuSceneState.StartGame:
+
+                    SceneManager.LoadScene(Scenes.Level.ToString());
+                    break;
+            }
+            yield return null;
+        }
+    }
+    private IEnumerator TypeWrittingText(TextMeshProUGUI textBox, string str)
+    {
+        textBox.text = "";
+
+        foreach (char c in str)
+        {
+            textBox.text += c;
+            yield return new WaitForSeconds(0.15f);
+        }        
+    }
+    #endregion
     #region Scene Management
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -212,6 +514,9 @@ public class GameManager : MonoBehaviour
                     // Set the new Scene as the current one
                     sceneSelected = currentScene;
 
+                    // Set the init Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.Init;
+
                     // Get all the Menu Scene GO Refs.
                     GetMenuSceneRefs();
 
@@ -221,32 +526,14 @@ public class GameManager : MonoBehaviour
                     // Start playing Title Screen Audio
                     //PlayMainTitleAudioClip();
 
-                    // Set the Menu Scene Sequence on the 1st State
-                    /*
-                     * 1. Enable IntroPanel & Start Intro Panel on Black Colour
-                     * 2. IntroPanel.Color.Lerp(Black->Red)
-                     * 3. StegaImage.Color.alpha.Lerp(0->100)
-                     * 4. Delay 2s
-                     * 5. StegaImage.Color.alpha.Lerp(100->0)
-                     * 6. AledifonText.Color.alpha.Lerp(0->100)
-                     * 7. Delay 2s
-                     * 8. AledifonText.Color.alpha.Lerp(100->0)
-                     * 9. IntroPanel.Color.Lerp(Red->Black)
-                     * 10. Disable IntroPanel & Enable MenuPanel
-                     * 11. TitleText.Color.alpha.Lerp(0->100)
-                     * 12. Enable OptionTextContainer, Selector & BuildVersionText
-                     *     Also Enable InputActionMap
-                     * 13. If Selected Controls --> Enable ControlsPanel
-                     *     Press any key (From Control Panel) --> Disable ControlsPanel
-                     * 14. If Selected Quit Game --> Quit Game
-                     * 15. If Selected Start Game --> Enable IntroScenePanel & Disable InputActionMap
-                     *     Start machine typewritting         
-                     * 16. When Text is finished --> LoadScene(LevelScene);
-                     */
-
-
                     // Hide the Mouse Cursor
                     ShowMouseCursor(false);
+
+                    // Disable all the Inputs
+                    DisableAllInputs();
+
+                    // Trigger the Update Scene State Loop
+                    StartCoroutine(nameof(UpdateSceneState));                    
 
                     break;
                 case Scenes.Level:
@@ -284,7 +571,12 @@ public class GameManager : MonoBehaviour
         if (introPanel == null)
             Debug.LogError("The " + introPanel.name + " object is null");
         else
-        {
+        {            
+            introPanelImage = introPanel.transform?.GetComponent<Image>();
+            if (introPanelImage == null)
+                Debug.LogError("The " + introPanelImage.name + " component was not found " +
+                                "on the " + introPanel.name + "GO ");
+
             stegaImage = introPanel.transform.Find("StegaImage")?.GetComponent<Image>();
             if (stegaImage == null)
                 Debug.LogError("The " + stegaImage.name + " component was not found " +
@@ -328,9 +620,9 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("The " + selectorOption.name + " component was not found " +
                                 "on the " + menuPanel.name + "GO ");
 
-            buildVersion = menuPanel.transform.Find("BuildVersionText").GetComponent<TextMeshProUGUI>();
-            if (buildVersion == null)
-                Debug.LogError("The " + buildVersion.name + " component was not found " +
+            buildVersionText = menuPanel.transform.Find("BuildVersionText").GetComponent<TextMeshProUGUI>();
+            if (buildVersionText == null)
+                Debug.LogError("The " + buildVersionText.name + " component was not found " +
                                 "on the " + menuPanel.name + "GO ");
         }
 
@@ -556,14 +848,20 @@ public class GameManager : MonoBehaviour
     #region Input Player
     public void KeyPressedUI(InputAction.CallbackContext context)
     {
+        if (menuSceneCurrentState != MenuSceneState.MenuPanelState &&
+            menuSceneCurrentState != MenuSceneState.ControlPanelState)
+            return;
+
         if (context.phase == InputActionPhase.Performed)
         {
+            keyPressed = true;
+
             // Depending where I am ('Panel') and selection ('Start Game'/'Options')                       
 
             // If (currentPanel == MenuPanel) && StartText.enabled -->
             // StartText.disable
             // StartButton & OptionsButton enabled
-            uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
+            //uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
 
             // Else if (currentPanel == MenuPanel) && 'Options' Selected -->
             // currentPanel = OptionsPanel            
@@ -578,18 +876,17 @@ public class GameManager : MonoBehaviour
 
             // Else if (currentPanel == OptionsPanel) -->
             // currentPanel = MenuPanel
-            uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
+            //uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
         }
     }
     public virtual void SwitchSelectionUI(InputAction.CallbackContext context)
     {
-        Vector2 direction = context.ReadValue<Vector2>();
+        if (menuSceneCurrentState != MenuSceneState.MenuPanelState)
+            return;
 
-        // If currentPanel != MenuPanel -->
-        // return;
+        Vector2 direction = context.ReadValue<Vector2>();     
+        float vertical = direction.y;        
 
-        // Else -->
-        float vertical = direction.y;
         if (vertical > 0.5f) 
             ;//NavigateUp()
         else if (vertical < 0.5f)
@@ -597,9 +894,9 @@ public class GameManager : MonoBehaviour
     }
     public void NavigateUp()
     {
-        if (uiMenuSelect == UIMenuSelectEnum.UIMenuSelect.StartGame)
+        if (uiMenuSelect == UIMenuSelect.StartGame)
         {
-            uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.QuitGame;            
+            uiMenuSelect = UIMenuSelect.QuitGame;            
         }
 
         else
@@ -612,9 +909,9 @@ public class GameManager : MonoBehaviour
     }
     public void NavigateDown()
     {
-        if (uiMenuSelect == UIMenuSelectEnum.UIMenuSelect.QuitGame)
+        if (uiMenuSelect == UIMenuSelect.QuitGame)
         {
-            uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;            
+            uiMenuSelect = UIMenuSelect.StartGame;            
         }
 
         else
