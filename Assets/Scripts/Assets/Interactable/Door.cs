@@ -77,6 +77,8 @@ public class Door : MonoBehaviour
                 // GameManager.Instance.RegisterCheckPoint();
 
                 StartCoroutine(nameof(CaptureCheckpoint));
+
+                GameManager.Instance.DisableAllInputs();
             }            
         }
     }
@@ -92,13 +94,16 @@ public class Door : MonoBehaviour
         animator.SetTrigger("Open");
         audioSource.PlayOneShot(openDoorClip);
 
-        yield return StartCoroutine(nameof(FadingAndMoving));
+        //yield return StartCoroutine(nameof(FadingAndMoving));
         
         //StopVFX(dustPS);
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
 
-        HideText();
+        //HideText();
+
+        // Trigger The End Scene
+        GameManager.Instance.SetEndCreditsSceneFlag(true);
     }
 
     private IEnumerator FadingAndMoving()

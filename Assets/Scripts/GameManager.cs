@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 
 using static ScenesEnum;
 using static MenuSceneStateEnum;
+using static LevelSceneStateEnum;
 using static UIMenuSelectEnum;
 
 using TMPro;
@@ -19,35 +20,51 @@ public class GameManager : MonoBehaviour
 {
     // Singleton instance of GameManager
     private static GameManager instance;
-    public static GameManager Instance
-    {
-        get 
-        { 
-            if (instance == null)
-            {
-                instance = FindAnyObjectByType<GameManager>();
+    public static GameManager Instance => instance;
+    //public static GameManager Instance
+    //{
+    //    get 
+    //    { 
+    //        if (instance == null)
+    //        {
+    //            instance = FindAnyObjectByType<GameManager>();
 
-                if (instance == null)
-                {
-                    Debug.LogWarning("No GameManager found in scene. Creating a new one.");
-                    GameObject go = new GameObject("GameManager");
-                    instance = go.AddComponent<GameManager>();
-                }
-            }
-            return instance; 
-        }
-    }
+    //            if (instance == null)
+    //            {
+    //                Debug.LogWarning("No GameManager found in scene. Creating a new one.");
+
+    //                Debug.Log("GameManager.Instance called from:\n" + Environment.StackTrace);
+
+    //                GameObject go = new GameObject("GameManager");
+    //                instance = go.AddComponent<GameManager>();                    
+    //            }
+    //        }
+    //        return instance; 
+    //    }
+    //}
 
     public static readonly bool isWebGL = Application.platform == RuntimePlatform.WebGLPlayer;
     //public static readonly bool isWebGL = false;     // true = WebGL, false = Windows
 
     [Header("Audio Clips")]
+    // Level Scene
     [SerializeField] AudioClip gameOverClip;
     [SerializeField, Range(0f, 1f)] float gameOverVolume;  
     [SerializeField] AudioClip endOfLevelClip;
     [SerializeField, Range(0f, 1f)] float endOfLevelVolume;  
-    [SerializeField] AudioClip LevelMusicClip;
-    [SerializeField, Range(0f, 1f)] float levelMusicVolume;  // 0.25f
+    [SerializeField] AudioClip levelMusicClip;
+    [SerializeField, Range(0f, 1f)] float levelMusicVolume;  // 1f
+    [SerializeField] AudioClip endGameMusicClip;
+    [SerializeField, Range(0f, 1f)] float endGameMusicVolume;  // 1f
+    // Menu Scene
+    [SerializeField] AudioClip menuMusicClip;
+    [SerializeField, Range(0f, 1f)] float menuMusicVolume;  // 1f
+    [SerializeField] AudioClip menuSwitchOptionClip;
+    [SerializeField, Range(0f, 1f)] float menuSwitchOptionVolume;  // 1f
+    [SerializeField] AudioClip menuSelectOptionClip;
+    [SerializeField, Range(0f, 1f)] float menuSelectOptionVolume;  // 1f
+    [SerializeField] AudioClip menuStartGameClip;
+    [SerializeField, Range(0f, 1f)] float menuStartGameVolume;  // 1f
 
     [Header("Surface Type")]
     [SerializeField] private bool isWetSurface;
@@ -93,15 +110,21 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI aledifonText;   // Fade In/Out alpha Text (0->100->0)
 
     private GameObject menuPanel;
+    private MenuSelector menuPanelSelector; // Navigate Up/Down methods
+    private Image menuPanelImage;          // Background Image
     private TextMeshProUGUI titleText;      // Fade In/Out alpha Image (0->100)
     private GameObject optionTextContainer; // Disable->Enable
     private List<RectTransform> optionPositions;
     private RectTransform selectorOption;   // Disable->Enable
     private TextMeshProUGUI buildVersionText;   // Disable->Enable
+    private TextMeshProUGUI infoMenuText;   // Disable->Enable
 
     private GameObject controlsPanel;       
     private GameObject introScenePanel;
-    private TextMeshProUGUI introSceneText; // Machine writting VFX
+    private Image introScenePanelImage;
+    private TextMeshProUGUI introSceneText;                             // TypeWriter VFX
+    [SerializeField,Range(0f,0.2f)] private float typeWritterDelay;    // TypeWriter delay < 0.15f
+    
     private string introSceneTextStrEN = "And so the intrepid explorer, eager in his desire for " +
                                         "discovery, decided to venture into the silent depths in " +
                                         "search of something that had long been lost...";
@@ -119,6 +142,9 @@ public class GameManager : MonoBehaviour
     private UIMenuSelect uiMenuSelect = UIMenuSelect.StartGame;
     private MenuSceneState menuSceneCurrentState = MenuSceneState.Init;
     private bool keyPressed = false;
+    private float lastMoveTimeUserInput = 0f;
+    private float moveCoolDownUserInput = 0.15f;
+    private Coroutine menuSceneCoroutine;
 
     // Level Scene Refs    
     private GameObject healthPanel;    
@@ -136,13 +162,34 @@ public class GameManager : MonoBehaviour
     private GameObject pausePanel;
 
     private GameObject endScenePanel;
-    private TextMeshProUGUI endSceneText; // Machine writting VFX
-    private TextMeshProUGUI endSceneText2; // Machine writting VFX
+    private Image endScenePanelImage;
+    private TextMeshProUGUI endSceneStoryText; // Machine writting VFX
+    private TextMeshProUGUI endSceneContinueText; // Machine writting VFX
+    private string endSceneTextStrEN = "And finally, after his arduous search, the explorer " +
+                                    "managed to open the door using the golden key, and found what " +
+                                    "he had been searching for for so long...";
+
+    private string endSceneTextStrFR = "Et finalement, après une recherche ardue, l'explorateur " +
+                                    "réussit à ouvrir la porte à l'aide de la clé dorée et trouva " +
+                                    "ce qu'il cherchait depuis si longtemps...";
+
+    private string endSceneTextStrES = "Y finalmente, tras una ardua búsqueda, el explorador " +
+                                    "logró abrir la puerta usando la llave dorada, y encontró lo " +
+                                    "que había estado buscando durante tanto tiempo...";
+
+    private string endSceneContinueTextStrEN = "To be continued...";
 
     private GameObject creditsGamePanel;
-    private TextMeshProUGUI creditsText;      // Fade In/Out alpha Image (0->100->0)
-    private TextMeshProUGUI madeByText;       // Fade In/Out alpha Text (0->100->0)
-    private TextMeshProUGUI endGameText;      // Fade In/Out alpha Text (0->100->0)
+    private Image creditsGamePanelImage;
+    private TextMeshProUGUI creditsStegaText;   // Fade In/Out alpha Image (0->100->0)
+    private Image creditsStegaImage;            // Fade In/Out alpha Image (0->100->0)
+    private TextMeshProUGUI creditsMadeByText;  // Fade In/Out alpha Text (0->100->0)
+    private TextMeshProUGUI creditsAssetsText;  // Fade In/Out alpha Text (0->100->0)
+    private TextMeshProUGUI creditsEndGameText; // Fade In/Out alpha Text (0->100->0)
+
+    private LevelSceneState levelSceneCurrentState = LevelSceneState.Gameplay;
+    private bool endCreditsSceneTriggered = false;
+    private Coroutine levelSceneCoroutine;
 
     private Scenes sceneSelected = Scenes.Menu;    
 
@@ -168,7 +215,8 @@ public class GameManager : MonoBehaviour
     PlayerRecorder playerRecorder;
 
     // Input Player Management    
-    private InputActionAsset inputActions;
+    private InputActionAsset playerInputActions;
+    private PlayerInput playerInputAsset;
 
     private bool isPaused = false;
     public bool IsPaused => isPaused;
@@ -215,7 +263,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
     #region Menu Scene
-    private IEnumerator UpdateSceneState()
+    private IEnumerator UpdateMenuSceneState()
     {
         while (menuSceneCurrentState < MenuSceneState.StartGame)
         {
@@ -247,11 +295,17 @@ public class GameManager : MonoBehaviour
             Color introPanelAledifonTextTargetColor;
 
             Color menuPanelTitleTextTargetColor;
+            Color menuPanelImageTargetColor;
+
+            Color introScenePanelImageTargetColor;
 
             switch (menuSceneCurrentState)
             {
                 // Enable IntroPanel
                 case MenuSceneState.Init:
+
+                    yield return null;      // Wait for a frame to assure all the GO's Refs
+                                            // are completely initialised
 
                     // Enable the IntroPanel
                     introPanel.SetActive(true);                    
@@ -291,7 +345,7 @@ public class GameManager : MonoBehaviour
                         .WaitForCompletion();
 
                     // Delay (Keeps the for x secs)
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(2f);
 
                     // Update Menu Scene State
                     menuSceneCurrentState = MenuSceneState.IntroPanelStegaImageFadeOut;
@@ -311,46 +365,7 @@ public class GameManager : MonoBehaviour
                         .WaitForCompletion();
 
                     // Delay (Keeps the for x secs)
-                    yield return new WaitForSeconds(1f);
-
-                    // Update Menu Scene State
-                    menuSceneCurrentState = MenuSceneState.IntroPanelAledifonTextFadeIn;
-                    break;
-
-                // Aledifon Text Fade In
-                case MenuSceneState.IntroPanelAledifonTextFadeIn:
-
-                    //Set The target Color
-                    introPanelAledifonTextTargetColor = aledifonText.color;
-                    introPanelAledifonTextTargetColor.a = 1f;
-
-                    // Alpha Color FadeIn (0->100)
-                    yield return aledifonText
-                        .DOColor(introPanelAledifonTextTargetColor, 1f)
-                        .SetEase(Ease.InQuad)
-                        .WaitForCompletion();
-
-                    // Delay (Keeps the for x secs)
-                    yield return new WaitForSeconds(1f);
-
-                    // Update Menu Scene State
-                    menuSceneCurrentState = MenuSceneState.IntroPanelAledifonTextFadeOut;
-                    break;
-
-                case MenuSceneState.IntroPanelAledifonTextFadeOut:
-
-                    //Set The target Color
-                    introPanelAledifonTextTargetColor = aledifonText.color;
-                    introPanelAledifonTextTargetColor.a = 0f;
-
-                    // Alpha Color FadeOut (100->0)
-                    yield return aledifonText
-                        .DOColor(introPanelAledifonTextTargetColor, 1f)
-                        .SetEase(Ease.InQuad)
-                        .WaitForCompletion();
-
-                    // Delay (Keeps the for x secs)
-                    yield return new WaitForSeconds(1f);
+                    //yield return new WaitForSeconds(2f);
 
                     // Update Menu Scene State
                     menuSceneCurrentState = MenuSceneState.IntroPanelFadeOut;
@@ -370,25 +385,80 @@ public class GameManager : MonoBehaviour
 
                     // Delay (Keeps the for x secs)
                     yield return new WaitForSeconds(1f);
+                    
+                    menuSceneCurrentState = MenuSceneState.IntroPanelAledifonTextFadeIn;
+                    break;
+
+                // Aledifon Text Fade In
+                case MenuSceneState.IntroPanelAledifonTextFadeIn:
+
+                    //Set The target Color
+                    introPanelAledifonTextTargetColor = aledifonText.color;
+                    introPanelAledifonTextTargetColor.a = 1f;
+
+                    // Alpha Color FadeIn (0->100)
+                    yield return aledifonText
+                        .DOColor(introPanelAledifonTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay (Keeps the for x secs)
+                    yield return new WaitForSeconds(2f);
+
+                    // Update Menu Scene State
+                    menuSceneCurrentState = MenuSceneState.IntroPanelAledifonTextFadeOut;
+                    break;
+
+                case MenuSceneState.IntroPanelAledifonTextFadeOut:
+
+                    //Set The target Color
+                    introPanelAledifonTextTargetColor = aledifonText.color;
+                    introPanelAledifonTextTargetColor.a = 0f;
+
+                    // Alpha Color FadeOut (100->0)
+                    yield return aledifonText
+                        .DOColor(introPanelAledifonTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay (Keeps the for x secs)
+                    yield return new WaitForSeconds(2f);
 
                     // Disable the IntroPanel
                     introPanel.SetActive(false);
-                    // Enable the MenuPanel
+                    // Enable the MenuPanel & the titleText GO
                     menuPanel.SetActive(true);
+                    titleText.gameObject.SetActive(true);
 
+                    // Start playing the Menu Music
+                    PlayMenuMusic();
+                    
                     // Update Menu Scene State
                     menuSceneCurrentState = MenuSceneState.MenuPanelTitleTextFadeIn;
                     break;
-
+                
                 case MenuSceneState.MenuPanelTitleTextFadeIn:
+
+                    // Assure the Init color is with alpha 0
+                    Color c = titleText.color;
+                    c.a = 0f;
+                    titleText.color = c;
 
                     //Set The target Color
                     menuPanelTitleTextTargetColor = titleText.color;
-                    menuPanelTitleTextTargetColor.a = 0f;
+                    menuPanelTitleTextTargetColor.a = 1f;
+
+                    //Set The target Color
+                    menuPanelImageTargetColor = menuPanelImage.color;
+                    menuPanelImageTargetColor.a = 0.4f;
 
                     // Color FadeIn (Black->Red)
-                    yield return titleText
-                        .DOColor(menuPanelTitleTextTargetColor, 1f)
+                    titleText
+                        .DOColor(menuPanelTitleTextTargetColor, 3f)
+                        .SetEase(Ease.InQuad);
+
+                    yield return menuPanelImage
+                        .DOColor(menuPanelImageTargetColor, 3f)
                         .SetEase(Ease.InQuad)
                         .WaitForCompletion();
 
@@ -399,6 +469,7 @@ public class GameManager : MonoBehaviour
                     optionTextContainer.SetActive(true);
                     selectorOption.gameObject.SetActive(true);
                     buildVersionText.gameObject.SetActive(true);
+                    infoMenuText.gameObject.SetActive(true);
 
                     // Enable the UI Inputs
                     EnableUIMainMenuInput();
@@ -421,6 +492,9 @@ public class GameManager : MonoBehaviour
 
                     if (uiMenuSelect == UIMenuSelect.QuitGame)
                     {
+                        // Play the Select SFX
+                        PlayMenuSelectOptionSFx();
+
                         // Update Menu Scene State
                         menuSceneCurrentState = MenuSceneState.QuitGameState;
                     }
@@ -428,6 +502,9 @@ public class GameManager : MonoBehaviour
                     {
                         // Enable the ControlsPanel
                         controlsPanel.SetActive(true);
+
+                        // Play the Select SFX
+                        PlayMenuSelectOptionSFx();
 
                         // Update Menu Scene State
                         menuSceneCurrentState = MenuSceneState.ControlPanelState;
@@ -441,6 +518,9 @@ public class GameManager : MonoBehaviour
 
                         // Disable all player's input
                         DisableAllInputs();
+
+                        // Play the StartGame SFX
+                        PlayMenuStartGameSFx();
 
                         // Update Menu Scene State
                         menuSceneCurrentState = MenuSceneState.IntroScenePanelShowText;
@@ -470,11 +550,20 @@ public class GameManager : MonoBehaviour
 
                 case MenuSceneState.IntroScenePanelShowText:
 
+                    //Set The target Color
+                    introScenePanelImageTargetColor = introScenePanelImage.color;
+                    introScenePanelImageTargetColor.a = 1f;
+
+                    // Color FadeIn (Black->Red)
+                    introScenePanelImage
+                        .DOColor(introScenePanelImageTargetColor, 3f)
+                        .SetEase(Ease.InQuad);
+
                     // Perform Type writting machine
-                    yield return StartCoroutine(TypeWrittingText(introSceneText,introSceneTextStrEN));
+                    yield return StartCoroutine(TypeWrittingText(introSceneText,introSceneTextStrEN,typeWritterDelay));
 
                     // Delay
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(2f);
 
                     // Load the Level
                     SceneManager.LoadScene(Scenes.Level.ToString());
@@ -490,23 +579,283 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
-    private IEnumerator TypeWrittingText(TextMeshProUGUI textBox, string str)
+    private IEnumerator UpdateLevelSceneState()
+    {
+        while (levelSceneCurrentState < LevelSceneState.CreditsCompleted)
+        {           
+            Color endScenePanelImageTargetColor;
+            //Color endScenePanelStoryTextTargetColor;
+            //Color endScenePanelContinueTextTargetColor;
+
+            Color creditsGamePanelImageTargetColor;
+            Color creditsGamePanelStegaImageTargetColor;
+            Color creditsGamePanelStegaTextTargetColor;
+            Color creditsGamePanelMadeByTextTargetColor;
+            Color creditsGamePanelAssetsTextTargetColor;
+            Color creditsGamePanelEndGameTextTargetColor;
+
+            switch (levelSceneCurrentState)
+            {
+                // Enable IntroPanel
+                case LevelSceneState.Gameplay:
+
+                    if (!endCreditsSceneTriggered)
+                        break;
+
+                    // Reset the endCreditsTriggered Boolean Flag
+                    SetEndCreditsSceneFlag(false);
+
+                    // Enable the IntroPanel
+                    endScenePanel.SetActive(true);
+
+                    // Start playing the Menu Music
+                    PlayEndGameMusic();
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.EndScenePanelShowText;
+                    break;
+
+                case LevelSceneState.EndScenePanelShowText:
+
+                    //Set The target Color
+                    endScenePanelImageTargetColor = endScenePanelImage.color;
+                    endScenePanelImageTargetColor.a = 1f;
+
+                    // Color FadeIn (Black->Red)
+                    endScenePanelImage
+                        .DOColor(endScenePanelImageTargetColor, 3f)
+                        .SetEase(Ease.InQuad);
+
+                    // Perform Type writting machine
+                    yield return StartCoroutine(TypeWrittingText(endSceneStoryText, endSceneTextStrEN, typeWritterDelay));
+
+                    // Delay
+                    yield return new WaitForSeconds(2f);
+
+                    // Perform Type writting machine
+                    yield return StartCoroutine(TypeWrittingText(endSceneContinueText, endSceneContinueTextStrEN, typeWritterDelay/4f));
+
+                    // Delay
+                    yield return new WaitForSeconds(2f);
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsGamePanelFadeIn;
+                    break;
+
+                case LevelSceneState.CreditsGamePanelFadeIn:
+
+                    // Enable the Credits Game Panel
+                    creditsGamePanel.SetActive(true);
+
+                    //Set The target Color
+                    creditsGamePanelImageTargetColor = creditsGamePanelImage.color;
+                    creditsGamePanelImageTargetColor.a = 1f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return creditsGamePanelImage
+                        .DOColor(creditsGamePanelImageTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsGamePanelStegaFadeIn;
+                    break;
+
+                case LevelSceneState.CreditsGamePanelStegaFadeIn:
+
+                    //Set The target Color
+                    creditsGamePanelStegaImageTargetColor = creditsStegaImage.color;
+                    creditsGamePanelStegaImageTargetColor.a = 1f;
+
+                    //Set The target Color
+                    creditsGamePanelStegaTextTargetColor = creditsStegaText.color;
+                    creditsGamePanelStegaTextTargetColor.a = 1f;
+
+                    // FadeIn
+                    creditsStegaImage
+                        .DOColor(creditsGamePanelStegaImageTargetColor, 1f)
+                        .SetEase(Ease.InQuad);
+
+                    yield return creditsStegaText
+                       .DOColor(creditsGamePanelStegaTextTargetColor, 1f)
+                       .SetEase(Ease.InQuad)
+                       .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(2f);
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsGamePanelStegaFadeOut;
+                    break;
+
+                case LevelSceneState.CreditsGamePanelStegaFadeOut:
+
+                    //Set The target Color
+                    creditsGamePanelStegaImageTargetColor = creditsStegaImage.color;
+                    creditsGamePanelStegaImageTargetColor.a = 0f;
+
+                    //Set The target Color
+                    creditsGamePanelStegaTextTargetColor = creditsStegaText.color;
+                    creditsGamePanelStegaTextTargetColor.a = 0f;
+
+                    // FadeIn
+                    creditsStegaImage
+                        .DOColor(creditsGamePanelStegaImageTargetColor, 1f)
+                        .SetEase(Ease.InQuad);
+
+                    yield return creditsStegaText
+                       .DOColor(creditsGamePanelStegaTextTargetColor, 1f)
+                       .SetEase(Ease.InQuad)
+                       .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsGamePanelAledifonTextFadeIn;
+                    break;
+
+                case LevelSceneState.CreditsGamePanelAledifonTextFadeIn:
+
+                    //Set The target Color
+                    creditsGamePanelMadeByTextTargetColor = creditsMadeByText.color;
+                    creditsGamePanelMadeByTextTargetColor.a = 1f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return creditsMadeByText
+                        .DOColor(creditsGamePanelMadeByTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(2f);
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsGamePanelAledifonTextFadeOut;
+                    break;
+
+                case LevelSceneState.CreditsGamePanelAledifonTextFadeOut:
+
+                    //Set The target Color
+                    creditsGamePanelMadeByTextTargetColor = creditsMadeByText.color;
+                    creditsGamePanelMadeByTextTargetColor.a = 0f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return creditsMadeByText
+                        .DOColor(creditsGamePanelMadeByTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsGamePanelAssetsTextFadeIn;
+                    break;
+
+                case LevelSceneState.CreditsGamePanelAssetsTextFadeIn:
+
+                    //Set The target Color
+                    creditsGamePanelAssetsTextTargetColor = creditsAssetsText.color;
+                    creditsGamePanelAssetsTextTargetColor.a = 1f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return creditsAssetsText
+                        .DOColor(creditsGamePanelAssetsTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(5f);
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsGamePanelAssetsTextFadeOut;
+                    break;
+
+                case LevelSceneState.CreditsGamePanelAssetsTextFadeOut:
+
+                    //Set The target Color
+                    creditsGamePanelAssetsTextTargetColor = creditsAssetsText.color;
+                    creditsGamePanelAssetsTextTargetColor.a = 0f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return creditsAssetsText
+                        .DOColor(creditsGamePanelAssetsTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(1f);
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsGamePanelEndGameTextFadeIn;
+                    break;
+
+                case LevelSceneState.CreditsGamePanelEndGameTextFadeIn:
+
+                    //Set The target Color
+                    creditsGamePanelEndGameTextTargetColor = creditsEndGameText.color;
+                    creditsGamePanelEndGameTextTargetColor.a = 1f;
+
+                    // Color FadeIn (Black->Red)
+                    yield return creditsEndGameText
+                        .DOColor(creditsGamePanelEndGameTextTargetColor, 1f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(5f);
+
+                    // Load the Level
+                    SceneManager.LoadScene(Scenes.Menu.ToString());
+
+                    // Update Menu Scene State
+                    levelSceneCurrentState = LevelSceneState.CreditsCompleted;
+                    break;
+
+                case LevelSceneState.CreditsCompleted:                           
+                    break;
+            }
+            yield return null;
+        }
+    }
+    private IEnumerator TypeWrittingText(TextMeshProUGUI textBox, string str, float typeCharDelay)
     {
         textBox.text = "";
 
         foreach (char c in str)
         {
             textBox.text += c;
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(typeCharDelay);
         }        
+    }
+    public void SetEndCreditsSceneFlag(bool enable)
+    {
+        endCreditsSceneTriggered = enable;
     }
     #endregion
     #region Scene Management
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        canvas = GameObject.Find("Canvas");
+        // Stop them in case they are already running (Safety)
+        if (menuSceneCoroutine != null)
+            StopCoroutine(menuSceneCoroutine);
+        
+        if (levelSceneCoroutine != null)
+            StopCoroutine(levelSceneCoroutine);        
+
+        //canvas = GameObject.Find("Canvas");
+
         if (canvas == null)
             Debug.LogError("The Canvas object is null");
+
+        Debug.Log($"The Current Canvas Ref is: {canvas.name} (Scene: {canvas.gameObject.scene.name})");
+
+        // Stop the Music in case any track is currently playing.
+        StopMusic();
 
         // Parsing the Scene Name to enum typedata
         if (System.Enum.TryParse(SceneManager.GetActiveScene().name, out Scenes currentScene))
@@ -533,17 +882,23 @@ public class GameManager : MonoBehaviour
                     // Hide the Mouse Cursor
                     ShowMouseCursor(false);
 
+                    // Get the Player Input Actions Refs
+                    //GetPlayerInputRefs();                    
+
                     // Disable all the Inputs
                     DisableAllInputs();
 
                     // Trigger the Update Scene State Loop
-                    StartCoroutine(nameof(UpdateSceneState));                    
+                    menuSceneCoroutine = StartCoroutine(nameof(UpdateMenuSceneState));                    
 
                     break;
                 case Scenes.Level:
 
                     // Set the new Scene as the current one
                     sceneSelected = currentScene;
+
+                    // Set the init Level Scene State
+                    levelSceneCurrentState = LevelSceneState.Gameplay;
 
                     // Get the GO Refs
                     GetLevelSceneRefs();
@@ -560,7 +915,13 @@ public class GameManager : MonoBehaviour
                     //filterDuration = returnDuration;
 
                     // Set the Initial CheckPoint Data
-                    SetInitCheckPointData();                    
+                    SetInitCheckPointData();
+
+                    // Reste the End Credit Scene Flag
+                    SetEndCreditsSceneFlag(false);
+
+                    // Trigger the Update Scene State Loop
+                    levelSceneCoroutine = StartCoroutine(nameof(UpdateLevelSceneState));
 
                     break;
                 default:
@@ -568,45 +929,58 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    public void GetCanvasRef(GameObject newCanvas)
+    {
+        canvas = newCanvas;
+    }
     private void GetMenuSceneRefs()
     {
         // Get all the Intro Panel GO's Refs                    
         introPanel = canvas.transform.Find("IntroPanel")?.gameObject;
         if (introPanel == null)
-            Debug.LogError("The " + introPanel.name + " object is null");
+            Debug.LogError("The Intro Panel object is null");
         else
         {            
             introPanelImage = introPanel.transform?.GetComponent<Image>();
             if (introPanelImage == null)
-                Debug.LogError("The " + introPanelImage.name + " component was not found " +
+                Debug.LogError("The introPanelImage component was not found " +
                                 "on the " + introPanel.name + "GO ");
 
             stegaImage = introPanel.transform.Find("StegaImage")?.GetComponent<Image>();
             if (stegaImage == null)
-                Debug.LogError("The " + stegaImage.name + " component was not found " +
+                Debug.LogError("The stegaImage component was not found " +
                                 "on the " + introPanel.name + "GO ");
 
             aledifonText = introPanel.transform.Find("AledifonText")?.GetComponent<TextMeshProUGUI>();
             if (aledifonText == null)
-                Debug.LogError("The " + aledifonText.name + " component was not found " +
+                Debug.LogError("The aledifonText component was not found " +
                                 "on the " + introPanel.name + "GO ");
         }
 
         // Get all the Menu Panel GO's Refs                    
         menuPanel = canvas.transform.Find("MenuPanel")?.gameObject;
         if (menuPanel == null)
-            Debug.LogError("The " + menuPanel.name + " object is null");
+            Debug.LogError("The menuPanel object is null");
         else
         {
+            menuPanelSelector = menuPanel.GetComponent<MenuSelector>();
+            if (menuPanelSelector == null)
+                Debug.LogError("The menuPanelSelector component was not found " +
+                                "on the " + menuPanel.name + "GO ");
+            
+            menuPanelImage = menuPanel.GetComponent<Image>();
+            if (menuPanelImage == null)
+                Debug.LogError("The menuPanelImage component was not found " +
+                                "on the " + menuPanel.name + "GO ");
 
             titleText = menuPanel.transform.Find("TitleText")?.GetComponent<TextMeshProUGUI>();
             if (titleText == null)
-                Debug.LogError("The " + titleText.name + " component was not found " +
+                Debug.LogError("The titleText component was not found " +
                                 "on the " + menuPanel.name + "GO ");
 
             optionTextContainer = menuPanel.transform.Find("OptionTextContainer")?.gameObject;
             if (optionTextContainer == null)
-                Debug.LogError("The " + optionTextContainer.name + " GO was not found " +
+                Debug.LogError("The optionTextContainer GO was not found " +
                                 "on the " + menuPanel.name + "GO ");
             else
             {
@@ -621,101 +995,149 @@ public class GameManager : MonoBehaviour
 
             selectorOption = menuPanel.transform.Find("Selector").GetComponent<RectTransform>();
             if (selectorOption == null)
-                Debug.LogError("The " + selectorOption.name + " component was not found " +
+                Debug.LogError("The selectorOption component was not found " +
                                 "on the " + menuPanel.name + "GO ");
 
             buildVersionText = menuPanel.transform.Find("BuildVersionText").GetComponent<TextMeshProUGUI>();
             if (buildVersionText == null)
-                Debug.LogError("The " + buildVersionText.name + " component was not found " +
+                Debug.LogError("The buildVersionText component was not found " +
+                                "on the " + menuPanel.name + "GO ");
+            
+            infoMenuText = menuPanel.transform.Find("InfoMenuText").GetComponent<TextMeshProUGUI>();
+            if (infoMenuText == null)
+                Debug.LogError("The infoMenuText component was not found " +
                                 "on the " + menuPanel.name + "GO ");
         }
 
         // Get all the Controls Panel GO's Refs                    
         controlsPanel = canvas.transform.Find("ControlsPanel")?.gameObject;
         if (controlsPanel == null)
-            Debug.LogError("The " + controlsPanel.name + " object is null");
+            Debug.LogError("The controlsPanel object is null");
 
         // Get all the Intro Scene Panel GO's Refs                    
         introScenePanel = canvas.transform.Find("IntroScenePanel")?.gameObject;
         if (introScenePanel == null)
-            Debug.LogError("The " + introScenePanel.name + " object is null");
+            Debug.LogError("The introScenePanel object is null");
+        else
+        {
+            introScenePanelImage = introScenePanel.GetComponent<Image>();
+            if (introScenePanelImage == null)
+                Debug.LogError("The introScenePanelImage component was not found " +
+                                "on the " + introScenePanel.name + "GO ");
+
+            introSceneText = introScenePanel.transform.Find("StoryTextEN")?.GetComponent<TextMeshProUGUI>();
+            if (introSceneText == null)
+                Debug.LogError("The introSceneText component was not found " +
+                                "on the " + introScenePanel.name + "GO ");
+        }
+    }
+    public void GetPlayerInputRefs(PlayerInput pInput)
+    {
+        // Get all the Intro Panel GO's Refs                    
+        //playerInputActions = GameObject.Find("MenuInput")?.GetComponent<PlayerInput>();
+        playerInputAsset = pInput;
+        if (playerInputAsset == null)
+            Debug.LogError("The playerInputActions component is null or " +
+                            "the MenuInput GO does not exist");
+
+        playerInputActions = playerInputAsset.actions;        
     }
     private void GetLevelSceneRefs()
     {
         // Get all the GO's Refs                    
         healthPanel = canvas.transform.Find("HealthPanel")?.gameObject;
         if (healthPanel == null)
-            Debug.LogError("The " + healthPanel.name + " object is null");
+            Debug.LogError("The healthPanel object is null");
         else
         {
             healthUIImage = healthPanel.transform.Find("Health")?.GetComponent<RectTransform>();
             if (healthUIImage == null)
-                Debug.LogError("The " + healthUIImage.name + " component was not found " +
+                Debug.LogError("The healthUIImage component was not found " +
                                 "on the " + healthPanel.name + "GO ");
         }
 
         gemsPanel = canvas.transform.Find("GemsPanel")?.gameObject;
         if (gemsPanel == null)
-            Debug.LogError("The " + gemsPanel.name + " object is null");
+            Debug.LogError("The gemsPanel object is null");
         else
         {
             gemsUIImage = gemsPanel.transform.Find("GemsCountImage")?.GetComponent<RectTransform>();
             if (gemsUIImage == null)
-                Debug.LogError("The " + gemsUIImage.name + " component was not found " +
+                Debug.LogError("The gemsUIImage component was not found " +
                                 "on the " + gemsPanel.name + "GO ");
         }
 
         lifesPanel = canvas.transform.Find("LifesPanel")?.gameObject;
         if (lifesPanel == null)
-            Debug.LogError("The " + lifesPanel.name + " object is null");
+            Debug.LogError("The lifesPanel object is null");
         else
         {
             lifesUIImage = lifesPanel.transform.Find("LifesCountImage")?.GetComponent<RectTransform>();
             if (lifesUIImage == null)
-                Debug.LogError("The " + lifesUIImage.name + " component was not found " +
+                Debug.LogError("The lifesUIImage component was not found " +
                                 "on the " + lifesPanel.name + "GO ");
         }
 
         pausePanel = canvas.transform.Find("PausePanel")?.gameObject;
         if (pausePanel == null)
-            Debug.LogError("The " + pausePanel.name + " object is null");
+            Debug.LogError("The pausePanel object is null");
                 
         endScenePanel = canvas.transform.Find("EndScenePanel")?.gameObject;
         if (endScenePanel == null)
-            Debug.LogError("The " + endScenePanel.name + " object is null");
+            Debug.LogError("The endScenePanel object is null");
         else
         {
-            endSceneText = endScenePanel.transform.Find("StoryTextEN")?.GetComponent<TextMeshProUGUI>();
-            if (endSceneText == null)
-                Debug.LogError("The " + endSceneText.name + " component was not found " +
+            endScenePanelImage = endScenePanel.GetComponent<Image>();
+            if (endScenePanelImage == null)
+                Debug.LogError("The endScenePanelImage component was not found " +
+                                "on the " + endScenePanel.name + "GO ");
+
+            endSceneStoryText = endScenePanel.transform.Find("StoryTextEN")?.GetComponent<TextMeshProUGUI>();
+            if (endSceneStoryText == null)
+                Debug.LogError("The endSceneText component was not found " +
                                 "on the " + endScenePanel.name + "GO ");
             
-            endSceneText2 = endScenePanel.transform.Find("ContinueTextEN")?.GetComponent<TextMeshProUGUI>();
-            if (endSceneText2 == null)
-                Debug.LogError("The " + endSceneText2.name + " component was not found " +
+            endSceneContinueText = endScenePanel.transform.Find("ContinueTextEN")?.GetComponent<TextMeshProUGUI>();
+            if (endSceneContinueText == null)
+                Debug.LogError("The endSceneContinueText component was not found " +
                                 "on the " + endScenePanel.name + "GO ");
         }
 
         creditsGamePanel = canvas.transform.Find("CreditsGamePanel")?.gameObject;
         if (creditsGamePanel == null)
-            Debug.LogError("The " + creditsGamePanel.name + " object is null");
-        //else
-        //{
-        //    creditsText = creditsGamePanel.transform.Find("CreditsText")?.GetComponent<TextMeshProUGUI>();
-        //    if (creditsText == null)
-        //        Debug.LogError("The " + creditsText.name + " component was not found " +
-        //                        "on the " + creditsGamePanel.name + "GO ");
-            
-        //    madeByText = creditsGamePanel.transform.Find("MadeByText")?.GetComponent<TextMeshProUGUI>();
-        //    if (madeByText == null)
-        //        Debug.LogError("The " + madeByText.name + " component was not found " +
-        //                        "on the " + creditsGamePanel.name + "GO ");
-            
-        //    endGameText = creditsGamePanel.transform.Find("EndGameText")?.GetComponent<TextMeshProUGUI>();
-        //    if (endGameText == null)
-        //        Debug.LogError("The " + endGameText.name + " component was not found " +
-        //                        "on the " + creditsGamePanel.name + "GO ");
-        //}           
+            Debug.LogError("The creditsGamePanel object is null");
+        else
+        {
+            creditsGamePanelImage = creditsGamePanel.GetComponent<Image>();
+            if (creditsGamePanelImage == null)
+                Debug.LogError("The creditsGamePanelImage component was not found " +
+                                "on the " + creditsGamePanel.name + "GO ");
+
+            creditsStegaImage = creditsGamePanel.transform.Find("StegaImage")?.GetComponent<Image>();
+            if (creditsStegaImage == null)
+                Debug.LogError("The creditsStegaImage component was not found " +
+                                "on the " + creditsGamePanel.name + "GO ");
+
+            creditsStegaText = creditsGamePanel.transform.Find("StegaText")?.GetComponent<TextMeshProUGUI>();
+            if (creditsStegaText == null)
+                Debug.LogError("The creditsStegaText component was not found " +
+                                "on the " + creditsGamePanel.name + "GO ");
+
+            creditsMadeByText = creditsGamePanel.transform.Find("MadeByText")?.GetComponent<TextMeshProUGUI>();
+            if (creditsMadeByText == null)
+                Debug.LogError("The creditsMadeByText component was not found " +
+                                "on the " + creditsGamePanel.name + "GO ");
+
+            creditsAssetsText = creditsGamePanel.transform.Find("AssetsText")?.GetComponent<TextMeshProUGUI>();
+            if (creditsAssetsText == null)
+                Debug.LogError("The creditsAssetsText component was not found " +
+                                "on the " + creditsGamePanel.name + "GO ");
+
+            creditsEndGameText = creditsGamePanel.transform.Find("EndGameText")?.GetComponent<TextMeshProUGUI>();
+            if (creditsEndGameText == null)
+                Debug.LogError("The creditsEndGameText component was not found " +
+                                "on the " + creditsGamePanel.name + "GO ");
+        }
 
     }
     private void GetLevelRefs()
@@ -723,11 +1145,11 @@ public class GameManager : MonoBehaviour
         // Get all the GO's Refs                    
         initPos = GameObject.Find("SpawnInitPos")?.transform;
         if (initPos == null)
-            Debug.LogError("The " + initPos.name + " component is null");
+            Debug.LogError("The initPos component is null");
 
         initCamBoundTriggerArea = GameObject.Find("InitAreaCamTrigger")?.GetComponent<CamBoundariesTriggerArea>();
         if (initCamBoundTriggerArea == null)
-            Debug.LogError("The " + initCamBoundTriggerArea.name + " component is null");
+            Debug.LogError("The initCamBoundTriggerArea component is null");
     }
     public void ShowMouseCursor(bool enable)
     {
@@ -791,7 +1213,9 @@ public class GameManager : MonoBehaviour
         }
     }
     public void EnableReplayManagerAndGetRefs()
-    {        
+    {
+        return; // Temporary till will be completely tested
+
         if (playerMovement != null)
         {            
             // Get the Player Recorder & Playback Refs
@@ -810,43 +1234,41 @@ public class GameManager : MonoBehaviour
     }
     public void DisableReplayManagerAndCleanRefs()
     {
+        return; // Temporary till will be completely tested
+
         playerPlayback = null;
         playerRecorder = null;
 
         replayManager.enabled = false;
     }
     #endregion
-    #region Input Action Maps
-    public void GetInputActionMaps(InputActionAsset inputActionsAsset)
-    {
-        inputActions = inputActionsAsset;
-    }    
+    #region Input Action Maps        
     public void EnableUIMainMenuInput()
     {
         // Enable the UI-Main Menu Action Map & Disable the others.
-        inputActions.FindActionMap("UI-MainMenu").Enable();
-        inputActions.FindActionMap("Gameplay").Disable();
-        inputActions.FindActionMap("UI-InGame").Disable();
+        playerInputActions.FindActionMap("UI-MainMenu").Enable();
+        playerInputActions.FindActionMap("Gameplay").Disable();
+        playerInputActions.FindActionMap("UI-InGame").Disable();
     }
     public void EnableGameplayInput()
     {
         // Enable the Gameplay Action Map & Disable the others.
-        inputActions.FindActionMap("Gameplay").Enable();
-        inputActions.FindActionMap("UI-InGame").Disable();
-        inputActions.FindActionMap("UI-MainMenu").Disable();
+        playerInputActions.FindActionMap("Gameplay").Enable();
+        playerInputActions.FindActionMap("UI-InGame").Disable();
+        playerInputActions.FindActionMap("UI-MainMenu").Disable();
     }
     public void EnablePauseInput()
     {
         // Enable the Pause Action Map & Disable the others.        
-        inputActions.FindActionMap("UI-InGame").Enable();
-        inputActions.FindActionMap("Gameplay").Disable();
-        inputActions.FindActionMap("UI-MainMenu").Disable();
+        playerInputActions.FindActionMap("UI-InGame").Enable();
+        playerInputActions.FindActionMap("Gameplay").Disable();
+        playerInputActions.FindActionMap("UI-MainMenu").Disable();
     }
     public void DisableAllInputs()
     {
-        inputActions.FindActionMap("Gameplay").Disable();
-        inputActions.FindActionMap("UI-InGame").Disable();
-        inputActions.FindActionMap("UI-MainMenu").Disable();
+        playerInputActions.FindActionMap("Gameplay").Disable();
+        playerInputActions.FindActionMap("UI-InGame").Disable();
+        playerInputActions.FindActionMap("UI-MainMenu").Disable();
     }
     #endregion
     #region Input Player
@@ -858,45 +1280,37 @@ public class GameManager : MonoBehaviour
 
         if (context.phase == InputActionPhase.Performed)
         {
-            keyPressed = true;
-
-            // Depending where I am ('Panel') and selection ('Start Game'/'Options')                       
-
-            // If (currentPanel == MenuPanel) && StartText.enabled -->
-            // StartText.disable
-            // StartButton & OptionsButton enabled
-            //uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
-
-            // Else if (currentPanel == MenuPanel) && 'Options' Selected -->
-            // currentPanel = OptionsPanel            
-
-            // Else if (currentPanel == MenuPanel) && 'Quit Game' Selected -->
-            // QuitGame();
-
-            // Else if (currentPanel == MenuPanel) && 'Start Game' Selected -->
-            // currentPanel = IntroScenePanel
-            // Delay x secs
-            // LoadScene(LevelScene);
-
-            // Else if (currentPanel == OptionsPanel) -->
-            // currentPanel = MenuPanel
-            //uiMenuSelect = UIMenuSelectEnum.UIMenuSelect.StartGame;
+            keyPressed = true;            
         }
     }
     public virtual void SwitchSelectionUI(InputAction.CallbackContext context)
     {
+        // Assure the movement is valid
+        if (!context.performed) 
+            return;
+
         if (menuSceneCurrentState != MenuSceneState.MenuPanelState)
             return;
 
         Vector2 direction = context.ReadValue<Vector2>();     
-        float vertical = direction.y;        
+        float vertical = direction.y;
 
-        if (vertical > 0.5f) 
-            ;//NavigateUp()
-        else if (vertical < 0.5f)
-            ;//NavigateDown()
+        // Assure only take into account user's inputs every 200 ms (moveCoolDownUserInput)
+        if (Time.time - lastMoveTimeUserInput < moveCoolDownUserInput)
+            return;
+
+        if (vertical > 0.7f)
+        {
+            SelectionUINavigateUp();
+            lastMoveTimeUserInput = Time.time;
+        }            
+        else if (vertical < -0.7f)
+        {
+            SelectionUINavigateDown();
+            lastMoveTimeUserInput = Time.time;
+        }        
     }
-    public void NavigateUp()
+    public void SelectionUINavigateUp()
     {
         if (uiMenuSelect == UIMenuSelect.StartGame)
         {
@@ -908,10 +1322,13 @@ public class GameManager : MonoBehaviour
             uiMenuSelect++;
         }
 
-        // Update the Visual Select on UI
-        // VisualArray[uiMenuSelect]
+        // Play the Switch Option SFX
+        PlayMenuSwitchOptionSFx();
+
+        // Update the Visual Select on UI        
+        menuPanelSelector.UpdateSelectorPos(uiMenuSelect);
     }
-    public void NavigateDown()
+    public void SelectionUINavigateDown()
     {
         if (uiMenuSelect == UIMenuSelect.QuitGame)
         {
@@ -923,15 +1340,18 @@ public class GameManager : MonoBehaviour
             uiMenuSelect--;
         }
 
-        // Update the Visual Select on UI
-        // VisualArray[uiMenuSelect]
+        // Play the Switch Option SFX
+        PlayMenuSwitchOptionSFx();
+
+        // Update the Visual Select on UI        
+        menuPanelSelector.UpdateSelectorPos(uiMenuSelect);
     }
     public void PauseResumeGameInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)                    
             TooglePause();
     }
-    public void QuitGame(InputAction.CallbackContext context)
+    public void QuitGameUI(InputAction.CallbackContext context)
     {
         //if (isWebGL)
         //    SceneManager.LoadScene(Scenes.Menu.ToString());
@@ -949,14 +1369,41 @@ public class GameManager : MonoBehaviour
     #endregion
     #region Audio Clips
     #region Level Music
+    public void StopMusic()
+    {
+        if (generalAudioSource.isPlaying)
+            generalAudioSource.Stop();
+    }
     public void PlayLevelMusic()
     {
         if (generalAudioSource.isPlaying)
             generalAudioSource.Stop();
 
         generalAudioSource.loop = true;
-        generalAudioSource.clip = LevelMusicClip;
+        generalAudioSource.clip = levelMusicClip;
         generalAudioSource.volume = levelMusicVolume;
+        generalAudioSource.Play();
+    }
+    public void PlayEndGameMusic()
+    {
+        if (generalAudioSource.isPlaying)
+            generalAudioSource.Stop();
+
+        generalAudioSource.loop = true;
+        generalAudioSource.clip = endGameMusicClip;
+        generalAudioSource.volume = endGameMusicVolume;
+        generalAudioSource.Play();
+    }
+    #endregion
+    #region Menu Music
+    public void PlayMenuMusic()
+    {
+        if (generalAudioSource.isPlaying)
+            generalAudioSource.Stop();
+
+        generalAudioSource.loop = true;
+        generalAudioSource.clip = menuMusicClip;
+        generalAudioSource.volume = menuMusicVolume;
         generalAudioSource.Play();
     }
     #endregion
@@ -982,6 +1429,38 @@ public class GameManager : MonoBehaviour
         }            
 
         generalAudioSource.PlayOneShot(endOfLevelClip,endOfLevelVolume);
+    }
+    #endregion
+    #region Menu SFX
+    public void PlayMenuSwitchOptionSFx()
+    {
+        //if (generalAudioSource.isPlaying)
+        //{
+        //    generalAudioSource.Stop();
+        //    generalAudioSource.loop = false;
+        //}
+
+        generalAudioSource.PlayOneShot(menuSwitchOptionClip, menuSwitchOptionVolume);
+    }
+    public void PlayMenuSelectOptionSFx()
+    {
+        //if (generalAudioSource.isPlaying)
+        //{
+        //    generalAudioSource.Stop();
+        //    generalAudioSource.loop = false;
+        //}
+
+        generalAudioSource.PlayOneShot(menuSelectOptionClip, menuSelectOptionVolume);
+    }
+    public void PlayMenuStartGameSFx()
+    {
+        //if (generalAudioSource.isPlaying)
+        //{
+        //    generalAudioSource.Stop();
+        //    generalAudioSource.loop = false;
+        //}
+
+        generalAudioSource.PlayOneShot(menuStartGameClip, menuStartGameVolume);
     }
     #endregion
     #endregion

@@ -303,7 +303,7 @@ public class PlayerMovement : MonoBehaviour
         {
             GameManager.Instance.SubscribeEventsOfPlayerMovement(this);
             GameManager.Instance.EnableReplayManagerAndGetRefs();
-            GameManager.Instance.GetInputActionMaps(GetComponent<PlayerInput>().actions);
+            //GameManager.Instance.GetInputActionMaps(GetComponent<PlayerInput>().actions);
         }
         
         playerHealth.OnDeathPlayer += Death;                
@@ -318,7 +318,7 @@ public class PlayerMovement : MonoBehaviour
         // (Need to be OnDisable to assure clean the refs when switching Scenes)
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.DisableAllInputs();            // PENDING TO BE MANAGED FROM
+            //GameManager.Instance.DisableAllInputs();            // PENDING TO BE MANAGED FROM
                                                                 // SCENE MANAGEMENT ON GameManager.cs!!
             GameManager.Instance.DisableReplayManagerAndCleanRefs();
             GameManager.Instance.UnsubscribeEventsOfPlayerMovement();

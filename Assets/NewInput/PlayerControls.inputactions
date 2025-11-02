@@ -257,7 +257,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Quit",
+                    "name": "QuitInGame",
                     "type": "Button",
                     "id": "363ce4d1-c8bc-4649-ac18-ff76265a0363",
                     "expectedControlType": "",
@@ -307,7 +307,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quit",
+                    "action": "QuitInGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -327,7 +327,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Move",
+                    "name": "Navigate",
                     "type": "Value",
                     "id": "76a31980-8993-43b9-809e-2026995391ce",
                     "expectedControlType": "Vector2",
@@ -336,7 +336,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Quit",
+                    "name": "QuitMenu",
                     "type": "Button",
                     "id": "7bbd995c-42bd-48ee-ad38-acaa4f042eca",
                     "expectedControlType": "",
@@ -430,7 +430,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -441,7 +441,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -452,7 +452,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -463,7 +463,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -474,7 +474,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -485,7 +485,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -496,7 +496,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -507,7 +507,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quit",
+                    "action": "QuitMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -518,7 +518,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quit",
+                    "action": "QuitMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
