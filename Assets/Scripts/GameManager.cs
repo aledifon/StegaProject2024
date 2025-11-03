@@ -189,6 +189,8 @@ public class GameManager : MonoBehaviour
 
     private LevelSceneState levelSceneCurrentState = LevelSceneState.Gameplay;
     private bool endCreditsSceneTriggered = false;
+    private bool deathPanelTriggered = false;
+    private bool gameOverPanelTriggered = false;
     private Coroutine levelSceneCoroutine;
 
     private Scenes sceneSelected = Scenes.Menu;    
@@ -208,6 +210,7 @@ public class GameManager : MonoBehaviour
     PlayerHealth playerHealth;
     PlayerMovement playerMovement;
     PlayerSFX playerSFX;
+    CameraFollow cameraFollow;
 
     // Player Ghost Refs
     ReplayManager replayManager;
@@ -598,21 +601,115 @@ public class GameManager : MonoBehaviour
             {
                 // Enable IntroPanel
                 case LevelSceneState.Gameplay:
+                    
+                    if (endCreditsSceneTriggered)
+                    {
+                        // Reset the endCreditsTriggered Boolean Flag
+                        SetEndCreditsSceneFlag(false);
 
-                    if (!endCreditsSceneTriggered)
-                        break;
+                        // Enable the IntroPanel
+                        endScenePanel.SetActive(true);
 
-                    // Reset the endCreditsTriggered Boolean Flag
-                    SetEndCreditsSceneFlag(false);
+                        // Start playing the Menu Music
+                        PlayEndGameMusic();
 
-                    // Enable the IntroPanel
-                    endScenePanel.SetActive(true);
+                        // Update Level Scene State
+                        levelSceneCurrentState = LevelSceneState.EndScenePanelShowText;
+                    }
+                    else if (deathPanelTriggered)
+                    {
+                        // Reset the deathPanel Boolean Flag
+                        SetDeathPanelFlag(false);
 
-                    // Start playing the Menu Music
-                    PlayEndGameMusic();
+                        // Enable the DeathPanel
+                        //deathPanel.SetActive(true);
+
+                        // Stop playing the Level Music
+                        StopMusic();                        
+
+                        // Update Level Scene State
+                        levelSceneCurrentState = LevelSceneState.DeathPanelFadeInOut;
+                    }
+                    else if (gameOverPanelTriggered)
+                    {
+                        // Reset the deathPanel Boolean Flag
+                        SetDeathPanelFlag(false);
+
+                        // Enable the GameOverPanel
+                        //gameOverPanel.SetActive(true);
+
+                        // Play the GameOver SFX
+                        PlayGameOverSFx();
+
+                        // Update Level Scene State
+                        levelSceneCurrentState = LevelSceneState.GameOverPanel;
+                    }
+                    break;
+
+                case LevelSceneState.DeathPanelFadeInOut:
+
+                    // FadeIn DeathPanel
+
+                    ////Set The target Color
+                    //creditsGamePanelEndGameTextTargetColor = creditsEndGameText.color;
+                    //creditsGamePanelEndGameTextTargetColor.a = 1f;
+
+                    //// Alpha FadeIn 
+                    //yield return creditsEndGameText
+                    //    .DOColor(creditsGamePanelEndGameTextTargetColor, 1f)
+                    //    .SetEase(Ease.InQuad)
+                    //    .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(5f);
+
+                    // FadeOut DeathPanel
+
+                    //Set The target Color
+                    //creditsGamePanelMadeByTextTargetColor = creditsMadeByText.color;
+                    //creditsGamePanelMadeByTextTargetColor.a = 0f;
+
+                    //// Color FadeIn (Black->Red)
+                    //yield return creditsMadeByText
+                    //    .DOColor(creditsGamePanelMadeByTextTargetColor, 1f)
+                    //    .SetEase(Ease.InQuad)
+                    //    .WaitForCompletion();
+
+                    // Reset only PlayerPos (checkpointData??) and needed things
+                    // The Enemies will respawn every certain time.                    
+
+                    // Start Playing again the Level Music
+                    PlayLevelMusic();
+
+                    // Enable again the User Inputs
+                    EnableGameplayInput();
+
+                    // Update Level Scene State
+                    levelSceneCurrentState = LevelSceneState.Gameplay;
+                    break;
+
+                case LevelSceneState.GameOverPanel:
+
+                    // FadeIn GameOverPanel
+
+                    ////Set The target Color
+                    //creditsGamePanelEndGameTextTargetColor = creditsEndGameText.color;
+                    //creditsGamePanelEndGameTextTargetColor.a = 1f;
+
+                    //// Color FadeIn (Black->Red)
+                    //yield return creditsEndGameText
+                    //    .DOColor(creditsGamePanelEndGameTextTargetColor, 1f)
+                    //    .SetEase(Ease.InQuad)
+                    //    .WaitForCompletion();
+
+                    // Delay
+                    yield return new WaitForSeconds(5f);
+
+                    // Load the Level
+                    SceneManager.LoadScene(Scenes.Menu.ToString());
 
                     // Update Menu Scene State
-                    levelSceneCurrentState = LevelSceneState.EndScenePanelShowText;
+                    levelSceneCurrentState = LevelSceneState.CreditsCompleted;
                     break;
 
                 case LevelSceneState.EndScenePanelShowText:
@@ -638,7 +735,7 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(2f);
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelFadeIn;
                     break;
 
@@ -660,7 +757,7 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(1f);
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelStegaFadeIn;
                     break;
 
@@ -687,7 +784,7 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(2f);
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelStegaFadeOut;
                     break;
 
@@ -714,7 +811,7 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(1f);
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelAledifonTextFadeIn;
                     break;
 
@@ -733,7 +830,7 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(2f);
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelAledifonTextFadeOut;
                     break;
 
@@ -752,7 +849,7 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(1f);
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelAssetsTextFadeIn;
                     break;
 
@@ -771,7 +868,7 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(5f);
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelAssetsTextFadeOut;
                     break;
 
@@ -790,7 +887,7 @@ public class GameManager : MonoBehaviour
                     // Delay
                     yield return new WaitForSeconds(1f);
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelEndGameTextFadeIn;
                     break;
 
@@ -812,7 +909,7 @@ public class GameManager : MonoBehaviour
                     // Load the Level
                     SceneManager.LoadScene(Scenes.Menu.ToString());
 
-                    // Update Menu Scene State
+                    // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsCompleted;
                     break;
 
@@ -835,6 +932,21 @@ public class GameManager : MonoBehaviour
     public void SetEndCreditsSceneFlag(bool enable)
     {
         endCreditsSceneTriggered = enable;
+    }    
+    public void SetDeathPanelFlag(bool enable)
+    {
+        deathPanelTriggered = enable;
+    }
+    public void SetGameOverPanelFlag(bool enable)
+    {
+        gameOverPanelTriggered = enable;
+    }
+    public void ChooseDeathOrGameOverPanel()
+    {
+        if (playerMovement.NumLifes == 0)
+            SetGameOverPanelFlag(true);
+        else
+            SetDeathPanelFlag(true);
     }
     #endregion
     #region Scene Management
@@ -903,6 +1015,7 @@ public class GameManager : MonoBehaviour
                     // Get the GO Refs
                     GetLevelSceneRefs();
                     GetLevelRefs();
+                    GetCameraFollowRef();
 
                     PlayLevelMusic();
 
@@ -917,7 +1030,7 @@ public class GameManager : MonoBehaviour
                     // Set the Initial CheckPoint Data
                     SetInitCheckPointData();
 
-                    // Reste the End Credit Scene Flag
+                    // Reset the End Credit Scene Flag
                     SetEndCreditsSceneFlag(false);
 
                     // Trigger the Update Scene State Loop
@@ -1140,6 +1253,13 @@ public class GameManager : MonoBehaviour
         }
 
     }
+    private void GetCameraFollowRef()
+    {
+        cameraFollow = FindAnyObjectByType<CameraFollow>();
+
+        if (cameraFollow == null)            
+            Debug.LogError("CameraFollow component Not Found on the Scene!");        
+    }
     private void GetLevelRefs()
     {
         // Get all the GO's Refs                    
@@ -1172,15 +1292,17 @@ public class GameManager : MonoBehaviour
     public void SubscribeEventsOfPlayerHealth(PlayerHealth pH)
     {
         playerHealth = pH;
-        playerHealth.OnHitFXPlayer += SlowMotionOnHit;
+        playerHealth.OnHitFXPlayer += slowMotionOnHit;
         playerHealth.OnHitFXPlayer += ApplyDeafeningSFX;
+        playerHealth.OnDeathPlayer += slowMotionOnDeath; 
     }
     public void UnsubscribeEventsOfPlayerHealth()
     {
         if (playerHealth != null)
         {            
-            playerHealth.OnHitFXPlayer -= SlowMotionOnHit;
+            playerHealth.OnHitFXPlayer -= slowMotionOnHit;
             playerHealth.OnHitFXPlayer -= ApplyDeafeningSFX;
+            playerHealth.OnDeathPlayer -= slowMotionOnDeath;
             playerHealth = null;
         }
     }
@@ -1470,7 +1592,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0.2f; // Velocidad al 20%
         Time.fixedDeltaTime = 0.02f * Time.timeScale; // Ajustar física
     }
-    private void SlowMotionOnHit(Vector2 thrustEnemyDir, float thrustEnemyForce)
+    private void slowMotionOnHit(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         // 1. Mata cualquier tween previo con el ID "SlowTime"
         DOTween.Kill("SlowTime");
@@ -1504,6 +1626,40 @@ public class GameManager : MonoBehaviour
         // 7. Hace que la llamada retrasada también use tiempo real para contar correctamente
         .SetUpdate(true);
     }
+    private void slowMotionOnDeath()
+    {
+        // 1. Mata cualquier tween previo con el ID "SlowTime"
+        DOTween.Kill("SlowTime");
+
+        // 2. Pone el tiempo a 0 instantáneamente
+        Time.timeScale = 0.1f; //0.2f;
+
+        // 3. Usa DOVirtual.DelayedCall para esperar slowDuration segundos en tiempo real
+        DOVirtual.DelayedCall(slowMotAndDeafDelayDuration, () =>
+        {            
+            // 4. Cuando termina la espera, comienza el tween para interpolar Time.timeScale de 0 a 1
+            DOTween.To(() => Time.timeScale, 
+                    x => 
+                        {
+                        Time.timeScale = x;
+                        Time.fixedDeltaTime = 0.02f * x;
+                        }, 
+                    1f, DeafBwdDuration)
+                //.SetEase(Ease.OutCubic)
+                .SetEase(Ease.InQuad)
+                // 5. Le da un ID para poder controlar o cancelar este tween luego
+                .SetId("SlowTime")
+                // 6. Hace que el tween corra usando tiempo real, ignorando Time.timeScale
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    // Trigger the Camera Death Shaking
+                    cameraFollow.CameraDeathShaking();
+                });
+        })
+        // 7. Hace que la llamada retrasada también use tiempo real para contar correctamente
+        .SetUpdate(true);
+    }    
     private void SlowMotionOnHit_()
     {
         StartCoroutine(nameof(SlowMotionOnHitCoroutine));

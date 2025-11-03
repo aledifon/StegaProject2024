@@ -179,6 +179,20 @@ public class CameraFollow : MonoBehaviour
         Vector3 impulse = new Vector3(thrustEnemyDir.x, thrustEnemyDir.y, 0f) * impulseForceFactor;
         impulseSource.GenerateImpulse(impulse);
     }
+    public void CameraDeathShaking()
+    {
+        //Vector3 impulse = new Vector3(thrustEnemyDir.x, thrustEnemyDir.y, 0f) * thrustEnemyForce * impulseForceFactor;
+        Vector3 direction = new Vector3(1f,1f,0f);
+        Vector3 impulse = direction * impulseForceFactor;
+        impulseSource.GenerateImpulse(impulse);
+
+        StartCoroutine(nameof(TriggerDeathPanel));
+    }
+    private IEnumerator TriggerDeathPanel()
+    {
+        yield return new WaitForSeconds(5f);
+        GameManager.Instance.ChooseDeathOrGameOverPanel();
+    }
     //private void CameraShaking(Vector2 thrustEnemyDir, float thrustEnemyForce)
     //{
     //    Camera.main.transform.DOShakePosition(
@@ -214,6 +228,13 @@ public class CameraFollow : MonoBehaviour
     {
         playerHealth = pH;
         playerHealth.OnHitFXPlayer += CameraShaking;
+        //playerHealth.OnDeathPlayer += CameraDeathShaking;
+    }
+    public void UnsubscribeEventsOfPlayerHealth()
+    {        
+        playerHealth.OnHitFXPlayer -= CameraShaking;
+        //playerHealth.OnDeathPlayer -= CameraDeathShaking;
+        playerHealth = null;
     }
     #endregion
     #region Camera Enabling

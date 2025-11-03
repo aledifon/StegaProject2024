@@ -42,6 +42,10 @@ public class PlayerHealth : MonoBehaviour
     }
     private void OnDisable()
     {
+        // Unsubscription from CameraFollow to playerHealth Events
+        if (cameraFollow != null)
+            cameraFollow.UnsubscribeEventsOfPlayerHealth();
+
         // Unsubscription to PLayerHealth Events from the GameManager
         // (Need to be OnDisable to assure clean the refs when switching Scenes)
         if (GameManager.Instance != null)
@@ -118,7 +122,10 @@ public class PlayerHealth : MonoBehaviour
         cameraFollow.StopCameraFollow();
 
         // Play the Game Over SFX        
-        GameManager.Instance.PlayGameOverSFx();
+        //GameManager.Instance.PlayGameOverSFx();
+
+        // Decrease the number of lifes
+        playerMovement.DecreaseLifes();
 
         // Trigger the Death Player Event
         OnDeathPlayer?.Invoke();                

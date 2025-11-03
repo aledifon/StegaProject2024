@@ -280,7 +280,8 @@ public class PlantCarnivore : MonoBehaviour
     }
     void EnablePlayerDetection()
     {
-        isPlayerDetectionEnabled = true;
+        if (!playerMovement.IsDead)
+            isPlayerDetectionEnabled = true;
     }
     public void DisablePlayerDetection()
     {
