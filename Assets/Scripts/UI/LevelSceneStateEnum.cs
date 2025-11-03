@@ -5,7 +5,8 @@ public class LevelSceneStateEnum
     public enum LevelSceneState
     {        
         Gameplay = 0,
-        //EndScenePanelFadeIn = 10,
+        DeathPanelFadeInOut = 1,        
+        GameOverPanel = 3,
         EndScenePanelShowText = 10,                 // FadeIn + ShowText Typewriter FX
 
         CreditsGamePanelFadeIn = 20,        

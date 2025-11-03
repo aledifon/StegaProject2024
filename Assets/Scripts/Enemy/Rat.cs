@@ -73,7 +73,7 @@ public class Rat : MonoBehaviour
     public EnemyState CurrentState => currentState;
 
     // Boolean Flags
-    private bool playerDetectionEnabled;    
+    private bool isPlayerDetectionEnabled;    
 
     // GOs 
     SpriteRenderer spriteRenderer;
@@ -92,10 +92,7 @@ public class Rat : MonoBehaviour
     void Awake()
     {
         // Set the initial speed
-        speed = walkingSpeed;
-
-        // Set the initial flags        
-        EnablePlayerDetection();
+        speed = walkingSpeed;        
 
         // Get component
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -130,6 +127,9 @@ public class Rat : MonoBehaviour
                 Debug.LogError("The component PlayerMovement was not found on the Player GO");
             else
             {
+                // Set the initial flags        
+                EnablePlayerDetection();
+
                 playerHealth = player.GetComponent<PlayerHealth>();
                 if (playerHealth == null)
                     Debug.LogError("The component PlayerHealth was not found on the Player GO");
@@ -211,9 +211,9 @@ public class Rat : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Player") /*&&
-            collision.collider.GetComponent<PlayerMovement>().IsGrounded &&
-            playerDetectionEnabled*/)
+        if (collision.collider.CompareTag("Player") &&
+            /*collision.collider.GetComponent<PlayerMovement>().IsGrounded &&*/
+            isPlayerDetectionEnabled)
         {
             Attack();            
 
@@ -554,11 +554,12 @@ public class Rat : MonoBehaviour
     }
     void EnablePlayerDetection()
     {
-        playerDetectionEnabled = true;
+        if(!playerMovement.IsDead)
+            isPlayerDetectionEnabled = true;
     }
     public void DisablePlayerDetection()
     {
-        playerDetectionEnabled = false;
+        isPlayerDetectionEnabled = false;
     }
     #endregion
     #region Player Attack

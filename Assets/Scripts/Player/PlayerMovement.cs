@@ -126,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Lifes")]
     [SerializeField] private TextMeshProUGUI textLifesUI;
     private float numLifes;
-    private float NumLifes
+    public float NumLifes
     { get { return numLifes; } 
       set { numLifes = Mathf.Clamp(value,0,99); } 
     }    
@@ -185,7 +185,8 @@ public class PlayerMovement : MonoBehaviour
         Falling,
         WallBraking,
         Swinging,
-        Hurting
+        Hurting,
+        Death
     }
     [Header("Enums")]
     [SerializeField] private CornerDetected cornerDetected = CornerDetected.NoCeiling;
@@ -336,7 +337,7 @@ public class PlayerMovement : MonoBehaviour
         NumGems = 0;
         textGemsUI.text = NumGems.ToString();
 
-        NumLifes = 0;
+        NumLifes = 3;
         textLifesUI.text = NumLifes.ToString();
         
         // Just for debugging
@@ -535,16 +536,29 @@ public class PlayerMovement : MonoBehaviour
             UpdateAnimations();
             //Debug.Log("From " + currentState + " state to Hurting State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
         }
+        else if (isDead)
+        {
+            currentState = PlayerState.Death;
+            UpdateAnimations();
+        } 
         else
         {
             switch (currentState)
             {
+                case PlayerState.Death:
+                    if (!isDead)
+                    {
+                        currentState = PlayerState.Idle;
+                        UpdateAnimations();
+                    }
+                    //Debug.Log("From Death state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
                 case PlayerState.Hurting:
                     if (!isHurt)
                     {
                         currentState = PlayerState.Idle;
                         UpdateAnimations();
-                    }                        
+                    }
                     //Debug.Log("From Hurt state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
                 case PlayerState.Idle:
@@ -609,7 +623,7 @@ public class PlayerMovement : MonoBehaviour
                 case PlayerState.Jumping:
                     if (wallJumpTriggered)
                     {
-                        if(playerSFX.IsAirSpinSFXRunning)
+                        if (playerSFX.IsAirSpinSFXRunning)
                             OnStopAirSpin?.Invoke();
                         TriggerWallJump();
                         OnWallJump?.Invoke();           // Trigger Wall Jump Event
@@ -638,7 +652,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     break;
                 case PlayerState.WallJumping:
-                    if (rb2D.linearVelocity.y > 0 && inputX != 0  && !isWallJumpDelayEnabled)
+                    if (rb2D.linearVelocity.y > 0 && inputX != 0 && !isWallJumpDelayEnabled)
                     {
                         // Wait for a some frames (wallJumpDelayMaxTime) to assure a proper wall Jump
                         currentState = PlayerState.Jumping;
@@ -1586,11 +1600,22 @@ public class PlayerMovement : MonoBehaviour
     {
         // Set the Player isDead Flag
         isDead = true;
-        // Disable the Vitamini's Circle Collider & Apply an upwards impulse
+
+        //// Apply an upwards impulse & then disable the Player's Collider        
+        //rb2D.AddForce(Vector2.up * forceJumpDeath);
+        
+        // Disable the Collider
         DisableCollider();
-        rb2D.AddForce(Vector2.up * forceJumpDeath);
+
+        // Set th Rb As Kinematics
+        ResetVelocity();
+        SetRbAsKinematics();
+
+        // Disable the Player Inputs
+        GameManager.Instance.DisableAllInputs();
+
         // Set the New Local Scale
-        transform.localScale = Vector3.Scale(transform.localScale, new Vector3(2.5f, 2.5f, 2.5f));
+        //transform.localScale = Vector3.Scale(transform.localScale, new Vector3(2.5f, 2.5f, 2.5f));
     }
     #endregion
 
@@ -1642,6 +1667,7 @@ public class PlayerMovement : MonoBehaviour
         animator.ResetTrigger("IsWallSliding");
         animator.ResetTrigger("IsSwinging");
         animator.ResetTrigger("Hurt");
+        animator.ResetTrigger("Death");
     }
     private void UpdateAnimations_(string triggerParamName)
     {
@@ -1678,6 +1704,9 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case PlayerState.Hurting:
                 animator.SetTrigger("Hurt");                              
+                break;
+            case PlayerState.Death:
+                animator.SetTrigger("Death");                              
                 break;
             default:
                 break;
@@ -1724,6 +1753,13 @@ public class PlayerMovement : MonoBehaviour
     {
         // Increase Lifes counter
         NumLifes++;
+        // Update Lifes counter UI Text
+        textLifesUI.text = NumLifes.ToString();
+    }
+    public void DecreaseLifes()
+    {
+        // Increase Lifes counter
+        NumLifes--;
         // Update Lifes counter UI Text
         textLifesUI.text = NumLifes.ToString();
     }

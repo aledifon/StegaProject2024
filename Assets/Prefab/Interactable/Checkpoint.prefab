@@ -201,8 +201,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c608a35cff6ceb4e89ce9960979efa6, type: 2}
-  m_sharedMaterial: {fileID: -1450474471938422450, guid: 8c608a35cff6ceb4e89ce9960979efa6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f78efa65b97dee64c8676cf83194b821, type: 2}
+  m_sharedMaterial: {fileID: 7435951922090192801, guid: f78efa65b97dee64c8676cf83194b821, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -447,6 +447,10 @@ MonoBehaviour:
   fadingTime: 1.5
   targetPosY: 0.8
   sparksVFX: {fileID: 7971337851532063381, guid: 29fb1cff3c2be7141953430c31e605a3, type: 3}
+  checkPointAreaData:
+    camTriggerAreaId: 0
+    respawnCamBoundTriggerArea: {fileID: 0}
+    respawnPos: {fileID: 0}
 --- !u!82 &8157814867402351000
 AudioSource:
   m_ObjectHideFlags: 0

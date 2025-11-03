@@ -245,7 +245,7 @@ public class Bat : MonoBehaviour
 
             ReceivePlayerAttack();
         }
-        else if (id == "AttackArea" && collision.CompareTag("Player"))
+        else if (id == "AttackArea" && collision.CompareTag("Player") && !playerMovement.IsDead)
         {
             isOnAttackArea = true;
             Debug.Log("Player entered on the AttackArea");
@@ -587,7 +587,8 @@ public class Bat : MonoBehaviour
     private void CheckDetectionArea()
     {        
         // Detection Area flag update
-        isOnDetectArea = (Vector2.Distance(transform.position, player.transform.position) <= detectAreaDistance);
+        isOnDetectArea = (Vector2.Distance(transform.position, player.transform.position) <= detectAreaDistance 
+                        && !playerMovement.IsDead);
 
         // Raycast Debugging
         //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
@@ -595,7 +596,8 @@ public class Bat : MonoBehaviour
     }
     void EnablePlayerDetection()
     {
-        isPlayerDetectionEnabled = true;
+        if (!playerMovement.IsDead)
+            isPlayerDetectionEnabled = true;
     }
     public void DisablePlayerDetection()
     {

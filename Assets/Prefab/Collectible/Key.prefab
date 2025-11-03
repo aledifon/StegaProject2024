@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: 7a668f7e261b6d5489f6277f2bf815c0, type: 3}
-  text: YOU GOT THE GOLDEN KEY!
+  text: You got the Golden Key!
   fadingTime: 2
   targetPosY: 1
   vertMoveTime: 10
@@ -332,8 +332,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000000059604645, y: 0.711}
-  m_SizeDelta: {x: 3.763, y: 0.4252}
+  m_AnchoredPosition: {x: 0.000000059604645, y: 0.21180111}
+  m_SizeDelta: {x: 3.763, y: 1.4236}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2428462359502982489
 CanvasRenderer:
@@ -365,8 +365,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c608a35cff6ceb4e89ce9960979efa6, type: 2}
-  m_sharedMaterial: {fileID: -1450474471938422450, guid: 8c608a35cff6ceb4e89ce9960979efa6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f78efa65b97dee64c8676cf83194b821, type: 2}
+  m_sharedMaterial: {fileID: 7435951922090192801, guid: f78efa65b97dee64c8676cf83194b821, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -390,8 +390,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.4
-  m_fontSizeBase: 0.4
+  m_fontSize: 0.45
+  m_fontSizeBase: 0.45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 50
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
