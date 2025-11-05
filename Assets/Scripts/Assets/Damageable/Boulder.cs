@@ -1,3 +1,4 @@
+using Demo_Project;
 using System.Collections;
 using System.Linq;
 using TMPro;
@@ -32,6 +33,9 @@ public class Boulder : MonoBehaviour
     bool isRolling = false;
     bool isStopped = false;
 
+    // Spawn Positions
+    Transform spawnInitPos;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -42,6 +46,12 @@ public class Boulder : MonoBehaviour
         detectPlayerCollider = GetComponent<BoxCollider2D>();
         rb2D = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+            Debug.LogError("The GO has not a SpriteRenderer component");
+        else
+        {
+            spriteRenderer.enabled = false;
+        }
 
         // VFX
         if (dustVFX == null)
@@ -51,15 +61,21 @@ public class Boulder : MonoBehaviour
             dustPS = InstantiateVFXPrefabs(dustVFX, origindustPS, transform);
         }
 
+        spawnInitPos = GameObject.Find("BoulderSpawnInitPos")?.transform;
+        if (spawnInitPos == null)
+            Debug.LogError("None BoulderSpawnInitPos was found on the Scene");
+        else
+            transform.position = spawnInitPos.position;
+
         // Setup AudioSource and play
         audioSource.loop = true;
         audioSource.clip = clip;                
     }
     private void Update()
     {
-        if (isRolling)
-            Debug.Log("Angular velocity = "+rb2D.angularVelocity +
-                        "|| Lin. Velocity = " + rb2D.linearVelocity.magnitude);
+        //if (isRolling)
+        //    Debug.Log("Angular velocity = "+rb2D.angularVelocity +
+        //                "|| Lin. Velocity = " + rb2D.linearVelocity.magnitude);
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -80,8 +96,9 @@ public class Boulder : MonoBehaviour
             isPlayerCaught = true;
 
             Debug.Log("Player Detected!");
-            // Player Death;
-            //collision.collider.GetComponent<PlayerMovement>().TakeDamage(damageAmount, thrustDirection, thrustToPlayer);            
+
+            // Player Death
+            collision.collider.GetComponent<PlayerHealth>().TakeDamage(100, Vector2.up, 50f);
         }        
     }
     private void OnTriggerEnter2D(Collider2D collision)

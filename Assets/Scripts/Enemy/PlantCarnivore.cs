@@ -88,7 +88,7 @@ public class PlantCarnivore : MonoBehaviour
     }
     public void OnChildTriggerEnter(string id, Collider2D collision)
     {
-        if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
+        if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
             Debug.Log("Player entered on the HitBox");
 
@@ -97,7 +97,7 @@ public class PlantCarnivore : MonoBehaviour
 
             Attack();
         }
-        else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
+        else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
             Debug.Log("Player entered on the HurtBox");
 
@@ -229,7 +229,7 @@ public class PlantCarnivore : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Attack:
@@ -246,7 +246,7 @@ public class PlantCarnivore : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Death:
@@ -272,7 +272,8 @@ public class PlantCarnivore : MonoBehaviour
         isOnAttackRange = Physics2D.Raycast(transform.position, enemyToPlayerVector.normalized, attackHorizRange, playerLayer) &&
                           (spriteRenderer.flipX ? 
                           (player.transform.position.x < transform.position.x) : 
-                          (player.transform.position.x > transform.position.x));
+                          (player.transform.position.x > transform.position.x)) 
+                          && !playerMovement.IsDead;
 
         // Raycast Debugging
         //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
@@ -280,7 +281,7 @@ public class PlantCarnivore : MonoBehaviour
     }
     void EnablePlayerDetection()
     {
-        if (!playerMovement.IsDead)
+        //if (!playerMovement.IsDead)
             isPlayerDetectionEnabled = true;
     }
     public void DisablePlayerDetection()

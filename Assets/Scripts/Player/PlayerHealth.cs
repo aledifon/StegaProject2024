@@ -114,6 +114,11 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         iconLife.fillAmount = currentHealth / maxHealth;
     }
+    public void SetMaxHealth()
+    {
+        currentHealth = maxHealth;
+        iconLife.fillAmount = currentHealth / maxHealth;
+    }
     #endregion
     #region Death
     private void Death()

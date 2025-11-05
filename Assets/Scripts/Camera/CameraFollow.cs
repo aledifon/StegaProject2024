@@ -22,7 +22,15 @@ public class CameraFollow : MonoBehaviour
 
     [Header("Impulse")]
     [SerializeField] private CinemachineImpulseSource impulseSource;    
-    [SerializeField,Range(0f,50f)] private float impulseForceFactor;                  //1.5f       
+    [SerializeField,Range(0f,50f)] private float impulseForceHitFactor;         //1f       
+    [SerializeField, Range(0.05f, 5f)] private float impulseHitDuration;        //0.3f (for CameraShaking)       
+    [SerializeField, Range(0.1f, 10f)] private float impulseHitFrequencyGain;   //8f       
+    [SerializeField, Range(0.1f, 10f)] private float impulseHitAmplitudeGain;   //0.25       
+
+    [SerializeField,Range(0f,50f)] private float impulseForceDeathFactor;       //0.2f           
+    [SerializeField, Range(0.05f, 5f)] private float impulseDeathDuration;      //1f (for CameraDeathShaking)           
+    [SerializeField,Range(0.1f,100f)] private float impulseDeathFrequencyGain;  //8f       
+    [SerializeField,Range(0.05f,10f)] private float impulseDeathAmplitudeGain;   //0.1f       
 
     [Header("Boundaries")]
     [SerializeField] CamBoundariesTriggerArea TotalBoundsArea;
@@ -58,8 +66,10 @@ public class CameraFollow : MonoBehaviour
     private void Start()
     {
         // Set the initial Cam Boundaries
-        if (player != null && GameManager.Instance.LastCheckpointData != null)
-            SetConfinerFromCheckpoint(GameManager.Instance.LastCheckpointData.respawnCamBoundTriggerArea);
+        if (GameManager.Instance.IsDebuggingMode)
+            SetTargetBoundaries(CheckCamTriggerArea());
+        else if (player != null && GameManager.Instance.LastCheckpointData != null)
+            SetConfinerFromCheckpoint(GameManager.Instance.LastCheckpointData.respawnCamBoundTriggerArea);        
 
         // Manage when the Collider Triggers of the Confiners will be enabled
         if (ignoreTriggerAtStart)
@@ -96,7 +106,7 @@ public class CameraFollow : MonoBehaviour
         yield return new WaitForSeconds(ignoreTime);
         confinerTriggersEnabled = true;
     }
-    private void SetConfinerFromCheckpoint(CamBoundariesTriggerArea camArea)
+    public void SetConfinerFromCheckpoint(CamBoundariesTriggerArea camArea)
     {               
         SetTargetBoundaries(camArea);
 
@@ -176,21 +186,38 @@ public class CameraFollow : MonoBehaviour
     private void CameraShaking(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {        
         //Vector3 impulse = new Vector3(thrustEnemyDir.x, thrustEnemyDir.y, 0f) * thrustEnemyForce * impulseForceFactor;
-        Vector3 impulse = new Vector3(thrustEnemyDir.x, thrustEnemyDir.y, 0f) * impulseForceFactor;
+        Vector3 impulse = new Vector3(thrustEnemyDir.x, thrustEnemyDir.y, 0f) * impulseForceHitFactor;
+
+        // Set the oscilations settings        
+        impulseSource.ImpulseDefinition.ImpulseShape = CinemachineImpulseDefinition.ImpulseShapes.Rumble;
+
+        impulseSource.ImpulseDefinition.ImpulseDuration = impulseHitDuration;
+        impulseSource.ImpulseDefinition.FrequencyGain = impulseHitFrequencyGain;
+        impulseSource.ImpulseDefinition.AmplitudeGain = impulseHitAmplitudeGain;
+
         impulseSource.GenerateImpulse(impulse);
     }
     public void CameraDeathShaking()
     {
         //Vector3 impulse = new Vector3(thrustEnemyDir.x, thrustEnemyDir.y, 0f) * thrustEnemyForce * impulseForceFactor;
         Vector3 direction = new Vector3(1f,1f,0f);
-        Vector3 impulse = direction * impulseForceFactor;
+        Vector3 impulse = direction * impulseForceDeathFactor;
+
+        // Set the oscilations settings
+        // Set the oscilations settings        
+        impulseSource.ImpulseDefinition.ImpulseShape = CinemachineImpulseDefinition.ImpulseShapes.Explosion;
+
+        impulseSource.ImpulseDefinition.ImpulseDuration = impulseDeathDuration;
+        impulseSource.ImpulseDefinition.FrequencyGain = impulseDeathFrequencyGain;
+        impulseSource.ImpulseDefinition.AmplitudeGain = impulseDeathAmplitudeGain;
+
         impulseSource.GenerateImpulse(impulse);
 
         StartCoroutine(nameof(TriggerDeathPanel));
     }
     private IEnumerator TriggerDeathPanel()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(impulseDeathDuration);
         GameManager.Instance.ChooseDeathOrGameOverPanel();
     }
     //private void CameraShaking(Vector2 thrustEnemyDir, float thrustEnemyForce)

@@ -213,7 +213,7 @@ public class Rat : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player") &&
             /*collision.collider.GetComponent<PlayerMovement>().IsGrounded &&*/
-            isPlayerDetectionEnabled)
+            isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
             Attack();            
 
@@ -254,7 +254,7 @@ public class Rat : MonoBehaviour
             Destroy(gameObject, 3f);
 
             // Debug
-            Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+            //Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
 
             // State Update
             currentState = EnemyState.Death;
@@ -282,7 +282,7 @@ public class Rat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (!isIdleTimerEnabled)
                     {
@@ -294,7 +294,7 @@ public class Rat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Walking:
@@ -313,7 +313,7 @@ public class Rat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Walking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Walking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (isDetecting)
                     {
@@ -325,7 +325,7 @@ public class Rat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Walking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Walking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Running:
@@ -344,7 +344,7 @@ public class Rat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (!isDetecting)
                     {
@@ -356,7 +356,7 @@ public class Rat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Running state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Attack:
@@ -383,7 +383,7 @@ public class Rat : MonoBehaviour
                                 UpdateAnimations();
 
                                 // Debug
-                                Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                                //Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                             }
                             else
                             {
@@ -393,7 +393,7 @@ public class Rat : MonoBehaviour
                                 UpdateAnimations();
 
                                 // Debug
-                                Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                                //Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                             }
                         }
                         else
@@ -547,15 +547,16 @@ public class Rat : MonoBehaviour
         // Raycast Launching
         isDetecting = (Vector2.Distance(transform.position, player.transform.position) <= pursuitDistance) &&
                         (Mathf.Abs(transform.position.y - player.transform.position.y) <= 2f) /*&& 
-                        playerDetectionEnabled*/;
+                        playerDetectionEnabled*/
+                        && !playerMovement.IsDead;
         // Raycast Debugging
         //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
         Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * pursuitDistance, Color.red);
     }
     void EnablePlayerDetection()
     {
-        if(!playerMovement.IsDead)
-            isPlayerDetectionEnabled = true;
+        //if(!playerMovement.IsDead)
+        isPlayerDetectionEnabled = true;
     }
     public void DisablePlayerDetection()
     {
@@ -578,11 +579,13 @@ public class Rat : MonoBehaviour
     void UpdateTargetPosition(float threshold)
     {        
         // Update the target pos with the player pos. (only for runing State)
-        if (currentState == EnemyState.Running || currentState == EnemyState.Attack)
+        if ((currentState == EnemyState.Running || currentState == EnemyState.Attack) &&
+            !playerMovement.IsDead)
             targetPosition.x = player.transform.position.x;
 
         // Check if the enemy reached its target position
-        if (Vector2.Distance(transform.position, targetPosition) < threshold)
+        if ((Vector2.Distance(transform.position, targetPosition) < threshold) &&
+            !playerMovement.IsDead)
             SetReachedPosFlag(true);
         else
             SetReachedPosFlag(false);

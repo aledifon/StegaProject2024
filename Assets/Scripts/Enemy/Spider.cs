@@ -148,7 +148,7 @@ public class Spider : MonoBehaviour
 
     public void OnChildTriggerEnter(string id, Collider2D collision)
     {
-        if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
+        if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
             //Debug.Log("Player entered on the HitBox");
 
@@ -158,7 +158,7 @@ public class Spider : MonoBehaviour
 
             Attack();            
         }
-        else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
+        else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
             //Debug.Log("Player entered on the HurtBox");
 
@@ -166,7 +166,7 @@ public class Spider : MonoBehaviour
 
             ReceivePlayerAttack();
         }
-        else if (id == "AttackArea" && collision.CompareTag("Player"))
+        else if (id == "AttackArea" && collision.CompareTag("Player") && !playerMovement.IsDead)
         {
             isOnAttackArea = true;
             //Debug.Log("Player entered on the AttackArea");
@@ -508,8 +508,8 @@ public class Spider : MonoBehaviour
     }
     void EnablePlayerDetection()
     {
-        if (!playerMovement.IsDead)
-            isPlayerDetectionEnabled = true;
+        //if (!playerMovement.IsDead)
+        isPlayerDetectionEnabled = true;
     }
     public void DisablePlayerDetection()
     {

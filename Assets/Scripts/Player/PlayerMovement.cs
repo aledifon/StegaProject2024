@@ -337,7 +337,7 @@ public class PlayerMovement : MonoBehaviour
         NumGems = 0;
         textGemsUI.text = NumGems.ToString();
 
-        NumLifes = 3;
+        NumLifes = 3f;
         textLifesUI.text = NumLifes.ToString();
         
         // Just for debugging
@@ -685,7 +685,7 @@ public class PlayerMovement : MonoBehaviour
                         currentState = PlayerState.Falling;
                         UpdateAnimations();
                     }
-                    Debug.Log("From Wall Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    //Debug.Log("From Wall Jumping state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
                 case PlayerState.Falling:
                     if (jumpTriggered)
@@ -762,7 +762,7 @@ public class PlayerMovement : MonoBehaviour
                             UpdateAnimations();
                         }
                     }
-                    Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    //Debug.Log("From WallBraking state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
                 case PlayerState.Swinging:
                     if (jumpTriggered)
@@ -950,7 +950,7 @@ public class PlayerMovement : MonoBehaviour
                                     direction.x, 
                                     smoothKeyboardSpeed * Time.deltaTime);
             //Debug.Log("Dir = " + direction.x);
-            Debug.Log("InputX = " + inputX);
+            //Debug.Log("InputX = " + inputX);
         }
         else
         {
@@ -1030,9 +1030,9 @@ public class PlayerMovement : MonoBehaviour
             // Register a Wall Jumping Trigger Request
             wallJumpTriggered = true;
             
-            Debug.Log("Entered in Wall-Jump Triggered on State " + currentState);
-            Debug.Log("Wall Jump Horiz Speed = " + wallJumpHorizSpeed);
-            Debug.Log("Jump Horiz Speed Speed = " + jumpHorizSpeed);
+            //Debug.Log("Entered in Wall-Jump Triggered on State " + currentState);
+            //Debug.Log("Wall Jump Horiz Speed = " + wallJumpHorizSpeed);
+            //Debug.Log("Jump Horiz Speed Speed = " + jumpHorizSpeed);
         }
         else if (isRopeSwinging && isJumpBufferEnabled)
         {
@@ -1200,7 +1200,7 @@ public class PlayerMovement : MonoBehaviour
         // Flip Sprite
         spriteRenderer.flipX = !spriteRenderer.flipX;
 
-        Debug.Log("Wall Jump Speed Vector = " + wallJumpSpeedVector);
+        //Debug.Log("Wall Jump Speed Vector = " + wallJumpSpeedVector);
     }
     IEnumerator DisableWallJumpTriggerFlag()
     {
@@ -1619,6 +1619,21 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
+    #region Respawn
+    public void RespawnPlayer(Transform lastCheckpointPos)
+    {
+        // Set the current pos as the last CheckPoint pos.
+        transform.position = lastCheckpointPos.position;
+
+        // Enable the Collider & Set the Rb as dynamics
+        EnableCollider();        
+        SetRbAsDynamics();   
+
+        // Finally clear the isDead Flag
+        isDead = false;
+    }
+    #endregion
+
     #region Sprite & Animations
     // Flip the Player sprite in function of its movement
     protected void FlipSprite(float horizontal, float deadZone)
@@ -1741,6 +1756,12 @@ public class PlayerMovement : MonoBehaviour
     {
         isKeyUnlocked = true;
         Debug.Log("Golden Key Unlocked!");
+    }
+    public void ResetAllPowerUps()
+    {
+        isWallJumpUnlocked = false;
+        isHookUnlocked = false;
+        isKeyUnlocked = false;
     }
     public void IncreaseGems()
     {

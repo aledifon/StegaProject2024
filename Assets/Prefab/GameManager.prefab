@@ -143,10 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b83f970fe9154c418c3f4ee5e943b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverClip: {fileID: 8300000, guid: abd268bb84fb15d4d93d65bb883b39ac, type: 3}
+  gameOverClip: {fileID: 8300000, guid: 796e532adfb8bd446bf4ee521c459af7, type: 3}
   gameOverVolume: 0.25
   endOfLevelClip: {fileID: 8300000, guid: b9f90827863b80e42b7bce4e38021d04, type: 3}
   endOfLevelVolume: 1
+  deathClip: {fileID: 8300000, guid: c93eb538f6c56f94db1c08e489cf632d, type: 3}
+  deathVolume: 1
   levelMusicClip: {fileID: 8300000, guid: 4339af1e71568bb42bda35f44e85ff0d, type: 3}
   levelMusicVolume: 0.2
   endGameMusicClip: {fileID: 8300000, guid: d2cace84e7debe2419d9c58b52ac4aaf, type: 3}
@@ -173,6 +175,8 @@ MonoBehaviour:
   volumeDropDeafFwdDuration: 0.5
   typeWritterDelay: 0.05
   slowMotionEnabled: 0
+  isDebuggingMode: 0
+  boulderPrefab: {fileID: 1596342573952404632, guid: 7fc9533f5cfa7ef49822c8718f9838fa, type: 3}
 --- !u!114 &2176713658049326293
 MonoBehaviour:
   m_ObjectHideFlags: 0
