@@ -229,7 +229,7 @@ public class Bat : MonoBehaviour
 
     public void OnChildTriggerEnter(string id, Collider2D collision)
     {
-        if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
+        if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
             Debug.Log("Player entered on the HitBox");
 
@@ -237,7 +237,7 @@ public class Bat : MonoBehaviour
 
             Attack();            
         }
-        else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled)
+        else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
             Debug.Log("Player entered on the HurtBox");
 
@@ -309,7 +309,7 @@ public class Bat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Appearance:
@@ -331,7 +331,7 @@ public class Bat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Appearance state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Appearance state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.IdleAlert:
@@ -359,7 +359,7 @@ public class Bat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Idle Alert state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Idle Alert state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     else if (isOnAttackArea && !isWaitForAttackTimerEnabled)
                     {
@@ -387,7 +387,7 @@ public class Bat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Idle Alert state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Idle Alert state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.PrepareAttack:
@@ -406,7 +406,7 @@ public class Bat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Prepare Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Prepare Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.AttackAndMovement:
@@ -441,7 +441,7 @@ public class Bat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Attack & Movement state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Attack & Movement state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.FinishAttack:
@@ -476,7 +476,7 @@ public class Bat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Finish Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Finish Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.ReturnToIdle:
@@ -492,7 +492,7 @@ public class Bat : MonoBehaviour
                         UpdateAnimations();
 
                         // Debug
-                        Debug.Log("From Return To Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                        //Debug.Log("From Return To Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
                     break;
                 case EnemyState.Death:
@@ -596,8 +596,8 @@ public class Bat : MonoBehaviour
     }
     void EnablePlayerDetection()
     {
-        if (!playerMovement.IsDead)
-            isPlayerDetectionEnabled = true;
+        //if (!playerMovement.IsDead)
+        isPlayerDetectionEnabled = true;
     }
     public void DisablePlayerDetection()
     {

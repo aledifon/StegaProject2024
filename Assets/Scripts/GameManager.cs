@@ -16,6 +16,7 @@ using static UIMenuSelectEnum;
 
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 public class GameManager : MonoBehaviour
 {
     // Singleton instance of GameManager
@@ -51,7 +52,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioClip gameOverClip;
     [SerializeField, Range(0f, 1f)] float gameOverVolume;  
     [SerializeField] AudioClip endOfLevelClip;
-    [SerializeField, Range(0f, 1f)] float endOfLevelVolume;  
+    [SerializeField, Range(0f, 1f)] float endOfLevelVolume;
+    [SerializeField] AudioClip deathClip;
+    [SerializeField, Range(0f, 1f)] float deathVolume;
     [SerializeField] AudioClip levelMusicClip;
     [SerializeField, Range(0f, 1f)] float levelMusicVolume;  // 1f
     [SerializeField] AudioClip endGameMusicClip;
@@ -160,6 +163,13 @@ public class GameManager : MonoBehaviour
     public RectTransform LifesUIImage => lifesUIImage;
 
     private GameObject pausePanel;
+    
+    private GameObject gameOverPanel;
+    private Image gameOverPanelImage;
+    private TextMeshProUGUI gameOverPanelText;
+
+    private GameObject deathPanel;    
+    private TextMeshProUGUI deathPanelLifesNumText;
 
     private GameObject endScenePanel;
     private Image endScenePanelImage;
@@ -203,7 +213,9 @@ public class GameManager : MonoBehaviour
     private Transform initPos;
     private CamBoundariesTriggerArea initCamBoundTriggerArea;
     private CamTriggerAreaData lastCheckpointData = new CamTriggerAreaData();    
-    public CamTriggerAreaData LastCheckpointData => lastCheckpointData;    
+    public CamTriggerAreaData LastCheckpointData => lastCheckpointData;
+    [SerializeField] private bool isDebuggingMode;
+    public bool IsDebuggingMode => isDebuggingMode;
 
     // GO Refs.
     AudioSource generalAudioSource;
@@ -223,6 +235,13 @@ public class GameManager : MonoBehaviour
 
     private bool isPaused = false;
     public bool IsPaused => isPaused;
+
+    [Header("Boulder")]    
+    // Events Variables
+    private bool isBoulderEventDone;
+    public bool IsBoulderEventDone => isBoulderEventDone;
+    [SerializeField] private GameObject boulderPrefab;
+    private GameObject boulderGO;    
 
     #region Unity API
     // Start is called before the first frame update
@@ -590,6 +609,9 @@ public class GameManager : MonoBehaviour
             //Color endScenePanelStoryTextTargetColor;
             //Color endScenePanelContinueTextTargetColor;
 
+            Color gameOverPanelImageTargetColor;
+            Color gameOverPanelTextTargetColor;
+
             Color creditsGamePanelImageTargetColor;
             Color creditsGamePanelStegaImageTargetColor;
             Color creditsGamePanelStegaTextTargetColor;
@@ -622,67 +644,60 @@ public class GameManager : MonoBehaviour
                         SetDeathPanelFlag(false);
 
                         // Enable the DeathPanel
-                        //deathPanel.SetActive(true);
-
-                        // Stop playing the Level Music
-                        StopMusic();                        
+                        deathPanel.SetActive(true);
+                        // Update the RemainingLifesText
+                        deathPanelLifesNumText.text = playerMovement.NumLifes.ToString();
 
                         // Update Level Scene State
-                        levelSceneCurrentState = LevelSceneState.DeathPanelFadeInOut;
+                        levelSceneCurrentState = LevelSceneState.DeathPanelShow;
                     }
                     else if (gameOverPanelTriggered)
                     {
-                        // Reset the deathPanel Boolean Flag
-                        SetDeathPanelFlag(false);
+                        // Reset the gameOver Boolean Flag
+                        SetGameOverPanelFlag(false);
 
-                        // Enable the GameOverPanel
-                        //gameOverPanel.SetActive(true);
+                        // Delay
+                        //yield return new WaitForSeconds(2f);
 
                         // Play the GameOver SFX
                         PlayGameOverSFx();
+
+                        // Enable the GameOverPanel
+                        gameOverPanel.SetActive(true);
 
                         // Update Level Scene State
                         levelSceneCurrentState = LevelSceneState.GameOverPanel;
                     }
                     break;
 
-                case LevelSceneState.DeathPanelFadeInOut:
+                case LevelSceneState.DeathPanelShow:
 
-                    // FadeIn DeathPanel
+                    // Reset the player to its initial State and to the respawn pos.
+                    playerMovement.RespawnPlayer(lastCheckpointData.respawnPos);
 
-                    ////Set The target Color
-                    //creditsGamePanelEndGameTextTargetColor = creditsEndGameText.color;
-                    //creditsGamePanelEndGameTextTargetColor.a = 1f;
+                    // Reset the player's Health
+                    playerHealth.SetMaxHealth();
 
-                    //// Alpha FadeIn 
-                    //yield return creditsEndGameText
-                    //    .DOColor(creditsGamePanelEndGameTextTargetColor, 1f)
-                    //    .SetEase(Ease.InQuad)
-                    //    .WaitForCompletion();
+                    // Update Bounding Shapes of Cinemachine Confiner
+                    cameraFollow.SetConfinerFromCheckpoint(lastCheckpointData.respawnCamBoundTriggerArea);
+
+                    // Perform also Boulder Respawn (just in cas is needed)
+                    if (!isBoulderEventDone)
+                        BoulderRespawn();
+
+                    // Enemies Respawn will be handled by every one in their own scripts.                                        
 
                     // Delay
-                    yield return new WaitForSeconds(5f);
-
-                    // FadeOut DeathPanel
-
-                    //Set The target Color
-                    //creditsGamePanelMadeByTextTargetColor = creditsMadeByText.color;
-                    //creditsGamePanelMadeByTextTargetColor.a = 0f;
-
-                    //// Color FadeIn (Black->Red)
-                    //yield return creditsMadeByText
-                    //    .DOColor(creditsGamePanelMadeByTextTargetColor, 1f)
-                    //    .SetEase(Ease.InQuad)
-                    //    .WaitForCompletion();
-
-                    // Reset only PlayerPos (checkpointData??) and needed things
-                    // The Enemies will respawn every certain time.                    
+                    yield return new WaitForSeconds(2f);
 
                     // Start Playing again the Level Music
                     PlayLevelMusic();
 
+                    // Disable the DeathPanel
+                    deathPanel.SetActive(false);
+
                     // Enable again the User Inputs
-                    EnableGameplayInput();
+                    EnableGameplayInput();                                        
 
                     // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.Gameplay;
@@ -690,17 +705,25 @@ public class GameManager : MonoBehaviour
 
                 case LevelSceneState.GameOverPanel:
 
-                    // FadeIn GameOverPanel
+                    // FadeIn GameOverPanel & Text
 
-                    ////Set The target Color
-                    //creditsGamePanelEndGameTextTargetColor = creditsEndGameText.color;
-                    //creditsGamePanelEndGameTextTargetColor.a = 1f;
+                    //Set The target Color
+                    gameOverPanelImageTargetColor = gameOverPanelImage.color;
+                    gameOverPanelImageTargetColor.a = 1f;
 
-                    //// Color FadeIn (Black->Red)
-                    //yield return creditsEndGameText
-                    //    .DOColor(creditsGamePanelEndGameTextTargetColor, 1f)
-                    //    .SetEase(Ease.InQuad)
-                    //    .WaitForCompletion();
+                    //Set The target Color
+                    gameOverPanelTextTargetColor = gameOverPanelText.color;
+                    gameOverPanelTextTargetColor.a = 1f;
+
+                    yield return gameOverPanelImage
+                        .DOColor(gameOverPanelImageTargetColor, 3f)
+                        .SetEase(Ease.InQuad)
+                        .WaitForCompletion();
+
+                    yield return gameOverPanelText
+                       .DOColor(gameOverPanelTextTargetColor, 5f)
+                       .SetEase(Ease.InQuad)
+                       .WaitForCompletion();
 
                     // Delay
                     yield return new WaitForSeconds(5f);
@@ -1030,8 +1053,17 @@ public class GameManager : MonoBehaviour
                     // Set the Initial CheckPoint Data
                     SetInitCheckPointData();
 
+                    // Reset the player to its initial State and to the respawn pos.
+                    playerMovement.RespawnPlayer(lastCheckpointData.respawnPos);
+
+                    // Reset the Boulder Event Done's Flag
+                    SetBoulderEventDoneFlag(false);
+
                     // Reset the End Credit Scene Flag
                     SetEndCreditsSceneFlag(false);
+
+                    // Reset all PowerUps as Locked
+                    playerMovement.ResetAllPowerUps();                    
 
                     // Trigger the Update Scene State Loop
                     levelSceneCoroutine = StartCoroutine(nameof(UpdateLevelSceneState));
@@ -1194,7 +1226,36 @@ public class GameManager : MonoBehaviour
         pausePanel = canvas.transform.Find("PausePanel")?.gameObject;
         if (pausePanel == null)
             Debug.LogError("The pausePanel object is null");
-                
+
+        gameOverPanel = canvas.transform.Find("GameOverPanel")?.gameObject;
+        if (gameOverPanel == null)
+            Debug.LogError("The gameOverPanel object is null");
+        else
+        {
+            gameOverPanelImage = gameOverPanel.GetComponent<Image>();
+            if (gameOverPanelImage == null)
+                Debug.LogError("The gameOverPanelImage component was not found " +
+                                "on the " + gameOverPanel.name + "GO ");
+
+            gameOverPanelText = gameOverPanel.transform.Find("GameOverText")?.GetComponent<TextMeshProUGUI>();
+            if (gameOverPanelText == null)
+                Debug.LogError("The gameOverPanelText component was not found " +
+                                "on the " + gameOverPanel.name + "GO ");
+        }
+        
+        deathPanel = canvas.transform.Find("DeathPanel")?.gameObject;
+        if (deathPanel == null)
+            Debug.LogError("The deathPanel object is null");
+        else
+        {           
+            //deathPanelLifesNumText = deathPanel.transform.Find("RemainLifesCountText2")?.GetComponent<TextMeshProUGUI>();
+            deathPanelLifesNumText = deathPanel.GetComponentsInChildren<TextMeshProUGUI>()
+                                                .FirstOrDefault(t => t.name == "RemainLifesCountText2");
+            if (deathPanelLifesNumText == null)
+                Debug.LogError("The deathPanelLifesNumText component was not found " +
+                                "on the " + deathPanel.name + "GO ");
+        }               
+
         endScenePanel = canvas.transform.Find("EndScenePanel")?.gameObject;
         if (endScenePanel == null)
             Debug.LogError("The endScenePanel object is null");
@@ -1270,6 +1331,10 @@ public class GameManager : MonoBehaviour
         initCamBoundTriggerArea = GameObject.Find("InitAreaCamTrigger")?.GetComponent<CamBoundariesTriggerArea>();
         if (initCamBoundTriggerArea == null)
             Debug.LogError("The initCamBoundTriggerArea component is null");
+
+        boulderGO = FindAnyObjectByType<Boulder>()?.gameObject;
+        if (boulderGO == null)
+            Debug.LogError("There is no any 'RoundBoulder' GO in the Scene");
     }
     public void ShowMouseCursor(bool enable)
     {
@@ -1292,17 +1357,19 @@ public class GameManager : MonoBehaviour
     public void SubscribeEventsOfPlayerHealth(PlayerHealth pH)
     {
         playerHealth = pH;
-        playerHealth.OnHitFXPlayer += slowMotionOnHit;
+        playerHealth.OnHitFXPlayer += SlowMotionOnHit;
         playerHealth.OnHitFXPlayer += ApplyDeafeningSFX;
-        playerHealth.OnDeathPlayer += slowMotionOnDeath; 
+        playerHealth.OnDeathPlayer += SlowMotionOnDeath; 
+        playerHealth.OnDeathPlayer += StopMusic; 
     }
     public void UnsubscribeEventsOfPlayerHealth()
     {
         if (playerHealth != null)
         {            
-            playerHealth.OnHitFXPlayer -= slowMotionOnHit;
+            playerHealth.OnHitFXPlayer -= SlowMotionOnHit;
             playerHealth.OnHitFXPlayer -= ApplyDeafeningSFX;
-            playerHealth.OnDeathPlayer -= slowMotionOnDeath;
+            playerHealth.OnDeathPlayer -= SlowMotionOnDeath;
+            playerHealth.OnDeathPlayer -= StopMusic;
             playerHealth = null;
         }
     }
@@ -1532,13 +1599,25 @@ public class GameManager : MonoBehaviour
     #region Game Over
     public void PlayGameOverSFx()
     {
-        if (generalAudioSource.isPlaying)
-        {
-            generalAudioSource.Stop();
-            generalAudioSource.loop = false;
-        }            
+        //if (generalAudioSource.isPlaying)
+        //{
+        //    generalAudioSource.Stop();
+        //    generalAudioSource.loop = false;
+        //}            
 
         generalAudioSource.PlayOneShot(gameOverClip,gameOverVolume);
+    }
+    #endregion
+    #region Death
+    public void PlayDeathSFx()
+    {
+        //if (generalAudioSource.isPlaying)
+        //{
+        //    generalAudioSource.Stop();
+        //    generalAudioSource.loop = false;
+        //}
+
+        generalAudioSource.PlayOneShot(deathClip, deathVolume);
     }
     #endregion
     #region EndOfLevel
@@ -1592,7 +1671,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0.2f; // Velocidad al 20%
         Time.fixedDeltaTime = 0.02f * Time.timeScale; // Ajustar física
     }
-    private void slowMotionOnHit(Vector2 thrustEnemyDir, float thrustEnemyForce)
+    private void SlowMotionOnHit(Vector2 thrustEnemyDir, float thrustEnemyForce)
     {
         // 1. Mata cualquier tween previo con el ID "SlowTime"
         DOTween.Kill("SlowTime");
@@ -1626,7 +1705,7 @@ public class GameManager : MonoBehaviour
         // 7. Hace que la llamada retrasada también use tiempo real para contar correctamente
         .SetUpdate(true);
     }
-    private void slowMotionOnDeath()
+    private void SlowMotionOnDeath()
     {
         // 1. Mata cualquier tween previo con el ID "SlowTime"
         DOTween.Kill("SlowTime");
@@ -1644,7 +1723,7 @@ public class GameManager : MonoBehaviour
                         Time.timeScale = x;
                         Time.fixedDeltaTime = 0.02f * x;
                         }, 
-                    1f, DeafBwdDuration)
+                    1f, DeafBwdDuration*2f)
                 //.SetEase(Ease.OutCubic)
                 .SetEase(Ease.InQuad)
                 // 5. Le da un ID para poder controlar o cancelar este tween luego
@@ -1655,6 +1734,7 @@ public class GameManager : MonoBehaviour
                 {
                     // Trigger the Camera Death Shaking
                     cameraFollow.CameraDeathShaking();
+                    PlayDeathSFx();
                 });
         })
         // 7. Hace que la llamada retrasada también use tiempo real para contar correctamente
@@ -1818,7 +1898,27 @@ public class GameManager : MonoBehaviour
     {
         lastCheckpointData = camTriggerAreaData;        
 
-        // Update the Player's position
+        // If we arrive to the checkpoint just after the Boulder Event then we set
+        // its flag in order to avoid repeat it again.
+        if (lastCheckpointData.camTriggerAreaId == CamTriggerAreaEnum.CamTriggerArea.KeyArea)
+        {
+            SetBoulderEventDoneFlag(true);
+        }        
+    }
+    #endregion
+    #region Boulder Spawn
+    private void SetBoulderEventDoneFlag(bool enable)
+    {
+        isBoulderEventDone = enable;
+    }
+    private void BoulderRespawn()
+    {
+        if (boulderGO != null)
+            Destroy(boulderGO);
+        else        
+            Debug.LogError("The Round Boulder GO was not found on the Scene");
+       
+        boulderGO = Instantiate(boulderPrefab);
     }
     #endregion
     #region GemsUIPos    

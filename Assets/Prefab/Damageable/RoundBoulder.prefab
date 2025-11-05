@@ -46,7 +46,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1596342573952404632}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -288,6 +288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315cf323682147e4489bc7670dddfcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravityScale: 2.2
+  mass: 100
   clip: {fileID: 8300000, guid: 98b9cf3c1259b8e4cbaf5cd90b6f3d8f, type: 3}
   dustVFX: {fileID: 5873754517777239851, guid: 808dd8282d7f60d4e86e50f6858d6978, type: 3}
   origindustPS: {fileID: 5768057530639488201}
@@ -325,7 +327,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 3.42, y: -3.8318696}
+  m_Offset: {x: 6, y: -4.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -335,7 +337,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.51852703, y: 13.796397}
+  m_Size: {x: 0.5, y: 15}
   m_EdgeRadius: 0
 --- !u!1 &4629698140300869830
 GameObject:
