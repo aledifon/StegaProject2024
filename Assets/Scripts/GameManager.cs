@@ -13,6 +13,7 @@ using static ScenesEnum;
 using static MenuSceneStateEnum;
 using static LevelSceneStateEnum;
 using static UIMenuSelectEnum;
+using static ItemTypeEnum;
 
 using TMPro;
 using System.Collections.Generic;
@@ -241,7 +242,12 @@ public class GameManager : MonoBehaviour
     private bool isBoulderEventDone;
     public bool IsBoulderEventDone => isBoulderEventDone;
     [SerializeField] private GameObject boulderPrefab;
-    private GameObject boulderGO;    
+    private GameObject boulderGO;
+
+    [Header("Chests")]
+    [SerializeField] private float bootsWaitingTime;
+    [SerializeField] private float hookWaitingTime;
+    private ColumnsDestructionHandler columnDestroyer;
 
     #region Unity API
     // Start is called before the first frame update
@@ -256,27 +262,17 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        SceneManager.sceneLoaded += OnSceneLoaded;  // Subscribe to the event.
+        // Events subscription
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SubscribeChestEvents();
 
         // Get GameManager refs
         generalAudioSource = GetComponent<AudioSource>();
-        replayManager = GetComponent<ReplayManager>();
-
-        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
-        //PlayLevelMusic();
-
-        //EnableGameplayInput();
-
-        //if(slowMotionEnabled)
-        //    EnableSlowMotion();
-
-        //// Set the filterDuration
-        ////filterDuration = returnDuration;
-
-        //// Set the Initial CheckPoint Data
-        //SetInitCheckPointData();        
-
-        // PENDING TO BE MOVED TO ADAPTED DUE TO SCENE MANAGEMENT
+        replayManager = GetComponent<ReplayManager>();       
+    }
+    private void OnDisable()
+    {
+        UnsubscribeChestEvents();
     }
     private void OnDestroy()
     {
@@ -1335,6 +1331,12 @@ public class GameManager : MonoBehaviour
         boulderGO = FindAnyObjectByType<Boulder>()?.gameObject;
         if (boulderGO == null)
             Debug.LogError("There is no any 'RoundBoulder' GO in the Scene");
+
+        columnDestroyer = FindAnyObjectByType<ColumnsDestructionHandler>()
+                        ?.gameObject
+                        ?.GetComponent<ColumnsDestructionHandler>();
+        if (columnDestroyer == null)
+            Debug.LogError("There is no any 'ColumnsDestructionHandler' script on the Scene");
     }
     public void ShowMouseCursor(bool enable)
     {
@@ -1400,26 +1402,36 @@ public class GameManager : MonoBehaviour
             OnHitPhysicsPlayer -= playerMovement.ReceiveDamage;
             playerMovement = null;
         }
+    }    
+    private void SubscribeChestEvents()
+    {
+        Chest.OnChestOpened += HandleChestOpened;
     }
+    private void UnsubscribeChestEvents()
+    {
+        Chest.OnChestOpened -= HandleChestOpened;
+    }
+    #endregion
+    #region ReplayManager
     public void EnableReplayManagerAndGetRefs()
     {
         return; // Temporary till will be completely tested
 
         if (playerMovement != null)
-        {            
+        {
             // Get the Player Recorder & Playback Refs
             playerPlayback = GameObject.Find("PlayerGhost")?.GetComponent<PlayerPlayback>();
             playerRecorder = playerMovement.gameObject.GetComponent<PlayerRecorder>();
 
             if (playerPlayback != null && playerRecorder != null)
-            {                
+            {
                 replayManager.enabled = true;
                 replayManager.GetPlayerRefs(playerRecorder, playerPlayback);
-            }                
+            }
             else
                 Debug.LogWarning("Either " + playerPlayback.name + " and/or +" +
                                 playerRecorder.name + " scripts were not found on the Scene");
-        }        
+        }
     }
     public void DisableReplayManagerAndCleanRefs()
     {
@@ -1919,6 +1931,49 @@ public class GameManager : MonoBehaviour
             Debug.LogError("The Round Boulder GO was not found on the Scene");
        
         boulderGO = Instantiate(boulderPrefab);
+    }
+    #endregion
+    #region ChestEvents
+    public void HandleChestOpened(ItemType itemType)
+    {
+        if (itemType == ItemType.ClimbingBoots)
+            StartCoroutine(nameof(BootsAcquired));
+        else
+            StartCoroutine(nameof(HookAcquired));
+    }
+    private IEnumerator BootsAcquired()
+    {
+        // Disable Player Input
+        DisableAllInputs();
+
+        // Trigger Player Ghost Sequence
+
+        // Wait till seq. is finished
+        yield return new WaitForSeconds(bootsWaitingTime);
+
+        // Enable Player Input
+        EnableGameplayInput();
+    }
+    private IEnumerator HookAcquired()
+    {
+        // Disable Player Input
+        DisableAllInputs();
+
+        // Delay
+        yield return new WaitForSeconds(hookWaitingTime);
+
+        // Trigger Cam Movement to Columns (Go to Columns Pos. + Destroy Columns + Back to player Pos.)
+        yield return StartCoroutine(cameraFollow.MoveCamTargetToDestColumnsPos(columnDestroyer));        
+
+        yield return StartCoroutine(cameraFollow.MoveCamTargetToWallJumpAccessPlatform(columnDestroyer));
+
+        // Trigger Player Ghost Sequence
+
+        // Wait till sequence is finished
+        //yield return new WaitForSeconds(hookWaitingTime);
+
+        // Enable Player Input
+        EnableGameplayInput();
     }
     #endregion
     #region GemsUIPos    

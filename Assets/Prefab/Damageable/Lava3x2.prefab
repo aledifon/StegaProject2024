@@ -684,4 +684,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thrustToPlayer: 80
-  damageAmount: 20
+  damageAmount: 100

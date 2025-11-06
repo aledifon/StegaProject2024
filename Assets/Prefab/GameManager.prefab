@@ -177,6 +177,8 @@ MonoBehaviour:
   slowMotionEnabled: 0
   isDebuggingMode: 0
   boulderPrefab: {fileID: 1596342573952404632, guid: 7fc9533f5cfa7ef49822c8718f9838fa, type: 3}
+  bootsWaitingTime: 3
+  hookWaitingTime: 3
 --- !u!114 &2176713658049326293
 MonoBehaviour:
   m_ObjectHideFlags: 0
