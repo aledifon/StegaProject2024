@@ -1,7 +1,8 @@
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
+using static ItemTypeEnum;
 
 public class Chest : MonoBehaviour
 {    
@@ -19,12 +20,16 @@ public class Chest : MonoBehaviour
     private Color colorSprite;
     BoxCollider2D myCollider;
     
-    [SerializeField] private ItemTypeEnum.ItemType itemType;
+    [SerializeField] private ItemType itemType;
 
     [Header("Fading")]
     [SerializeField, Range(0f,5f)] float fadingTime;
     private float fadingTimer;    
     [SerializeField, Range(0f, 2f)] float targetPosY;
+
+    // Events
+    // Static event makes the event independent of every GO instance
+    public static event Action<ItemType> OnChestOpened;   
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -48,8 +53,10 @@ public class Chest : MonoBehaviour
         colorItemTextBox.a = 0f;
         itemTextBox.color = colorItemTextBox;
 
+        // Default value, in case no itemType is assigned
         if (itemType == 0)
-            itemType = ItemTypeEnum.ItemType.ClimbingBoots;        
+            itemType = ItemType.ClimbingBoots;
+        
     }    
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -57,6 +64,7 @@ public class Chest : MonoBehaviour
         {
             myCollider.enabled = false;
             collision.gameObject.GetComponent<PlayerMovement>().UnlockPowerUp(itemType);
+            OnChestOpened?.Invoke(itemType);
             StartCoroutine(nameof(OpenChest));            
         }
     }

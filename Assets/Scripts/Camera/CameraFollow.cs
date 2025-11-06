@@ -8,7 +8,8 @@ public class CameraFollow : MonoBehaviour
 {
     [Header("Refs")]
     Transform player;
-    Transform cameraTarget;           
+    Transform cameraTarget;
+    //ColumnsDestructionHandler columnsDestructHandler;
 
     [Header("Offsets")]
     [SerializeField] float xOffset = 1.5f;      // Horizontal offset acoording the player's dir
@@ -47,10 +48,10 @@ public class CameraFollow : MonoBehaviour
     private PlayerMovement playerMovement;
     private SpriteRenderer playerSprite;
     private PlayerHealth playerHealth;
-    private CinemachinePositionComposer composer;
+    private CinemachinePositionComposer composer;    
 
     // Control vars
-    private bool cameraFollowEnabled = true;
+    private bool cameraFollowEnabled = true;    
 
     #region Unity API
     private void Awake()
@@ -61,7 +62,7 @@ public class CameraFollow : MonoBehaviour
 
         confiner2D = GetComponent<CinemachineConfiner2D>();
         if (confiner2D == null)
-            Debug.LogError("Cinemachine Confiner 2D component not found on the GO " + gameObject + "!!");
+            Debug.LogError("Cinemachine Confiner 2D component not found on the GO " + gameObject + "!!");             
     }
     private void Start()
     {
@@ -220,6 +221,54 @@ public class CameraFollow : MonoBehaviour
         yield return new WaitForSeconds(impulseDeathDuration);
         GameManager.Instance.ChooseDeathOrGameOverPanel();
     }
+    public IEnumerator MoveCamTargetToDestColumnsPos(ColumnsDestructionHandler colDestHandler)
+    {
+        if (colDestHandler == null)
+        {
+            Debug.LogError("The Columns Destruct Handler GO Ref. is null!");
+            yield break;
+        }            
+        else
+        {
+            Vector3 targetPos = colDestHandler.transform.position;
+
+            yield return cameraTarget.DOMove(targetPos, 2f)
+                                    .SetEase(Ease.InOutSine)
+                                    .WaitForCompletion();
+
+            colDestHandler.TriggerColumnsDestruction();
+
+            yield return new WaitForSeconds(2f);
+
+            yield return cameraTarget.DOMove(player.position, 2f)
+                                    .SetEase(Ease.InOutSine)
+                                    .WaitForCompletion();
+        }        
+    }
+    public IEnumerator MoveCamTargetToWallJumpAccessPlatform(ColumnsDestructionHandler colDestHandler)
+    {
+        if (colDestHandler == null)
+        {
+            Debug.LogError("The Columns Destruct Handler GO Ref. is null!");
+            yield break;
+        }            
+        else
+        {
+            Transform wallJumpAccessPos = colDestHandler.AccesWallJumpAreaPos;
+
+            Vector3 targetPos = wallJumpAccessPos.position;
+
+            yield return cameraTarget.DOMove(targetPos, 2f)
+                                    .SetEase(Ease.InOutSine)
+                                    .WaitForCompletion();
+
+            yield return StartCoroutine(colDestHandler.TriggerWallJumpPlatformDestruction());            
+
+            yield return cameraTarget.DOMove(player.position, 2f)
+                                    .SetEase(Ease.InOutSine)
+                                    .WaitForCompletion();
+        }        
+    }
     //private void CameraShaking(Vector2 thrustEnemyDir, float thrustEnemyForce)
     //{
     //    Camera.main.transform.DOShakePosition(
@@ -248,8 +297,7 @@ public class CameraFollow : MonoBehaviour
         // Get the Camera Target Ref.
         cameraTarget = player.Find("CameraTarget");
         if (cameraTarget == null)
-            Debug.LogError("Camera Target not found as a child of the Player GO!!");
-
+            Debug.LogError("Camera Target not found as a child of the Player GO!!");        
     }
     public void SubscribeEventsOfPlayerHealth(PlayerHealth pH)
     {
@@ -263,6 +311,13 @@ public class CameraFollow : MonoBehaviour
         //playerHealth.OnDeathPlayer -= CameraDeathShaking;
         playerHealth = null;
     }
+    //public void GetColumnsDestructHandlerRef(ColumnsDestructionHandler colDestHandler)
+    //{        
+    //    if (colDestHandler == null)
+    //        Debug.LogError("The Columns Destruction Handler got as ref. is null!");
+    //    else
+    //        columnsDestructHandler = colDestHandler;
+    //}
     #endregion
     #region Camera Enabling
     public void StopCameraFollow()
