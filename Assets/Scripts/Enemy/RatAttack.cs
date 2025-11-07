@@ -14,7 +14,7 @@ public class RatAttack : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && rat.IsPlayerDetectionEnabled && !rat.PlayerMovement_.IsDead)
         {            
             rat.Attack();
         }        
