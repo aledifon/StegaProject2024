@@ -1829,11 +1829,11 @@ public class PlayerMovement : MonoBehaviour
         isKeyUnlocked = false;
     }
     public void IncreaseGems()
-    {
+    {        
         // Increase Gems counter
         NumGems++;
         // Update Gems counter UI Text
-        textGemsUI.text = NumGems.ToString();
+        textGemsUI.text = NumGems.ToString();        
     }
     public void IncreaseLifes()
     {

@@ -2315,7 +2315,14 @@ MonoBehaviour:
   dynamYFactor: 0.02
   dynamYExpFactor: 1.5
   impulseSource: {fileID: 0}
-  impulseForceFactor: 1
+  impulseForceHitFactor: 0
+  impulseHitDuration: 0
+  impulseHitFrequencyGain: 0
+  impulseHitAmplitudeGain: 0
+  impulseForceDeathFactor: 0
+  impulseDeathDuration: 0
+  impulseDeathFrequencyGain: 0
+  impulseDeathAmplitudeGain: 0
   TotalBoundsArea: {fileID: 0}
   currentBoundsArea: {fileID: 0}
   lastBoundsArea: {fileID: 0}

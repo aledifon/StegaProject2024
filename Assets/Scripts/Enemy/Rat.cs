@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static PlayerMovement;
 
 public class Rat : MonoBehaviour
 {
@@ -33,10 +34,12 @@ public class Rat : MonoBehaviour
     [SerializeField] bool isDetecting;              // Player detection flag
     private bool wasDetecting;                      // Previous State of Player detection flag
     Vector2 raycastDir;
+    private float enemyToPlayerDist;
 
     [Header("Player")]
     private GameObject player;
     private PlayerMovement playerMovement;
+    public PlayerMovement PlayerMovement_ => playerMovement;
     private PlayerHealth playerHealth;
     private PlayerSFX playerSFX;
     [SerializeField] private float thrustToPlayer;      // ForceMode2D = Impulse --> 3-4f
@@ -47,18 +50,27 @@ public class Rat : MonoBehaviour
                                                  // to get a sprite looking to Vector2.right dir.
 
     [Header("Idle Timer")]
-    [SerializeField] private float IdleMaxTime;
+    [SerializeField] private float idleMaxTime;
     [SerializeField] private float idleTimer;
     [SerializeField] private bool isIdleTimerEnabled;
 
     [Header("Attack Timer")]
-    [SerializeField] private float AttackMaxTime;
+    [SerializeField] private float attackMaxTime;
     [SerializeField] private float attackTimer;
     [SerializeField] private bool isAttackTimerEnabled;
 
     [Header("Death")]
     [SerializeField] private bool isDeath;
     [SerializeField] private AudioClip deathSFX;
+
+    [Header("Respawn Timer")]
+    [SerializeField] private float respawnMaxTime;
+    [SerializeField] private float respawnTimer;
+    [SerializeField] private bool isRespawnTimerEnabled;
+
+    [Header("Respawn settings")]
+    [SerializeField] private bool isOnRespawnDistance;
+    [SerializeField] private float respawnDistance;
 
     public enum EnemyState
     {
@@ -74,6 +86,7 @@ public class Rat : MonoBehaviour
 
     // Boolean Flags
     private bool isPlayerDetectionEnabled;    
+    public bool IsPlayerDetectionEnabled => isPlayerDetectionEnabled;    
 
     // GOs 
     SpriteRenderer spriteRenderer;
@@ -224,7 +237,7 @@ public class Rat : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {            
             ReceivePlayerAttack();
         }
@@ -235,26 +248,24 @@ public class Rat : MonoBehaviour
     // Enemy State
     private void UpdateEnemyState()
     {
+        // From any state
         if (isDeath && currentState != EnemyState.Death)
         {
             // Play the SFX
             StopAudioSource();
-            PlayDeathSFX();
-
-            // Disable the Player Detection (Also the colliders?)
-            DisablePlayerDetection();
+            PlayDeathSFX();            
 
             // Set Rb as kinematics
             SetRBConfig(RigidbodyType2D.Kinematic);
 
-            // Disable the both Enemy Colliders (Body & Receive Damage)
-            EnableRatColliders(false);
-
             // Setup the GO destruction
-            Destroy(gameObject, 3f);
+            //Destroy(gameObject, 3f);
 
             // Debug
             //Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+
+            // Trigger Respawn Timer
+            SetRespawnTimer();
 
             // State Update
             currentState = EnemyState.Death;
@@ -266,6 +277,17 @@ public class Rat : MonoBehaviour
         {
             switch (currentState)
             {
+                case EnemyState.Death:
+                    // Check constantly the Respawn Timer
+                    if (isDeath)                    
+                        CheckRespawnTimer();
+                    else
+                    {
+                        currentState = EnemyState.Idle;
+                        ResetAnimations();
+                    }
+                    //Debug.Log("From Death state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
                 case EnemyState.Idle:
                     // Idle Timer Update
                     UdpateIdleTimer();
@@ -399,16 +421,75 @@ public class Rat : MonoBehaviour
                         else
                             SetAttackTimer();
                     }
-                    break;
-                case EnemyState.Death:                    
-                    Debug.Log("I am on Death State");
-                    break;
+                    break;                
                 default:
                     // Default logic
                     break;
             }
         }
     }
+    #endregion
+    #region Respawn
+    private void Respawn()
+    {
+        // Set the RB as Dynamics
+        SetRBConfig(RigidbodyType2D.Dynamic);
+
+        // Enable the both Enemy Colliders (Body & Receive Damage)
+        EnableRatColliders(true);
+
+        // Set the initial Target Pos
+        indexTargetPos = 0;
+        // Set the initial patrol position
+        targetPosition = points[indexTargetPos];
+
+        // Init raycastDir        
+        raycastDir = Vector2.left;
+
+        // Start Playing the default SFX
+        PlayNormalPatrolSFX();        
+
+        isDeath = false;
+    }    
+    private void CheckRespawnTimer()
+    {
+        if (isOnRespawnDistance)
+        {
+            if (!isRespawnTimerEnabled)
+                SetRespawnTimer();
+            else
+                UpdateRespawnTimer();
+        }
+        else
+        {
+            if (isRespawnTimerEnabled)
+                ResetRespawnTimer();
+        }
+    }
+    #region Respawn Timer    
+    private void UpdateRespawnTimer()
+    {
+        // Idle Timer update
+        respawnTimer -= Time.fixedDeltaTime;
+
+        // Reset Idle Timer
+        if (respawnTimer <= 0)
+        {
+            ResetRespawnTimer();
+            Respawn();
+        }
+    }
+    private void ResetRespawnTimer()
+    {
+        isRespawnTimerEnabled = false;
+        respawnTimer = 0f;
+    }
+    private void SetRespawnTimer()
+    {
+        respawnTimer = respawnMaxTime;
+        isRespawnTimerEnabled = true;
+    }
+    #endregion
     #endregion
     #region Idle Timer    
     private void UdpateIdleTimer()
@@ -429,7 +510,7 @@ public class Rat : MonoBehaviour
     }
     private void SetIdleTimer()
     {        
-        idleTimer = IdleMaxTime;
+        idleTimer = idleMaxTime;
         isIdleTimerEnabled = true;        
     }
     #endregion
@@ -452,7 +533,7 @@ public class Rat : MonoBehaviour
     }
     private void SetAttackTimer()
     {
-        attackTimer = AttackMaxTime;
+        attackTimer = attackMaxTime;
         isAttackTimerEnabled = true;
     }
     #endregion
@@ -544,11 +625,18 @@ public class Rat : MonoBehaviour
         else
             raycastDir = Vector2.left;
 
-        // Raycast Launching
-        isDetecting = (Vector2.Distance(transform.position, player.transform.position) <= pursuitDistance) &&
+        // Update the Enemy to Player Distance
+        enemyToPlayerDist = Vector2.Distance(transform.position, player.transform.position);
+
+        // Player on Pursuit Distance?
+        isDetecting = (enemyToPlayerDist <= pursuitDistance) &&
                         (Mathf.Abs(transform.position.y - player.transform.position.y) <= 2f) /*&& 
                         playerDetectionEnabled*/
                         && !playerMovement.IsDead;
+
+        // Player on Respawn Distance?
+        isOnRespawnDistance = enemyToPlayerDist >= respawnDistance;
+
         // Raycast Debugging
         //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
         Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * pursuitDistance, Color.red);
@@ -571,6 +659,9 @@ public class Rat : MonoBehaviour
 
         playerMovement.UpwardsEnemyImpulse();
         playerSFX.PlayEnemyJumpSFX();
+
+        // Disable the both Enemy Colliders (Body & Receive Damage)
+        EnableRatColliders(false);
 
         isDeath = true;               
     }
@@ -664,6 +755,11 @@ public class Rat : MonoBehaviour
             default:
                 break;
         }        
+    }
+    private void ResetAnimations()
+    {
+        animator.Rebind();
+        animator.Update(0f);
     }
     #endregion
     #endregion
