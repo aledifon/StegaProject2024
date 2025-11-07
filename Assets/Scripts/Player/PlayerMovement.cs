@@ -437,7 +437,7 @@ public class PlayerMovement : MonoBehaviour
         //AnimatingJumping();
 
         // Animations
-        //UpdateAnimations();
+        UpdateAnimationsNew();
         UpdateAnimationSpeed();
 
         UpdateInputAndSprite(direction);
@@ -533,13 +533,13 @@ public class PlayerMovement : MonoBehaviour
         if (isHurt)
         {
             currentState = PlayerState.Hurting;
-            UpdateAnimations();
+            UpdateTriggerAnimations();
             //Debug.Log("From " + currentState + " state to Hurting State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
         }
         else if (isDead)
         {
             currentState = PlayerState.Death;
-            UpdateAnimations();
+            UpdateTriggerAnimations();
         } 
         else
         {
@@ -549,7 +549,7 @@ public class PlayerMovement : MonoBehaviour
                     if (!isDead)
                     {
                         currentState = PlayerState.Idle;
-                        UpdateAnimations();
+                        UpdateTriggerAnimations();
                     }
                     //Debug.Log("From Death state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
@@ -557,7 +557,7 @@ public class PlayerMovement : MonoBehaviour
                     if (!isHurt)
                     {
                         currentState = PlayerState.Idle;
-                        UpdateAnimations();
+                        UpdateTriggerAnimations();
                     }
                     //Debug.Log("From Hurt state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     break;
@@ -786,8 +786,8 @@ public class PlayerMovement : MonoBehaviour
     public void TriggerHurtingState()
     {
         isHurt = true;
-        currentState = PlayerState.Hurting;
-        UpdateAnimations();
+        //currentState = PlayerState.Hurting;
+        //UpdateAnimations();
     }
     public void DisableHurtingState()
     {
@@ -1456,16 +1456,16 @@ public class PlayerMovement : MonoBehaviour
         }        
         else if (currentState == PlayerState.Falling)
         {
-            if (isDead)
-                rb2D.gravityScale = 5f;
-            else
+            //if (isDead)
+            //    rb2D.gravityScale = 5f;
+            //else
                 rb2D.gravityScale = 2.5f;
         }
         else
         {
-            if (isDead)
-                rb2D.gravityScale = 2f;
-            else
+            //if (isDead)
+            //    rb2D.gravityScale = 2f;
+            //else
                 rb2D.gravityScale = 1f;
         }        
     }
@@ -1673,27 +1673,30 @@ public class PlayerMovement : MonoBehaviour
     {
         animator.SetBool("IsFalling", currentState == PlayerState.Falling);
     }
+    //private void UpdateAnimations_(string triggerParamName)
+    //{
+    //    animator.SetTrigger(triggerParamName);
+    //}
     private void ClearAnimationFlags()
     {
-        animator.ResetTrigger("IsIdle");
-        animator.ResetTrigger("IsRunning");
-        animator.ResetTrigger("IsJumping");
-        animator.ResetTrigger("IsFalling");
-        animator.ResetTrigger("IsWallSliding");
-        animator.ResetTrigger("IsSwinging");
+        //animator.ResetTrigger("IsIdle");
+        //animator.ResetTrigger("IsRunning");
+        //animator.ResetTrigger("IsJumping");
+        //animator.ResetTrigger("IsFalling");
+        //animator.ResetTrigger("IsWallSliding");
+        //animator.ResetTrigger("IsSwinging");
         animator.ResetTrigger("Hurt");
         animator.ResetTrigger("Death");
-    }
-    private void UpdateAnimations_(string triggerParamName)
-    {
-        animator.SetTrigger(triggerParamName);
-    }
+    }    
     private void UpdateAnimationSpeed()
     {
         animator.SetFloat("Speed", Math.Abs(rb2D.linearVelocityX));
     }
     private void UpdateAnimations()
     {
+        //Debug.LogWarning("Be careful! You are using the old method to update the Animations");
+        return;
+
         ClearAnimationFlags();
 
         switch (currentState)
@@ -1727,13 +1730,75 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        if (currentState == PlayerState.Falling && stateInfo.IsName("IsIdle") &&
-            isWallDetected)
-            Debug.Log("Current State is " + currentState + 
-                " ;; IsFalling: " + animator.GetBool("IsFalling"));
+        //AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        //if (currentState == PlayerState.Falling && stateInfo.IsName("IsIdle") &&
+        //    isWallDetected)
+        //    Debug.Log("Current State is " + currentState + 
+        //        " ;; IsFalling: " + animator.GetBool("IsFalling"));
     }
+    private void UpdateTriggerAnimations()
+    {
+        ClearAnimationFlags();
 
+        switch (currentState)
+        {            
+            case PlayerState.Hurting:
+                animator.SetTrigger("Hurt");
+                break;
+            case PlayerState.Death:
+                animator.SetTrigger("Death");
+                break;
+            default:
+                break;
+        }
+    }
+    private void UpdateAnimationsNew()
+    {
+        // Update the Bools according to the Player's state & Control vars.
+
+        // IDLE        
+        bool isGroundedParam = isGrounded &&
+                            (Mathf.Abs(rb2D.linearVelocity.y) < 0.1f) &&
+                            (!isDead && !isHurt);
+        animator.SetBool("IsGroundedBool", isGroundedParam);
+
+        bool isIdle = isGroundedParam && 
+                    inputX == 0 ;
+        animator.SetBool("IsIdleBool", isIdle);
+
+        // RUNNING
+        bool isRunning = isGrounded &&
+                        inputX != 0 &&            
+                        (!isDead && !isHurt);
+        animator.SetBool("IsRunningBool",isRunning);
+
+        // JUMPING
+        bool isJumping = (isRecentlyJumping || !isGrounded) &&
+                        (rb2D.linearVelocity.y > 0.1f) &&
+                        (!isDead && !isHurt);
+        animator.SetBool("IsJumpingBool", isJumping);
+
+        // FALLING
+        bool isFalling =  !isGrounded &&
+                        (!isRecentlyJumping || !isRecentlyWallJumping) &&
+                        !isWallDetected &&
+                        (rb2D.linearVelocity.y < Mathf.Epsilon) &&                        
+                        (!isDead && !isHurt);
+        animator.SetBool("IsFallingBool", isFalling);
+
+        // WALL SLIDING
+        bool isWallSliding = !isGrounded &&
+                            isWallDetected &&
+                            (rb2D.linearVelocity.y < Mathf.Epsilon) &&
+                            (!isDead && !isHurt);
+        animator.SetBool("IsWallSlidingBool", isWallSliding);
+
+        // SWINGING
+        bool isSwinging = !isGrounded && 
+                        playerHook.IsHookAttached &&
+                        (!isDead && !isHurt);
+        animator.SetBool("IsSwingingBool",isSwinging);
+    }
     #endregion
 
     #region CollectibleItems
