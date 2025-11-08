@@ -79,7 +79,16 @@ public class Spider : MonoBehaviour
     [SerializeField] private AudioClip alertPatrolSFX;
     [SerializeField] private AudioClip alertSFX;    
     [SerializeField] private AudioClip attackSFX;
-    [SerializeField] private AudioClip deathSFX;           
+    [SerializeField] private AudioClip deathSFX;
+
+    [Header("Respawn Timer")]
+    [SerializeField] private float respawnMaxTime;
+    [SerializeField] private float respawnTimer;
+    [SerializeField] private bool isRespawnTimerEnabled;
+
+    [Header("Respawn settings")]
+    [SerializeField] private bool isOnRespawnDistance;
+    [SerializeField] private float respawnDistance;
 
     public enum EnemyState
     {
@@ -132,16 +141,16 @@ public class Spider : MonoBehaviour
     private void FixedUpdate()
     {
         // Get Player To Enemy Dir. Vector and the Sprite-X Direction
-        //GetEnemyToPlayerDir();
+        GetEnemyToPlayerDir();
 
-        //// Detect Player on DetectArea (Not used for Spider Enemy)        
-        //CheckDetectionArea();
+        // Detect Player on DetectArea (Not used for Spider Enemy)        
+        CheckDetectionArea();
 
         // Detect Player on AttackArea (Normal Patrol -> Alert Patrol)
         // Managed through 'AttackArea' CircleCollider2D.
 
         // Patrol (Vert. Movement from current->target A->B or B->A)
-        
+
         // Update the Enemy state
         UpdateEnemyState();        
     }
@@ -150,7 +159,7 @@ public class Spider : MonoBehaviour
     {
         if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
-            //Debug.Log("Player entered on the HitBox");
+            Debug.Log("Player entered on the HitBox");
 
             DisablePlayerDetection();
 
@@ -160,9 +169,14 @@ public class Spider : MonoBehaviour
         }
         else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
-            //Debug.Log("Player entered on the HurtBox");
+            Debug.Log("Player entered on the HurtBox");
+
+            if (playerMovement.IsGrounded)
+                return;
 
             DisablePlayerDetection();
+
+            Invoke(nameof(EnablePlayerDetection), 1f);
 
             ReceivePlayerAttack();
         }
@@ -176,11 +190,11 @@ public class Spider : MonoBehaviour
     {
         if (id == "HitBox" && collision.CompareTag("Player"))
         {
-            //Debug.Log("Player exit from the HitBox");
+            Debug.Log("Player exit from the HitBox");
         }
         else if (id == "HurtBox" && collision.CompareTag("Player"))
         {
-            //Debug.Log("Player exit from the HurtBox");
+            Debug.Log("Player exit from the HurtBox");
         }
         else if (id == "AttackArea" && collision.CompareTag("Player"))
         {
@@ -265,13 +279,16 @@ public class Spider : MonoBehaviour
         {
             // Play the SFX
             StopAudioSource();
-            PlayDeathSFX();            
+            PlayDeathSFX();
 
             // Setup the GO destruction
-            Destroy(gameObject, 3f);
+            //Destroy(gameObject, 3f);
 
             // Debug
             //Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+
+            // Trigger Respawn Timer
+            SetRespawnTimer();
 
             // State Update
             currentState = EnemyState.Death;
@@ -283,6 +300,17 @@ public class Spider : MonoBehaviour
         {
             switch (currentState)
             {
+                case EnemyState.Death:
+                    // Check constantly the Respawn Timer
+                    if (isDeath)
+                        CheckRespawnTimer();
+                    else
+                    {
+                        currentState = EnemyState.Idle;
+                        ResetAnimations();
+                    }
+                    //Debug.Log("From Death state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
                 case EnemyState.Idle:
                     // Idle Timer Update
                     UdpateIdleTimer();
@@ -406,10 +434,7 @@ public class Spider : MonoBehaviour
                         // Debug
                         //Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
-                    break;
-                case EnemyState.Death:
-                    //Debug.Log("I am on Death State");
-                    break;
+                    break;                
                 default:
                     // Default logic
                     break;
@@ -417,7 +442,71 @@ public class Spider : MonoBehaviour
         }
     }
     #endregion
+    #region Respawn
+    private void Respawn()
+    {
+        // Set the Colliders on its init state
+        EnableHitHurtBoxColliders(hitBoxCollider, true);
+        EnableHitHurtBoxColliders(hurtBoxCollider, true);
+        EnableAttackAreaCollider(true);
+        
+        // Set the Patrol positions (origin and target) & the initial position                                    
+        positions.originPosition = patrolPoints[0].position;
+        positions.targetPosition = patrolPoints[1].position;
+        transform.position = positions.originPosition;
 
+        // Reset the transform Scale to its init value (Was set to 0 at the end of 'Death' anim)
+        transform.localScale = Vector3.one;
+
+        // Enable the Player detection
+        EnablePlayerDetection();
+
+        // Play the Idle SFX
+        PlayIdleSFX();
+
+        // Respawn the character (Trigger from Death->Idle State)
+        isDeath = false;
+    }
+    private void CheckRespawnTimer()
+    {
+        if (isOnRespawnDistance)
+        {
+            if (!isRespawnTimerEnabled)
+                SetRespawnTimer();
+            else
+                UpdateRespawnTimer();
+        }
+        else
+        {
+            if (isRespawnTimerEnabled)
+                ResetRespawnTimer();
+        }
+    }
+    #region Respawn Timer    
+    private void UpdateRespawnTimer()
+    {
+        // Idle Timer update
+        respawnTimer -= Time.fixedDeltaTime;
+
+        // Reset Idle Timer
+        if (respawnTimer <= 0)
+        {
+            ResetRespawnTimer();
+            Respawn();
+        }
+    }
+    private void ResetRespawnTimer()
+    {
+        isRespawnTimerEnabled = false;
+        respawnTimer = 0f;
+    }
+    private void SetRespawnTimer()
+    {
+        respawnTimer = respawnMaxTime;
+        isRespawnTimerEnabled = true;
+    }
+    #endregion
+    #endregion
     #region Timers
     #region Return To Idle Timer    
     private void UdpateIdleTimer()
@@ -498,13 +587,16 @@ public class Spider : MonoBehaviour
         enemyToPlayerVector = (player.transform.position - transform.position);        
     }
     private void CheckDetectionArea()
-    {        
-        // Detection Area flag update
-        isOnDetectArea = (Vector2.Distance(transform.position, player.transform.position) <= detectAreaDistance);
+    {
+        // Player on Respawn Distance?
+        isOnRespawnDistance = enemyToPlayerVector.magnitude >= respawnDistance;
 
-        // Raycast Debugging
-        //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
-        Debug.DrawRay(transform.position, enemyToPlayerVector.normalized * detectAreaDistance, Color.red);
+        //// Detection Area flag update
+        //isOnDetectArea = (Vector2.Distance(transform.position, player.transform.position) <= detectAreaDistance);
+
+        //// Raycast Debugging
+        ////Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
+        //Debug.DrawRay(transform.position, enemyToPlayerVector.normalized * detectAreaDistance, Color.red);
     }
     void EnablePlayerDetection()
     {
@@ -632,8 +724,8 @@ public class Spider : MonoBehaviour
     #region Player Attack
     private void ReceivePlayerAttack()
     {
-        if (playerMovement.IsGrounded)
-            return;
+        //if (playerMovement.IsGrounded)
+        //    return;
 
         playerMovement.UpwardsEnemyImpulse();
         playerSFX.PlayEnemyJumpSFX();
@@ -738,6 +830,11 @@ public class Spider : MonoBehaviour
             default:
                 break;
         }
+    }
+    private void ResetAnimations()
+    {
+        animator.Rebind();
+        animator.Update(0f);
     }
     #endregion
 

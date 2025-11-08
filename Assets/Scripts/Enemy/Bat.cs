@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class Bat : MonoBehaviour
@@ -80,6 +81,15 @@ public class Bat : MonoBehaviour
     [SerializeField] private AudioClip flyingAlertSFX;
     [SerializeField] private AudioClip attackSFX;
     [SerializeField] private AudioClip deathSFX;
+
+    [Header("Respawn Timer")]
+    [SerializeField] private float respawnMaxTime;
+    [SerializeField] private float respawnTimer;
+    [SerializeField] private bool isRespawnTimerEnabled;
+
+    [Header("Respawn settings")]
+    [SerializeField] private bool isOnRespawnDistance;
+    [SerializeField] private float respawnDistance;
 
     public enum EnemyState
     {
@@ -238,7 +248,10 @@ public class Bat : MonoBehaviour
             Attack();            
         }
         else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
-        {
+        {            
+            if (playerMovement.IsGrounded)
+                return;
+
             Debug.Log("Player entered on the HurtBox");
 
             DisablePlayerDetection();
@@ -248,7 +261,7 @@ public class Bat : MonoBehaviour
         else if (id == "AttackArea" && collision.CompareTag("Player") && !playerMovement.IsDead)
         {
             isOnAttackArea = true;
-            Debug.Log("Player entered on the AttackArea");
+            //Debug.Log("Player entered on the AttackArea");
         }
     }
     public void OnChildTriggerExit(string id, Collider2D collision)
@@ -264,7 +277,7 @@ public class Bat : MonoBehaviour
         else if (id == "AttackArea" && collision.CompareTag("Player"))
         {
             isOnAttackArea = false;
-            Debug.Log("Player exit from the AttackArea");
+            //Debug.Log("Player exit from the AttackArea");
         }
     }
     #endregion
@@ -277,13 +290,16 @@ public class Bat : MonoBehaviour
         {
             // Play the SFX
             StopAudioSource();
-            PlayDeathSFX();            
+            PlayDeathSFX();
 
             // Setup the GO destruction
-            Destroy(gameObject, 3f);
+            //Destroy(gameObject, 3f);            
 
             // Debug
-            Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+            //Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+
+            // Trigger Respawn Timer
+            SetRespawnTimer();
 
             // State Update
             currentState = EnemyState.Death;
@@ -295,6 +311,17 @@ public class Bat : MonoBehaviour
         {
             switch (currentState)
             {
+                case EnemyState.Death:
+                    // Check constantly the Respawn Timer
+                    if (isDeath)
+                        CheckRespawnTimer();
+                    else
+                    {
+                        currentState = EnemyState.Idle;
+                        ResetAnimations();
+                    }
+                    //Debug.Log("From Death state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
                 case EnemyState.Idle:
                     // State Update
                     if (isOnDetectArea)
@@ -494,16 +521,72 @@ public class Bat : MonoBehaviour
                         // Debug
                         //Debug.Log("From Return To Idle state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
-                    break;
-                case EnemyState.Death:
-                    Debug.Log("I am on Death State");
-                    break;
+                    break;                
                 default:
                     // Default logic
                     break;
             }
         }
     }
+    #endregion
+    #region Respawn
+    private void Respawn()
+    {
+        // Set the Colliders on its init state
+        EnableHitHurtBoxColliders(hitBoxCollider, true);
+        EnableHitHurtBoxColliders(hurtBoxCollider, false);
+        EnableAttackAreaCollider(false);
+
+        // Set the initial patrol points        
+        positions.originPosition = patrolPoints[0].position;
+        positions.targetPosition = patrolPoints[1].position;        
+        transform.position = positions.originPosition;
+
+        // Play the Idle SFX
+        PlayIdleSFX();
+
+        // Respawn the character (Trigger from Death->Idle State)
+        isDeath = false;
+    }
+    private void CheckRespawnTimer()
+    {
+        if (isOnRespawnDistance)
+        {
+            if (!isRespawnTimerEnabled)
+                SetRespawnTimer();
+            else
+                UpdateRespawnTimer();
+        }
+        else
+        {
+            if (isRespawnTimerEnabled)
+                ResetRespawnTimer();
+        }
+    }
+    #region Respawn Timer    
+    private void UpdateRespawnTimer()
+    {
+        // Idle Timer update
+        respawnTimer -= Time.fixedDeltaTime;
+
+        // Reset Idle Timer
+        if (respawnTimer <= 0)
+        {
+            ResetRespawnTimer();
+            Respawn();
+        }
+    }
+    private void ResetRespawnTimer()
+    {
+        isRespawnTimerEnabled = false;
+        respawnTimer = 0f;
+    }
+    private void SetRespawnTimer()
+    {
+        respawnTimer = respawnMaxTime;
+        isRespawnTimerEnabled = true;
+    }
+    #endregion
     #endregion
     #region Return To Idle Timer    
     private void UdpateReturnToIdleTimer()
@@ -579,7 +662,7 @@ public class Bat : MonoBehaviour
     private void GetEnemyToPlayerDir()
     {
         // Update Enemy To Player Vector
-        enemyToPlayerVector = (player.transform.position - transform.position);
+        enemyToPlayerVector = (player.transform.position - transform.position);        
 
         // Update Sprite X-Flip       
         FlipSprite();
@@ -589,6 +672,9 @@ public class Bat : MonoBehaviour
         // Detection Area flag update
         isOnDetectArea = (Vector2.Distance(transform.position, player.transform.position) <= detectAreaDistance 
                         && !playerMovement.IsDead);
+
+        // Player on Respawn Distance?
+        isOnRespawnDistance = enemyToPlayerVector.magnitude >= respawnDistance;
 
         // Raycast Debugging
         //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
@@ -638,10 +724,7 @@ public class Bat : MonoBehaviour
     #endregion
     #region Player Attack
     private void ReceivePlayerAttack()
-    {
-        if (playerMovement.IsGrounded)
-            return;
-
+    {        
         playerMovement.UpwardsEnemyImpulse();
         playerSFX.PlayEnemyJumpSFX();
 
@@ -796,6 +879,11 @@ public class Bat : MonoBehaviour
             default:
                 break;
         }
+    }
+    private void ResetAnimations()
+    {
+        animator.Rebind();
+        animator.Update(0f);
     }
     #endregion
 

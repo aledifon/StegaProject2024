@@ -113,7 +113,7 @@ public class Rat : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         rb2D = GetComponent<Rigidbody2D>();
 
-        foreach (Collider2D collider in GetComponentsInChildren<Collider2D>())
+        foreach (Collider2D collider in GetComponents<Collider2D>())
         {
             if (collider.isTrigger)
                 receiveDamageCollider = collider;
@@ -238,7 +238,10 @@ public class Rat : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
-        {            
+        {
+            if (playerMovement.IsGrounded)
+                return;
+
             ReceivePlayerAttack();
         }
     }
@@ -253,7 +256,10 @@ public class Rat : MonoBehaviour
         {
             // Play the SFX
             StopAudioSource();
-            PlayDeathSFX();            
+            PlayDeathSFX();
+
+            // Disable the Attack Collider            
+            DisableAttackCollider();
 
             // Set Rb as kinematics
             SetRBConfig(RigidbodyType2D.Kinematic);
@@ -262,7 +268,7 @@ public class Rat : MonoBehaviour
             //Destroy(gameObject, 3f);
 
             // Debug
-            //Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+            //Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");            
 
             // Trigger Respawn Timer
             SetRespawnTimer();
@@ -560,7 +566,7 @@ public class Rat : MonoBehaviour
         SetRBConfig(RigidbodyType2D.Kinematic);
 
         // Disable the Body & Receive Damage Colliders
-        EnableRatColliders(false);
+        //EnableRatColliders(false);
 
         // Set the correct offset for the Attack Collider and enable it
         attackCollider.offset = spriteRenderer.flipX ? 
@@ -580,10 +586,10 @@ public class Rat : MonoBehaviour
     public void DisableAttackCollider()
     {
         // Disable again the scratch Collider VFX Sprite.
-        scratchSprite.enabled = true;
+        scratchSprite.enabled = false;
 
         // Re-enable the Body & Receive Damage Colliders
-        EnableRatColliders(true);
+        //EnableRatColliders(true);
 
         // Set the RB as Dynamics
         SetRBConfig(RigidbodyType2D.Dynamic);
@@ -654,8 +660,8 @@ public class Rat : MonoBehaviour
     #region Player Attack
     private void ReceivePlayerAttack()
     {
-        if (playerMovement.IsGrounded)
-            return;
+        //if (playerMovement.IsGrounded)
+        //    return;
 
         playerMovement.UpwardsEnemyImpulse();
         playerSFX.PlayEnemyJumpSFX();

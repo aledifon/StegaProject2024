@@ -409,6 +409,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlantCarnivore (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7233,6 +7241,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
       propertyPath: alertPatrolSpeed
       value: 4
       objectReference: {fileID: 0}
@@ -7794,6 +7810,14 @@ PrefabInstance:
     - target: {fileID: 8077356350181015294, guid: db777b7529dd3104cbedb35b3b7f2ffe, type: 3}
       propertyPath: m_Name
       value: PlantCarnivoreLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: db777b7529dd3104cbedb35b3b7f2ffe, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: db777b7529dd3104cbedb35b3b7f2ffe, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12758,6 +12782,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
       propertyPath: alertPatrolSpeed
       value: 4
       objectReference: {fileID: 0}
@@ -15638,15 +15670,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: respawnMaxTime
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: pursuitDistance
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: respawnDistance
-      value: 30
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: 'pointsObjects.Array.data[0]'
@@ -17805,6 +17837,14 @@ PrefabInstance:
     - target: {fileID: 7182534876132347488, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
@@ -20140,6 +20180,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
       propertyPath: alertPatrolSpeed
       value: 4
       objectReference: {fileID: 0}
@@ -20876,6 +20924,14 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
       value: 
       objectReference: {fileID: 1834774855}
@@ -21498,6 +21554,14 @@ PrefabInstance:
     - target: {fileID: 7182534876132347488, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
@@ -25811,6 +25875,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
       value: 
       objectReference: {fileID: 1512618344}
@@ -25993,6 +26065,14 @@ PrefabInstance:
     - target: {fileID: 7182534876132347488, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
@@ -29242,6 +29322,14 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
       propertyPath: alertPatrolSpeed
       value: 4
       objectReference: {fileID: 0}
@@ -31026,6 +31114,14 @@ PrefabInstance:
     - target: {fileID: 7182534876132347488, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
@@ -36314,12 +36410,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 176027122467103790, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 417637372214168513, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: m_Name
       value: Rat
       objectReference: {fileID: 0}
     - target: {fileID: 417637372214168513, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2450761170632717408, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5129749500205572242, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
@@ -36362,6 +36466,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5140272326680466174, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: idleMaxTime
       value: 1.5
@@ -36380,15 +36488,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: respawnMaxTime
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: pursuitDistance
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: respawnDistance
-      value: 30
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5736988064681719969, guid: 06e835874b2b0e146a06fbdd57ce8ae6, type: 3}
       propertyPath: 'pointsObjects.Array.data[0]'
@@ -36966,6 +37074,14 @@ PrefabInstance:
     - target: {fileID: 8077356350181015294, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
       propertyPath: m_Name
       value: PlantCarnivore (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -210697,6 +210813,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
       value: 
       objectReference: {fileID: 1319321502}
@@ -214064,6 +214188,14 @@ PrefabInstance:
     - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
       propertyPath: damageAmount
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -221423,6 +221555,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlantCarnivoreLeft (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: db777b7529dd3104cbedb35b3b7f2ffe, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: db777b7529dd3104cbedb35b3b7f2ffe, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -222521,6 +222661,14 @@ PrefabInstance:
     - target: {fileID: 7182534876132347488, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
@@ -226921,6 +227069,14 @@ PrefabInstance:
     - target: {fileID: 8077356350181015294, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
       propertyPath: m_Name
       value: PlantCarnivore (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432262669943888814, guid: 5250db0e14140dc4387607689e2ead6c, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -238873,6 +239029,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint
       value: 
       objectReference: {fileID: 269324959}
@@ -242517,6 +242681,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
+      propertyPath: respawnDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584973169446203011, guid: d6cf5d227a5fb17458b79af4ab593ab8, type: 3}
       propertyPath: alertPatrolSpeed
       value: 4
       objectReference: {fileID: 0}
@@ -244294,6 +244466,14 @@ PrefabInstance:
     - target: {fileID: 7182534876132347488, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnMaxTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
+      propertyPath: respawnDistance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8777638225948641387, guid: 9320a6ab1ca2da243836720de0d7c5db, type: 3}
       propertyPath: middlePatrolPoint

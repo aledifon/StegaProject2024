@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UIElements;
+using UnityEngine.Windows;
+using static PlayerMovement;
 
 public class PlantCarnivore : MonoBehaviour
 {    
@@ -37,6 +39,15 @@ public class PlantCarnivore : MonoBehaviour
     [SerializeField] private AudioClip idleSFX;        
     [SerializeField] private AudioClip attackSFX;
     [SerializeField] private AudioClip deathSFX;
+
+    [Header("Respawn Timer")]
+    [SerializeField] private float respawnMaxTime;
+    [SerializeField] private float respawnTimer;
+    [SerializeField] private bool isRespawnTimerEnabled;
+
+    [Header("Respawn settings")]
+    [SerializeField] private bool isOnRespawnDistance;
+    [SerializeField] private float respawnDistance;
 
     public enum EnemyState
     {
@@ -85,6 +96,9 @@ public class PlantCarnivore : MonoBehaviour
 
         // Update the Enemy state
         UpdateEnemyState();
+
+        // Animations
+        UpdateAnimationsNew();
     }
     public void OnChildTriggerEnter(string id, Collider2D collision)
     {
@@ -99,6 +113,9 @@ public class PlantCarnivore : MonoBehaviour
         }
         else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
+            if (playerMovement.IsGrounded)
+                return;
+
             Debug.Log("Player entered on the HurtBox");
 
             DisablePlayerDetection();
@@ -142,7 +159,7 @@ public class PlantCarnivore : MonoBehaviour
             RuntimeAnimatorController ac = animator.runtimeAnimatorController;
             foreach (var clip in ac.animationClips)
             {
-                if (clip.name == "Attack")
+                if (clip.name == "Attack" || clip.name == "AttackLeft")
                     attackMaxTime = clip.length;                
             }
         }
@@ -196,13 +213,18 @@ public class PlantCarnivore : MonoBehaviour
             PlayDeathSFX();
 
             // Setup the GO destruction
-            Destroy(gameObject, 3f);
+            //Destroy(gameObject, 3f);
 
             // Debug
-            Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+            //Debug.Log("From " + currentState + " state to Death State. Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+
+            // Trigger Respawn Timer
+            SetRespawnTimer();
 
             // State Update
             currentState = EnemyState.Death;
+
+            UpdateTriggerAnimations();
 
             // Anims update
             UpdateAnimations();
@@ -211,6 +233,19 @@ public class PlantCarnivore : MonoBehaviour
         {
             switch (currentState)
             {
+                case EnemyState.Death:
+                    // Check constantly the Respawn Timer
+                    if (isDeath)
+                        CheckRespawnTimer();
+                    else
+                    {
+                        currentState = EnemyState.Idle;                        
+                        ResetAnimations();
+
+                        //UpdateTriggerAnimations();
+                    }
+                    //Debug.Log("From Death state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
+                    break;
                 case EnemyState.Idle:
                     // Wait for Attack Timer Update (As long as is enabled)
                     if(isWaitForAttackTimerEnabled)
@@ -224,6 +259,9 @@ public class PlantCarnivore : MonoBehaviour
 
                         // Update the state
                         currentState = EnemyState.Attack;
+
+                        StopAudioSource();
+                        Invoke(nameof(PlayAttackSFX), 0.1f);
 
                         // Anims update
                         UpdateAnimations();
@@ -240,7 +278,11 @@ public class PlantCarnivore : MonoBehaviour
                     if (!isAttackTimerEnabled)
                     {                        
                         SetWaitForAttackTimer();
-                        currentState = EnemyState.Idle;                        
+                        currentState = EnemyState.Idle;
+
+                        // Play the Idle SFX
+                        StopAudioSource();
+                        PlayIdleSFX();
 
                         // Anims update
                         UpdateAnimations();
@@ -248,10 +290,7 @@ public class PlantCarnivore : MonoBehaviour
                         // Debug
                         //Debug.Log("From Attack state to " + currentState + ". Time: " + (Time.realtimeSinceStartup * 1000f) + "ms");
                     }
-                    break;
-                case EnemyState.Death:
-                    Debug.Log("I am on Death State");
-                    break;
+                    break;                
                 default:
                     // Default logic
                     break;
@@ -259,7 +298,68 @@ public class PlantCarnivore : MonoBehaviour
         }
     }
     #endregion
+    #region Respawn
+    private void Respawn()
+    {
+        // Set the Colliders on its init state
+        EnableHitHurtBoxColliders(hitBoxCollider, true);
+        EnableHitHurtBoxColliders(hurtBoxCollider, false);
 
+        // Reset the transform Scale to its init value (Was set to 0 at the end of 'Death' anim)
+        transform.localScale = Vector3.one;
+
+        // Player detection will be always enabled except for a few secs. when the player is detected.
+        EnablePlayerDetection();
+
+        // Set the Wait For Attack Timer
+        SetWaitForAttackTimer();        
+
+        // Play the Idle SFX
+        PlayIdleSFX();
+
+        // Respawn the character (Trigger from Death->Idle State)
+        isDeath = false;
+    }
+    private void CheckRespawnTimer()
+    {
+        if (isOnRespawnDistance)
+        {
+            if (!isRespawnTimerEnabled)
+                SetRespawnTimer();
+            else
+                UpdateRespawnTimer();
+        }
+        else
+        {
+            if (isRespawnTimerEnabled)
+                ResetRespawnTimer();
+        }
+    }
+    #region Respawn Timer    
+    private void UpdateRespawnTimer()
+    {
+        // Idle Timer update
+        respawnTimer -= Time.fixedDeltaTime;
+
+        // Reset Idle Timer
+        if (respawnTimer <= 0)
+        {
+            ResetRespawnTimer();
+            Respawn();
+        }
+    }
+    private void ResetRespawnTimer()
+    {
+        isRespawnTimerEnabled = false;
+        respawnTimer = 0f;
+    }
+    private void SetRespawnTimer()
+    {
+        respawnTimer = respawnMaxTime;
+        isRespawnTimerEnabled = true;
+    }
+    #endregion
+    #endregion
     #region Player Detection
     private void GetEnemyToPlayerDir()
     {
@@ -274,6 +374,9 @@ public class PlantCarnivore : MonoBehaviour
                           (player.transform.position.x < transform.position.x) : 
                           (player.transform.position.x > transform.position.x)) 
                           && !playerMovement.IsDead;
+
+        // Player on Respawn Distance?
+        isOnRespawnDistance = enemyToPlayerVector.magnitude >= respawnDistance;
 
         // Raycast Debugging
         //Debug.DrawRay(transform.position, raycastDir * pursuitDistance, Color.red);
@@ -295,10 +398,24 @@ public class PlantCarnivore : MonoBehaviour
     {
         collider.enabled = enable;
     }
+    public void EnableHurtBoxCollider()
+    {
+        if (isDeath)
+            return;
+
+        EnableHitHurtBoxColliders(hurtBoxCollider,true);
+    }
+    public void DisableHurtBoxCollider()
+    {
+        if (isDeath)
+            return;
+
+        EnableHitHurtBoxColliders(hurtBoxCollider,false);
+    }
     #endregion
 
-    #region Attack
-    #region Enemy Attack
+        #region Attack
+        #region Enemy Attack
     public void Attack()
     {
         // Get the Enemy's direction
@@ -313,8 +430,8 @@ public class PlantCarnivore : MonoBehaviour
     #region Player Attack
     private void ReceivePlayerAttack()
     {
-        if (playerMovement.IsGrounded)
-            return;
+        //if (playerMovement.IsGrounded)
+        //    return;
 
         playerMovement.UpwardsEnemyImpulse();
         playerSFX.PlayEnemyJumpSFX();
@@ -378,34 +495,75 @@ public class PlantCarnivore : MonoBehaviour
     #endregion
 
     #region Sprite & Animations    
-    private void ClearAnimationFlags()
+    //private void ClearAnimationFlags()
+    //{
+    //    animator.ResetTrigger("Die");                
+    //}
+    private void UpdateTriggerAnimations()
     {
-        animator.ResetTrigger("Die");        
-        animator.ResetTrigger("Attack");
-    }
-    private void UpdateAnimations()
-    {
-        ClearAnimationFlags();
+        //ClearAnimationFlags();
 
         switch (currentState)
-        {
-            case EnemyState.Idle:
-                //animator.SetTrigger("Idle");
-                StopAudioSource();
-                PlayIdleSFX();
-                break;
-            case EnemyState.Attack:
-                animator.SetTrigger("Attack");
-                StopAudioSource();
-                Invoke(nameof(PlayAttackSFX), 0.1f);
-                //PlayAttackSFX();                
-                break;
+        {            
             case EnemyState.Death:
                 animator.SetTrigger("Die");
                 break;
             default:
                 break;
         }
+    }
+    private void UpdateAnimationsNew()
+    {
+        // IDLE        
+        bool isIdle = (!isOnAttackRange && isWaitForAttackTimerEnabled) &&
+                    !isDeath;
+        animator.SetBool("IsIdle", isIdle);
+
+        // ATTACK
+        bool isAttack = (isOnAttackRange && isAttackTimerEnabled) &&
+                        !isDeath;
+        animator.SetBool("IsAttack", isAttack);
+    }
+    private void UpdateAnimations()
+    {
+        return;
+
+        //ClearAnimationFlags();
+
+        switch (currentState)
+        {
+            case EnemyState.Idle:
+                //animator.SetTrigger("Idle");
+                // Reset the other triggers
+                animator.ResetTrigger("Die");
+                animator.ResetTrigger("Attack");
+
+                //StopAudioSource();
+                //PlayIdleSFX();
+                break;
+            case EnemyState.Attack:
+                // Reset the another trigger
+                animator.ResetTrigger("Die");                
+
+                animator.SetTrigger("Attack");
+                //StopAudioSource();
+                //Invoke(nameof(PlayAttackSFX), 0.1f);
+                //PlayAttackSFX();                
+                break;
+            case EnemyState.Death:
+                // Reset the another trigger
+                animator.ResetTrigger("Attack");
+
+                animator.SetTrigger("Die");
+                break;
+            default:
+                break;
+        }
+    }    
+    private void ResetAnimations()
+    {
+        animator.Rebind();
+        animator.Update(0f);
     }
     #endregion
 
