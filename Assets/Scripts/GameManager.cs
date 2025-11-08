@@ -14,6 +14,7 @@ using static MenuSceneStateEnum;
 using static LevelSceneStateEnum;
 using static UIMenuSelectEnum;
 using static ItemTypeEnum;
+using static GhostPathsEnum;
 
 using TMPro;
 using System.Collections.Generic;
@@ -1415,7 +1416,7 @@ public class GameManager : MonoBehaviour
     #region ReplayManager
     public void EnableReplayManagerAndGetRefs()
     {
-        return; // Temporary till will be completely tested
+        //return; // Temporary till will be completely tested
 
         if (playerMovement != null)
         {
@@ -1435,7 +1436,7 @@ public class GameManager : MonoBehaviour
     }
     public void DisableReplayManagerAndCleanRefs()
     {
-        return; // Temporary till will be completely tested
+        //return; // Temporary till will be completely tested
 
         playerPlayback = null;
         playerRecorder = null;
@@ -1946,10 +1947,20 @@ public class GameManager : MonoBehaviour
         // Disable Player Input
         DisableAllInputs();
 
-        // Trigger Player Ghost Sequence
-
         // Wait till seq. is finished
         yield return new WaitForSeconds(bootsWaitingTime);
+
+        // Trigger Player Ghost Sequence
+        replayManager.StartPlayback(GhostPaths.WallJumpingPath);
+
+        // Wait for the playback to start
+        yield return new WaitUntil(() => playerPlayback.IsPlaying);
+
+        // Wait for the playback to finish
+        yield return new WaitUntil(() => !playerPlayback.IsPlaying);
+
+        // Wait till seq. is finished
+        //yield return new WaitForSeconds(bootsWaitingTime);
 
         // Enable Player Input
         EnableGameplayInput();
@@ -1966,8 +1977,15 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(cameraFollow.MoveCamTargetToDestColumnsPos(columnDestroyer));        
 
         yield return StartCoroutine(cameraFollow.MoveCamTargetToWallJumpAccessPlatform(columnDestroyer));
-
+        
         // Trigger Player Ghost Sequence
+        replayManager.StartPlayback(GhostPaths.HookPath);
+
+        // Wait for the playback to start
+        yield return new WaitUntil(() => playerPlayback.IsPlaying);
+
+        // Wait for the playback to finish
+        yield return new WaitUntil(() => !playerPlayback.IsPlaying);
 
         // Wait till sequence is finished
         //yield return new WaitForSeconds(hookWaitingTime);

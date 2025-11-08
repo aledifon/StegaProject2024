@@ -241,6 +241,9 @@ public class Bat : MonoBehaviour
     {
         if (id == "HitBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             Debug.Log("Player entered on the HitBox");
 
             DisablePlayerDetection();
@@ -249,7 +252,7 @@ public class Bat : MonoBehaviour
         }
         else if (id == "HurtBox" && collision.CompareTag("Player") && isPlayerDetectionEnabled && !playerMovement.IsDead)
         {            
-            if (playerMovement.IsGrounded)
+            if (playerMovement.IsGrounded || collision.gameObject.name != "Player")
                 return;
 
             Debug.Log("Player entered on the HurtBox");
@@ -260,6 +263,9 @@ public class Bat : MonoBehaviour
         }
         else if (id == "AttackArea" && collision.CompareTag("Player") && !playerMovement.IsDead)
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             isOnAttackArea = true;
             //Debug.Log("Player entered on the AttackArea");
         }
@@ -268,14 +274,23 @@ public class Bat : MonoBehaviour
     {
         if (id == "HitBox" && collision.CompareTag("Player"))
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             Debug.Log("Player exit from the HitBox");
         }
         else if (id == "HurtBox" && collision.CompareTag("Player"))
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             Debug.Log("Player exit from the HurtBox");
         }
         else if (id == "AttackArea" && collision.CompareTag("Player"))
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             isOnAttackArea = false;
             //Debug.Log("Player exit from the AttackArea");
         }
