@@ -82,6 +82,9 @@ public class Checkpoint : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !isCaptured)
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             myCollider.enabled = false;
             isCaptured = true;
 

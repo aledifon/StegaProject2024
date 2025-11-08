@@ -18,6 +18,8 @@ public class PlayerGhostMovement : PlayerMovement
 
     private bool jumpWasPressed;
     private bool hookActionWasPressed;
+    
+    private Collider2D playerCollider;
 
     private Vector2 rbRecordedVelocity;
     public Vector2 RbRecordedVelocity
@@ -42,6 +44,10 @@ public class PlayerGhostMovement : PlayerMovement
         set => hookActionPressed = value;
     }
 
+    [Header("WaitingPos")]
+    [SerializeField] private Transform waitingPos;
+    public Transform WaitingPos => waitingPos;
+
     #region Unity API    
     protected override void OnDrawGizmos()
     {
@@ -59,6 +65,17 @@ public class PlayerGhostMovement : PlayerMovement
     {
         GetGORefs();
         playerGhost = GetComponent<PlayerPlayback>();
+
+        if (waitingPos == null)
+            Debug.LogError("No Waiting Position was assigned to the PlayerGhost");
+
+        // Get the player Collider
+        playerCollider = GameObject.Find("Player")?.GetComponent<Collider2D>();
+        if (playerCollider == null)
+            Debug.LogError("No Collider2D Component was found on the Player GO or the" +
+                        "the Player GO was not found on the scene");
+        else
+            SkipPlayerCollisions();
     }
     protected override void Update()
     {
@@ -80,7 +97,6 @@ public class PlayerGhostMovement : PlayerMovement
         // Skip this method from the base class
     }
     #endregion
-
     #region Input Player      
     public override void JumpActionInput(InputAction.CallbackContext context)
     {
@@ -118,6 +134,26 @@ public class PlayerGhostMovement : PlayerMovement
         // Flip the player sprite & change the animations State
         FlipSprite(InputX, inputDirDeadZone);
         //AnimatingRunning(inputX);
+    }
+    #endregion
+    //#region InitPlayerGhost
+    //public void MoveToWaitingPosition()
+    //{
+    //    transform.position = waitingPos.position;
+    //}
+    //#endregion
+    #region Collisions
+    private void SkipPlayerCollisions()
+    {
+        if (boxCollider2D != null && playerCollider != null)
+        {
+            // Ignora colisiones entre el PlayerGhost y el Player
+            Physics2D.IgnoreCollision(boxCollider2D, playerCollider, true);
+        }
+        else
+        {
+            Debug.LogWarning("Colliders not assigned or found!");
+        }
     }
     #endregion
 }

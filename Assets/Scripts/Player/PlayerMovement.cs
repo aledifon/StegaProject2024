@@ -240,7 +240,8 @@ public class PlayerMovement : MonoBehaviour
     SpriteRenderer spriteRenderer;
     public SpriteRenderer SpriteRendPlayer => spriteRenderer;
     Animator animator;
-    BoxCollider2D boxCollider2D;    
+    public Animator Animator_ => animator;
+    protected BoxCollider2D boxCollider2D;    
     PlayerVFX playerVFX;
     PlayerSFX playerSFX;
     PlayerHook playerHook;

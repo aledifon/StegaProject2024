@@ -62,6 +62,9 @@ public class Chest : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             myCollider.enabled = false;
             collision.gameObject.GetComponent<PlayerMovement>().UnlockPowerUp(itemType);
             OnChestOpened?.Invoke(itemType);

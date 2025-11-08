@@ -11,8 +11,8 @@ public class PlayerRecorder : MonoBehaviour
     private PlayerMovement playerMovement;
     private Rigidbody2D rb2D;
 
-    private Vector3 initPos;
-    public Vector3 InitPos => initPos;
+    //private Vector3 initPos;
+    //public Vector3 InitPos => initPos;
 
     void Awake()
     {        
@@ -24,17 +24,25 @@ public class PlayerRecorder : MonoBehaviour
     {
         if (!isRecording) return;
 
+        var stateInfo = playerMovement.Animator_.GetCurrentAnimatorStateInfo(0);
+
         var frame = new PlayerFrameData
         {
             rbVelocity = rb2D.linearVelocity,
             //initPos = playerMovement.transform.position,
             inputX = playerMovement.InputX,
             jumpPressed = playerMovement.JumpPressed,
-            hookActionPressed = playerMovement.HookActionPressed
+            hookActionPressed = playerMovement.HookActionPressed,
+            facingRight = (playerMovement.SpriteRendPlayerFlipX == false),
+
+            animStateHash = stateInfo.shortNameHash,
+            animNormalizedTime = stateInfo.normalizedTime %1f
         };
 
         if (RecordedFrames.frames.Count == 0)
-            initPos = playerMovement.transform.position;
+            //initPos = playerMovement.transform.position;
+            RecordedFrames.initPosition = playerMovement.transform.position;
+
         // Save the Player Data on every frame
         RecordedFrames.frames.Add(frame);        
     }

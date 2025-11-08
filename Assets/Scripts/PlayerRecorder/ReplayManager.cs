@@ -1,14 +1,16 @@
 using UnityEngine;
+using static GhostPathsEnum;
 
 public class ReplayManager : MonoBehaviour
 {
     private PlayerRecorder recorder;
     private PlayerPlayback playback;
 
-    public bool startRecording;
-    public bool stopRecording;
-    public bool startPlayback;
-    public bool stopPlayback;
+    [SerializeField] private bool startRecording;
+    [SerializeField] private bool stopRecording;
+    [SerializeField] private bool startPlayback;
+    [SerializeField] private GhostPaths choosenPath = GhostPaths.WallJumpingPath;    
+    private bool stopPlayback;
 
     private void Awake()
     {
@@ -35,9 +37,12 @@ public class ReplayManager : MonoBehaviour
 
         // Triggered by myself manually
 
-        if (startRecording && !stopRecording && !startPlayback && ! stopPlayback &&
+        if (startRecording && !stopRecording && !startPlayback && !stopPlayback &&
             !recorder.IsRecording)
         {
+            // Reset the StartRecordingFlag
+            startRecording = false;
+
             recorder.StartRecording();
             Debug.Log("Comenzó la grabación.");
         }
@@ -47,6 +52,9 @@ public class ReplayManager : MonoBehaviour
         if (!startRecording && stopRecording && !startPlayback && !stopPlayback &&
             recorder.IsRecording)
         {
+            // Reset the StopRecordingFlag
+            stopRecording = false;
+
             recorder.StopRecording();
             Debug.Log("Grabación detenida.");
         }
@@ -58,8 +66,11 @@ public class ReplayManager : MonoBehaviour
         if (!startRecording && !stopRecording && startPlayback && !stopPlayback &&
             !playback.IsPlaying)
         {
+            // Reset the StartPlaybackFlag
+            startPlayback = false;
+
             //playback.StartPlayback(recorder.RecordedFrames, recorder.InitPos);
-            playback.StartPlaybackFromJSON(recorder.InitPos);
+            playback.StartPlaybackFromJSON(choosenPath);
             Debug.Log("Reproducción iniciada.");
         }
 
@@ -72,4 +83,12 @@ public class ReplayManager : MonoBehaviour
         //    Debug.Log("Reproducción detenida.");
         //}
     }
+
+    #region Trigger Methods
+    public void StartPlayback(GhostPaths pathToFollow)
+    {
+        choosenPath = pathToFollow;
+        startPlayback = true;
+    }
+    #endregion
 }

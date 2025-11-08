@@ -9,15 +9,22 @@ public class PlayerFrameData
     public float inputX;
     public bool jumpPressed;
     public bool hookActionPressed;
+    public bool facingRight;
+
+    // ?? Para reproducir las animaciones
+    public int animStateHash;
+    public float animNormalizedTime;
 }
 
 [System.Serializable]
 public class PlayerFramesData
 {
-    public List<PlayerFrameData> frames;
+    public Vector3 initPosition;
+    public List<PlayerFrameData> frames;    
 
     public PlayerFramesData()
     {
-        frames = new List<PlayerFrameData>();
+        initPosition = Vector3.zero;
+        frames = new List<PlayerFrameData>();        
     }
 }

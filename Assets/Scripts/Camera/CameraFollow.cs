@@ -162,16 +162,17 @@ public class CameraFollow : MonoBehaviour
         CamBoundariesTriggerArea area;
         area = null;
 
+        if(player == null)
+        {
+            Debug.LogError("The player Ref. is null!");
+            return TotalBoundsArea;
+        }
+
         // Detecta qué collider (área de límites) contiene la posición inicial del player
-        Collider2D hit = Physics2D.OverlapPoint(player.position, LayerMask.GetMask("CamTriggerArea"));        
+        Collider2D hit = Physics2D.OverlapPoint(player.position, LayerMask.GetMask("CamTriggerArea"));
+        area = hit ? hit.GetComponent<CamBoundariesTriggerArea>() : null;
 
-        if (hit != null)                    
-            area = hit.GetComponent<CamBoundariesTriggerArea>();
-
-        if (area == null)
-            area = TotalBoundsArea;
-
-        return area;
+        return area ?? TotalBoundsArea;
     }
     #endregion
     #region Offsets

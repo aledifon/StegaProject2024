@@ -26,6 +26,9 @@ public class GemCollectible : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !isCaptured)
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             isCaptured = true;
 
             // Save the sprite before disabling it

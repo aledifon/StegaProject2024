@@ -28,6 +28,9 @@ public class CamBoundariesTriggerArea : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             if (cameraFollow != null && cameraFollow.ConfinerTriggersEnabled)
                 cameraFollow.SetTargetBoundaries(this);
         }
@@ -36,6 +39,9 @@ public class CamBoundariesTriggerArea : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            if (collision.gameObject.name != "Player")
+                return;
+
             if (cameraFollow != null && cameraFollow.ConfinerTriggersEnabled)
                 cameraFollow.ClearTargetBoundaries(this);
         }
