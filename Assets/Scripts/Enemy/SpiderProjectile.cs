@@ -116,8 +116,8 @@ public class SpiderProjectile : MonoBehaviour
         transform.localPosition = shootingDirRotated;
         collider.enabled = true;
 
-        if (gameObject.name == "Projectile_3")
-            Debug.Log("Pos = " + transform.localPosition);
+        //if (gameObject.name == "Projectile_3")
+        //    Debug.Log("Pos = " + transform.localPosition);
     }
     #endregion    
 

@@ -1786,8 +1786,8 @@ public class GameManager : MonoBehaviour
         audioMixer.GetFloat(sfxVolumeParam, out sfxVolumeValue1);
         audioMixer.GetFloat(musicVolumeParam, out musicVolumeValue1);
 
-        Debug.Log("Music Volume Before = " + musicVolumeValue1);
-        Debug.Log("SFX Volume Before = " + sfxVolumeValue1);
+        //Debug.Log("Music Volume Before = " + musicVolumeValue1);
+        //Debug.Log("SFX Volume Before = " + sfxVolumeValue1);
 
         ApplyDeafSFX()
             .AppendInterval(slowMotAndDeafDelayDuration)
@@ -1796,8 +1796,8 @@ public class GameManager : MonoBehaviour
         audioMixer.GetFloat(sfxVolumeParam, out sfxVolumeValue2);
         audioMixer.GetFloat(sfxVolumeParam, out musicVolumeValue2);
 
-        Debug.Log("Music Volume After = " + musicVolumeValue2);
-        Debug.Log("SFX Volume After = " + sfxVolumeValue2);
+        //Debug.Log("Music Volume After = " + musicVolumeValue2);
+        //Debug.Log("SFX Volume After = " + sfxVolumeValue2);
     }
     private Tween AudioMixerParamInterpolation(AudioMixer audiomixer, string param, float targetValue, float duration, Ease easeType)
     {
