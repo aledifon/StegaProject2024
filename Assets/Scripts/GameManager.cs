@@ -123,6 +123,8 @@ public class GameManager : MonoBehaviour
     private RectTransform selectorOption;   // Disable->Enable
     private TextMeshProUGUI buildVersionText;   // Disable->Enable
     private TextMeshProUGUI infoMenuText;   // Disable->Enable
+    private TextMeshProUGUI developedByTextContainer; // Disable->Enable
+    private GameObject socialNetworksContainer; // Disable->Enable
 
     private GameObject controlsPanel;       
     private GameObject introScenePanel;
@@ -364,7 +366,7 @@ public class GameManager : MonoBehaviour
                         .WaitForCompletion();
 
                     // Delay (Keeps the for x secs)
-                    yield return new WaitForSeconds(2f);
+                    yield return new WaitForSeconds(3f);
 
                     // Update Menu Scene State
                     menuSceneCurrentState = MenuSceneState.IntroPanelStegaImageFadeOut;
@@ -422,7 +424,7 @@ public class GameManager : MonoBehaviour
                         .WaitForCompletion();
 
                     // Delay (Keeps the for x secs)
-                    yield return new WaitForSeconds(2f);
+                    yield return new WaitForSeconds(3f);
 
                     // Update Menu Scene State
                     menuSceneCurrentState = MenuSceneState.IntroPanelAledifonTextFadeOut;
@@ -489,6 +491,8 @@ public class GameManager : MonoBehaviour
                     selectorOption.gameObject.SetActive(true);
                     buildVersionText.gameObject.SetActive(true);
                     infoMenuText.gameObject.SetActive(true);
+                    developedByTextContainer.gameObject.SetActive(true);
+                    socialNetworksContainer.SetActive(true);
 
                     // Enable the UI Inputs
                     EnableUIMainMenuInput();
@@ -802,7 +806,7 @@ public class GameManager : MonoBehaviour
                        .WaitForCompletion();
 
                     // Delay
-                    yield return new WaitForSeconds(2f);
+                    yield return new WaitForSeconds(3f);
 
                     // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelStegaFadeOut;
@@ -848,7 +852,7 @@ public class GameManager : MonoBehaviour
                         .WaitForCompletion();
 
                     // Delay
-                    yield return new WaitForSeconds(2f);
+                    yield return new WaitForSeconds(3f);
 
                     // Update Level Scene State
                     levelSceneCurrentState = LevelSceneState.CreditsGamePanelAledifonTextFadeOut;
@@ -1148,6 +1152,16 @@ public class GameManager : MonoBehaviour
             infoMenuText = menuPanel.transform.Find("InfoMenuText").GetComponent<TextMeshProUGUI>();
             if (infoMenuText == null)
                 Debug.LogError("The infoMenuText component was not found " +
+                                "on the " + menuPanel.name + "GO ");
+
+            developedByTextContainer = menuPanel.transform.Find("DevelopedByText").GetComponent<TextMeshProUGUI>();
+            if (developedByTextContainer == null)
+                Debug.LogError("The developedByText component was not found " +
+                                "on the " + menuPanel.name + "GO ");
+
+            socialNetworksContainer = menuPanel.transform.Find("SocialNetworksContainer")?.gameObject;
+            if (socialNetworksContainer == null)
+                Debug.LogError("The socialNetworksContainer GO was not found " +
                                 "on the " + menuPanel.name + "GO ");
         }
 
