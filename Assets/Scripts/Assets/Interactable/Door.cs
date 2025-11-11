@@ -8,9 +8,11 @@ public class Door : MonoBehaviour
     Animator animator;
     AudioSource audioSource;
     bool isOpened = false;
+    bool isTriedOpenOnce = false;
 
     [SerializeField] AudioClip unlockDoorClip;
     [SerializeField] AudioClip openDoorClip;
+    [SerializeField] AudioClip doorLockedClip;
 
     [Header("Text")]    
     TextMeshProUGUI textBox;
@@ -80,9 +82,24 @@ public class Door : MonoBehaviour
 
                 GameManager.Instance.DisableAllInputs();
             }            
+
+            if (!collision.GetComponent<PlayerMovement>().IsKeyUnlocked && !isTriedOpenOnce)
+            {                
+                isTriedOpenOnce = true;               
+                StartCoroutine(nameof(TryOpenDoorWithoutKey));
+            }            
         }
     }
 
+    private IEnumerator TryOpenDoorWithoutKey()
+    {        
+        audioSource.PlayOneShot(doorLockedClip);        
+
+        yield return StartCoroutine(nameof(FadingAndMoving));
+        yield return new WaitForSeconds(2f);
+
+        HideText();
+    }
     private IEnumerator CaptureCheckpoint()
     {        
         audioSource.PlayOneShot(unlockDoorClip);
