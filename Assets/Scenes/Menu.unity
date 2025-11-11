@@ -3184,6 +3184,7 @@ MonoBehaviour:
   TotalBoundsArea: {fileID: 0}
   currentBoundsArea: {fileID: 0}
   lastBoundsArea: {fileID: 0}
+  zoomOutSize: 0
 --- !u!114 &895413755
 MonoBehaviour:
   m_ObjectHideFlags: 0
