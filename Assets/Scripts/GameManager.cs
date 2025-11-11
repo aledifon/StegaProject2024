@@ -179,17 +179,21 @@ public class GameManager : MonoBehaviour
     private Image endScenePanelImage;
     private TextMeshProUGUI endSceneStoryText; // Machine writting VFX
     private TextMeshProUGUI endSceneContinueText; // Machine writting VFX
+    //private string endSceneTextStrEN_Old = "And finally, after his arduous search, the explorer " +
+    //                                "managed to open the door using the golden key, and found what " +
+    //                                "he had been searching for for so long...";
     private string endSceneTextStrEN = "And finally, after his arduous search, the explorer " +
-                                    "managed to open the door using the golden key, and found what " +
-                                    "he had been searching for for so long...";
+                                    "managed to open the door using the golden key, and... " +
+                                    "he couldn't believe what he found on the other side...";
 
     private string endSceneTextStrFR = "Et finalement, après une recherche ardue, l'explorateur " +
-                                    "réussit à ouvrir la porte à l'aide de la clé dorée et trouva " +
-                                    "ce qu'il cherchait depuis si longtemps...";
+                                    "réussit à ouvrir la porte à l'aide de la clé dorée et... " +
+                                    "il n'en crut pas ses yeux lorsqu'il découvrit ce qui se " +
+                                "trouvait de l'autre côté...";
 
     private string endSceneTextStrES = "Y finalmente, tras una ardua búsqueda, el explorador " +
-                                    "logró abrir la puerta usando la llave dorada, y encontró lo " +
-                                    "que había estado buscando durante tanto tiempo...";
+                                    "logró abrir la puerta usando la llave dorada, y... " +
+                                    "no podía creer lo que encontró al otro lado...";
 
     private string endSceneContinueTextStrEN = "To be continued...";
 
@@ -682,6 +686,10 @@ public class GameManager : MonoBehaviour
                     // Update Bounding Shapes of Cinemachine Confiner
                     cameraFollow.SetConfinerFromCheckpoint(lastCheckpointData.respawnCamBoundTriggerArea);
 
+                    // Set the default Camera Size (in case was modified on the Boulder sequence)
+                    if (cameraFollow.CameraSize != cameraFollow.OriginalCamSize)
+                        CameraZoomIn();
+
                     // Perform also Boulder Respawn (just in cas is needed)
                     if (!isBoulderEventDone)
                         BoulderRespawn();
@@ -1148,8 +1156,10 @@ public class GameManager : MonoBehaviour
             if (buildVersionText == null)
                 Debug.LogError("The buildVersionText component was not found " +
                                 "on the " + menuPanel.name + "GO ");
-            
-            infoMenuText = menuPanel.transform.Find("InfoMenuText").GetComponent<TextMeshProUGUI>();
+            else
+                buildVersionText.text = "Build " + Application.version;
+
+                infoMenuText = menuPanel.transform.Find("InfoMenuText").GetComponent<TextMeshProUGUI>();
             if (infoMenuText == null)
                 Debug.LogError("The infoMenuText component was not found " +
                                 "on the " + menuPanel.name + "GO ");
@@ -1946,6 +1956,16 @@ public class GameManager : MonoBehaviour
             Debug.LogError("The Round Boulder GO was not found on the Scene");
        
         boulderGO = Instantiate(boulderPrefab);
+    }
+    #endregion
+    #region CameraZoomInOut
+    public void CameraZoomIn()
+    {
+        cameraFollow.ZoomIn();
+    }
+    public void CameraZoomOut()
+    {
+        cameraFollow.ZoomOut();
     }
     #endregion
     #region ChestEvents

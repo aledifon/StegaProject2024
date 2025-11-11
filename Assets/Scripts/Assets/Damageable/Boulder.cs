@@ -89,7 +89,7 @@ public class Boulder : MonoBehaviour
             audioSource.Play();
 
             // Start the Rolling Animation
-            animator.SetTrigger("Turn");
+            animator.SetTrigger("Turn");            
         }            
         else if (collision.collider.CompareTag("Player") && !isPlayerCaught)
         {
@@ -115,6 +115,9 @@ public class Boulder : MonoBehaviour
             //Stop the Boulder
             StartCoroutine(nameof(StopRock));
             //SetRBAsKinematic();
+
+            // Trigger the Camera Follow ZoomIUn
+            GameManager.Instance.CameraZoomIn();
         }
         else if (collision.gameObject.CompareTag("Player") && !isPlayerDetected)
         {
@@ -122,10 +125,13 @@ public class Boulder : MonoBehaviour
 
             // Show the Boulder sprite & Make it fall
             spriteRenderer.enabled = true;
-            SetRBAsDynamic();
+            SetRBAsDynamic();            
 
             // Disable the Player Detection Collider (to avoid stopping the rock too early)
             detectPlayerCollider.enabled = false;
+
+            // Trigger the Camera Follow ZoomOut
+            GameManager.Instance.CameraZoomOut();
         }
     }
     private ParticleSystem InstantiateVFXPrefabs(GameObject prefab, Transform originTransform, Transform parentTransform)

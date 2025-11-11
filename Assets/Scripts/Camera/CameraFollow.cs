@@ -49,6 +49,11 @@ public class CameraFollow : MonoBehaviour
     private SpriteRenderer playerSprite;
     private PlayerHealth playerHealth;
     private CinemachinePositionComposer composer;    
+    private CinemachineCamera cinemachineCamera;
+    public float CameraSize => cinemachineCamera.Lens.OrthographicSize;
+    private float originalCamSize;                  // 6.5f
+    public float OriginalCamSize => originalCamSize;
+    [SerializeField] float zoomOutSize;             // 7.5f o 8.5f
 
     // Control vars
     private bool cameraFollowEnabled = true;    
@@ -63,6 +68,12 @@ public class CameraFollow : MonoBehaviour
         confiner2D = GetComponent<CinemachineConfiner2D>();
         if (confiner2D == null)
             Debug.LogError("Cinemachine Confiner 2D component not found on the GO " + gameObject + "!!");             
+
+        cinemachineCamera = GetComponent<CinemachineCamera>();
+        if (cinemachineCamera == null)
+            Debug.LogError("Cinemachine Camera component not found on the GO " + gameObject + "!!");
+        else
+            originalCamSize = cinemachineCamera.Lens.OrthographicSize;
     }
     private void Start()
     {
@@ -281,6 +292,26 @@ public class CameraFollow : MonoBehaviour
     //        fadeOut: true           // Si el shake se va desvaneciendo hacia el final
     //);
     //}    
+    #endregion
+    #region CameraZoom
+    public void ZoomIn()
+    {        
+        DOTween.To(
+            () => cinemachineCamera.Lens.OrthographicSize,
+            x => cinemachineCamera.Lens.OrthographicSize = x,
+            originalCamSize,
+            2f
+        ).SetEase(Ease.InOutSine);
+    }
+    public void ZoomOut()
+    {        
+        DOTween.To(
+            () => cinemachineCamera.Lens.OrthographicSize,
+            x => cinemachineCamera.Lens.OrthographicSize = x,
+            zoomOutSize,
+            2f
+        ).SetEase(Ease.InOutSine);
+    }
     #endregion
     #region References
     public void GetRefsOfPlayerMovement(PlayerMovement pMove)
