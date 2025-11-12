@@ -1586,11 +1586,25 @@ public class GameManager : MonoBehaviour
     }
     public void QuitGame()
     {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
-    #else
+#elif UNITY_WEBGL
+        StartCoroutine(QuitGameWebGL());
+#elif UNITY_STANDALONE
         Application.Quit();            
-    #endif
+#endif
+    }
+    private IEnumerator QuitGameWebGL()
+    {
+        // Si el juego está pausado, reanuda el tiempo
+        if (Time.timeScale == 0)
+            Time.timeScale = 1f;
+
+        // Espera un frame para asegurarte de que Unity procesa los cambios previos
+        yield return null;
+
+        // Ahora sí carga la escena
+        SceneManager.LoadScene(Scenes.Menu.ToString());
     }
     #endregion
     #region Audio Clips
