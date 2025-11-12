@@ -59,21 +59,42 @@ public class PlayerPlayback : MonoBehaviour
         // When all the frames have been played then the playback is stopped.
         if (currentFrame == recordedFrames.frames.Count)
             StopPlayback();
-    }
+    }    
     public void StartPlaybackFromJSON(GhostPaths path)
-    {        
-        // Load the Player Path data
-        string playerPathStringData = SaveManager.Load(path);
-        // Transform from JSON format Data to SaveObject Data
+    {
+        // Load the Player Path data        
+        string playerPathStringData;
+
+#if UNITY_WEBGL && !UNITY_EDITOR        
+    // WebGL --> Coroutine
+        StartCoroutine(SaveManager.LoadAsync(path, (playerPathStringData) =>
+        {
+            if (playerPathStringData != null)
+            {
+                recordedFrames = JsonUtility.FromJson<PlayerFramesData>(playerPathStringData);
+                currentFrame = 0;
+                isPlaying = true;
+                Debug.Log("Load Player Path from JSON (WebGL)");
+            }
+            else
+            {
+                Debug.LogWarning("The JSON could'nt be loaded on WebGL");
+            }
+
+        }));  
+#else
+        // PC / Editor -> Transform from JSON format Data to SaveObject Data
+        playerPathStringData = SaveManager.Load(path);        
         if (playerPathStringData != null)
         {
             recordedFrames = JsonUtility.FromJson<PlayerFramesData>(playerPathStringData);
             //initGhostPos = Vector3.zero;
             //initGhostPos = initPos;
-            currentFrame = 0;            
+            currentFrame = 0;
             isPlaying = true;
         }
-        Debug.Log("Load Player Path from the JSON File");
+        Debug.Log("Load Player Path from the JSON File (Desktop)");
+#endif        
     }
     public void StartPlayback(PlayerFramesData frames, Vector3 initPos)
     {
